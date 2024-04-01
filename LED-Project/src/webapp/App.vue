@@ -2,7 +2,7 @@
   <Runtests v-if="true"/>
   <v-app v-else>
     <v-main>
-      <HelloWorld />
+      Hello World
     </v-main>
   </v-app>
 </template>
