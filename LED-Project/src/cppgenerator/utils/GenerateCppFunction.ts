@@ -1,3 +1,4 @@
+import { PreCppFn } from "@cppgen/implementations/PreCppFn";
 import { CppArgs, CppFnArgInformation, CppFnInformation, IPreCppFn, IVariableSupplier } from "../Types";
 import { setSpaces } from "./CodeShifter";
 
@@ -54,7 +55,7 @@ function mapArgumentsToSupplyInformation<Args extends CppArgs>(vsup: IVariableSu
  */
 export default function generateCppFunctionCode<Args extends CppArgs>(
     vsup: IVariableSupplier,
-    func: IPreCppFn<Args>
+    func: PreCppFn<Args>
 ) : {
     code: string,
     requiredArguments: (keyof Args)[],

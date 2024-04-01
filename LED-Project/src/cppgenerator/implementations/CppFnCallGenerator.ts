@@ -1,5 +1,6 @@
 import { CppArgs, ICppFnCallGenerator, IPreCppFn } from "../Types";
 import cppTypeToString from "../utils/CppTypesToString";
+import { PreCppFn } from "./PreCppFn";
 
 export class CppFnCallGenerator implements ICppFnCallGenerator {
 
@@ -11,7 +12,6 @@ export class CppFnCallGenerator implements ICppFnCallGenerator {
     }
     
     /**
-     * TODO: Comment
      * @param fn 
      * @param call 
      * @returns 
@@ -22,6 +22,8 @@ export class CppFnCallGenerator implements ICppFnCallGenerator {
         let name = fn.getName();
 
         if(this.fnRequirements[name] === undefined) throw new Error("getCallFor was called with a non-registered function");
+
+        if(!(fn instanceof PreCppFn)) throw new Error("getCallFor was called with a none instance of PreCppFn");
 
         let typeByArg = fn.internal_getTypeMappings();
         let requiredArgs = this.fnRequirements[fn.getName()];

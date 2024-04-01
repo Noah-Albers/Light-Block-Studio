@@ -38,7 +38,8 @@ export type CC_CppFnMapping<Defs extends CC_CppFnDefs> = {
 
 
 /**
- * TODO: Comment
+ * 
+ * Defines the interface for a procedure that is responsible for generating the c++ code for that procedure
  * 
  * @example (Inherit for Function override)
  * 
