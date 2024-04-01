@@ -1,5 +1,5 @@
-import { PreCppFn } from "@cppgen/implementations/PreCppFn";
-import { CppArgs, CppFnArgInformation, CppFnInformation, IPreCppFn, IVariableSupplier } from "../Types";
+import { CppArgs, CppFnArgInformation, CppFnInformation, IPreCppFn, IVariableSupplier } from "../definitions/CppFnDefinitions";
+import { PreCppFn } from "../implementations/PreCppFn";
 import { setSpaces } from "./CodeShifter";
 
 /**

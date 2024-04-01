@@ -1,4 +1,4 @@
-import { CppType } from "../Types";
+import { CppType } from "../definitions/CppFnDefinitions";
 
 function booleanToString(value: unknown) : string {
     if(typeof value !== "boolean")

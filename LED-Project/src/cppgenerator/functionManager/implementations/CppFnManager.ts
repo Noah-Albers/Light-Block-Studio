@@ -1,12 +1,11 @@
 
-import { CppFnRequest, IPreCppFn, ICppGenerator, CppResult, CppType, CppFnGenerator, CppArgs, ICppFnCallGenerator, IVariableSupplier } from "../Types";
+import { CppFnRequest, IPreCppFn, ICppFnManager, CppResult, CppType, CppFnGenerator, CppArgs, ICppFnCallGenerator, IVariableSupplier } from "../definitions/CppFnDefinitions";
 import { CppFnCallGenerator } from "./CppFnCallGenerator";
 import { PreCppFn } from "./PreCppFn";
 import VariableSupplier from "./VariableSupplier";
 import generateCppFunctionCode from "../utils/GenerateCppFunction";
-import { setSpaces } from "@cppgen/utils/CodeShifter";
 
-export class CppGenerator implements ICppGenerator {
+export class CppFnManager implements ICppFnManager {
 
     // Used for variable generation
     private variableHolder : IVariableSupplier;

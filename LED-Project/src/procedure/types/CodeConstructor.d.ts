@@ -1,6 +1,6 @@
-import { CppArgs, CppType, ICppFnCallGenerator, ICppGenerator, IPreCppFn, IVariableSupplier } from "@cppgen/Types";
+import { CppArgs, CppType, ICppFnCallGenerator, ICppFnManager, IPreCppFn, IVariableSupplier } from "@cppgen/functionManager/index";
 import { ProcedureOptions } from "./Procedure";
-import { CppGenerator } from "@cppgen/index";
+import { CppFnManager } from "@cppgen/functionManager/index";
 
 // TODO: Maybe use later
 //export type Options2CppTypeMapping<Options extends ProcedureOptions> = {[key in keyof Options]: CppType}
@@ -60,7 +60,7 @@ export type CC_CppFnMapping<Defs extends CC_CppFnDefs> = {
  * 
  *  constructCode(..., callGen, funcs){
  *      let call2MyFunc = callGen.getCallFor(funcs.myfunc, { a: 2 });
- *      // This could now say "myFunc(2);" or maybe just "myFunc()" (Depending on the decissions of the CppGenerator)
+ *      // This could now say "myFunc(2);" or maybe just "myFunc()" (Depending on the decissions of the CppFnManager)
  * 
  * 
  *      ...
@@ -86,13 +86,13 @@ export interface ICodeConstructor
 
 
     /**
-     * Registers all functions to the CppGenerator
-     * @param cppGenerator
+     * Registers all functions to the CppFnManager
+     * @param cppFnManager
      * 
      * @returns a mapping list with all functions that are used.
      * This mapping-object is later be used by the "constructCode" method to generate the calls to that function.
      */
-    registerFunctions(cppGenerator: ICppGenerator) : CC_CppFnMapping<AssociatedCppFnDefs>
+    registerFunctions(cppFnManager: ICppFnManager) : CC_CppFnMapping<AssociatedCppFnDefs>
 
     /**
      * 

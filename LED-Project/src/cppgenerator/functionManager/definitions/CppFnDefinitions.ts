@@ -62,7 +62,7 @@ export type CppFnInformation<Args extends CppArgs> = {[key in keyof Args]: CppFn
 export type CppFnGenerator<Args extends CppArgs> = (vs: IVariableSupplier, args: CppFnInformation<Args>)=>string;
 
 /**
- * Defines the required arguments to register a CppFn (Typescript function generator) to the CppGenerator.
+ * Defines the required arguments to register a CppFn (Typescript function generator) to the CppFnManager.
  * 
  * It includes
  * 
@@ -129,7 +129,7 @@ export interface ICppFnCallGenerator {
     /**
      * Generates a call to a previously defined c++ function.
      * It takes
-     * @param fn the function-reference which was previously given by registering a function using the @see ICppGenerator#addFunction 
+     * @param fn the function-reference which was previously given by registering a function using the @see ICppFnManager#addFunction 
      * @param call the actual values with which the function shall be called
      * 
      * @returns a string which will call the function.
@@ -144,7 +144,7 @@ export interface ICppFnCallGenerator {
  * 
  * @example
  * 
- * let cppGen: ICppGenerator = ...;
+ * let cppGen: ICppFnManager = ...;
  * 
  * ///
  * /// Step 1: Define the type for the options and define the generator function
@@ -240,7 +240,7 @@ export interface ICppFnCallGenerator {
  * ].join("\n");
  * 
  */
-export interface ICppGenerator {
+export interface ICppFnManager {
     /**
      * Registers/adds a function to the generator. Use the returned reference @see IPreCppFn to register all calls to the function before generating code.
      * @param request the data required to register a function. @see CppFnRequest

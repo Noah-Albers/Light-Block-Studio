@@ -1,5 +1,4 @@
-import { CppFnInformation, CppType, IVariableSupplier } from "@cppgen/Types";
-import { CppGenerator } from "@cppgen/index";
+import { CppFnManager, CppFnInformation, CppType, IVariableSupplier } from "@cppgen/functionManager/index";
 import { arraysEqual, stringsEqual } from "@test/TestUtils";
 
 type AddFunction = {
@@ -7,7 +6,7 @@ type AddFunction = {
     b: number
 }
 
-function createFuncToAddNumbers(gen: CppGenerator, name: string){
+function createFuncToAddNumbers(gen: CppFnManager, name: string){
 
     function generateCode(vs: IVariableSupplier, {a, b}: CppFnInformation<AddFunction>){
         return `
@@ -128,9 +127,9 @@ void add_1(float a_1, float b_1) {
 ]
 
 
-export function runTest_cppgenerator_codegenerator(){ TEST_CASES.forEach(test=>{
+export function runTest_cppfnmanager_codegenerator(){ TEST_CASES.forEach(test=>{
 
-    let gen = new CppGenerator();
+    let gen = new CppFnManager();
 
     let fnAdd = createFuncToAddNumbers(gen, "add");
     let fnAdd2 = createFuncToAddNumbers(gen, "add");

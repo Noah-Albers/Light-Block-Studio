@@ -1,4 +1,4 @@
-import { IVariableSupplier } from "../Types";
+import { IVariableSupplier } from "../definitions/CppFnDefinitions";
 
 export default class VariableSupplier implements IVariableSupplier{
     // List with variables that this holder knowns

@@ -1,4 +1,4 @@
-import { CppArgs, CppFnGenerator, CppType, IPreCppFn } from "../Types";
+import { CppArgs, CppFnGenerator, CppType, IPreCppFn } from "../definitions/CppFnDefinitions";
 
 export class PreCppFn<Args extends CppArgs> implements IPreCppFn<Args> {
 

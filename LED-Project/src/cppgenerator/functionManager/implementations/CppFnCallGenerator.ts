@@ -1,4 +1,4 @@
-import { CppArgs, ICppFnCallGenerator, IPreCppFn } from "../Types";
+import { CppArgs, ICppFnCallGenerator, IPreCppFn } from "../definitions/CppFnDefinitions";
 import cppTypeToString from "../utils/CppTypesToString";
 import { PreCppFn } from "./PreCppFn";
 
