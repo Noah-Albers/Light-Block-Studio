@@ -5,6 +5,7 @@ import { CppFnInformation, CppType, ICppFnManager, IVariableSupplier } from "@cp
 
 export abstract class SimpleFunctionCodeConstructor<Options extends PrimitivProcedureOptions> implements ICodeConstructor<Options, { base: Options }> {
     
+    // TODO: Comment
 
     abstract getTypeMapping(): { [x in keyof Options]: CppType; };
     abstract generateFunctionCode(args: CppFnInformation<Options>, supplyed: ICodeSupport): string;
