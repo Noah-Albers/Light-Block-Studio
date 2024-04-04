@@ -7,7 +7,7 @@ export abstract class SimpleFunctionCodeConstructor<Options extends PrimitivProc
     
 
     abstract getTypeMapping(): { [x in keyof Options]: CppType; };
-    abstract generateFunctionCode(vs: IVariableSupplier, args: CppFnInformation<Options>, supplyed: ICodeSupport): string;
+    abstract generateFunctionCode(args: CppFnInformation<Options>, supplyed: ICodeSupport): string;
     abstract getDirtyStateAfterExecution(options: Options, previousState: boolean) : boolean;
     abstract getFunctionName() : string;
 

@@ -61,7 +61,7 @@ export type CppFnInformation<Args extends CppArgs> = {[key in keyof Args]: CppFn
  * 
  * @type {Supply} this is another argument which can be supplied to every generated function. It is defined by the @see ICppFnManager
  */
-export type CppFnGenerator<Args extends CppArgs, Supply> = (vs: IVariableSupplier, args: CppFnInformation<Args>, supplyed: Supply)=>string;
+export type CppFnGenerator<Args extends CppArgs, Supply> = (args: CppFnInformation<Args>, supplyed: Supply)=>string;
 
 /**
  * Defines the required arguments to register a CppFn (Typescript function generator) to the CppFnManager.

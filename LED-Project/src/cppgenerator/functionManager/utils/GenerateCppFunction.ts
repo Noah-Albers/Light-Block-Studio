@@ -92,7 +92,7 @@ export default function generateCppFunctionCode<Args extends CppArgs, Supply>(
         } as CppFnArgInformation<any>;
     })
 
-    let funcBody = setSpaces(funcGen(vsup, funcGeneratorValues as CppFnInformation<Args>, supply), 4);
+    let funcBody = setSpaces(funcGen(funcGeneratorValues as CppFnInformation<Args>, supply), 4);
 
     // Generates the full cpp-function
     let code = [
