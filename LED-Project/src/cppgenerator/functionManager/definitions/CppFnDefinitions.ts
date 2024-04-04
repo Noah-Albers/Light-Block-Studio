@@ -58,8 +58,10 @@ export type CppFnInformation<Args extends CppArgs> = {[key in keyof Args]: CppFn
  * @param vs the Variablesupplier to let functions request addition variables without running into name problems
  * @param args the arguments which should be passed to a function (Either as variables or as direct values which can be printed into the c++ code)
  * @see CppFnArgInformation s example for more information about how that works.
+ * 
+ * @type {Supply} this is another argument which can be supplied to every generated function. It is defined by the @see ICppFnManager
  */
-export type CppFnGenerator<Args extends CppArgs> = (vs: IVariableSupplier, args: CppFnInformation<Args>)=>string;
+export type CppFnGenerator<Args extends CppArgs, Supply> = (vs: IVariableSupplier, args: CppFnInformation<Args>, supplyed: Supply)=>string;
 
 /**
  * Defines the required arguments to register a CppFn (Typescript function generator) to the CppFnManager.
@@ -70,16 +72,16 @@ export type CppFnGenerator<Args extends CppArgs> = (vs: IVariableSupplier, args:
  * @param types a mapping between the typescript arguments and cpp-types for those arguments
  * @param generator a typescript generator function which will eventually generate all the source code
  */
-export type CppFnRequest<Args extends CppArgs> = {
+export type CppFnRequest<Args extends CppArgs, Supply> = {
     name: string,
     types: {[key in keyof Args]: CppType},
-    generator: CppFnGenerator<Args>
+    generator: CppFnGenerator<Args, Supply>
 }
 
 /**
  * Defines what will be returned from a @see CppFnRequest it has
  */
-export interface IPreCppFn<Args extends CppArgs> {
+export interface ICppFnHandle<Args extends CppArgs, Supply> {
     
     /**
      * Used to add a call to the function.
@@ -134,13 +136,15 @@ export interface ICppFnCallGenerator {
      * 
      * @returns a string which will call the function.
      */
-    getCallFor<Args extends CppArgs>(fn: IPreCppFn<Args>, call: Args) : string;
+    getCallFor<Args extends CppArgs, Supply>(fn: ICppFnHandle<Args, Supply>, call: Args) : string;
 }
 
 /**
  * Defines the interface to register functions and finally generate the code.
  * 
  * Here is an example on how to use it properly
+ * 
+ * @type {Supply} is one argument which can be supplied to the generation functions. It will be passed to the @see ICppFnManager#generate method and passed down to the generator functions which generate the actual c++ code 
  * 
  * @example
  * 
@@ -210,7 +214,7 @@ export interface ICppFnCallGenerator {
  * /// Step 4: Generate the code of the c++ functions
  * ///
  * 
- * let result = cppGen.generate();
+ * let result = cppGen.generate(...);
  * 
  * // Here is the function's code
  * // Note that g has been directly printed into the function because it was always the same
@@ -238,14 +242,13 @@ export interface ICppFnCallGenerator {
  *     result.callGenerator.getCallFor(ref2SetLedX, call_1),
  *     result.callGenerator.getCallFor(ref2SetLedX, call_2)
  * ].join("\n");
- * 
  */
-export interface ICppFnManager {
+export interface ICppFnManager<Supply> {
     /**
-     * Registers/adds a function to the generator. Use the returned reference @see IPreCppFn to register all calls to the function before generating code.
+     * Registers/adds a function to the generator. Use the returned reference @see ICppFnHandle to register all calls to the function before generating code.
      * @param request the data required to register a function. @see CppFnRequest
      */
-    addFunction<Args extends CppArgs>(request: CppFnRequest<Args>) : IPreCppFn<Args>;
+    addFunction<Args extends CppArgs>(request: CppFnRequest<Args, Supply>) : ICppFnHandle<Args, Supply>;
 
     /**
      * Used after all calls to the added/registered function have been added to their references.
@@ -254,5 +257,5 @@ export interface ICppFnManager {
      * 
      * @see CppResult for more info.
      */
-    generate() : CppResult;
+    generate(supply: Supply) : CppResult;
 }

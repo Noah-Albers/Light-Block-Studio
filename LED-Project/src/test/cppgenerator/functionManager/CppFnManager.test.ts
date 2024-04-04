@@ -6,7 +6,7 @@ type AddFunction = {
     b: number
 }
 
-function createFuncToAddNumbers(gen: CppFnManager, name: string){
+function createFuncToAddNumbers(gen: CppFnManager<undefined>, name: string){
 
     function generateCode(vs: IVariableSupplier, {a, b}: CppFnInformation<AddFunction>){
         return `
@@ -139,7 +139,7 @@ export function runTest_cppfnmanager_codegenerator(){ TEST_CASES.forEach(test=>{
     test.adds.forEach(arg=>fnAdd.addCall(arg));
     test.add2s.forEach(arg=>fnAdd2.addCall(arg));
 
-    let result = gen.generate();
+    let result = gen.generate(undefined);
 
     // Validates the generated code
     stringsEqual(test.code.trim(), result.code.trim());

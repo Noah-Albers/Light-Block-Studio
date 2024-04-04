@@ -1,5 +1,5 @@
-import { CppArgs, CppFnArgInformation, CppFnInformation, IPreCppFn, IVariableSupplier } from "../definitions/CppFnDefinitions";
-import { PreCppFn } from "../implementations/PreCppFn";
+import { CppArgs, CppFnArgInformation, CppFnInformation, ICppFnHandle, IVariableSupplier } from "../definitions/CppFnDefinitions";
+import { CppFnHandle } from "../implementations/CppFnHandle";
 import { setSpaces } from "./CodeShifter";
 
 /**
@@ -32,7 +32,7 @@ function mapArgumentsToSupplyInformation<Args extends CppArgs>(vsup: IVariableSu
 
 /**
  * This function is responsible for generating the Cpp-Fn source code from a
- * @param {PreCppFn} func pre-function
+ * @param {CppFnHandle} func pre-function
  * 
  * and some other metadata
  * 
@@ -53,9 +53,10 @@ function mapArgumentsToSupplyInformation<Args extends CppArgs>(vsup: IVariableSu
  * """
  * ```
  */
-export default function generateCppFunctionCode<Args extends CppArgs>(
+export default function generateCppFunctionCode<Args extends CppArgs, Supply>(
     vsup: IVariableSupplier,
-    func: PreCppFn<Args>
+    func: CppFnHandle<Args, Supply>,
+    supply: Supply
 ) : {
     code: string,
     requiredArguments: (keyof Args)[],
@@ -91,7 +92,7 @@ export default function generateCppFunctionCode<Args extends CppArgs>(
         } as CppFnArgInformation<any>;
     })
 
-    let funcBody = setSpaces(funcGen(vsup, funcGeneratorValues as CppFnInformation<Args>), 4);
+    let funcBody = setSpaces(funcGen(vsup, funcGeneratorValues as CppFnInformation<Args>, supply), 4);
 
     // Generates the full cpp-function
     let code = [

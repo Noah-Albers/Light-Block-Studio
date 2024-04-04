@@ -1,21 +1,7 @@
-import { CppArgs, CppType, ICppFnCallGenerator, ICppFnManager, IPreCppFn, IVariableSupplier } from "@cppgen/functionManager/index";
+import { CppArgs, CppType, ICppFnCallGenerator, ICppFnManager, ICppFnHandle, IVariableSupplier } from "@cppgen/functionManager/index";
 import { ProcedureOptions } from "./Procedure";
 import { CppFnManager } from "@cppgen/functionManager/index";
-
-// TODO: Maybe use later
-//export type Options2CppTypeMapping<Options extends ProcedureOptions> = {[key in keyof Options]: CppType}
-
-export type CodeConstructionResult = {
-    /**
-     * The actual c++ source code that was generated for the procedure.
-     */
-    code: string,
-
-    /**
-     * If the led-stripe should now be considered "dirty" (Meaning that some updates have not been pushed yet).
-     */
-    isDirty: boolean
-}
+import { CodeResult } from "@cppgen/generator/definitions/CppGeneratorDefinitions";
 
 /**
  * Defines a mapping of names to their corresponding arguments.
@@ -29,11 +15,11 @@ export type CC_CppFnDefs = {
 
 
 /**
- * This mapping is utilized by the CodeConstructor class to providing type information for IntelliSense.
+ * This handle is utilized by the @see CodeConstructor class to providing type information for IntelliSense.
  * @private
  */
-export type CC_CppFnMapping<Defs extends CC_CppFnDefs> = {
-    [functionName in keyof Defs]: IPreCppFn<Defs[functionName]>;
+export type CC_CppFnHandles<Defs extends CC_CppFnDefs> = {
+    [functionName in keyof Defs]: ICppFnHandle<Defs[functionName]>;
 }
 
 
@@ -88,11 +74,12 @@ export interface ICodeConstructor
     /**
      * Registers all functions to the CppFnManager
      * @param cppFnManager
+     * @param calls all calls of the procedure
      * 
      * @returns a mapping list with all functions that are used.
      * This mapping-object is later be used by the "constructCode" method to generate the calls to that function.
      */
-    registerFunctions(cppFnManager: ICppFnManager) : CC_CppFnMapping<AssociatedCppFnDefs>
+    registerFunctions(cppFnManager: ICppFnManager, calls: Options[]) : CC_CppFnHandles<AssociatedCppFnDefs>
 
     /**
      * 
@@ -104,24 +91,13 @@ export interface ICodeConstructor
      * @param vs the variable supplier system to request uniquly named variable. Note that
      * @param callGenerator from the cpp-generator system. It is used to generate function calls to functions registered by "registerFunctions"
      * @param associatedFunctions the functions that were registered by "registerFunctions"
-     * @param isDirty a flag that defines if the led-stripe is still "dirty" (Meaning some updates may not have been pushed yet) from the previous procedures
+     * @param dirtyState a flag that defines if the led-stripe is still "dirty" (Meaning some updates may not have been pushed yet) from the previous procedures
      */
     constructCode(
         options: Options,
-        vs: IVariableSupplier,
-        callGenerator: ICppFnCallGenerator,
-        associatedFunctions: CC_CppFnMapping<AssociatedCppFnDefs>,
-        isDirty: boolean
-    ) : CodeConstructionResult;
-
-
-
-    // TODO: Maybe use later
-    /*
-    / **
-     * @returns the mappings which can be used to translate the procedure options into actual cpp options
-     * /
-    findOptions2CppMapping() : Options2CppTypeMapping<Options>;
-    */
+        genTools: GeneratorTools,
+        associatedFunctions: CC_CppFnHandles<AssociatedCppFnDefs>,
+        dirtyState: boolean
+    ) : CodeResult;
 
 }
