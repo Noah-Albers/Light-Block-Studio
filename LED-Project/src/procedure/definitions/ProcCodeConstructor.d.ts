@@ -1,7 +1,7 @@
 import { CppArgs, CppType, ICppFnCallGenerator, ICppFnManager, ICppFnHandle, IVariableSupplier } from "@cppgen/functionManager/index";
 import { ProcedureOptions } from "./Procedure";
 import { CppFnManager } from "@cppgen/functionManager/index";
-import { CodeResult } from "@cppgen/generator/definitions/CppGeneratorDefinitions";
+import { CodeResult, ICodeSupport, IExtendedCodeSupport } from "@cppgen/generator/definitions/CppGeneratorDefinitions";
 
 /**
  * Defines a mapping of names to their corresponding arguments.
@@ -79,7 +79,7 @@ export interface ICodeConstructor
      * @returns a mapping list with all functions that are used.
      * This mapping-object is later be used by the "constructCode" method to generate the calls to that function.
      */
-    registerFunctions(cppFnManager: ICppFnManager, calls: Options[]) : CC_CppFnHandles<AssociatedCppFnDefs>
+    registerFunctions(cppFnManager: ICppFnManager<IExtendedCodeSupport>, calls: Options[]) : CC_CppFnHandles<AssociatedCppFnDefs>
 
     /**
      * 
@@ -95,7 +95,7 @@ export interface ICodeConstructor
      */
     constructCode(
         options: Options,
-        genTools: GeneratorTools,
+        genTools: IExtendedCodeSupport,
         associatedFunctions: CC_CppFnHandles<AssociatedCppFnDefs>,
         dirtyState: boolean
     ) : CodeResult;

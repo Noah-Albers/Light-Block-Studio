@@ -14,7 +14,8 @@ export type ProcedureWithOptions<Options extends ProcedureOptions> = {
  * 
  * It ensures that only simple generic types or more sub parameters are passed.
  */
-export type ProcedureOptions = {[key: string]: string | boolean | number | ProcedureOptions | ProcedureOptions[]}
+export type PrimitivProcedureOptions = {[key: string]: string | boolean | number};
+export type ProcedureOptions = {[key: string]: string | boolean | number | ProcedureWithOptions[]}
 
 /**
  * This is the abstract base class which every procedure uses.
@@ -23,7 +24,7 @@ export interface IProcedure<Options extends ProcedureOptions>{
     /**
      * A unique identifier for the procedure and used as it's identifier.
      */
-    name: string
+    readonly name: string
 
     /**
      * @returns all procedures that are executed during the execution of this one.
@@ -35,5 +36,5 @@ export interface IProcedure<Options extends ProcedureOptions>{
     /**
      * @returns a codeconstructor for the current procedure
      */
-    getCodeConstructor() : ICodeConstructor<unknown,unknown>;
+    getCodeConstructor() : ICodeConstructor<Options,any>;
 }
