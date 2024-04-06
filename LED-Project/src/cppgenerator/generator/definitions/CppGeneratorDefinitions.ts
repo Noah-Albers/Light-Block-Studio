@@ -109,12 +109,12 @@ export interface ICodeSupport {
      * Formats code by setting the spacing for each line (tabs) in the string.
      * 
      * @param code The code string to format.
-     * @param amount The number of spaces to use for each indentation level.
+     * @param tabs The number of spaces to use for each indentation level.
      * @returns The formatted code string.
      * @see CodeShifter#setSpaces for more info
      */
-    setTabs(code: string, amount: number): string;
-
+    setTabs(code: string, tabs: number) : string;
+    
     /**
      * Requests a variable with a unique name.
      * 

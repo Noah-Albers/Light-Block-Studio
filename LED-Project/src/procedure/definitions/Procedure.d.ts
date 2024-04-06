@@ -31,7 +31,7 @@ export interface IProcedure<Options extends ProcedureOptions>{
      * 
      * This can be used for loops or if statements
      */
-    findSubprocedures(opts: Options) : ProcedureOptions<any>[];
+    findSubprocedures(opts: Options) : ProcedureWithOptions<any>[];
 
     /**
      * @returns a codeconstructor for the current procedure

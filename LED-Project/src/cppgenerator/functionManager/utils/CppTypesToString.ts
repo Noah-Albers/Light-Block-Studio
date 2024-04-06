@@ -19,7 +19,7 @@ function doubleAndFloatToString(value: unknown) : string {
     return value.toString();
 }
 function intToString(value: unknown) : string {
-    if(typeof value !== "number" || Number.isInteger(value))
+    if(typeof value !== "number" || !Number.isInteger(value))
         throw new Error(`Value '${value}' is not an integer`);
     
     return value.toString();

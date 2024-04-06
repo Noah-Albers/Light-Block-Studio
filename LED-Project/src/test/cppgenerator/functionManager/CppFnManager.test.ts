@@ -8,7 +8,7 @@ type AddFunction = {
 
 function createFuncToAddNumbers(gen: CppFnManager<undefined>, name: string){
 
-    function generateCode(vs: IVariableSupplier, {a, b}: CppFnInformation<AddFunction>){
+    function generateCode({a, b}: CppFnInformation<AddFunction>){
         return `
             // This is just an example code
             led[${a} + ${b}] = 0xfff;

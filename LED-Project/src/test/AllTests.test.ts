@@ -1,7 +1,9 @@
 import { runTest_cppfnmanager_codegenerator } from "./cppgenerator/functionManager/CppFnManager.test";
+import { runTest_cppgenerator_codegenerator } from "./cppgenerator/CppGenerator.test";
 
 export const ALL_TESTS = [
-    runTest_cppfnmanager_codegenerator
+    runTest_cppfnmanager_codegenerator,
+    runTest_cppgenerator_codegenerator
 ]
 
 export function runAllTests(){

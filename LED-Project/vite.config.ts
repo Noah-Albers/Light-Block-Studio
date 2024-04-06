@@ -24,6 +24,7 @@ export default defineConfig({
       '@webapp': fileURLToPath(new URL('./src/webapp', import.meta.url)),
       "@cppgen": fileURLToPath(new URL('./src/cppgenerator', import.meta.url)),
       "@test": fileURLToPath(new URL('./src/test', import.meta.url)),
+      "@procedure": fileURLToPath(new URL('./src/procedure', import.meta.url)),
     },
     extensions: [
       '.js',

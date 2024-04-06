@@ -9,7 +9,7 @@ export default class VariableSupplier implements IVariableSupplier{
      * @param name
      * @returns the new variable name after duplication problems have been taken care of
      */
-    register(name: string) : string {
+    public register(name: string) : string {
         let newName = name;
         let counter = 0;
 

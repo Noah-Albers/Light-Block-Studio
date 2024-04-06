@@ -18,7 +18,7 @@ export class CppFnCallGenerator implements ICppFnCallGenerator {
      * @throws {Error} if the types and values of the supplied data and defined cpp types dont match up
      * @throws {Error} if the supplied function isn't registered with the cpp-generator that created this class
      */
-    public getCallFor<Args extends CppArgs, Supply>(fn: ICppFnHandle<Args, Supply>, call: Args): string {
+    public getCallFor<Args extends CppArgs, X>(fn: ICppFnHandle<Args, X>, call: Args): string {
         let name = fn.getName();
 
         if(this.fnRequirements[name] === undefined) throw new Error("getCallFor was called with a non-registered function");

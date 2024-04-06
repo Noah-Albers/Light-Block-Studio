@@ -1,5 +1,3 @@
-
-
 /**
  * Takes in some
  * @param code source-code and sets the spaces before the code to
@@ -35,7 +33,7 @@ export function setSpaces(code: string, spaces: number){
     let lines = code.split("\n");
 
     // Gets the minimum amount of spaces that every line has and that can be removed
-    let spacesAtFront = lines.map(line=>line.length - line.trimStart().length).reduce((a,b)=>Math.min(a,b), Infinity);
+    let spacesAtFront : number = lines.filter(line=>line.trim().length > 0).map(line=>line.length - line.trimStart().length).reduce((a,b)=>Math.min(a,b), Infinity);
 
     // Error prevention
     if(spacesAtFront === Infinity) return code;
@@ -44,5 +42,8 @@ export function setSpaces(code: string, spaces: number){
     let append = new Array(spaces + 1).join(" ");
 
     // Reassembles the code without the spaces
-    return lines.map(ln=>append+ln.substring(spacesAtFront)).join("\n");
+    return lines.map(ln=>{
+        if(ln.length < spacesAtFront) return "";
+        return append+ln.substring(spacesAtFront)
+    }).join("\n");
 }

@@ -1,5 +1,5 @@
 import { ICodeConstructor } from "src/procedure/definitions/ProcCodeConstructor";
-import { IProcedure, ProcedureWithOptions } from "src/procedure/definitions/Procedure";
+import { IProcedure, ProcedureOptions, ProcedureWithOptions } from "src/procedure/definitions/Procedure";
 import { LoopProcCodeConstructor } from "./LoopProcCodeConstructor";
 
 export type LoopProcedureOptions = {
@@ -13,7 +13,7 @@ export class LoopProcedure implements IProcedure<LoopProcedureOptions> {
     
     public readonly name = "Loop";
 
-    findSubprocedures(opts: LoopProcedureOptions): any[] {
+    findSubprocedures(opts: LoopProcedureOptions): ProcedureWithOptions<any>[] {
         return opts.sub;
     }
 

@@ -3,7 +3,11 @@ import { CC_CppFnHandles, ICodeConstructor } from "../ProcCodeConstructor";
 import { PrimitivProcedureOptions, ProcedureOptions } from "../Procedure";
 import { CppFnInformation, CppType, ICppFnManager, IVariableSupplier } from "@cppgen/functionManager";
 
-export abstract class SimpleFunctionCodeConstructor<Options extends PrimitivProcedureOptions> implements ICodeConstructor<Options, { base: Options }> {
+type Functions<Options> = {
+    base: Options
+}
+
+export abstract class SimpleFunctionCodeConstructor<Options extends PrimitivProcedureOptions> implements ICodeConstructor<Options, Functions<Options>> {
     
     // TODO: Comment
 
@@ -12,21 +16,21 @@ export abstract class SimpleFunctionCodeConstructor<Options extends PrimitivProc
     abstract getDirtyStateAfterExecution(options: Options, previousState: boolean) : boolean;
     abstract getFunctionName() : string;
 
-    constructCode(options: Options, genTools: IExtendedCodeSupport, {base}: CC_CppFnHandles<{ base: Options; }>, dirtyState: boolean): CodeResult {
+    registerFunctions(cppFnManager: ICppFnManager<IExtendedCodeSupport>, calls: Options[]): CC_CppFnHandles<Functions<Options>> {
+        return {
+            base: cppFnManager.addFunction({
+                name: this.getFunctionName(),
+                types: this.getTypeMapping(),
+                generator: this.generateFunctionCode
+            }).addCall(calls)
+        };
+    }
+
+    constructCode(options: Options, genTools: IExtendedCodeSupport, {base}: CC_CppFnHandles<Functions<Options>>, dirtyState: boolean): CodeResult {
         return {
             code: genTools.callFunction(base, options),
             dirtyState: this.getDirtyStateAfterExecution(options, dirtyState)
         }
-    }
-
-    registerFunctions(cppFnManager: ICppFnManager<IExtendedCodeSupport>, calls: Options[]): CC_CppFnHandles<{ base: Options; }> {
-        return {
-                base: cppFnManager.addFunction({
-                name: this.getFunctionName(),
-                types: this.getTypeMapping(),
-                generator: this.generateFunctionCode
-            })
-        };
     }
 
 }

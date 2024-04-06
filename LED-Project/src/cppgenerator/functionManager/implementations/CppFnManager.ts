@@ -5,22 +5,22 @@ import { CppFnHandle } from "./CppFnHandle";
 import VariableSupplier from "./VariableSupplier";
 import generateCppFunctionCode from "../utils/GenerateCppFunction";
 
-export class CppFnManager<Supply> implements ICppFnManager<Supply> {
+export class CppFnManager<X> implements ICppFnManager<X> {
 
     // Used for variable generation
     private variableHolder : IVariableSupplier;
 
     // List of generated functions
-    private preFunctions: CppFnHandle<any, Supply>[] = [];
+    private preFunctions: CppFnHandle<any, X>[] = [];
 
     constructor(varSup: IVariableSupplier | undefined = undefined){
         this.variableHolder = varSup === undefined ? new VariableSupplier() : varSup;
     }
 
-    public addFunction<Args extends CppArgs>(request: CppFnRequest<Args, Supply>): ICppFnHandle<Args, Supply> {
+    public addFunction<Args extends CppArgs>(request: CppFnRequest<Args, X>): ICppFnHandle<Args, X> {
         // Generates a unique function name
         let fnName = this.variableHolder.register(request.name);
-        let preFunc = new CppFnHandle<Args, Supply>(fnName, request.types, request.generator);
+        let preFunc = new CppFnHandle<Args, X>(fnName, request.types, request.generator);
 
         // Adds the generated pre-func to the internal list
         this.preFunctions.push(preFunc);
@@ -28,7 +28,7 @@ export class CppFnManager<Supply> implements ICppFnManager<Supply> {
         return preFunc;
     }
 
-    public generate(supply: Supply): CppResult {
+    public generate(supply: X): CppResult {
         
         // Generates the code for all functions that got registered
         let generationResults = this.preFunctions.map(func=>generateCppFunctionCode(this.variableHolder, func, supply));

@@ -9,7 +9,7 @@ import { setSpaces } from "./CodeShifter";
  * @param calls 
  * @param arg 
  */
-function mapArgumentsToSupplyInformation<Args extends CppArgs>(vsup: IVariableSupplier, calls: Args[], arg: keyof Args) {
+function mapArgumentsToXInformation<Args extends CppArgs>(vsup: IVariableSupplier, calls: Args[], arg: keyof Args) {
     // Gets a base value
     let cmpValue = calls[0][arg];
 
@@ -53,10 +53,10 @@ function mapArgumentsToSupplyInformation<Args extends CppArgs>(vsup: IVariableSu
  * """
  * ```
  */
-export default function generateCppFunctionCode<Args extends CppArgs, Supply>(
+export default function generateCppFunctionCode<Args extends CppArgs, X>(
     vsup: IVariableSupplier,
-    func: CppFnHandle<Args, Supply>,
-    supply: Supply
+    func: CppFnHandle<Args, X>,
+    supply: X
 ) : {
     code: string,
     requiredArguments: (keyof Args)[],
@@ -74,7 +74,7 @@ export default function generateCppFunctionCode<Args extends CppArgs, Supply>(
     };
 
     // Groups all arguments into args that always are supplied with the same value and ones that are not
-    let groupedArgs = Object.keys(calls[0]).map(arg=>mapArgumentsToSupplyInformation(vsup, calls, arg));
+    let groupedArgs = Object.keys(calls[0]).map(arg=>mapArgumentsToXInformation(vsup, calls, arg));
 
     // Generates the "brain" for the function
     let funcBrain = groupedArgs

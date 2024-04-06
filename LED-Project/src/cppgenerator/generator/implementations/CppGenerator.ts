@@ -3,6 +3,7 @@ import { GenerationSettings, GetFnHandleByName, ICodeSupport, ICppGenerator, IEx
 import { CppFnManager } from "@cppgen/functionManager";
 import VariableSupplier from "@cppgen/functionManager/implementations/VariableSupplier";
 import { CodeSupport, ExtendedCodeSupport } from "./CodeSupport";
+import { setSpaces } from "@cppgen/functionManager/utils/CodeShifter";
 
 
 export class CppGenerator implements ICppGenerator {
@@ -16,8 +17,7 @@ export class CppGenerator implements ICppGenerator {
 
         // Gets a list with all used procedures and their calls
         const fnMapByProcName = registerFunctions([...setup, ...loop], funcManager);
-        
-        
+
         // 2. Generate function code
         
         // Creates the code support for the functions
@@ -45,8 +45,11 @@ export class CppGenerator implements ICppGenerator {
         variables["loop"] = loopResult.code;
         variables["globals"] = funcGenerationResult.code;
 
+        // Moves the template to zero
+        let template = setSpaces(settings.template, 0);
+
         // Inserts the variables into the template
-        return insertVariables(settings.template, variables);
+        return insertVariables(template, variables);
     }
 }
 

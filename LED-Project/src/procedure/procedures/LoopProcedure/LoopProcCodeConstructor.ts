@@ -16,15 +16,14 @@ export class LoopProcCodeConstructor implements ICodeConstructor<LoopProcedureOp
 
         let idx = genTools.registerVariable("idx");
 
-        // Generates the code
-        let code = `
-            for(int ${idx}=0;${idx}<${options.repeats}; ${idx}++){
-                ${genTools.setTabs(result.code, 4)}
-            }
-        `;
+        let code = [
+            `for(int ${idx}=0; ${idx} < ${options.repeats}; ${idx}++) {`,
+            ...genTools.setTabs(result.code, 4).split("\n"),
+            `}`
+        ]
 
         return {
-            code,
+            code: code.join("\n"),
             dirtyState: result.dirtyState
         }
     }

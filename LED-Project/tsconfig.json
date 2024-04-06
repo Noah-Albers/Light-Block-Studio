@@ -19,7 +19,8 @@
       ],*/
       "@webapp/*": ["./src/webapp/*"],
       "@cppgen/*": ["./src/cppgenerator/*"],
-      "@test/*": ["./src/test/*"]
+      "@test/*": ["./src/test/*"],
+      "@procedure/*": ["./src/procedure"]
      }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

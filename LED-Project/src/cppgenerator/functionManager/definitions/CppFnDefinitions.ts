@@ -59,9 +59,9 @@ export type CppFnInformation<Args extends CppArgs> = {[key in keyof Args]: CppFn
  * @param args the arguments which should be passed to a function (Either as variables or as direct values which can be printed into the c++ code)
  * @see CppFnArgInformation s example for more information about how that works.
  * 
- * @type {Supply} this is another argument which can be supplied to every generated function. It is defined by the @see ICppFnManager
+ * @type {X} this is another argument which can be supplied to every generated function. It is defined by the @see ICppFnManager
  */
-export type CppFnGenerator<Args extends CppArgs, Supply> = (args: CppFnInformation<Args>, supplyed: Supply)=>string;
+export type CppFnGenerator<Args extends CppArgs, X> = (args: CppFnInformation<Args>, supplyed: X)=>string;
 
 /**
  * Defines the required arguments to register a CppFn (Typescript function generator) to the CppFnManager.
@@ -72,23 +72,24 @@ export type CppFnGenerator<Args extends CppArgs, Supply> = (args: CppFnInformati
  * @param types a mapping between the typescript arguments and cpp-types for those arguments
  * @param generator a typescript generator function which will eventually generate all the source code
  */
-export type CppFnRequest<Args extends CppArgs, Supply> = {
+export type CppFnRequest<Args extends CppArgs, X> = {
     name: string,
     types: {[key in keyof Args]: CppType},
-    generator: CppFnGenerator<Args, Supply>
+    generator: CppFnGenerator<Args, X>
 }
 
 /**
  * Defines what will be returned from a @see CppFnRequest it has
  */
-export interface ICppFnHandle<Args extends CppArgs, Supply> {
+export interface ICppFnHandle<Args extends CppArgs, X> {
     
     /**
      * Used to add a call to the function.
      * 
      * This is used to check during the function generation which arguments of the functions can be printed as values directly into the c++ source code and which ones actually need to be passed.
      */
-    addCall(args: Args) : void;
+    addCall(args: Args | Args[]) : ICppFnHandle<Args, X>;
+
     /**
      * Returns the actual name of the function (After it has potentically been changed to prevent duplicated function names)
      */
@@ -136,7 +137,7 @@ export interface ICppFnCallGenerator {
      * 
      * @returns a string which will call the function.
      */
-    getCallFor<Args extends CppArgs, Supply>(fn: ICppFnHandle<Args, Supply>, call: Args) : string;
+    getCallFor<Args extends CppArgs, X>(fn: ICppFnHandle<Args, X>, call: Args) : string;
 }
 
 /**
@@ -144,7 +145,7 @@ export interface ICppFnCallGenerator {
  * 
  * Here is an example on how to use it properly
  * 
- * @type {Supply} is one argument which can be supplied to the generation functions. It will be passed to the @see ICppFnManager#generate method and passed down to the generator functions which generate the actual c++ code 
+ * @type {X} is one argument which can be supplied to the generation functions. It will be passed to the @see ICppFnManager#generate method and passed down to the generator functions which generate the actual c++ code 
  * 
  * @example
  * 
@@ -243,12 +244,12 @@ export interface ICppFnCallGenerator {
  *     result.callGenerator.getCallFor(ref2SetLedX, call_2)
  * ].join("\n");
  */
-export interface ICppFnManager<Supply> {
+export interface ICppFnManager<X> {
     /**
      * Registers/adds a function to the generator. Use the returned reference @see ICppFnHandle to register all calls to the function before generating code.
      * @param request the data required to register a function. @see CppFnRequest
      */
-    addFunction<Args extends CppArgs>(request: CppFnRequest<Args, Supply>) : ICppFnHandle<Args, Supply>;
+    addFunction<Args extends CppArgs>(request: CppFnRequest<Args, X>) : ICppFnHandle<Args, X>;
 
     /**
      * Used after all calls to the added/registered function have been added to their references.
@@ -257,5 +258,5 @@ export interface ICppFnManager<Supply> {
      * 
      * @see CppResult for more info.
      */
-    generate(supply: Supply) : CppResult;
+    generate(supply: X) : CppResult;
 }

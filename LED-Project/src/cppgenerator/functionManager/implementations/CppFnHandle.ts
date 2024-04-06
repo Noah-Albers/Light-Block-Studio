@@ -5,7 +5,7 @@ import { CppArgs, CppFnGenerator, CppType, ICppFnHandle } from "../definitions/C
  * 
  * Before that it is used to register all call parameters which will be used within the c++ program
  */
-export class CppFnHandle<Args extends CppArgs, Supply> implements ICppFnHandle<Args, Supply> {
+export class CppFnHandle<Args extends CppArgs, X> implements ICppFnHandle<Args, X> {
 
     // Holds all list with all arguments that may be passed to the
     private allCalls: Args[] = [];
@@ -17,16 +17,20 @@ export class CppFnHandle<Args extends CppArgs, Supply> implements ICppFnHandle<A
     private typeByName: {[key in keyof Args]: CppType};
 
     // Body/Cpp-Function generator
-    private functionGenerator: CppFnGenerator<Args, Supply>;
+    private functionGenerator: CppFnGenerator<Args, X>;
 
-    constructor(name: string, typeByName: {[key in keyof Args]: CppType}, funcGenerator: CppFnGenerator<Args, Supply>){
+    constructor(name: string, typeByName: {[key in keyof Args]: CppType}, funcGenerator: CppFnGenerator<Args, X>){
         this.name = name;
         this.typeByName = typeByName;
         this.functionGenerator = funcGenerator;
     }
 
-    public addCall(args: Args): void {
-        this.allCalls.push(args);
+    public addCall(args: Args | Args[]): ICppFnHandle<Args, X> {
+        if(Array.isArray(args))
+            this.allCalls.push(...args);
+        else
+            this.allCalls.push(args);
+        return this;
     }
 
     public getName(): string {
@@ -39,7 +43,7 @@ export class CppFnHandle<Args extends CppArgs, Supply> implements ICppFnHandle<A
     public internal_getTypeMappings(): { [key in keyof Args]: CppType; } {
         return this.typeByName;
     }
-    public internal_getGenerator(): CppFnGenerator<Args, Supply> {
+    public internal_getGenerator(): CppFnGenerator<Args, X> {
         return this.functionGenerator;
     }
 
