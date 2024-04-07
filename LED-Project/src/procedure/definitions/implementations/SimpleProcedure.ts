@@ -6,10 +6,16 @@ export class SimpleProcedure<Options extends ProcedureOptions> implements IProce
 
     public readonly name: string;
     private readonly codeConstructor: ICodeConstructor<Options, any>
+    private readonly exampleConfig : Options;
 
-    constructor(name: string, codeConstructor: ICodeConstructor<Options,any>){
+    constructor(name: string, codeConstructor: ICodeConstructor<Options,any>, exampleConfig: Options){
         this.name = name;
         this.codeConstructor = codeConstructor;
+        this.exampleConfig = Object.freeze(exampleConfig);
+    }
+
+    getExampleConfig(): Options {
+        return this.exampleConfig;
     }
 
     findSubprocedures(opts: Options): ProcedureWithOptions<any>[] {

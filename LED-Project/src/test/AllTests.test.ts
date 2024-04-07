@@ -3,6 +3,7 @@ import { runTest_cppgenerator_codegenerator } from "./cppgenerator/CppGenerator.
 
 export const ALL_TESTS = [
     runTest_cppfnmanager_codegenerator,
+    runTest_cppgenerator_codegenerator,
     runTest_cppgenerator_codegenerator
 ]
 

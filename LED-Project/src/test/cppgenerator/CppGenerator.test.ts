@@ -46,7 +46,7 @@ class FuncCodeConstr extends SimpleFunctionCodeConstructor<FuncProcOptions> {
 
 export function runTest_cppgenerator_codegenerator(){
 
-    const FUNC_PROC = new SimpleProcedure("Func", new FuncCodeConstr());
+    const FUNC_PROC = new SimpleProcedure<FuncProcOptions>("Func", new FuncCodeConstr(), { a: 1, b: 1, c: 1 });
     const LOOP_PROC = new LoopProcedure();
 
 
@@ -101,6 +101,36 @@ export function runTest_cppgenerator_codegenerator(){
         }
     })
 
-    console.log(result);
+    const REQUIRED = (
+`#include LED_AMT 30
 
+//#region Globals
+void Function(int a, int b, int c) {
+    int i = a + b;
+
+    setLed(c, i);
+}
+//#endregion Globals
+
+void setup(){
+    
+}
+
+void loop(){
+    for(int idx_1=0; idx_1 < 5; idx_1++) {
+        Function(2, 4, 7);
+        Function(3, 4, 7);
+        Function(4, 4, 7);
+        Function(2, 1, 7);
+        for(int idx=0; idx < 5; idx++) {
+            Function(1, 1, 1);
+        }
+    }
+    Function(2, 1, 7);
+    Function(2, 1, 7);
+    Function(2, 1, 7);
+    
+}`);
+
+    stringsEqual(REQUIRED, result);
 };

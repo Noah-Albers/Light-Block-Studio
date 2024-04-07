@@ -37,4 +37,10 @@ export interface IProcedure<Options extends ProcedureOptions>{
      * @returns a codeconstructor for the current procedure
      */
     getCodeConstructor() : ICodeConstructor<Options,any>;
+
+    /**
+     * Generates and returns an example configuration object for the procedure.
+     * @returns An example configuration object.
+     */
+    getExampleConfig() : Options;
 }
