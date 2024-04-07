@@ -110,6 +110,7 @@ function insertVariables(template: string, variables: {[varName: string]: string
 }
 
 
+// TODO: Export to other file (Because its public now)
 /**
  * Registers functions for all base procedures and their subprocedures, and returns a lookup table of function handles by procedure names.
  * 
@@ -123,7 +124,7 @@ function insertVariables(template: string, variables: {[varName: string]: string
  * 
  * @returns A lookup table where each key is a procedure name, and the value is an object of function handles as defined by the procedures code constructor.
  */
-function registerFunctions(base: ProcedureWithOptions<any>[], fnManager: CppFnManager<ICodeSupport>) : GetFnHandleByName {
+export function registerFunctions(base: ProcedureWithOptions<any>[], fnManager: CppFnManager<ICodeSupport>) : GetFnHandleByName {
 
     // Define a type for storing procedures along with their calls
     type ProcMapping<Options extends ProcedureOptions> = { proc: IProcedure<Options>, calls: Options[] };

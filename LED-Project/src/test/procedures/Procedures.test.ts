@@ -1,5 +1,7 @@
 import { LoopProcedure } from "@procedure/procedures/LoopProcedure/LoopProcedure";
 import { IProcedure, ProcedureOptions } from "@procedure/definitions/Procedure";
+import { isObject } from "@test/TestUtils";
+import { assertCodeConstructor } from "./CodeConstructors.test";
 
 
 // TODO: Replace eventually when a full registry is implemented
@@ -43,7 +45,7 @@ function assert_findSubprocedures<Options extends ProcedureOptions>(proc: IProce
 
         function assert_subprocedure(subProcWOptions: any, path: PathLike) {
 
-            if (typeof subProcWOptions !== "object")
+            if (!isObject(subProcWOptions))
                 throw getError("is not an object", path);
 
             let subProc = subProcWOptions["procedure"];
@@ -74,7 +76,7 @@ function assert_ProcedureOptions(options: any, path: PathLike) {
         throw getError("is null", path);
 
     // Ensures object
-    if (typeof options !== "object" || Array.isArray(options))
+    if(!isObject(options))
         throw getError("is not an object", path);
 
     function assert_value(key: string, value: any, subPath: PathLike) {
@@ -122,7 +124,7 @@ function assertProcedure(proc: any, path: PathLike) {
     const getError = createErrorSupplyer("[IProcedure]");
 
     // Is an object
-    if(typeof proc !== "object" || Array.isArray(proc))
+    if(!isObject(proc))
         throw getError("Procedure must be an object (Class instance)", path);
 
     // Name is set
@@ -140,6 +142,13 @@ function assertProcedure(proc: any, path: PathLike) {
     // Validates the functions
     assert_getExampleConfig(proc, path);
     assert_findSubprocedures(proc, path);
+
+    // Asserts the procedures code constructor
+    try{
+        assertCodeConstructor(proc);
+    }catch(err){
+        throw getError(`/CodeConstructor: ${err}`, path);
+    }
 }
 
 /**
@@ -150,7 +159,7 @@ function assertProcedure(proc: any, path: PathLike) {
 function assertProcedureBasicInfo(obj: any) : obj is {name: string} {
 
     // Is an object
-    if(typeof obj !== "object" || Array.isArray(obj))
+    if(!isObject(obj))
         return false;
 
     // Name is set

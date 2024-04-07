@@ -12,3 +12,7 @@ export function arraysEqual(exp: any[], res: any[]){
             throw new Error(`Arrays are different.\nExpected: ${JSON.stringify(exp)}\nbut got\n${JSON.stringify(res)}\nItem ${i} doesn't match. Expected: \n'${exp[i]}'\n but got '${res[i]}'`);
     }
 }
+
+export function isObject(raw: any) {
+    return typeof raw === "object" && !Array.isArray(raw);
+}
