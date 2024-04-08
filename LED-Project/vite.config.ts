@@ -25,6 +25,7 @@ export default defineConfig({
       "@cppgen": fileURLToPath(new URL('./src/cppgenerator', import.meta.url)),
       "@test": fileURLToPath(new URL('./src/test', import.meta.url)),
       "@procedure": fileURLToPath(new URL('./src/procedure', import.meta.url)),
+      "@visualizer": fileURLToPath(new URL('./src/visualizer', import.meta.url)),
     },
     extensions: [
       '.js',
