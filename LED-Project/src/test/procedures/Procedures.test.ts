@@ -169,7 +169,7 @@ function assertProcedureBasicInfo(obj: any) : obj is {name: string} {
     return true;
 }
 
-export function runTest_cppgenerator_codegenerator() {
+export function runTest_registered_procedures() {
 
     // Iterates over all procedures
     for(let i=0;i<PROCEDURES_TO_TEST.length;i++){

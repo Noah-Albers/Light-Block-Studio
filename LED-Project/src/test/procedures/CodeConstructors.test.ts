@@ -22,8 +22,8 @@ function testCodeConstructor(presumedCodeConstructor: ICodeConstructor<any>, pro
     let result = presumedCodeConstructor.registerFunctions(cppFnManager, [options]);
 
     // Ensures it's an object
-    if(!isObject(result))
-        throw new Error(`registerFunctions() didn't return an object, but ${typeof result}`);
+    if(!Array.isArray(result))
+        throw new Error(`registerFunctions() didn't return an array, but ${typeof result}`);
 
     // Validates every returned object
     function assertCppFnHandle(handle: string, obj: any) {
@@ -56,7 +56,7 @@ function testCodeConstructor(presumedCodeConstructor: ICodeConstructor<any>, pro
     // Tries to generate code
     const codeGenResult = presumedCodeConstructor.constructCode(options, supportTool,result,false);
 
-    if(isObject(codeGenResult))
+    if(!isObject(codeGenResult))
         throw new Error(`constructCode() return must be an object but is ${typeof codeGenResult}`);
 
     if(typeof codeGenResult.code !== "string")
@@ -81,12 +81,11 @@ export function assertCodeConstructor(procedure: IProcedure<any>) {
 
 
     // Validates some functions to be functions
-    const REQUIRED_FUNCTIONS = ["getExampleConfig", "findSubprocedures"];
+    const REQUIRED_FUNCTIONS = ["registerFunctions", "constructCode"];
 
     for(let funcName of REQUIRED_FUNCTIONS){
         if(typeof obj[funcName] !== "function")
             throw new Error(`'${funcName}' is not defined on CodeConstructor`);
     }
-
     testCodeConstructor(obj, procedure, procedure.getExampleConfig());
 }
