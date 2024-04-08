@@ -1,4 +1,5 @@
 import { ICodeConstructor } from "./ProcCodeConstructor";
+import { IDiagnostics } from "./ProcDiagnostics";
 
 /**
  * Defines a combined type that takes a reference to a procedure and options for it.
@@ -37,6 +38,11 @@ export interface IProcedure<Options extends ProcedureOptions>{
      * @returns a codeconstructor for the current procedure
      */
     getCodeConstructor() : ICodeConstructor<Options,any>;
+
+    /**
+     * @returns the diagnostics for the current procedure
+     */
+    getDiagnistics() : IDiagnostics<Options>;
 
     /**
      * Generates and returns an example configuration object for the procedure.

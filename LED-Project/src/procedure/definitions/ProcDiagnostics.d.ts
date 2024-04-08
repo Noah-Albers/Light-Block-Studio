@@ -1,7 +1,7 @@
 import { ProcedureOptions } from "./Procedure";
 
 
-export interface Diagnostics<Options extends ProcedureOptions> {
+export interface IDiagnostics<Options extends ProcedureOptions> {
 
     /**
      * @returns an set which holds all led indexes that are accessed at some part of the procedure.
@@ -12,5 +12,5 @@ export interface Diagnostics<Options extends ProcedureOptions> {
      * @returns how many milliseconds the procedure executes
      * if the runtime is unknown undefined is returned
      */
-    evaluateRuntime() : number | undefined;
+    evaluateRuntime(opts: Options) : number | undefined;
 }

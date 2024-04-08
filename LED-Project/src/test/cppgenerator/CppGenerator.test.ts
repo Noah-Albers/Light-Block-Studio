@@ -5,6 +5,7 @@ import { SimpleFunctionCodeConstructor } from "@procedure/definitions/implementa
 import { SimpleProcedure } from "@procedure/definitions/implementations/SimpleProcedure";
 import { LoopProcedure } from "@procedure/procedures/LoopProcedure/LoopProcedure";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
+import { IDiagnostics } from "@procedure/definitions/ProcDiagnostics";
 
 
 
@@ -13,6 +14,12 @@ type FuncProcOptions = {
     a: number,
     b: number,
     c: number
+}
+
+// TODO: Move to exteral function to generate dummy diagnostics
+class FuncDiagnostics implements IDiagnostics<FuncProcOptions> {
+    evaluateRuntime(opts: FuncProcOptions): number | undefined { return 0; }
+    findAllAccessedLeds(opts: FuncProcOptions): Set<number> { return new Set(); }
 }
 
 class FuncCodeConstr extends SimpleFunctionCodeConstructor<FuncProcOptions> {
@@ -46,7 +53,7 @@ class FuncCodeConstr extends SimpleFunctionCodeConstructor<FuncProcOptions> {
 
 export function runTest_cppgenerator_codegenerator(){
 
-    const FUNC_PROC = new SimpleProcedure<FuncProcOptions>("Func", new FuncCodeConstr(), { a: 1, b: 1, c: 1 });
+    const FUNC_PROC = new SimpleProcedure<FuncProcOptions>("Func", new FuncCodeConstr(), new FuncDiagnostics(), { a: 1, b: 1, c: 1 });
     const LOOP_PROC = new LoopProcedure();
 
 

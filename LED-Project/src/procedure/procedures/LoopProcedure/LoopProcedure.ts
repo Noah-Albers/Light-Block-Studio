@@ -1,6 +1,8 @@
 import { ICodeConstructor } from "src/procedure/definitions/ProcCodeConstructor";
 import { IProcedure, ProcedureWithOptions } from "src/procedure/definitions/Procedure";
 import { LoopProcCodeConstructor } from "./LoopProcCodeConstructor";
+import { IDiagnostics } from "@procedure/definitions/ProcDiagnostics";
+import { LoopProcDiagnostics } from "./LoopProcDiagnostics";
 
 export type LoopProcedureOptions = {
     repeats: number,
@@ -10,7 +12,8 @@ export type LoopProcedureOptions = {
 export class LoopProcedure implements IProcedure<LoopProcedureOptions> {
     
     private codeConstr = new LoopProcCodeConstructor();
-    
+    private diagnostics = new LoopProcDiagnostics();
+
     public readonly name = "Loop";
 
     findSubprocedures(opts: LoopProcedureOptions): ProcedureWithOptions<any>[] {
@@ -19,6 +22,10 @@ export class LoopProcedure implements IProcedure<LoopProcedureOptions> {
 
     getCodeConstructor(): ICodeConstructor<LoopProcedureOptions, any> {
         return this.codeConstr;
+    }
+
+    getDiagnistics(): IDiagnostics<LoopProcedureOptions> {
+        return this.diagnostics;
     }
 
     getExampleConfig(): LoopProcedureOptions {
