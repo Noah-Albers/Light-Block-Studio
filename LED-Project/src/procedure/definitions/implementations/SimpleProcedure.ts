@@ -17,7 +17,7 @@ export class SimpleProcedure<Options extends ProcedureOptions> implements IProce
         this.exampleConfig = Object.freeze(exampleConfig);
     }
 
-    getDiagnistics(): IDiagnostics<Options> {
+    getDiagnostics(): IDiagnostics<Options> {
         return this.diagnostics;
     }
 

@@ -42,7 +42,7 @@ export interface IProcedure<Options extends ProcedureOptions>{
     /**
      * @returns the diagnostics for the current procedure
      */
-    getDiagnistics() : IDiagnostics<Options>;
+    getDiagnostics() : IDiagnostics<Options>;
 
     /**
      * Generates and returns an example configuration object for the procedure.

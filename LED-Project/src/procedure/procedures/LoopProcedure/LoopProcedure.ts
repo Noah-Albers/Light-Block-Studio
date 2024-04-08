@@ -24,7 +24,7 @@ export class LoopProcedure implements IProcedure<LoopProcedureOptions> {
         return this.codeConstr;
     }
 
-    getDiagnistics(): IDiagnostics<LoopProcedureOptions> {
+    getDiagnostics(): IDiagnostics<LoopProcedureOptions> {
         return this.diagnostics;
     }
 

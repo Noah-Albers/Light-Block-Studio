@@ -2,6 +2,7 @@ import { LoopProcedure } from "@procedure/procedures/LoopProcedure/LoopProcedure
 import { IProcedure, ProcedureOptions } from "@procedure/definitions/Procedure";
 import { isObject } from "@test/TestUtils";
 import { assertCodeConstructor } from "./CodeConstructors.test";
+import { assertDiagnostics } from "./Diagnostics.test";
 
 
 // TODO: Replace eventually when a full registry is implemented
@@ -132,7 +133,7 @@ function assertProcedure(proc: any, path: PathLike) {
         throw getError("'name' property is not set", path);
     
     // Validates some functions to be functions
-    const REQUIRED_FUNCTIONS = ["getExampleConfig", "findSubprocedures"];
+    const REQUIRED_FUNCTIONS = ["getExampleConfig", "findSubprocedures", "getDiagnostics"];
 
     for(let funcName of REQUIRED_FUNCTIONS){
         if(typeof proc[funcName] !== "function")
@@ -148,6 +149,14 @@ function assertProcedure(proc: any, path: PathLike) {
         assertCodeConstructor(proc);
     }catch(err){
         throw getError(`/CodeConstructor: ${err}`, path);
+    }
+
+
+    // Asserts the procedures diagnostics
+    try{
+        assertDiagnostics(proc);
+    }catch(err){
+        throw getError(`/Diagnostics: ${err}`, path);
     }
 }
 
