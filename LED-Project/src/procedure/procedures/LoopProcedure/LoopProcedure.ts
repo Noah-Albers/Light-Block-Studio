@@ -3,6 +3,8 @@ import { IProcedure, ProcedureWithOptions } from "src/procedure/definitions/Proc
 import { LoopProcCodeConstructor } from "./LoopProcCodeConstructor";
 import { IDiagnostics } from "@procedure/definitions/ProcDiagnostics";
 import { LoopProcDiagnostics } from "./LoopProcDiagnostics";
+import { LoopProcLEDNode } from "./LoopProcLEDNode";
+import { ILEDNode } from "@procedure/definitions/ProcLEDNode";
 
 export type LoopProcedureOptions = {
     repeats: number,
@@ -13,8 +15,13 @@ export class LoopProcedure implements IProcedure<LoopProcedureOptions> {
     
     private codeConstr = new LoopProcCodeConstructor();
     private diagnostics = new LoopProcDiagnostics();
+    private ledNode = new LoopProcLEDNode();
 
     public readonly name = "Loop";
+
+    getLEDNode(): ILEDNode<LoopProcedureOptions> {
+        return this.ledNode;
+    }
 
     findSubprocedures(opts: LoopProcedureOptions): ProcedureWithOptions<any>[] {
         return opts.sub;

@@ -3,6 +3,7 @@ import { IProcedure, ProcedureOptions } from "@procedure/definitions/Procedure";
 import { isObject } from "@test/TestUtils";
 import { assertCodeConstructor } from "./CodeConstructors.test";
 import { assertDiagnostics } from "./Diagnostics.test";
+import { assertLedNode } from "./LEDNode.test";
 
 
 // TODO: Replace eventually when a full registry is implemented
@@ -133,7 +134,7 @@ function assertProcedure(proc: any, path: PathLike) {
         throw getError("'name' property is not set", path);
     
     // Validates some functions to be functions
-    const REQUIRED_FUNCTIONS = ["getExampleConfig", "findSubprocedures", "getDiagnostics"];
+    const REQUIRED_FUNCTIONS = ["getExampleConfig", "findSubprocedures", "getDiagnostics", "getLEDNode"];
 
     for(let funcName of REQUIRED_FUNCTIONS){
         if(typeof proc[funcName] !== "function")
@@ -158,6 +159,16 @@ function assertProcedure(proc: any, path: PathLike) {
     }catch(err){
         throw getError(`/Diagnostics: ${err}`, path);
     }
+
+
+    // Asserts the led node diagnostics
+    try{
+        // TODO: Dont just ignore this promise. Maybe someday... well maybe
+        assertLedNode(proc);
+    }catch(err){
+        throw getError(`/LEDNode: ${err}`, path);
+    }
+
 }
 
 /**
@@ -179,7 +190,6 @@ function assertProcedureBasicInfo(obj: any) : obj is {name: string} {
 }
 
 export function runTest_registered_procedures() {
-
     // Iterates over all procedures
     for(let i=0;i<PROCEDURES_TO_TEST.length;i++){
         let procObj = PROCEDURES_TO_TEST[i];

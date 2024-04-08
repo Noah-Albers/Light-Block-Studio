@@ -1,5 +1,6 @@
 import { ICodeConstructor } from "../ProcCodeConstructor";
 import { IDiagnostics } from "../ProcDiagnostics";
+import { ILEDNode } from "../ProcLEDNode";
 import { IProcedure, ProcedureOptions, ProcedureWithOptions } from "../Procedure";
 
 // TODO: Comment
@@ -9,12 +10,18 @@ export class SimpleProcedure<Options extends ProcedureOptions> implements IProce
     private readonly codeConstructor: ICodeConstructor<Options, any>
     private readonly exampleConfig : Options;
     private readonly diagnostics: IDiagnostics<Options>;
+    private readonly ledNode: ILEDNode<Options>;
 
-    constructor(name: string, codeConstructor: ICodeConstructor<Options,any>, diagnostics: IDiagnostics<Options>, exampleConfig: Options){
+    constructor(name: string, codeConstructor: ICodeConstructor<Options,any>, diagnostics: IDiagnostics<Options>, ledNode: ILEDNode<Options>, exampleConfig: Options){
         this.name = name;
         this.codeConstructor = codeConstructor;
         this.diagnostics = diagnostics;
         this.exampleConfig = Object.freeze(exampleConfig);
+        this.ledNode = ledNode;
+    }
+
+    getLEDNode(): ILEDNode<Options> {
+        return this.ledNode;
     }
 
     getDiagnostics(): IDiagnostics<Options> {

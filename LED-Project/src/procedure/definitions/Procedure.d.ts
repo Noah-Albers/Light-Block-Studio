@@ -1,5 +1,6 @@
 import { ICodeConstructor } from "./ProcCodeConstructor";
 import { IDiagnostics } from "./ProcDiagnostics";
+import { ILEDNode } from "./ProcLEDNode";
 
 /**
  * Defines a combined type that takes a reference to a procedure and options for it.
@@ -43,6 +44,11 @@ export interface IProcedure<Options extends ProcedureOptions>{
      * @returns the diagnostics for the current procedure
      */
     getDiagnostics() : IDiagnostics<Options>;
+
+    /**
+     * @returns the led node for the current procedure
+     */
+    getLEDNode() : ILEDNode<Options>;
 
     /**
      * Generates and returns an example configuration object for the procedure.

@@ -6,6 +6,8 @@ import { SimpleProcedure } from "@procedure/definitions/implementations/SimplePr
 import { LoopProcedure } from "@procedure/procedures/LoopProcedure/LoopProcedure";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 import { IDiagnostics } from "@procedure/definitions/ProcDiagnostics";
+import { ILEDNode } from "@procedure/definitions/ProcLEDNode";
+import { IVisualisationController } from "@visualizer/definitions/VisualisationController";
 
 
 
@@ -20,6 +22,10 @@ type FuncProcOptions = {
 class FuncDiagnostics implements IDiagnostics<FuncProcOptions> {
     evaluateRuntime(opts: FuncProcOptions): number | undefined { return 0; }
     findAllAccessedLeds(opts: FuncProcOptions): Set<number> { return new Set(); }
+}
+
+class FuncLedNode implements ILEDNode<FuncProcOptions> {
+    async startNode(options: FuncProcOptions, ctrl: IVisualisationController): Promise<void> {}
 }
 
 class FuncCodeConstr extends SimpleFunctionCodeConstructor<FuncProcOptions> {
@@ -53,7 +59,7 @@ class FuncCodeConstr extends SimpleFunctionCodeConstructor<FuncProcOptions> {
 
 export function runTest_cppgenerator_codegenerator(){
 
-    const FUNC_PROC = new SimpleProcedure<FuncProcOptions>("Func", new FuncCodeConstr(), new FuncDiagnostics(), { a: 1, b: 1, c: 1 });
+    const FUNC_PROC = new SimpleProcedure<FuncProcOptions>("Func", new FuncCodeConstr(), new FuncDiagnostics(), new FuncLedNode(), { a: 1, b: 1, c: 1 });
     const LOOP_PROC = new LoopProcedure();
 
 
