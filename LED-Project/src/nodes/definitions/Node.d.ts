@@ -20,7 +20,26 @@ export interface IDataSourceSupplier {
     get<X>(source: IDataSource) : X;
 }
 
+/**
+ * Defines some settings for the blockly block which are used during construction
+ */
+export type OnBlockSettings = {
+    /**
+     * Which category the block should be sorted to inside the toolbox
+     */
+    category: string,
+    /**
+     * The color HUE which will be the primary color of the block.
+     * Values between 0-360
+     */
+    color: number
+}
+
 export interface INodeModel {
+    /**
+     * @returns settings that are used to configure the block
+     */
+    getOnBlockSettings() : OnBlockSettings;
 
     /**
      * @returns a list of all Bricks which shall be used to construct the blockly block. 
