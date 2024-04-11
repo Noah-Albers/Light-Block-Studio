@@ -1,5 +1,5 @@
 import { CppFnManager, CppFnInformation, CppType, IVariableSupplier } from "@cppgen/functionManager/index";
-import { arraysEqual, stringsEqual } from "@test/TestUtils";
+import { assertArraysEqual, assertStringsEqual } from "@test/TestUtils";
 
 type AddFunction = {
     a: number,
@@ -142,10 +142,10 @@ export function runTest_cppfnmanager_codegenerator(){ TEST_CASES.forEach(test=>{
     let result = gen.generate(undefined);
 
     // Validates the generated code
-    stringsEqual(test.code.trim(), result.code.trim());
+    assertStringsEqual(test.code.trim(), result.code.trim());
 
     // Tests the calls
-    arraysEqual(test.codeCalls, [
+    assertArraysEqual(test.codeCalls, [
         ...test.adds.map(call=>result.callGenerator.getCallFor(fnAdd, call)),
         ...test.add2s.map(call=>result.callGenerator.getCallFor(fnAdd2, call))
     ]);

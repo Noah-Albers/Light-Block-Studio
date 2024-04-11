@@ -21,7 +21,8 @@
       "@cppgen/*": ["./src/cppgenerator/*"],
       "@test/*": ["./src/test/*"],
       "@procedure/*": ["./src/procedure/*"],
-      "@visualizer/*": ["./src/visualizer/*"]
+      "@visualizer/*": ["./src/visualizer/*"],
+      "@mathSolver/*": ["./src/mathSolver/*"]
      }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

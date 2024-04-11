@@ -1,6 +1,6 @@
 import { CppFnInformation, CppType } from "@cppgen/functionManager";
 import { CppGenerator, ICodeSupport } from "@cppgen/generator";
-import { arraysEqual, stringsEqual } from "@test/TestUtils";
+import { assertArraysEqual, assertStringsEqual } from "@test/TestUtils";
 import { SimpleFunctionCodeConstructor } from "@procedure/definitions/implementations/SimpleFunctionCodeConstructor";
 import { SimpleProcedure } from "@procedure/definitions/implementations/SimpleProcedure";
 import { LoopProcedure } from "@procedure/procedures/LoopProcedure/LoopProcedure";
@@ -145,5 +145,5 @@ void loop(){
     
 }`);
 
-    stringsEqual(REQUIRED, result);
+    assertStringsEqual(REQUIRED, result);
 };
