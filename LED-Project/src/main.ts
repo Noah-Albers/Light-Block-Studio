@@ -10,11 +10,28 @@ import App from '@webapp/App.vue'
 // Composables
 import { createApp } from 'vue'
 
-// Plugins
-import { registerPlugins } from '@webapp/plugins'
+// Fonts
+import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles'
 
-const app = createApp(App)
+// Types
+import { createVuetify } from 'vuetify/lib/framework.mjs'
+import { createPinia } from 'pinia'
 
-registerPlugins(app)
+const app = (
+    createApp(App)
+    .use(createVuetify({
+      theme: {
+        themes: {
+          light: {
+            colors: {
+              primary: '#1867C0',
+              secondary: '#5CBBF6',
+            },
+          },
+        },
+      },
+    }))
+    .use(createPinia())
+).mount('#app')
 
-app.mount('#app')
