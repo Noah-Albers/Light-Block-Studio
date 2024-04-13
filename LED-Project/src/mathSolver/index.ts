@@ -1,6 +1,7 @@
 import { Lexer } from "./implementations/Lexer";
 import { Parser } from "./implementations/Parser";
 import { Solver } from "./implementations/Solver";
+import { isValidVariableChar, isValidVariableFirstChar } from "./utils/Utils";
 
 /**
  * Note: This is a self-contained modular system.
@@ -24,7 +25,7 @@ const lexer = new Lexer({
  * @returns The result of evaluating the expression as a single number.
  * @throws {Error} if there are issues with the expression or variables.
  */
-export function solveExpression(expr: string, variables: {[name: string]: number}): number {
+export function solveExpression(expr: string, variables: { [name: string]: number }): number {
 
     // Lexes the text into tokens
     const tokens = lexer.makeTokens(expr, variables);
@@ -34,4 +35,19 @@ export function solveExpression(expr: string, variables: {[name: string]: number
 
     // Uses the solver to evaluate the expression
     return solver.solve(ast);
+}
+
+export function isValidVariableName(name: string): "firstChar" | "invalid" | true {
+
+    if (name.length <= 0)
+        return "invalid";
+
+    if (!isValidVariableFirstChar(name[0]))
+        return "firstChar";
+
+    for (let i = 1; i < name.length; i++)
+        if(!isValidVariableChar(name[i]))
+            return "invalid";
+
+    return true;
 }
