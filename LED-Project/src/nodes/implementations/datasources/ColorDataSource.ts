@@ -27,11 +27,17 @@ const Defaults: Required<ColorDataConfig> = {
 
 export class ColorDataSource implements IDataSource<VariableColorType> {
 
-    private config: Required<ColorDataConfig>;
+    private readonly config: Required<ColorDataConfig>;
+    private readonly name: string;
 
-    constructor(config: ColorDataConfig){
+    constructor(name: string, config: ColorDataConfig){
         // Merge provided config with defaults
         this.config = {...Defaults, ...config};
+        this.name = name;
+    }
+    
+    getKey(): string {
+        return this.name;
     }
 
     getInformation(): string | undefined {

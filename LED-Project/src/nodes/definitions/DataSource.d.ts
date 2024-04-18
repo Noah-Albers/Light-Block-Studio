@@ -10,6 +10,12 @@ export interface IDataSource<Type> {
     //private hints: Hint[];
 
     /**
+     * @returns a string which will be used as a key to store values later on.
+     * Meaning that this is not a key/name for the whole class but for a single instance.
+     */
+    getKey() : string;
+
+    /**
      * @returns a string that explaines the information about this data source.
      * Note that it should be user (developer) supplied and unique
      */

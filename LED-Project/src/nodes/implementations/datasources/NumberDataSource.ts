@@ -23,11 +23,17 @@ const Defaults : Required<NumberDataConfig> = {
 
 export class NumberDataSource implements IDataSource<String> {
 
-    private config: Required<NumberDataConfig>;
+    private readonly config: Required<NumberDataConfig>;
+    private readonly name: string;
 
-    constructor(config: NumberDataConfig){
+    constructor(name: string, config: NumberDataConfig){
         // Merge provided config with defaults
         this.config = {...Defaults, ...config};
+        this.name = name;
+    }
+
+    getKey(): string {
+        return this.name;
     }
 
     getInformation(): string | undefined {
