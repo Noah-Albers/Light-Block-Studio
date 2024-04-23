@@ -1,0 +1,31 @@
+site_name: LED Project
+site_url: ""
+theme:
+  name: readthedocs
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+  language: en
+
+nav:
+  - 'index.md'
+  - 'Project Structure':
+    - 'Philosophy': 'project-structure/philosophy.md' 
+    - 'Modular System': 'project-structure/modul-system.md'
+  - "Modules":
+    - "Function Manager (Cpp Generator)":
+      - "Overview": "modul-system/cppgen/func-manager-overview.md"
+      - "How to use it": "modul-system/cppgen/func-manager-how-to-use.md"
+
+plugins:
+  - search
+
+copyright: |
+  &copy; 2023 <a href="https://github.com/noah-albers"  target="_blank" rel="noopener">Noah Albers</a>
