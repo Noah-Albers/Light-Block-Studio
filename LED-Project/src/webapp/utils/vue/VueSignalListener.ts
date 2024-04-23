@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted } from 'vue'
-import { Events, SignalDispatcher } from './SignalDispatcher'
+import { Events, SignalDispatcher } from '../signals/SignalDispatcher'
 
 // Composable function to use signals on components that can be removed from the dom and readded
 export function useSignal<Key extends keyof Events>(type: Key, handler: (_: any)=>any) {
