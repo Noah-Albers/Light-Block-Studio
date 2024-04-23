@@ -16,6 +16,17 @@ export interface IDataSource<Type> {
     getKey() : string;
 
     /**
+     * @returns a string which represents a unique key for this datasource type.
+     * So this is the name for the whole class
+     */
+    getUniqueSourceName() : string;
+
+    /**
+     * @returns the default value of the field
+     */
+    getDefaultValue() : Type;
+
+    /**
      * @returns a string that explaines the information about this data source.
      * Note that it should be user (developer) supplied and unique
      */

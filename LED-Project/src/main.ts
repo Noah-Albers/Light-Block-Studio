@@ -17,6 +17,10 @@ import 'vuetify/styles'
 // Types
 import { createVuetify } from 'vuetify/lib/framework.mjs'
 import { createPinia } from 'pinia'
+import { registerBlockly } from '@webapp/blockly/RegisterBlockly'
+
+// Registers the blockly-blocks
+registerBlockly();
 
 const app = (
     createApp(App)

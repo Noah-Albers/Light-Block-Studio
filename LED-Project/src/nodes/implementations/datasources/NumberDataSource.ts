@@ -1,12 +1,12 @@
-import { IDataSource } from "src/nodes/definitions/DataSource";
+import { IDataSource } from "@nodes/definitions/DataSource";
 
 export type NumberDataConfig = {
     // Type of number: "int" for integer or "float" for floating-point
     type?: "int" | "float",
     // Minimum value allowed (optional)
-    min: number | undefined,
+    min?: number,
     // Maximum value allowed (optional)
-    max: number | undefined,
+    max?: number,
 
     info: string | undefined
 }
@@ -15,21 +15,31 @@ export type NumberDataConfig = {
 const Defaults : Required<NumberDataConfig> = {
     info: undefined,
 
-    max: undefined,
-    min: undefined,
+    max: undefined as any,
+    min: undefined as any,
 
     type: "float"
 }
 
-export class NumberDataSource implements IDataSource<String> {
+export class NumberDataSource implements IDataSource<string> {
 
     private readonly config: Required<NumberDataConfig>;
     private readonly name: string;
+    private readonly defaultValue: string;
 
-    constructor(name: string, config: NumberDataConfig){
+    constructor(name: string, defaultValue: string, config: NumberDataConfig){
         // Merge provided config with defaults
         this.config = {...Defaults, ...config};
         this.name = name;
+        this.defaultValue = defaultValue;
+    }
+
+    getDefaultValue(): string {
+        return this.defaultValue;
+    }
+
+    getUniqueSourceName(): string {
+        return "number";
     }
 
     getKey(): string {
@@ -49,7 +59,7 @@ export class NumberDataSource implements IDataSource<String> {
         return value;
     }
 
-    import(value: string | number | boolean | object): String {
+    import(value: string | number | boolean | object): string {
         return String(value);
     }
 }

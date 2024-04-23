@@ -3,14 +3,6 @@ import { IDataSource } from "./DataSource";
 
 // TODO: Add support for custom blockly mutators later on
 
-/**
- * The elements which are used to define how the node shall be displayed.
- * 
- * Useable are simple strings which are displayed,
- * a newline to signal a
- */
-export type Brick = string | "\n" | IDataSource; 
-
 export interface IDataSourceSupplier {
 
     /**
@@ -36,20 +28,32 @@ export type OnBlockSettings = {
 }
 
 export interface INodeModel {
+
+    /**
+     * @returns a key which is unique for every model. This is the name that blockly uses later on to identify the block itself.
+     */
+    getModelName() : string;
+
     /**
      * @returns settings that are used to configure the block
      */
     getOnBlockSettings() : OnBlockSettings;
 
     /**
+     * TODO: Replace with language lookup
+     * @returns String that represents the message to use for the block
+     */
+    getBlockMessage() : string;
+
+    /**
      * @returns a list of all Bricks which shall be used to construct the blockly block. 
      */
-    getOnBlockConstruction() : Brick[];
+    getOnBlockSources() : IDataSource<any>[];
 
     /**
      * @returns all datasources which the node shall use
      */
-    getSources() : IDataSource;
+    getSources() : IDataSource<any>[];
 
     /**
      * This is called once the node shall be evaluated

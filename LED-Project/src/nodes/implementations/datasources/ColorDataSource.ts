@@ -1,5 +1,11 @@
 import { IDataSource } from "src/nodes/definitions/DataSource";
 
+/**
+ * TODO: Work in progress
+ * 
+ * This class is work in progress and should not be used for testing
+ */
+
 export type ColorDataConfig = {
     mode?: "rgb" | "hsv",
 
@@ -34,6 +40,9 @@ export class ColorDataSource implements IDataSource<VariableColorType> {
         // Merge provided config with defaults
         this.config = {...Defaults, ...config};
         this.name = name;
+    }
+    getUniqueSourceName(): string {
+        return "color"
     }
     
     getKey(): string {
