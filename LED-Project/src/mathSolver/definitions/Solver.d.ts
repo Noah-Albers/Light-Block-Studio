@@ -1,4 +1,3 @@
-import { handleProgrammingError } from "../../errorSystem/ProgrammingErrorSystem";
 import { Node, NodeTypes } from "../Nodes";
 import { BaseToken, TokenTypes } from "../Token";
 

@@ -164,7 +164,7 @@ export interface ICppFnCallGenerator {
  * }
  * 
  * // Generates the code for the led
- * function generateSetLedX(vs: IVariableSupplier, {r,g,b,led}: CppFnInformation<SetLedXOptions>) : string {
+ * function generateSetLedX({r,g,b,led}: CppFnInformation<SetLedXOptions>, vs: IVariableSupplier) : string {
  * 
  *     // Registers a function local variable
  *     let calc = vs.register("calcResult");

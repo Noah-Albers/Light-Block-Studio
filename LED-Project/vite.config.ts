@@ -27,6 +27,9 @@ export default defineConfig({
       "@procedure": fileURLToPath(new URL('./src/procedure', import.meta.url)),
       "@visualizer": fileURLToPath(new URL('./src/visualizer', import.meta.url)),
       "@mathSolver": fileURLToPath(new URL('./src/mathSolver', import.meta.url)),
+      "@nodes": fileURLToPath(new URL('./src/nodes', import.meta.url)),
+      "@registry": fileURLToPath(new URL('./src/registry', import.meta.url)),
+      "@utils": fileURLToPath(new URL('./src/jsutils', import.meta.url)),
     },
     extensions: [
       '.js',

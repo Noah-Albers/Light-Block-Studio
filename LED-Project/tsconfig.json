@@ -22,7 +22,10 @@
       "@test/*": ["./src/test/*"],
       "@procedure/*": ["./src/procedure/*"],
       "@visualizer/*": ["./src/visualizer/*"],
-      "@mathSolver/*": ["./src/mathSolver/*"]
+      "@mathSolver/*": ["./src/mathSolver/*"],
+      "@nodes/*": ["./src/nodes/*"],
+      "@registry/*": ["./src/registry/*"],
+      "@utils/*": ["./src/jsutils/*"]
      }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
