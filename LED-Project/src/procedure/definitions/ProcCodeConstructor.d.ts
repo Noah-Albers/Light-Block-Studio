@@ -87,9 +87,8 @@ export interface ICodeConstructor
      * 
      * it is given
      * 
-     * @param options the options of the procedure 
-     * @param vs the variable supplier system to request uniquly named variable. Note that
-     * @param callGenerator from the cpp-generator system. It is used to generate function calls to functions registered by "registerFunctions"
+     * @param options the options of the procedure
+     * @param genTools tools to generate predefined code
      * @param associatedFunctions the functions that were registered by "registerFunctions"
      * @param dirtyState a flag that defines if the led-stripe is still "dirty" (Meaning some updates may not have been pushed yet) from the previous procedures
      */

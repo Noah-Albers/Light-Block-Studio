@@ -36,7 +36,11 @@ export class VisualisationController implements IVisualisationController {
      */
     setLed(idx: number, r: number, g: number, b: number): void {
         // Store the RGB values for the LED at the specified index
-        this.ledCache[idx] = [r,g,b];        
+        this.ledCache[idx] = [
+            Math.round(r),
+            Math.round(g),
+            Math.round(b)
+        ];        
     }
 
     pushUpdate(): void {

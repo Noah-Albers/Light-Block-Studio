@@ -2,7 +2,7 @@ The `@cppgen/functionManager` exposes an `index.ts` file with most of what you'l
 
 The following illustrates how to generate a simple c++ function using the generator.
 
-## Step 1: Define Function Options and Generator
+# Step 1: Define Function Options and Generator
 
 Define the options that can be passed to the function along with the generator function. For example:
 
@@ -28,12 +28,12 @@ function generateSetLedX({ r, g, b, led }: CppFnInformation<SetLedXOptions>, vs:
 The `SetLedXoptions` type defines which arguments will later be passed to the c++ function.
 
 
-### Variable-Supplier
+## Variable-Supplier
 The `vs: IVariableSupplier` is used to define custom c++ variables. Using it prevents naming conflicts, so it is highly adviced to do so.
 
 Note that it is used to register a tmp variable for generating the color.
 
-### CppFnInformation.
+## CppFnInformation.
 Because the Generator allows for arguments to be supplied as static none-variable values, which can be directly printed into the c++ code, `r`,`g`,`b` and `led` might or might not contain a variable value.
 
 They all look like this:
@@ -49,7 +49,7 @@ They all look like this:
 
 If you dont care about that, you can just print the raw ts-variable into you code and the generator will handle the rest, as seen above.
 
-## Step 2: Register the Function
+# Step 2: Register the Function
 
 Register the function to the C++ generator using `addFunction`. This includes specifying the function name, typescript generator function, and type mappings:
 
@@ -74,7 +74,7 @@ And finally the `types` is an object which mapps the Typescript variables into c
 
 This returns a reference to the cpp registered function, called a `ICppFnHandle`. This reference is later on used to generate the actual calls.
 
-## Step 3: Register Function Calls
+# Step 3: Register Function Calls
 
 Register all calls to the function using the reference obtained from step 2:
 
@@ -88,7 +88,7 @@ ref2SetLedX.addCall(call_2);
 
 These calls will be used to later on remove redundant parameters from the c++ function, making it faster to run as the c++ precompiler can potencially calculate numeric values ahead of time and also cluttering the code less with extra variables.
 
-## Step 4: Generate C++ Function Code
+# Step 4: Generate C++ Function Code
 
 Generate the code for the C++ functions using the `generate` method of `ICppFnManager`:
 
@@ -103,7 +103,7 @@ In the above example a variable supplier `vs: IVariableSupplier` was used. But t
 
 There is even intelli-sense support do to passed down generic references.
 
-## Step 5: Generate Function Calls
+# Step 5: Generate Function Calls
 
 Generate calls to the C++ function using the `getCallFor` method of `ICppFnCallGenerator`:
 

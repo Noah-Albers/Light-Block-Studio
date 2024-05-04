@@ -1,4 +1,4 @@
-import { IVisualisationController } from "@visualizer/definitions/Visualizer";
+import { IVisualisationController } from "@visualizer/definitions/VisualisationController";
 import { ProcedureOptions } from "./Procedure";
 
 export interface ILEDNode<Options extends ProcedureOptions>{

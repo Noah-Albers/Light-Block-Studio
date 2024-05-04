@@ -1,2 +1,2 @@
 source ./venv/bin/activate
-mkdocs serve
+mkdocs serve --open
