@@ -23,9 +23,14 @@ nav:
     - "Function Manager (Cpp Generator)":
       - "Overview": "modul-system/cppgen/func-manager-overview.md"
       - "How to use it": "modul-system/cppgen/func-manager-how-to-use.md"
+    - "Procedure":
+      - "Overview": "modul-system/procedure/procedure-overview.md"
+      - "How to create your own procedure": "modul-system/procedure/procedure-how-to-use.md"
+    - "Cpp Generator (TODO)":
+      - "Overview": "modul-system/cppgen/gen-overview.md"
 
 plugins:
   - search
 
 copyright: |
-  &copy; 2023 <a href="https://github.com/noah-albers"  target="_blank" rel="noopener">Noah Albers</a>
+  &copy; 2024 <a href="https://github.com/noah-albers"  target="_blank" rel="noopener">Noah Albers</a>
