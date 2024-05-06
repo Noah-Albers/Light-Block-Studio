@@ -1,10 +1,10 @@
 # Generator Module
 
-This module is primarily an adaptation of the function generator module to the procedures of the application. These procedures will be explained later on but can, for now, be regarded as the module components that define how code is generated for a given block (a simplified explanation).
+This module is primarily an adaptation of the function generator module to the procedures of the application.
 
-The generated code will be divided into two sections: a `setup` section intended to run only once and a `loop` section intended to run continuously.
+The generated code will be divided into three section: a `setup` section intended to run only once, a `loop` section intended to run continuously and a section to store `globals`, eg. Function definitions or variables (Altho they are currently not used).
 
-The module takes in procedures for these two sections and generates the corresponding code.
+The module takes in procedures for the `setup` and `loop` sections and generates the corresponding code.
 
 Additional generation settings allow for the following configurations:
 
@@ -12,8 +12,6 @@ Additional generation settings allow for the following configurations:
 - String variables that will also be inserted into the template.
     - The variables `globals`, `setup`, and `loop` are reserved names and will be used to insert the generated code. Therefore, they are not valid variable names.
     - `$$Varname$$` syntax is used to insert variables.
-
-Furthermore, string variables can be inserted into the source.
 
 ## Example
 

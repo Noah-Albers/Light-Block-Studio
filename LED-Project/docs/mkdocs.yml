@@ -26,8 +26,9 @@ nav:
     - "Procedure":
       - "Overview": "modul-system/procedure/procedure-overview.md"
       - "How to create your own procedure": "modul-system/procedure/procedure-how-to-use.md"
-    - "Cpp Generator (TODO)":
+    - "Cpp Generator":
       - "Overview": "modul-system/cppgen/gen-overview.md"
+      - "How to generate code with the cpp generator": "modul-system/cppgen/gen-how-to-use.md"
 
 plugins:
   - search
