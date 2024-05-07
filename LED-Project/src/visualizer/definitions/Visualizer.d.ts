@@ -10,7 +10,7 @@ export interface IVisualizer {
      * @param loop The loop procedures to continuously update the visualizer.
      * @param abort An AbortSignal that allows aborting the visualization process.
      * 
-     * @returns A Promise that resolves when the visualization is complete or rejects if it's aborted.
+     * @returns A Promise that resolves when the visualization is complete (Meaning got aborted as the loop will run continuesly)
      */
     startVisualizer(setup: ProcedureWithOptions<any>[], loop: ProcedureWithOptions<any>[], abort: AbortSignal): Promise<void>;
 

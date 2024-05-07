@@ -67,11 +67,12 @@ export class Visualizer implements IVisualizer {
     async startVisualizer(setup: ProcedureWithOptions<any>[], loop: ProcedureWithOptions<any>[], abort: AbortSignal): Promise<void> {
         
         if(this.runCache !== undefined)
-            await this.runCache;
+            await this.abortVisualizer();
         
         // Starts the new visualizer
         this.runCache = this.internal_startVisualizer(setup, loop, abort);
 
+        await this.runCache;
     }
 
     abortVisualizer(): Promise<void> {

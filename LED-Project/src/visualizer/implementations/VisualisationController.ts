@@ -1,7 +1,8 @@
 import { IVisualisationController } from "@visualizer/definitions/VisualisationController";
 import { VisualizerAbortError } from "@visualizer/definitions/VisualizerAbortError";
 
-export type LEDPushCallback = (leds: {[ledIndex: number]: [number, number, number]})=>void;
+export type LEDArray = {[ledIndex: number]: [number,number,number]};
+export type LEDPushCallback = (leds: LEDArray)=>void;
 
 export class VisualisationController implements IVisualisationController {
 
@@ -13,7 +14,7 @@ export class VisualisationController implements IVisualisationController {
      * 
      * the three numbers are the RGB values as RED, GREEN, BLUE
      */
-    private ledCache: {[ledIndex: number]: [number, number, number]} = {};
+    private ledCache: LEDArray = {};
 
     // Callback for leds that are pushed
     private onPushLeds: LEDPushCallback;

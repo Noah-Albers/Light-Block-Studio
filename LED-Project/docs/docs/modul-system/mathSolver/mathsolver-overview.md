@@ -11,7 +11,7 @@ But first lets see why we decided to write the module ourselfs and not use a pre
 
 |Library|Reason on no to use|
 |-|-|
-|Math.js|Very big library for this simple functionality|
+|[Math.js](https://mathjs.org/)|Very big library for this simple functionality|
 |[JavaScript Expression Evaluator](https://silentmatt.com/javascript-expression-evaluator/)|Unmaintained|
 |[String Math](https://www.npmjs.com/package/string-math)|Uses RegEx to "parse" their expressions, also doesn't support variables.|
 

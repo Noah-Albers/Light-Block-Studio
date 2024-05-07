@@ -29,7 +29,8 @@ nav:
     - "Cpp Generator":
       - "Overview": "modul-system/cppgen/gen-overview.md"
       - "How to generate code with the cpp generator": "modul-system/cppgen/gen-how-to-use.md"
-
+    - "Math Solver": "modul-system/mathSolver/mathsolver-overview.md"
+    - "Visualizer": "modul-system/visualizer/visualizer-overview.md"
 plugins:
   - search
 
