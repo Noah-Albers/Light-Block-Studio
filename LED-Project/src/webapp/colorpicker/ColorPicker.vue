@@ -21,6 +21,22 @@
                     :style="secondModel!.hexDisplayTextStyle.value"
                     @change="secondModel!.onInputHexNumber">
             </div>
+
+            <!-- Menu with some options -->
+            <v-menu theme="dark"
+                transition="scale-transition">
+                <template v-slot:activator="{ props }">
+                    <v-btn color="#333"
+                        v-bind="props"
+                        icon="mdi-dots-vertical">
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item v-if="isDualModel" @click="actionSwapColors" prepend-icon="mdi-swap-horizontal">
+                        <v-list-item-title>Swap Colors</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </div>
 
         <!-- Color picker -->
@@ -164,10 +180,11 @@ $text-size: 1.5rem;
 
         &.ctrl-secondary {
             text-align: right;
+
             input {
                 text-align: right;
-                &[type="number"]{
-                }
+
+                &[type="number"] {}
             }
         }
     }
@@ -181,6 +198,7 @@ $text-size: 1.5rem;
         width: 100%;
         position: relative;
         border-radius: $border-radius;
+        margin-right: $spacing;
 
         span {
             visibility: hidden;
@@ -194,10 +212,6 @@ $text-size: 1.5rem;
             bottom: 0;
             left: 0;
             right: 0;
-        }
-
-        &.display-secondary {
-            margin-left: $spacing;
         }
     }
 
@@ -330,7 +344,6 @@ $text-size: 1.5rem;
 
     const propertyNames = ["Hue", "Saturation", "Value"];
 
-
     // Main model of the component
     const mainVModel = defineModel("modelValue", {
         required: true,
@@ -342,12 +355,12 @@ $text-size: 1.5rem;
         type: Object as PropType<VariableColorType>,
     })
 
-
     // Simple computed prop which holds if the second model is available
     const isDualModel = computed(() => {
-        return secondVModel !== undefined;
+        return secondVModel.value !== undefined;
     })
 
+    // Style to use for the background color of the saturation / value slider
     const backgroundStyle = computed(() => {
         const model = (
             isDualModel && (
@@ -365,11 +378,21 @@ $text-size: 1.5rem;
     // Model with the logic of the color model
     const secondModel = isDualModel ? useColorModel(secondVModel as ModelRef<VariableColorType>, refSatValSlider, refHueSlider) : undefined;
 
-
     // Registers the event updater for the previews
-
     watchEffect(() => { emit("mainPreview", mainModel.hexColor.value); });
     if (isDualModel)
         watchEffect(() => { emit("secondPreview", secondModel!.hexColor.value); });
+
+
+    //#region Events
+    
+    // Event: Colors shall be swapped
+    function actionSwapColors(){
+        let clrOne = mainVModel.value;
+        mainVModel.value = secondVModel.value!;
+        secondVModel.value = clrOne;
+    }
+
+    //#endregion
 
 </script>
