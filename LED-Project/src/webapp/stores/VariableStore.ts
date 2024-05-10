@@ -24,6 +24,40 @@ export const useVariableStore = defineStore('variables', {
         }
     }),
 
+    getters: {
+
+        /**
+         * Computed property which stores all variables in a [varName]: varValue object
+         * @returns 
+         */
+        variable2ValueMap() : {[name: string]: number} {
+            const obj: {[name: string]: number} = {};
+
+            // Adds all user defined variables
+            for(let v of this.variables) {
+                // Skips variables with name problems
+                if(v.nameProblem !== undefined)
+                    continue;
+
+                // Skips variables with an invalid value
+                if(typeof v.value === "string")
+                    continue;
+
+                obj[v.name] = v.value;
+            }
+
+            // Adds all system variables
+            for(let idx in this.systemVariables){
+                const v = this.systemVariables[idx as keyof typeof this.systemVariables];
+
+                obj[v.name] = v.value;
+            }
+
+            return obj;
+        }
+
+    },
+    
     actions: {
 
         /**

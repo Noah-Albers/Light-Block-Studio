@@ -12,7 +12,7 @@ export type Variable = {
      */
     nameProblem: undefined | VariableNameProblem,
     // The empty "" means that a none-number value has been given
-    value: number | String,
+    value: number | string,
 }
 
 export type VariableNameProblem = "invalid" | "firstChar" | "reserved" | "duplicated";
