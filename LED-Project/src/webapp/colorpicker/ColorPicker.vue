@@ -65,6 +65,7 @@
                 @contextmenu.prevent
                 @mousedown.left="mainModel.onSatValMouseDown"
                 @mousedown.right="secondModel?.onSatValMouseDown"
+                @mousedown.middle="startMover"
                 :style="backgroundStyle">
 
                 <defs>
@@ -319,8 +320,6 @@ $text-size: 1.5rem;
 
             input {
                 text-align: right;
-
-                &[type="number"] {}
             }
         }
     }
@@ -397,6 +396,11 @@ $text-size: 1.5rem;
     import { useColorModel, VariableColorType } from "./ColorModel";
     import Cursor from "./Cursor.vue"
     import Bar from "./Bar.vue"
+import { useMouse } from '@webapp/utils/vue/VueMousemoveListener';
+import { clamp, round3Digits } from '@utils/MathUtils';
+import {useMultiCursorMover} from "./MultiCursorMover";
+
+    //#region Setup
 
     // HTML-References for the sliders
     const refSatValSlider = ref(null) as any as Ref<HTMLDivElement>;
@@ -448,6 +452,9 @@ $text-size: 1.5rem;
     if (isDualModel)
         watchEffect(() => { emit("secondPreview", secondModel!.hexColor.value); });
 
+    const startMover = isDualModel ? useMultiCursorMover(mainModel, secondModel!, mainVModel, secondVModel as ModelRef<VariableColorType>, refSatValSlider) : undefined;
+
+    //#endregion
 
     //#region Computed properties
 
