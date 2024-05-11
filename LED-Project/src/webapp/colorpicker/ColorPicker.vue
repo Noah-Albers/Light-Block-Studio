@@ -50,7 +50,7 @@
                         prepend-icon="mdi-swap-horizontal">
                         <v-list-item-title>Swap Value</v-list-item-title>
                     </v-list-item>
-                    <v-list-item v-if="isDualModel"
+                    <v-list-item
                         @click="actionRandomizeColors()"
                         prepend-icon="mdi-dice-2">
                         <v-list-item-title>Randomize</v-list-item-title>
@@ -402,7 +402,7 @@ $text-size: 1.5rem;
     import Cursor from "./Cursor.vue"
     import Bar from "./Bar.vue"
     import { useMultiCursorMover } from "./MultiCursorMover";
-import { round3Digits } from '@utils/MathUtils';
+    import { round3Digits } from '@utils/MathUtils';
 
     //#region Setup
 
@@ -449,14 +449,14 @@ import { round3Digits } from '@utils/MathUtils';
     const mainModel = useColorModel(mainVModel, refSatValSlider, refHueSlider);
 
     // Model with the logic of the color model
-    const secondModel = isDualModel ? useColorModel(secondVModel as ModelRef<VariableColorType>, refSatValSlider, refHueSlider) : undefined;
+    const secondModel = isDualModel.value ? useColorModel(secondVModel as ModelRef<VariableColorType>, refSatValSlider, refHueSlider) : undefined;
 
     // Registers the event updater for the previews
     watchEffect(() => { emit("mainPreview", mainModel.hexColor.value); });
-    if (isDualModel)
+    if (isDualModel.value)
         watchEffect(() => { emit("secondPreview", secondModel!.hexColor.value); });
 
-    const startMover = isDualModel ? useMultiCursorMover(mainModel, secondModel!, mainVModel, secondVModel as ModelRef<VariableColorType>, refSatValSlider) : undefined;
+    const startMover = isDualModel.value ? useMultiCursorMover(mainModel, secondModel!, mainVModel, secondVModel as ModelRef<VariableColorType>, refSatValSlider) : undefined;
 
     //#endregion
 
@@ -464,7 +464,7 @@ import { round3Digits } from '@utils/MathUtils';
 
     // Positions of the arrows for the saturation / value cursors
     const arrowPositionsSatVal = computed(() => {
-        if (!isDualModel || props.disableArrows) return undefined;
+        if (!isDualModel.value || props.disableArrows) return undefined;
 
         // Calculates the distance between the two points
         const x1 = mainModel.cursorSVPosition.value.left;
@@ -491,7 +491,7 @@ import { round3Digits } from '@utils/MathUtils';
 
     // Positions of the arrow
     const arrowPositionsHue = computed(() => {
-        if (!isDualModel || props.disableArrows) return undefined;
+        if (!isDualModel.value || props.disableArrows) return undefined;
 
         const y1 = mainModel.cursorHuePosition.value;
         const y2 = secondModel!.cursorHuePosition.value;
@@ -509,23 +509,18 @@ import { round3Digits } from '@utils/MathUtils';
     });
 
 
-
     const mainShadow = computed(() => {
-        if (!isDualModel || props.disableShadows) return '';
         return `hsla(${360 * mainModel.coloredColorType.value[0]},100%, 50%,1)`;
     });
 
     const secondShadow = computed(() => {
-
-        if (!isDualModel
-            || props.disableShadows) return '';
         return `hsla(${360 * secondModel!.coloredColorType.value[0]},100%, 50%,1)`;
     });
 
     // Style to use for the background color of the saturation / value slider
     const backgroundStyle = computed(() => {
         const hsla = (
-            isDualModel && (
+            isDualModel.value && (
                 secondModel!.isSatValMouseDown.value ||
                 (secondModel!.isHueMouseDown.value && !secondModel!.locks.value[0])
             )
@@ -542,7 +537,7 @@ import { round3Digits } from '@utils/MathUtils';
     function actionRandomizeColors() {
         mainVModel.value = mainVModel.value.map(()=>round3Digits(Math.random())) as any;
 
-        if (isDualModel)
+        if (isDualModel.value)
             secondVModel.value = secondVModel.value!.map(()=>round3Digits(Math.random())) as any;
     }
 
