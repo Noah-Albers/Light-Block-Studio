@@ -50,6 +50,11 @@
                         prepend-icon="mdi-swap-horizontal">
                         <v-list-item-title>Swap Value</v-list-item-title>
                     </v-list-item>
+                    <v-list-item v-if="isDualModel"
+                        @click="actionRandomizeColors()"
+                        prepend-icon="mdi-dice-2">
+                        <v-list-item-title>Randomize</v-list-item-title>
+                    </v-list-item>
                 </v-list>
             </v-menu>
         </div>
@@ -396,9 +401,8 @@ $text-size: 1.5rem;
     import { useColorModel, VariableColorType } from "./ColorModel";
     import Cursor from "./Cursor.vue"
     import Bar from "./Bar.vue"
-import { useMouse } from '@webapp/utils/vue/VueMousemoveListener';
-import { clamp, round3Digits } from '@utils/MathUtils';
-import {useMultiCursorMover} from "./MultiCursorMover";
+    import { useMultiCursorMover } from "./MultiCursorMover";
+import { round3Digits } from '@utils/MathUtils';
 
     //#region Setup
 
@@ -534,6 +538,14 @@ import {useMultiCursorMover} from "./MultiCursorMover";
 
     //#region Events
 
+    // Event: Colors shall be randomized
+    function actionRandomizeColors() {
+        mainVModel.value = mainVModel.value.map(()=>round3Digits(Math.random())) as any;
+
+        if (isDualModel)
+            secondVModel.value = secondVModel.value!.map(()=>round3Digits(Math.random())) as any;
+    }
+
     // Event: Colors shall be swapped
     function actionSwapColors(which: boolean[]) {
         if (which.length != 3) {
@@ -546,7 +558,7 @@ import {useMultiCursorMover} from "./MultiCursorMover";
 
         // Iterates over all components and swaps them
         for (let i = 0; i < 3; i++) {
-    
+
             clrNewSec[i] = which[i] ? mainVModel.value[i] : secondVModel.value![i];
             clrNewMain[i] = which[i] ? secondVModel.value![i] : mainVModel.value![i];
         }
