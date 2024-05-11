@@ -7,7 +7,10 @@ import { ModelRef, Ref, computed } from 'vue'
 
 export type VariableColorType = [string | number, string | number, string | number];
 
-// Composable function to use signals on components that can be removed from the dom and readded
+export type ColorModel = ReturnType<typeof useColorModel>;
+
+
+// Logic of a color model (Cursor, locks, barriers and a lot of event listeners and such)
 export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlider: Ref<HTMLDivElement>, refHueSlider: Ref<HTMLDivElement>) {
 
     const store = useVariableStore();
