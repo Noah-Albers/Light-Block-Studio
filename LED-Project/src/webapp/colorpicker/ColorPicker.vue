@@ -14,7 +14,6 @@
             </div>
 
             <div v-if="isDualModel"
-                class="display-secondary"
                 :style="`background: ${secondModel!.hexColor.value}`">
                 <input type="text"
                     :value="secondModel!.hexColor.value"
@@ -32,7 +31,9 @@
                     </v-btn>
                 </template>
                 <v-list>
-                    <v-list-item v-if="isDualModel" @click="actionSwapColors" prepend-icon="mdi-swap-horizontal">
+                    <v-list-item v-if="isDualModel"
+                        @click="actionSwapColors"
+                        prepend-icon="mdi-swap-horizontal">
                         <v-list-item-title>Swap Colors</v-list-item-title>
                     </v-list-item>
                 </v-list>
@@ -43,60 +44,111 @@
         <div class="color-picker">
 
             <!-- Saturation / Value slider-->
-            <div class="sat-val-slider"
+            <svg width="100%"
+                height="100%"
+                class="sat-val-slider"
                 ref="refSatValSlider"
                 @mousedown.left="mainModel.onSatValMouseDown"
                 @mousedown.middle="secondModel?.onSatValMouseDown"
                 :style="backgroundStyle">
 
+                <defs>
+                    <linearGradient id="SaturationGradiant"
+                        x1="0%"
+                        x2="100%"
+                        y1="0%"
+                        y2="0%">
+                        <stop offset="0%"
+                            stop-color="#fff" />
+                        <stop offset="100%"
+                            stop-color="transparent" />
+                    </linearGradient>
+                    <linearGradient id="ValueGradiant"
+                        x1="0%"
+                        y1="0%"
+                        x2="0%"
+                        y2="100%">
+                        <stop offset="0%"
+                            stop-color="transparent" />
+                        <stop offset="100%"
+                            stop-color="#000" />
+                    </linearGradient>
+
+                    <filter id="f1"
+                        x="0"
+                        y="0"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <feGaussianBlur in="SourceGraphic"
+                            stdDeviation="15" />
+                    </filter>
+                </defs>
+
+
                 <!-- Overlays for saturation and value -->
-                <div class="saturation-panel"></div>
-                <div class="value-panel"></div>
+                <rect width="100%"
+                    height="100%"
+                    x="0"
+                    y="0"
+                    fill="url(#SaturationGradiant)" />
+                <rect width="100%"
+                    height="100%"
+                    x="0"
+                    y="0"
+                    fill="url(#ValueGradiant)" />
+
+                <!-- #region Lock bars -->
 
                 <!-- Lock bars (Main) -->
-                <div class="locked locked-x"
-                    :style="mainModel.cursorSVPosition.value.top"
-                    v-if="mainModel.locks.value[2]"></div>
-                <div class="locked locked-y"
-                    :style="mainModel.cursorSVPosition.value.left"
-                    v-if="mainModel.locks.value[1]"></div>
-
+                <Bar v-if="mainModel.locks.value[2]"
+                    :is-vertical="false"
+                    :pos="mainModel.cursorSVPosition.value.top" />
+                <Bar v-if="mainModel.locks.value[1]"
+                    :is-vertical="true"
+                    :pos="mainModel.cursorSVPosition.value.left" />
 
                 <!-- Lock bars (Secondary) -->
-                <div class="locked locked-x"
-                    :style="secondModel!.cursorSVPosition.value.top"
-                    v-if="isDualModel && secondModel!.locks.value[2]"></div>
-                <div class="locked locked-y"
-                    :style="secondModel!.cursorSVPosition.value.left"
-                    v-if="isDualModel && secondModel!.locks.value[1]"></div>
+                <Bar v-if="isDualModel && secondModel!.locks.value[2]"
+                    :is-vertical="false"
+                    :pos="secondModel!.cursorSVPosition.value.top" />
+                <Bar v-if="isDualModel && secondModel!.locks.value[1]"
+                    :is-vertical="true"
+                    :pos="secondModel!.cursorSVPosition.value.left" />
 
+                <!-- #endregion -->
 
-                <!-- Cursor (Main) -->
-                <div class="cursor"
-                    :style="mainModel.cursorSVPosition.value.left + mainModel.cursorSVPosition.value.top"></div>
+                <!-- #region Cursor -->
+                <!-- Main cursor -->
+                <Cursor :pos-x="mainModel.cursorSVPosition.value.left"
+                    :pos-y="mainModel.cursorSVPosition.value.top" />
 
-                <!-- Cursor (Secondary) -->
-                <div class="cursor cursor-secondary"
-                    v-if="isDualModel"
-                    :style="secondModel!.cursorSVPosition.value.left + secondModel!.cursorSVPosition.value.top"></div>
-            </div>
+                <!-- Secondary cursor-->
+                <Cursor v-if="isDualModel"
+                    :pos-x="secondModel!.cursorSVPosition.value.left"
+                    :pos-y="secondModel!.cursorSVPosition.value.top"
+                    :is-circle="false" />
+                <!-- #endregion -->
+
+            </svg>
 
             <!-- Hue selector -->
-            <div class="hue-selector"
+            <svg class="hue-selector"
                 ref="refHueSlider"
                 @mousedown.left="mainModel.onHueMouseDown"
                 @mousedown.middle="secondModel?.onHueMouseDown"
                 :style="`background: linear-gradient(0deg,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red)`">
 
-                <!-- Cursor (Main) -->
-                <div :class="`cursor hue-cursor ${mainModel.locks.value[0] ? 'cursor-disabled' : ''}`"
-                    :style="mainModel.cursorHuePosition.value"></div>
+                <!-- Main cursor -->
+                <Cursor :pos-x="50"
+                    :pos-y="mainModel.cursorHuePosition.value"
+                    :is-locked="mainModel.locks.value[0]" />
 
-                <!-- Cursor (Main) -->
-                <div :class="`cursor cursor-secondary hue-cursor ${secondModel!.locks.value[0] ? 'cursor-disabled' : ''}`"
-                    v-if="isDualModel"
-                    :style="secondModel!.cursorHuePosition.value"></div>
-            </div>
+                <!-- Secondary cursor-->
+                <Cursor v-if="isDualModel"
+                    :pos-x="50"
+                    :pos-y="secondModel!.cursorHuePosition.value"
+                    :is-locked="secondModel!.locks.value[0]"
+                    :is-circle="false" />
+            </svg>
         </div>
 
         <!-- Text-controlls -->
@@ -208,6 +260,7 @@ $text-size: 1.5rem;
             outline: none;
             text-align: center;
             position: absolute;
+            height: 100%;
             top: 0;
             bottom: 0;
             left: 0;
@@ -225,21 +278,7 @@ $text-size: 1.5rem;
 
 .hue-selector {
     width: $huewidth;
-    position: relative;
     border-radius: $border-radius;
-
-    .hue-cursor {
-        left: 50%;
-
-        &.cursor-disabled {
-            left: 0;
-            right: 0;
-            border-radius: 0;
-            height: 5px;
-            width: 100%;
-            transform: translateY(-50%);
-        }
-    }
 }
 
 .color-picker {
@@ -264,67 +303,7 @@ $text-size: 1.5rem;
     border-radius: $border-radius;
     overflow: hidden;
     flex-grow: 1;
-    position: relative;
     margin-right: $spacing;
-
-    div {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-
-
-    .locked {
-        border: 1px solid black;
-        position: absolute;
-
-        &.locked-x {
-            border-right: none;
-            border-left: none;
-            height: 5px;
-            left: 0;
-            right: 0;
-            transform: translateY(-50%);
-        }
-
-        &.locked-y {
-            border-top: none;
-            border-bottom: none;
-            width: 5px;
-            top: 0;
-            bottom: 0;
-            transform: translateX(-50%);
-        }
-    }
-
-
-    .value-panel {
-        background: linear-gradient(0deg, #000, transparent);
-    }
-
-    .saturation-panel {
-        background: linear-gradient(90deg, #fff, hsla(0, 0%, 100%, 0))
-    }
-}
-
-.cursor {
-    position: absolute;
-    border-radius: 50%;
-    border: 2px solid black;
-    width: 10px;
-    height: 10px;
-    transform: translateX(-50%) translateY(-50%);
-    box-shadow: 0px 0px 0px 1px black;
-    border: 1px solid white;
-    border-radius: 50%;
-    width: 8px;
-    height: 8px;
-
-    &.cursor-secondary {
-        border-radius: 0;
-    }
 }
 </style>
 
@@ -332,6 +311,8 @@ $text-size: 1.5rem;
     lang="ts">
     import { PropType, Ref, ref, watchEffect, computed, ModelRef } from 'vue';
     import { useColorModel, VariableColorType } from "./ColorModel";
+    import Cursor from "./Cursor.vue"
+    import Bar from "./Bar.vue"
 
     // HTML-References for the sliders
     const refSatValSlider = ref(null) as any as Ref<HTMLDivElement>;
@@ -385,9 +366,9 @@ $text-size: 1.5rem;
 
 
     //#region Events
-    
+
     // Event: Colors shall be swapped
-    function actionSwapColors(){
+    function actionSwapColors() {
         let clrOne = mainVModel.value;
         mainVModel.value = secondVModel.value!;
         secondVModel.value = clrOne;
