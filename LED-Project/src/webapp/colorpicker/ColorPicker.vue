@@ -1,8 +1,5 @@
 <template>
-    {{ isDualModel }}
-    <br>
     <div :class="`frame ${isDualModel ? 'dualMode' : ''}`">
-
         <!-- HEX-Display (Shows the current color in hex and lets the user edit it)  -->
         <div class="hex-display">
             <div :style="`background: ${mainModel.hexColor.value}`">
@@ -32,9 +29,26 @@
                 </template>
                 <v-list>
                     <v-list-item v-if="isDualModel"
-                        @click="actionSwapColors"
+                        @click="actionSwapColors([true, true, true])"
                         prepend-icon="mdi-swap-horizontal">
                         <v-list-item-title>Swap Colors</v-list-item-title>
+                    </v-list-item>
+
+                    <v-list-item v-if="isDualModel"
+                        @click="actionSwapColors([true, false, false])"
+                        prepend-icon="mdi-swap-horizontal">
+                        <v-list-item-title>Swap Hue</v-list-item-title>
+                    </v-list-item>
+
+                    <v-list-item v-if="isDualModel"
+                        @click="actionSwapColors([false, true, false])"
+                        prepend-icon="mdi-swap-horizontal">
+                        <v-list-item-title>Swap Saturation</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item v-if="isDualModel"
+                        @click="actionSwapColors([false, false, true])"
+                        prepend-icon="mdi-swap-horizontal">
+                        <v-list-item-title>Swap Value</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -48,8 +62,9 @@
                 height="100%"
                 class="sat-val-slider"
                 ref="refSatValSlider"
+                @contextmenu.prevent
                 @mousedown.left="mainModel.onSatValMouseDown"
-                @mousedown.middle="secondModel?.onSatValMouseDown"
+                @mousedown.right="secondModel?.onSatValMouseDown"
                 :style="backgroundStyle">
 
                 <defs>
@@ -74,16 +89,66 @@
                             stop-color="#000" />
                     </linearGradient>
 
-                    <filter id="f1"
-                        x="0"
-                        y="0"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <feGaussianBlur in="SourceGraphic"
-                            stdDeviation="15" />
+                    <marker v-if="isDualModel && !props.disableArrows"
+                        id="MarkerArrowFirst"
+                        markerWidth="14"
+                        markerHeight="14"
+                        refX="-8"
+                        refY="7"
+                        orient="auto">
+                        <path d="M 2 2 L 12 7 L 2 12 z"
+                            stroke="#000"
+                            stroke-width="2px"
+                            fill="#fff" />
+                    </marker>
+
+                    <marker v-if="isDualModel && !props.disableArrows"
+                        id="MarkerArrowSecond"
+                        markerWidth="14"
+                        markerHeight="14"
+                        refX="25"
+                        refY="7"
+                        orient="auto">
+                        <path d="M 2 2 L 12 7 L 2 12 z"
+                            stroke="#000"
+                            stroke-width="2px"
+                            fill="#fff" />
+                    </marker>
+
+                    <filter id="mainShadowFilter"
+                        v-if="isDualModel && !props.disableShadows">
+                        <feDropShadow dx="0"
+                            dy="0"
+                            :flood-color="mainShadow"
+                            stdDeviation="5"
+                            flood-opacity=".3" />
+                    </filter>
+
+                    <filter id="secondaryShadowFilter"
+                        v-if="isDualModel && !props.disableShadows">
+                        <feDropShadow dx="0"
+                            dy="0"
+                            :flood-color="secondShadow"
+                            stdDeviation="5"
+                            flood-opacity=".3" />
                     </filter>
                 </defs>
 
 
+
+                <circle v-if="isDualModel && !props.disableShadows"
+                    :cx="`${secondModel!.cursorSVPosition.value.left}%`"
+                    :cy="`${secondModel!.cursorSVPosition.value.top}%`"
+                    r="40"
+                    filter="url(#secondaryShadowFilter)"
+                    :fill="secondShadow" />
+
+                <circle v-if="isDualModel && !props.disableShadows"
+                    :cx="`${mainModel.cursorSVPosition.value.left}%`"
+                    :cy="`${mainModel.cursorSVPosition.value.top}%`"
+                    r="20"
+                    filter="url(#mainShadowFilter)"
+                    :fill="mainShadow" />
                 <!-- Overlays for saturation and value -->
                 <rect width="100%"
                     height="100%"
@@ -116,6 +181,16 @@
 
                 <!-- #endregion -->
 
+                <!-- Direction Arrows -->
+                <line v-if="arrowPositionsSatVal !== undefined"
+                    :x1="arrowPositionsSatVal!.x1"
+                    :x2="arrowPositionsSatVal!.x2"
+                    :y1="arrowPositionsSatVal!.y1"
+                    :y2="arrowPositionsSatVal!.y2"
+                    marker-start="url(#MarkerArrowFirst)"
+                    marker-end="url(#MarkerArrowSecond)" />
+
+
                 <!-- #region Cursor -->
                 <!-- Main cursor -->
                 <Cursor :pos-x="mainModel.cursorSVPosition.value.left"
@@ -134,8 +209,17 @@
             <svg class="hue-selector"
                 ref="refHueSlider"
                 @mousedown.left="mainModel.onHueMouseDown"
-                @mousedown.middle="secondModel?.onHueMouseDown"
+                @mousedown.right="secondModel?.onHueMouseDown"
+                @contextmenu.prevent
                 :style="`background: linear-gradient(0deg,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red)`">
+
+                <!-- Arrows for the cursors-->
+                <line v-if="arrowPositionsHue !== undefined"
+                    x1="50%"
+                    x2="50%"
+                    :y1="arrowPositionsHue!.first"
+                    :y2="arrowPositionsHue!.second"
+                    marker-start="url(#MarkerArrowFirst)" />
 
                 <!-- Main cursor -->
                 <Cursor :pos-x="50"
@@ -323,6 +407,18 @@ $text-size: 1.5rem;
         (e: "secondPreview", hex: string): void
     }>();
 
+    const props = defineProps({
+        disableShadows: {
+            default: false,
+            type: Boolean
+        },
+
+        disableArrows: {
+            default: false,
+            type: Boolean
+        }
+    });
+
     const propertyNames = ["Hue", "Saturation", "Value"];
 
     // Main model of the component
@@ -341,18 +437,6 @@ $text-size: 1.5rem;
         return secondVModel.value !== undefined;
     })
 
-    // Style to use for the background color of the saturation / value slider
-    const backgroundStyle = computed(() => {
-        const model = (
-            isDualModel && (
-                secondModel!.isSatValMouseDown.value ||
-                secondModel!.isHueMouseDown.value
-            )
-        ) ? secondModel! : mainModel;
-        return `background: hsla(${360 * model.coloredColorType.value[0]},100%, 50%,1)`;
-    })
-
-
     // Model with the logic of the color model
     const mainModel = useColorModel(mainVModel, refSatValSlider, refHueSlider);
 
@@ -365,13 +449,104 @@ $text-size: 1.5rem;
         watchEffect(() => { emit("secondPreview", secondModel!.hexColor.value); });
 
 
+    //#region Computed properties
+
+    // Positions of the arrows for the saturation / value cursors
+    const arrowPositionsSatVal = computed(() => {
+        if (!isDualModel || props.disableArrows) return undefined;
+
+        // Calculates the distance between the two points
+        const x1 = mainModel.cursorSVPosition.value.left;
+        const y1 = mainModel.cursorSVPosition.value.top;
+        const x2 = secondModel!.cursorSVPosition.value.left;
+        const y2 = secondModel!.cursorSVPosition.value.top;
+
+        const deltaX = x1 - x2;
+        const deltaY = y1 - y2;
+
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // Prevents rendering the arrows would be near each other
+        if (distance <= 6) return undefined;
+
+        return {
+            x1: `${x1}%`,
+            y1: `${y1}%`,
+
+            x2: `${x2}%`,
+            y2: `${y2}%`,
+        }
+    });
+
+    // Positions of the arrow
+    const arrowPositionsHue = computed(() => {
+        if (!isDualModel || props.disableArrows) return undefined;
+
+        const y1 = mainModel.cursorHuePosition.value;
+        const y2 = secondModel!.cursorHuePosition.value;
+
+        // Distance between the hue sliders
+        const dist = Math.abs(y1 - y2);
+
+        // Prevents render if they are to near to each other
+        if (dist <= 5) return undefined;
+
+        return {
+            first: `${y1}%`,
+            second: `${y2}%`
+        }
+    });
+
+
+
+    const mainShadow = computed(() => {
+        if (!isDualModel || props.disableShadows) return '';
+        return `hsla(${360 * mainModel.coloredColorType.value[0]},100%, 50%,1)`;
+    });
+
+    const secondShadow = computed(() => {
+
+        if (!isDualModel
+            || props.disableShadows) return '';
+        return `hsla(${360 * secondModel!.coloredColorType.value[0]},100%, 50%,1)`;
+    });
+
+    // Style to use for the background color of the saturation / value slider
+    const backgroundStyle = computed(() => {
+        const hsla = (
+            isDualModel && (
+                secondModel!.isSatValMouseDown.value ||
+                (secondModel!.isHueMouseDown.value && !secondModel!.locks.value[0])
+            )
+        ) ? secondShadow.value : mainShadow.value;
+
+        return "background: " + hsla + ";";
+    })
+
+    //#endregion
+
     //#region Events
 
     // Event: Colors shall be swapped
-    function actionSwapColors() {
-        let clrOne = mainVModel.value;
-        mainVModel.value = secondVModel.value!;
-        secondVModel.value = clrOne;
+    function actionSwapColors(which: boolean[]) {
+        if (which.length != 3) {
+            console.error("actionSwapColors was called with other than three components to be swapped?!");
+            return;
+        }
+
+        const clrNewSec = [];
+        const clrNewMain = [];
+
+        // Iterates over all components and swaps them
+        for (let i = 0; i < 3; i++) {
+    
+            clrNewSec[i] = which[i] ? mainVModel.value[i] : secondVModel.value![i];
+            clrNewMain[i] = which[i] ? secondVModel.value![i] : mainVModel.value![i];
+        }
+
+        // Stores the swaped values
+        mainVModel.value = clrNewMain as any;
+        secondVModel.value = clrNewSec as any;
     }
 
     //#endregion

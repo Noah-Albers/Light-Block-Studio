@@ -44,7 +44,7 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
 
     // Computed: Css-Style for the hue cursor position
     const cursorHuePosition = computed(() => {
-        return `top: ${coloredColorType.value[0] * 100}%;`;
+        return (1-coloredColorType.value[0]) * 100;
     });
 
     // Computed: Css-Style for the saturation / value cursor position
@@ -53,8 +53,8 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
         const left = (coloredColorType.value[1]) * 100;
 
         return {
-            top: `top: ${top}%;`,
-            left: `left: ${left}%;`
+            top,
+            left
         }
     })
 
@@ -146,7 +146,7 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
         const bcr = src.getBoundingClientRect();
 
         const clickY = (evt.clientY - bcr.top) / bcr.height;
-        setModelValue(0, clickY);
+        setModelValue(0, 1-clickY);
     }
 
     // Event: When the user moves the saturation / value curser
