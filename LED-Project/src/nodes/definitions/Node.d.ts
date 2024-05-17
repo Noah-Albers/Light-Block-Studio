@@ -6,7 +6,7 @@ import { IDataSource } from "./DataSource";
 export interface IDataSourceSupplier {
 
     /**
-     * Usesed to get data of a data source
+     * Used to get data of a data source
      * @param source 
      */
     get<X>(source: IDataSource) : X;

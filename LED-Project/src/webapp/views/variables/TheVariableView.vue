@@ -117,6 +117,8 @@
     import { useVariableStore } from "../../stores/VariableStore";
     import { computed } from "vue";
     import { ComputedRef } from "vue";
+import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
+import { Signals } from "@webapp/utils/signals/Signals";
 
     const varStore = useVariableStore();
 
@@ -156,6 +158,8 @@
 
         tmpVariable.value.name = "";
         tmpVariable.value.value = 0
+
+        SignalDispatcher.emit(Signals.VAR_CHANGE);
     }
 
     /**
@@ -163,7 +167,15 @@
      */
     function onVarChange() {
         // Mounts a small timeout to let vue register the change
-        setTimeout(varStore.updateProblems, 100);
+        setTimeout(()=>{
+            
+            // Updates the problems
+            varStore.updateProblems()
+        
+            // Sends the var change emit
+            SignalDispatcher.emit(Signals.VAR_CHANGE);
+
+        }, 100);
     }
 
 </script>
