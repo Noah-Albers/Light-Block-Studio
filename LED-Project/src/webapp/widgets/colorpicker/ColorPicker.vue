@@ -279,8 +279,6 @@
 
         </div>
     </div>
-
-
 </template>
 
 
@@ -398,11 +396,12 @@ $text-size: 1.5rem;
 <script setup
     lang="ts">
     import { PropType, Ref, ref, watchEffect, computed, ModelRef } from 'vue';
-    import { useColorModel, VariableColorType } from "./ColorModel";
+    import { useColorModel } from "./ColorModel";
     import Cursor from "./Cursor.vue"
     import Bar from "./Bar.vue"
     import { useMultiCursorMover } from "./MultiCursorMover";
     import { round3Digits } from '@utils/MathUtils';
+import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
 
     //#region Setup
 

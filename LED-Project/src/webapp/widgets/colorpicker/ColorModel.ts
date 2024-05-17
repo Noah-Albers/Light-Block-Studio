@@ -1,11 +1,10 @@
 import { solveExpression } from '@mathSolver/index';
+import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
 import { clamp, round3Digits } from '@utils/MathUtils';
 import { useVariableStore } from '@webapp/stores/VariableStore';
 import { HEX2HSV, HSV2HEX } from '@webapp/utils/color/ColorConverter';
 import { useMouse } from '@webapp/utils/vue/VueMousemoveListener';
 import { ModelRef, Ref, computed } from 'vue'
-
-export type VariableColorType = [string | number, string | number, string | number];
 
 export type ColorModel = ReturnType<typeof useColorModel>;
 

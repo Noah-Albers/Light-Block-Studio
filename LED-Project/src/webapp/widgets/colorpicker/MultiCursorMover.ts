@@ -1,14 +1,10 @@
 
 
-import { solveExpression } from '@mathSolver/index';
 import { clamp, round3Digits } from '@utils/MathUtils';
-import { useVariableStore } from '@webapp/stores/VariableStore';
-import { HEX2HSV, HSV2HEX } from '@webapp/utils/color/ColorConverter';
 import { useMouse } from '@webapp/utils/vue/VueMousemoveListener';
-import { ModelRef, Ref, computed } from 'vue'
+import { ModelRef, Ref } from 'vue'
 import { ColorModel } from './ColorModel';
-
-export type VariableColorType = [string | number, string | number, string | number];
+import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
 
 export function useMultiCursorMover(
     mainModel: ColorModel, secondaryModel: ColorModel,
