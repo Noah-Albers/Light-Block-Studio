@@ -1,8 +1,10 @@
 <template>
+<TheVueColorAttacher/>
 <div ref="blocklyDiv" style="height: 100%"></div>
 </template>
 
 <script type="ts" setup>
+import TheVueColorAttacher from "@webapp/blockly/fields/color/TheVueColorAttacher.vue"
 import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
 import { Signals } from '@webapp/utils/signals/Signals';
 import Blockly from 'blockly';

@@ -117,8 +117,8 @@
     import { useVariableStore } from "../../stores/VariableStore";
     import { computed } from "vue";
     import { ComputedRef } from "vue";
-import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
-import { Signals } from "@webapp/utils/signals/Signals";
+    import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
+    import { Signals } from "@webapp/utils/signals/Signals";
 
     const varStore = useVariableStore();
 

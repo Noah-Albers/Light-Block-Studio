@@ -54,12 +54,9 @@
   lang="ts">
 
   import { Splitpanes, Pane } from 'splitpanes'
-  import Blockly from 'blockly';
   import 'splitpanes/dist/splitpanes.css'
   import TheWorkspace from "./views/workspace/TheWorkspace.vue";
   import TheSidebar from "./views/sidebar/TheSidebar.vue";
-import { useSignal } from './utils/vue/VueSignalListener';
-import { Signals } from './utils/signals/Signals';
 
   // Menu items on the top
   const topItems = [

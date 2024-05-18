@@ -5,7 +5,7 @@ import { WatchStopHandle, watch } from "vue";
 export class OnBlockTextInput extends FieldTextInput {
 
     // Static field name
-    public static readonly FIELD_NAME = "fld_led_input";
+    public static readonly FIELD_NAME = "fld_number_inp";
 
     // Reference to the watcher that watches this fields propery
     private watcher?: WatchStopHandle;

@@ -1,6 +1,10 @@
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { NumberDataSource } from "@nodes/implementations/datasources/NumberDataSource";
 import { OnBlockTextInput } from "./fields/OnBlockTextfield";
+import { ColorDataSource } from "@nodes/implementations/datasources/ColorDataSource";
+import { OnBlockColorPicker } from "./fields/OnBlockColorPicker";
+import { ColorRangeDataSource } from "@nodes/implementations/datasources/ColorRangeDataSource";
+import { OnBlockRangeColorPicker } from "./fields/OnBlockColorrangePicker";
 
 /**
  * Takes in a
@@ -9,9 +13,13 @@ import { OnBlockTextInput } from "./fields/OnBlockTextfield";
  */
 export function getBlocklyFieldNameFromModel(ds: IDataSource<any>) : string {
 
+    // TODO: Improve mapping
+
     // List of direct mappings between name sources and block input fields
     const staticlyKnown: (()=>[boolean, string])[] = [
-        ()=>[ds instanceof NumberDataSource, OnBlockTextInput.FIELD_NAME]
+        ()=>[ds instanceof NumberDataSource, OnBlockTextInput.FIELD_NAME],
+        ()=>[ds instanceof ColorDataSource, OnBlockColorPicker.FIELD_NAME],
+        ()=>[ds instanceof ColorRangeDataSource, OnBlockRangeColorPicker.FIELD_NAME]
     ];
 
     // Finds the correct one

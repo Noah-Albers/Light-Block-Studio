@@ -6,6 +6,8 @@ import { getBlocklyFieldNameFromModel } from "./DataSource2BlocklyField";
 import { BlockData } from "./OnBlockUtils";
 import { groupBy, mostFrequent } from "@utils/ArrayUtils";
 import { ref } from "vue";
+import { OnBlockColorPicker } from "./fields/OnBlockColorPicker";
+import { OnBlockRangeColorPicker } from "./fields/OnBlockColorrangePicker";
 
 // Names of custom element required for the blockly-blocks
 export const DATA_OBJECT_NAME = "dataObj";
@@ -100,7 +102,7 @@ function registerNodeModel(model: INodeModel) {
  */
 function registerBlocklyFields() {
     // List of all fields
-    const LIST = [OnBlockTextInput]
+    const LIST = [OnBlockTextInput, OnBlockColorPicker, OnBlockRangeColorPicker]
 
 
     // Iterates over all fields
@@ -109,7 +111,7 @@ function registerBlocklyFields() {
          * Supplies a simple fromJson function that does nothing but create a new field of the required type.
          * This is done because the export/import will happen without the blocks only on the models / datasources
          */
-        fld.fromJson = () => new fld();
+        (fld as any).fromJson = () => new (fld as any)();
 
         Blockly.fieldRegistry.register(fld.FIELD_NAME, fld);
     }

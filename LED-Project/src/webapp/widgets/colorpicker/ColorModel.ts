@@ -105,7 +105,7 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
         // Validates the result
         if (clr === false) return;
 
-        model.value = [clr.h, clr.s, clr.v];
+        model.value = [round3Digits(clr.h), round3Digits(clr.s), round3Digits(clr.v)];
     }
 
 
