@@ -6,8 +6,7 @@
             
             v-model="mainModel"
             v-model:secondary="secondaryModel"
-            @main-preview="cache=>onModelUpdate(true, cache)"
-            @second-preview="cache=>onModelUpdate(false, cache)"
+            @preview="onModelUpdate"
             :disable-arrows="config.noArrows"
             :disable-shadows="config.noShadows"
             />
@@ -20,7 +19,7 @@
     import { Ref, ref, onMounted } from 'vue';
     import ColorPicker from "../../../widgets/colorpicker/ColorPicker.vue";
     import { EventArgsBlocklyClrReqAttach } from "@webapp/utils/signals/SignalArgumentTypes"
-import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+    import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
     
     /**
      * 
@@ -52,23 +51,23 @@ import { VariableColorType } from '@nodes/implementations/datasources/ColorDataS
     const mainModel: Ref<VariableColorType | undefined> = ref();
 
     // Callbacks which send changes to the value and a cached hex-string back.
-    let onMainChange: ((value: VariableColorType, cache: string)=>void) | undefined = undefined;
-    let onSecondaryChange: ((value: VariableColorType, cache: string)=>void) | undefined = undefined;
+    let onChange: ((mainValue: VariableColorType, mainCachedColor: string, secondValue?: VariableColorType, secondCache?: string)=>void) | undefined;
     
-    function onModelUpdate(isMain: boolean, cache: string){
-        if(isMain && onMainChange !== undefined)
-            onMainChange(mainModel.value!, cache);
-        if(!isMain && onSecondaryChange !== undefined)
-            onSecondaryChange(secondaryModel.value!, cache);
+    function onModelUpdate(mainHex: string, secondHex?: string){
+        onChange!(
+            mainModel.value!,
+            mainHex,
+            secondaryModel.value,
+            secondHex
+        )
     }
 
     // Event: Attach is requested
-    function onRequestAttachment({elm, onMainChange: onM, onSeconardyChange: onS, mainValue, secondValue, disableArrows, disableShadows}: EventArgsBlocklyClrReqAttach){
+    function onRequestAttachment({elm, onChange: onC, mainValue, secondValue, disableArrows, disableShadows}: EventArgsBlocklyClrReqAttach){
 
         // Updates the internal model value and registers the change handler
         secondaryModel.value = secondValue === undefined ? undefined : secondValue.map(x=>x) as VariableColorType;
-        onMainChange = onM;
-        onSecondaryChange = onS;
+        onChange = onC;
         
         // Updates the config
         config.value = {
@@ -90,7 +89,7 @@ import { VariableColorType } from '@nodes/implementations/datasources/ColorDataS
         // Cleanup
         mainModel.value = undefined;
         secondaryModel.value = undefined;
-        onMainChange = undefined;
+        onChange = undefined;
     }
 
     // Registers the signal-listeners for the attach and detach requests

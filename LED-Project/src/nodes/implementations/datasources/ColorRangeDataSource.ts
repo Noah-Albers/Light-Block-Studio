@@ -1,5 +1,5 @@
 import { IDataSource } from "src/nodes/definitions/DataSource";
-import { VariableColorType, isVariableColor, validateAndFixColor } from "./ColorDataSource";
+import { VariableColorType, areVariableColorsEqual, isVariableColor, validateAndFixColor } from "./ColorDataSource";
 
 /**
  * Checks if a given value is of the type for a color-range
@@ -10,6 +10,11 @@ export function isColorRangeColor(value: any) : value is ColorRangeType {
 
     return isVariableColor(value.first) && isVariableColor(value.second);
 } 
+
+// Returns if the two given color ranges are equal (Value wise)
+export function areColorRangesEqual(first: ColorRangeType, second: ColorRangeType) : boolean {
+    return areVariableColorsEqual(first.first, second.first) && areVariableColorsEqual(first.second, second.second);
+}
 
 export type ColorDataConfig = {
     info: string | undefined

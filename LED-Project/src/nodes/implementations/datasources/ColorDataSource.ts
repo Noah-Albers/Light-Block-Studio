@@ -14,6 +14,16 @@ export type ColorDataConfig = {
 export type VariableColorType = [string | number, string | number, string | number];
 
 /**
+ * Takes in two variable color types and returns if they are equal (Value wise)
+ */
+export function areVariableColorsEqual(first: VariableColorType, second: VariableColorType): boolean {
+    for(let i=0;i<3;i++)
+        if(first[i] !== second[i]) return false;
+    
+    return true;
+}
+
+/**
  * Method to take in any value and validate it as a VariableColorType
  * If the value is simelar to a variablecolortype, it will be fixed and returned,
  * 

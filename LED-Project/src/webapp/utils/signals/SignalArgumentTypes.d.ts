@@ -11,8 +11,7 @@ export type EventArgsBlocklyClrReqAttach = {
     secondValue?: VariableColorType
 
     // Change listener (Changed on the colors will be passed to this, also directly with an RGB-color string (HEX) which can be passed to css)
-    onMainChange: (value: VariableColorType, cachedColor: string)=>void,
-    onSeconardyChange?: (value: VariableColorType, cachedColor: string)=>void,
+    onChange: (mainValue: VariableColorType, mainCachedColor: string, secondValue?: VariableColorType, secondCache?: string)=>void,
 
     // Only used if a second model is in use
 

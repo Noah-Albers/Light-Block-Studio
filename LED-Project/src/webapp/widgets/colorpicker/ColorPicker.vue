@@ -395,13 +395,13 @@ $text-size: 1.5rem;
 
 <script setup
     lang="ts">
-    import { PropType, Ref, ref, watchEffect, computed, ModelRef } from 'vue';
+    import { PropType, Ref, ref, watchEffect, computed, ModelRef, watch } from 'vue';
     import { useColorModel } from "./ColorModel";
     import Cursor from "./Cursor.vue"
     import Bar from "./Bar.vue"
     import { useMultiCursorMover } from "./MultiCursorMover";
     import { round3Digits } from '@utils/MathUtils';
-import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+    import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
 
     //#region Setup
 
@@ -410,8 +410,7 @@ import { VariableColorType } from '@nodes/implementations/datasources/ColorDataS
     const refHueSlider = ref(null) as any as Ref<HTMLDivElement>;
 
     const emit = defineEmits<{
-        (e: "mainPreview", hex: string): void,
-        (e: "secondPreview", hex: string): void
+        (e: "preview", mainHex: string, secondHex?: string): void
     }>();
 
     const props = defineProps({
@@ -450,10 +449,17 @@ import { VariableColorType } from '@nodes/implementations/datasources/ColorDataS
     // Model with the logic of the color model
     const secondModel = isDualModel.value ? useColorModel(secondVModel as ModelRef<VariableColorType>, refSatValSlider, refHueSlider) : undefined;
 
+    function emitPreviewEvent(){
+        emit("preview", mainModel.hexColor.value, isDualModel.value ? secondModel!.hexColor.value : undefined);
+    }
+
     // Registers the event updater for the previews
-    watchEffect(() => { emit("mainPreview", mainModel.hexColor.value); });
-    if (isDualModel.value)
-        watchEffect(() => { emit("secondPreview", secondModel!.hexColor.value); });
+    watch(mainModel.hexColor, emitPreviewEvent);
+    watch(mainModel.locks, emitPreviewEvent)
+    if(isDualModel.value){
+        watch(secondModel!.hexColor, emitPreviewEvent);
+        watch(secondModel!.locks, emitPreviewEvent);
+    }
 
     const startMover = isDualModel.value ? useMultiCursorMover(mainModel, secondModel!, mainVModel, secondVModel as ModelRef<VariableColorType>, refSatValSlider) : undefined;
 
