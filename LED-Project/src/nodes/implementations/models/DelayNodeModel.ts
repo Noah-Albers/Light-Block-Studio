@@ -33,4 +33,8 @@ export class DelayNodeModel implements INodeModel {
         throw new Error("Method not implemented.");
     }
 
+    hasSubModules(): boolean {
+        return false;
+    }
+
 }

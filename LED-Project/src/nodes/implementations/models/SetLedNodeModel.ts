@@ -44,4 +44,7 @@ export class SetLedNodeModel implements INodeModel {
         throw new Error("Method not implemented.");
     }
 
+    hasSubModules(): boolean {
+        return true;
+    }
 }

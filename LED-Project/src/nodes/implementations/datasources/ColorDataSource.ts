@@ -56,7 +56,6 @@ export function validateAndFixColor(value: any) : VariableColorType {
  * Validates if the given value is a VariableColorType. Tho it's actual numbers are not validated. So they could be way off
  */
 export function isVariableColor(value: any): value is VariableColorType {
-
     if(!Array.isArray(value)) return false;
     if(value.length != 3) return false;
     

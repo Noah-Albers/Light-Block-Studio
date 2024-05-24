@@ -1,5 +1,15 @@
 import { IDataSource } from "src/nodes/definitions/DataSource";
-import { VariableColorType, validateAndFixColor } from "./ColorDataSource";
+import { VariableColorType, isVariableColor, validateAndFixColor } from "./ColorDataSource";
+
+/**
+ * Checks if a given value is of the type for a color-range
+ */
+export function isColorRangeColor(value: any) : value is ColorRangeType {
+    if(typeof value !== "object" || Array.isArray(value))
+        return false;
+
+    return isVariableColor(value.first) && isVariableColor(value.second);
+} 
 
 export type ColorDataConfig = {
     info: string | undefined

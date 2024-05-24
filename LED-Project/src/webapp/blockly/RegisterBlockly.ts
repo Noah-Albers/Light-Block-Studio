@@ -13,6 +13,10 @@ import { OnBlockRangeColorPicker } from "./fields/OnBlockColorrangePicker";
 export const DATA_OBJECT_NAME = "dataObj";
 export const MODEL_OBJECT_NAME = "model";
 
+// TODO: Ensure no other element has this name
+// Name used for the element that contains substatements
+export const BLOCKLY_SUBBLOCKY_NAME = "subblocks";
+
 
 // TODO: test this function
 
@@ -66,6 +70,9 @@ function buildJSONObjectFor(model: INodeModel) {
         "message0": newMsg,
         "args0": args,
         "colour": model.getOnBlockSettings().color,
+
+        "previousStatement": null,
+        "nextStatement": null,
     }
 }
 
@@ -92,6 +99,9 @@ function registerNodeModel(model: INodeModel) {
         
             // Builds the block
             this.jsonInit(buildJSONObjectFor(model));
+
+            if(model.hasSubModules())
+                this.appendStatementInput(BLOCKLY_SUBBLOCKY_NAME);
         }
     };
 }

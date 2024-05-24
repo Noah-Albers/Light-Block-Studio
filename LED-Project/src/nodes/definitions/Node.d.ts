@@ -30,6 +30,11 @@ export type OnBlockSettings = {
 export interface INodeModel {
 
     /**
+     * @returns if the model has submodels
+     */
+    hasSubModules() : boolean;
+
+    /**
      * @returns a key which is unique for every model. This is the name that blockly uses later on to identify the block itself.
      */
     getModelName() : string;
