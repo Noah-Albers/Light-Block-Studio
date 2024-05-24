@@ -5,7 +5,6 @@ export const Signals = Object.freeze({
      */
     VAR_CHANGE: 1,
 
-
     //#region Blockly-Events
 
     /**

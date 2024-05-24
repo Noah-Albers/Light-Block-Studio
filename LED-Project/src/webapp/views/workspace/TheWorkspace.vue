@@ -20,8 +20,7 @@ const Options = {
     disable: false,
     maxBlocks: Infinity,
     trashcan: true,
-    // TODO
-    media: "TODO",
+    media: "blocklyAssets",
     horizontalLayout: false,
     toolboxPosition: "start",
     css: true,
