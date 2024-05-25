@@ -17,6 +17,7 @@ export const useVariableStore = defineStore('variables', {
             // Holds the amount of leds that is set inside the settings
             AMOUNT: {
                 name: "amt",
+                // TODO: Update
                 value: 0,
                 
                 info: "Holds the amount of leds set inside the settings."
