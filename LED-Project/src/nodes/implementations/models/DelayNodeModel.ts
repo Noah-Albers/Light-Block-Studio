@@ -1,6 +1,7 @@
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
 import { NumberDataSource } from "../datasources/NumberDataSource";
+import { Registry } from "@registry/Registry";
 
 export class DelayNodeModel implements INodeModel {
 
@@ -30,7 +31,13 @@ export class DelayNodeModel implements INodeModel {
         return [this.delayField]
     }
     createConfigWithProcedure(supplier: IDataSourceSupplier) {
-        throw new Error("Method not implemented.");
+        const delay = supplier.get(this.delayField);
+        return {
+            procedure: Registry.procedures.delay,
+            options: {
+                delay
+            }
+        }
     }
 
     hasSubModules(): boolean {

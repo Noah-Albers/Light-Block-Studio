@@ -1,7 +1,7 @@
-import { ICodeConstructor } from "../ProcCodeConstructor";
-import { IDiagnostics } from "../ProcDiagnostics";
-import { ILEDNode } from "../ProcLEDNode";
-import { IProcedure, ProcedureOptions, ProcedureWithOptions } from "../Procedure";
+import { ICodeConstructor } from "@procedure/definitions/ProcCodeConstructor";
+import { IDiagnostics } from "@procedure/definitions/ProcDiagnostics";
+import { ILEDNode } from "@procedure/definitions/ProcLEDNode";
+import { IProcedure, ProcedureOptions, ProcedureWithOptions } from "@procedure/definitions/Procedure";
 
 // TODO: Comment
 export class SimpleProcedure<Options extends ProcedureOptions> implements IProcedure<Options> {
