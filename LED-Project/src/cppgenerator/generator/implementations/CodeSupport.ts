@@ -25,9 +25,15 @@ export class CodeSupport implements ICodeSupport{
         return `delay(${ms});`;
     }
 
-    public setLed(idx: number | string, r: number | string, g: number | string, b: number | string){
-        return `leds[${idx}] = CRGB(${r},${g},${b});`;
+    public setLedHSV(idx: string | number, h: string | number, s: string | number, v: string | number): string {
+
+        const iH = typeof h === "string" ? h : Math.round(h*255);
+        const iS = typeof s === "string" ? s : Math.round(s*255);
+        const iV = typeof v === "string" ? v : Math.round(v*255);
+
+        return `leds[${idx}] = CHSV(${iH},${iS},${iV});`;
     }
+
 
     public pushLeds(){
         return `FastLED.push();`;

@@ -1,5 +1,6 @@
 import { IVisualisationController } from "@visualizer/definitions/VisualisationController";
 import { VisualizerAbortError } from "@visualizer/definitions/VisualizerAbortError";
+import { HSV2RGB } from "@webapp/utils/color/ColorConverter";
 
 export type LEDArray = {[ledIndex: number]: [number,number,number]};
 export type LEDPushCallback = (leds: LEDArray)=>void;
@@ -27,21 +28,8 @@ export class VisualisationController implements IVisualisationController {
         this.onPushLeds = onPushLeds;
     }
     
-    /**
-     * Sets the RGB values for the LED at the specified index.
-     * 
-     * @param idx The index of the LED.
-     * @param r The red component of the RGB color (0-255).
-     * @param g The green component of the RGB color (0-255).
-     * @param b The blue component of the RGB color (0-255).
-     */
-    setLed(idx: number, r: number, g: number, b: number): void {
-        // Store the RGB values for the LED at the specified index
-        this.ledCache[idx] = [
-            Math.round(r),
-            Math.round(g),
-            Math.round(b)
-        ];        
+    setLedHSV(idx: number, h: number, s: number, v: number): void {
+        this.ledCache[idx] = Object.values(HSV2RGB(h, s, v)) as [number,number,number];
     }
 
     pushUpdate(): void {

@@ -136,12 +136,12 @@ export interface ICodeSupport {
      * Generates code to set the x-th LED to the specified RGB color value.
      * 
      * @param idx The index of the LED.
-     * @param r The red component of the color.
-     * @param g The green component of the color.
-     * @param b The blue component of the color.
+     * @param h the hue component of the color (0-1), except if its a variable string, then 0-255 (Integer)
+     * @param s the saturation component of the color (0-1), except if its a variable string, then 0-255 (Integer)
+     * @param v the value component of the color (0-1), except if its a variable string, then 0-255 (Integer)
      * @returns The generated code to set the LED color.
      */
-    setLed(idx: number | string, r: number | string, g: number | string, b: number | string): string;
+    setLedHSV(idx: number | string, h: number | string, s: number | string, v: number | string): string;
 
     /**
      * Generates code to push all set LED states to the stripe to be displayed.

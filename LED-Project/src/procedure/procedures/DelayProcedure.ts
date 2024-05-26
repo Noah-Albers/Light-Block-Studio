@@ -11,6 +11,7 @@ export type DelayProcedureOptions = {
 
 export class DelayProcLEDNode implements ILEDNode<DelayProcedureOptions> {
     async startNode(options: DelayProcedureOptions, ctrl: IVisualisationController): Promise<void> {
+        ctrl.pushUpdate();
         await ctrl.sleep(options.delay);
     }
 }
