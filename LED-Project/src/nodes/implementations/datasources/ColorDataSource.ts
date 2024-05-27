@@ -1,4 +1,6 @@
+import { solveExpression } from "@mathSolver/index";
 import { clamp } from "@utils/MathUtils";
+import { useVariableStore } from "@webapp/stores/VariableStore";
 import { IDataSource } from "src/nodes/definitions/DataSource";
 
 export type ColorDataConfig = {
@@ -12,6 +14,10 @@ export type ColorDataConfig = {
  * These will then be calculated on-the-fly
  */
 export type VariableColorType = [string | number, string | number, string | number];
+/**
+ * Normalized values for HUE, Saturation and Value to a range between 0 - 1
+ */
+export type HSVColor = [number, number, number];
 
 /**
  * Takes in two variable color types and returns if they are equal (Value wise)
@@ -80,7 +86,7 @@ const Defaults: Required<ColorDataConfig> = {
     info: undefined
 }
 
-export class ColorDataSource implements IDataSource<VariableColorType> {
+export class ColorDataSource implements IDataSource<VariableColorType, HSVColor> {
 
     private readonly config: Required<ColorDataConfig>;
     private readonly name: string;
@@ -92,6 +98,16 @@ export class ColorDataSource implements IDataSource<VariableColorType> {
         this.name = name;
         this.defaultValue = defaultValue;
     }
+
+    resolve(value: VariableColorType): HSVColor {
+        return value.map(x=>{
+            if(typeof x === "number")
+                return clamp(x);
+
+            return clamp(solveExpression(x, useVariableStore().variable2ValueMap, 1));
+        }) as HSVColor;
+    }
+
     getUniqueSourceName(): string {
         return "color"
     }

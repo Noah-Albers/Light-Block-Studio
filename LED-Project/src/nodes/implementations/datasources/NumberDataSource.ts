@@ -1,4 +1,6 @@
+import { solveExpression } from "@mathSolver/index";
 import { IDataSource } from "@nodes/definitions/DataSource";
+import { useVariableStore } from "@webapp/stores/VariableStore";
 
 export type NumberDataConfig = {
     // Type of number: "int" for integer or "float" for floating-point
@@ -21,7 +23,7 @@ const Defaults : Required<NumberDataConfig> = {
     type: "float"
 }
 
-export class NumberDataSource implements IDataSource<string> {
+export class NumberDataSource implements IDataSource<string, number> {
 
     private readonly config: Required<NumberDataConfig>;
     private readonly name: string;
@@ -55,7 +57,24 @@ export class NumberDataSource implements IDataSource<string> {
         return this.config.type === "float";
     }
 
-    export(value: String): string | number | boolean | object {
+    resolve(value: string): number {
+        let res = solveExpression(value, useVariableStore().variable2ValueMap, 1);
+
+        // Ensures an int if required
+        if(!this.isFloat && !Number.isInteger(res))
+            res = Math.round(res);
+
+        // Clamps the value
+        if(this.config.min !== undefined && res < this.config.min)
+            res = this.config.min;
+
+        if(this.config.max !== undefined && res > this.config.max)
+            res = this.config.max;
+        
+        return res;
+    }
+
+    export(value: string): string | number | boolean | object {
         return value;
     }
 

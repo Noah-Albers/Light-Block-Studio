@@ -1,5 +1,8 @@
 import { IDataSource } from "src/nodes/definitions/DataSource";
-import { VariableColorType, areVariableColorsEqual, isVariableColor, validateAndFixColor } from "./ColorDataSource";
+import { HSVColor, VariableColorType, areVariableColorsEqual, isVariableColor, validateAndFixColor } from "./ColorDataSource";
+import { clamp } from "@utils/MathUtils";
+import { solveExpression } from "@mathSolver/index";
+import { useVariableStore } from "@webapp/stores/VariableStore";
 
 /**
  * Checks if a given value is of the type for a color-range
@@ -24,12 +27,16 @@ export type ColorRangeType = {
     first: VariableColorType,
     second: VariableColorType
 };
+export type HSVColorRange = {
+    first: HSVColor,
+    second: HSVColor
+}
 
 const Defaults: Required<ColorDataConfig> = {
     info: undefined
 }
 
-export class ColorRangeDataSource implements IDataSource<ColorRangeType> {
+export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColorRange> {
 
     private readonly config: Required<ColorDataConfig>;
     private readonly name: string;
@@ -44,6 +51,21 @@ export class ColorRangeDataSource implements IDataSource<ColorRangeType> {
             second: defaultSecondValue
         };
     }
+
+    resolve(value: ColorRangeType): HSVColorRange {
+        const mapper = (val: VariableColorType)=>val.map(x=>{
+            if(typeof x === "number")
+                return clamp(x);
+
+            return clamp(solveExpression(x, useVariableStore().variable2ValueMap, 1));
+        }) as HSVColor;
+
+        return {
+            first: mapper(value.first),
+            second: mapper(value.second),
+        } as HSVColorRange
+    }
+
     getUniqueSourceName(): string {
         return "colorrange"
     }

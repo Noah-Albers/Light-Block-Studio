@@ -31,15 +31,15 @@ export class SetLedNodeModel implements INodeModel {
     getBlockMessage(): string {
         return "Color led %1 in %2";
     }
-    getOnBlockSources(): IDataSource<any>[] {
+    getOnBlockSources(): IDataSource<any, any>[] {
         return [this.idxField, this.colorField]
     }
-    getSources(): IDataSource<any>[] {
+    getSources(): IDataSource<any, any>[] {
         return this.getOnBlockSources();
     }
     createConfigWithProcedure(supplier: IDataSourceSupplier) {
 
-        const clr = supplier.get<[number, number, number]>(this.colorField);
+        const clr = supplier.get(this.colorField);
 
         return {
             procedure: Registry.procedures.setLedSimple,

@@ -5,9 +5,15 @@
     // The data should be displayed off the block
     "off-block";*/
 
-export interface IDataSource<Type> {
+export interface IDataSource<Type, ResolvedType> {
     // TODO: Maybe use later
     //private hints: Hint[];
+
+    /**
+     * Finalizes the value and calculates it. For example string formulars will be calculates with variables and such
+     * @param value 
+     */
+    resolve(value: Type): ResolvedType;
 
     /**
      * @returns a string which will be used as a key to store values later on.

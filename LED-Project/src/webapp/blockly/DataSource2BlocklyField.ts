@@ -11,7 +11,7 @@ import { OnBlockRangeColorPicker } from "./fields/OnBlockColorrangePicker";
  * @param datasource 
  * @returns the corresponding name of the blockly-field which shall be used for that data source
  */
-export function getBlocklyFieldNameFromModel(ds: IDataSource<any>) : string {
+export function getBlocklyFieldNameFromModel(ds: IDataSource<any, any>) : string {
 
     // TODO: Improve mapping
 
