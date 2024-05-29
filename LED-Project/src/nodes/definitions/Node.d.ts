@@ -10,6 +10,13 @@ export interface IDataSourceSupplier {
      * @param source 
      */
     get<X>(source: IDataSource<any,X>) : X;
+
+    /**
+     * Used to retreive the config and procedures of subblocks which have been registered
+     * 
+     * @note the hasSubNodes Property must return true on the node-model for this to work
+     */
+    buildConfigOfSubnodes() : ProcedureWithOptions<any,any>[];
 }
 
 /**
@@ -32,7 +39,7 @@ export interface INodeModel {
     /**
      * @returns if the model has submodels
      */
-    hasSubModules() : boolean;
+    hasSubNodes() : boolean;
 
     /**
      * @returns a key which is unique for every model. This is the name that blockly uses later on to identify the block itself.

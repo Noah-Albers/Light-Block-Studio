@@ -31,8 +31,6 @@ export class Visualizer implements IVisualizer {
         try {
             const signal = this.abortController.signal;
 
-            // TODO Use diagnostics to check how long the loop animations run and add a 50ms delay if they are below that
-
             // Creates the controller which the LEDNodes can accss
             const controller = new VisualisationController(signal, this.onPushLeds);
             
@@ -45,11 +43,18 @@ export class Visualizer implements IVisualizer {
 
             // Loops through loop procedures until aborted
             while(true) {
+                const startTime = Date.now();
+
                 for(let proc of loop){
                     await proc.procedure.getLEDNode().startNode(proc.options, controller);
     
                     if(signal.aborted) return;
                 }
+
+                // Inserts a small delay if the runtime was below 500 ms
+                const runTime = Date.now() - startTime;
+                if(runTime < 500)
+                    await controller.sleep(500);
             }
         }catch(err){
 

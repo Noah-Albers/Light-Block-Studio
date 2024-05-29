@@ -6,7 +6,9 @@ import { IVisualisationController } from "@visualizer/definitions/VisualisationC
 export class LoopProcLEDNode implements ILEDNode<LoopProcedureOptions> {
 
     async startNode(options: LoopProcedureOptions, ctrl: IVisualisationController): Promise<void> {
-        for(let i=0; i < options.repeats; i++)
+        const repeats = options.repeats < 0 ? Infinity : options.repeats;
+
+        for(let i=0; i < repeats; i++)
             for(let proc of options.sub)
                 await proc.procedure.getLEDNode().startNode(proc.options, ctrl);
     }

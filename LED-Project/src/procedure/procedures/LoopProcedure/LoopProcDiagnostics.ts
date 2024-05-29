@@ -4,6 +4,9 @@ import { LoopProcedureOptions } from "./LoopProcedure";
 export class LoopProcDiagnostics implements IDiagnostics<LoopProcedureOptions> {
 
     evaluateRuntime(opts: LoopProcedureOptions): number | undefined {
+
+        if(opts.repeats < 0) return Infinity;
+
         // Evaluates the runtime of all submodules
         let result = opts.sub.map(proc=>proc.procedure.getDiagnostics().evaluateRuntime(proc.options));
 

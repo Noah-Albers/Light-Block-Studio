@@ -7,6 +7,9 @@ import { LoopProcLEDNode } from "./LoopProcLEDNode";
 import { ILEDNode } from "@procedure/definitions/ProcLEDNode";
 
 export type LoopProcedureOptions = {
+    /**
+     * How many repeats shall be made, if negative, the repeat cound will be infinite
+     */
     repeats: number,
     sub: ProcedureWithOptions<any>[]
 }

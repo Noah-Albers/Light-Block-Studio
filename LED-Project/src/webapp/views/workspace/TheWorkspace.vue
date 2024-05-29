@@ -11,6 +11,7 @@ import Blockly from 'blockly';
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 import { createToolbox } from "@webapp/blockly/RegisterBlockly";
+import { onWorkspaceChange } from "./WorkspaceConfigBuilder"; 
 
 const Options = {
     // TODO: Add theme
@@ -64,13 +65,25 @@ onMounted(() => {
     var obs = new ResizeObserver(_ => Blockly.svgResize(workspace));
     obs.observe(blocklyDiv.value);
 
+    // Creates the base blocks
+    const rootBlocks = ["led_root_setup", "led_root_loop"];
+    for(let i=0;i<rootBlocks.length;i++){
+        var setup = workspace.newBlock(rootBlocks[i]);
+        setup.moveBy(100 + 250*i,100);
+        setup.initSvg();
+        setup.render();	
+    }
+
     // Listens for blockly-events
     workspace.addChangeListener(evt=>{
-        switch(evt.type){
 
+        switch(evt.type){
             // Waits for a block change (Select / deselect)
             case Blockly.Events.SELECTED:
                 SignalDispatcher.emit(Signals.BLOCKLY_BLOCK_SELECTION_CHANGE, workspace.getBlockById(evt.newElementId));
+            case Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE: case Blockly.Events.CREATE: case Blockly.Events.MOVE: case Blockly.Events.CHANGE:
+                // Runs the blockly change event
+                onWorkspaceChange(workspace);
                 return;
         }
     });

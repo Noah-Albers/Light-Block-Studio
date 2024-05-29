@@ -59,7 +59,7 @@ function buildJSONObjectFor(model: INodeModel) {
         // Otherwise adds the required field and continues
         args.push({
             "type": getBlocklyFieldNameFromModel(source),
-            "name": source.getUniqueSourceName(),
+            "name": source.getKey(),
         });
         return `${args.length}`;
     });
@@ -86,26 +86,52 @@ function registerNodeModel(model: INodeModel) {
         init: function () {
             // Creates the data object
             const dataObj: BlockData = {};
-            
+
             // Sets the default values for the on-block sources
             for (let ds of model.getOnBlockSources())
-                dataObj[ds.getUniqueSourceName()] = ds.getDefaultValue();
+                dataObj[ds.getKey()] = ds.getDefaultValue();
 
             // Adds the data object onto the block
             // Its made a Ref-Type to ensure that blocks and external components can react to changes
             this[DATA_OBJECT_NAME] = ref(dataObj);
             // Adds the model to the block
             this[MODEL_OBJECT_NAME] = model;
-        
+
             // Builds the block
             this.jsonInit(buildJSONObjectFor(model));
 
-            if(model.hasSubModules())
+            if (model.hasSubNodes())
                 this.appendStatementInput(BLOCKLY_SUBBLOCKY_NAME);
         }
     };
 }
 
+/**
+ * Registers other blockly-blocks which dont fit as node-modules
+ */
+function registerOtherBlocks() {
+    Blockly.Blocks['led_root_setup'] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Run on setup");
+            this.setNextStatement(true, null);
+            this.setColour(60);
+            this.setDeletable(false);
+            this.setEditable(false);
+        }
+    };
+
+    Blockly.Blocks['led_root_loop'] = {
+        init: function () {
+            this.appendDummyInput()
+                .appendField("Run on loop");
+            this.setNextStatement(true, null);
+            this.setColour(60);
+            this.setDeletable(false);
+            this.setEditable(false);
+        }
+    };
+}
 
 /**
  * Registers custom fields to blockly that are used
@@ -165,7 +191,7 @@ export function createToolbox(): object {
     const groupedModels = groupBy(Registry.nodeModels, mdl => mdl.getOnBlockSettings().category);
 
     // Maps the categorys to json content (Representation for the toolbox)
-    const categorysAsJson = Object.keys(groupedModels).map(name=>groupedItemsToCategory(name, groupedModels[name]));
+    const categorysAsJson = Object.keys(groupedModels).map(name => groupedItemsToCategory(name, groupedModels[name]));
 
     return {
         "kind": "categoryToolbox",
@@ -178,6 +204,8 @@ export function createToolbox(): object {
  * This registers all node-models to blockly as blockly blocks
  */
 export function registerBlockly() {
+    registerOtherBlocks();
+
     // Iterates over all models and registers them
     Registry.nodeModels.forEach(registerNodeModel);
 

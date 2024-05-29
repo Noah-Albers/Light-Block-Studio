@@ -40,7 +40,7 @@ export class DelayNodeModel implements INodeModel {
         }
     }
 
-    hasSubModules(): boolean {
+    hasSubNodes(): boolean {
         return false;
     }
 

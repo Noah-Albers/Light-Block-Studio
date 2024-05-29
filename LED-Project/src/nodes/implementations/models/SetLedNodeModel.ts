@@ -52,7 +52,7 @@ export class SetLedNodeModel implements INodeModel {
         }
     }
 
-    hasSubModules(): boolean {
+    hasSubNodes(): boolean {
         return true;
     }
 }

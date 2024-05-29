@@ -17,6 +17,7 @@ export class LoopProcCodeConstructor implements ICodeConstructor<LoopProcedureOp
         let idx = genTools.registerVariable("idx");
 
         let code = [
+            options.repeats < 0 ? `while(true) {` : 
             `for(int ${idx}=0; ${idx} < ${options.repeats}; ${idx}++) {`,
             ...genTools.setTabs(result.code, 4).split("\n"),
             `}`
