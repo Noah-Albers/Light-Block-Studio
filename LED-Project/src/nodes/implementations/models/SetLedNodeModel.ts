@@ -29,7 +29,7 @@ export class SetLedNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Color led %1 in %2";
+        return "Led %1 in %2";
     }
     getOnBlockSources(): IDataSource<any, any>[] {
         return [this.idxField, this.colorField]
@@ -53,6 +53,6 @@ export class SetLedNodeModel implements INodeModel {
     }
 
     hasSubNodes(): boolean {
-        return true;
+        return false;
     }
 }

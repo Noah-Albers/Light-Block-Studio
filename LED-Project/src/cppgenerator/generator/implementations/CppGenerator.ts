@@ -45,6 +45,9 @@ export class CppGenerator implements ICppGenerator {
         variables["loop"] = loopResult.code;
         variables["globals"] = funcGenerationResult.code;
 
+        if(loopResult.dirtyState)
+            variables["loop"] += "\n"+extCodeSupport.pushLeds();
+
         // Moves the template to zero
         let template = setSpaces(settings.template, 0);
 

@@ -36,18 +36,14 @@ export function onWorkspaceChange(ws: Workspace){
     const loopCfg = buildProceduresOfBlock(loop.getNextBlock(), setupCfg.foundProc === undefined ? selectedBlock : undefined);
 
     // Gets the preview config which changes based on the users selection
-    let previewConfig: ProcedureWithOptions<any>[] = (function getPreview() {
+    let previewConfig: ProcedureWithOptions<any>[] | undefined = (function getPreview() {
         if(setupCfg.foundProc)
             return [setupCfg.foundProc]
 
         if(loopCfg.foundProc)
             return [loopCfg.foundProc];
 
-        if(selectedBlock === setup)
-            return setupCfg.all;
-
-        if(selectedBlock === loop)
-            return loopCfg.all;
+        if(selectedBlock === loop || selectedBlock === setup) return undefined;
 
         if(selectedBlock !== undefined)
             return buildProceduresOfBlock(selectedBlock).all;

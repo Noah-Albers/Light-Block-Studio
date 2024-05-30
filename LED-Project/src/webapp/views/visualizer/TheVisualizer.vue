@@ -24,40 +24,60 @@
 import { onMounted, ref, watch } from 'vue';
 import { useProjectStore } from "../../stores/ProjectStore";
 import { storeToRefs } from 'pinia';
-
-const {preview} = storeToRefs(useProjectStore());
+import { useProjectImage } from "./VisualisationProjectImageLoader"
+import { useSignal } from '@webapp/utils/vue/VueSignalListener';
+import { Signals } from '@webapp/utils/signals/Signals';
+import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
+import { Visualizer } from '@visualizer/index';
+import { LEDArray } from '@visualizer/implementations/VisualisationController';
 
 // HTML-Ref
 const refWrapper = ref(null as any as Element);
 
-// Holds all loaded leds
-const leds = ref(undefined as undefined | {[key: number]: SVGElement});
+const leds = useProjectImage(refWrapper, onPreviewElementChange);
+useSignal(Signals.BLOCKLY_PREVIEW_CREATE_CONFIG, onBlocklyPreviewChange);
 
-// Loads the currently set image into the component
-async function loadImage() {
-    let content;
+const visualizer = new Visualizer(onVisualizerPushLeds);
 
-    if(preview.value.startsWith("@")){
-        // Validates to be a simple file name and not an url or something else
-        if(!/^@[a-zA-Z0-9_\-.]+$/g.test(preview.value)){
-            // Resets the preview and continues
-            preview.value = "@Goggles.svg";
-            return;
-        }
+// Event: When the visualizer pushes an update for the leds
+function onVisualizerPushLeds(array: LEDArray){
+    // Ensures the html preview exists
+    if(leds.value === undefined) return;
 
-        // Loads the preview
-        content = await (await fetch("previews/"+preview.value.substring(1))).text();
+    // Iterates over all changed leds
+    for(let idx in array){
+        let ledVal = array[idx];
 
-    }else
-        content = preview.value;
+        let elements = leds.value[idx];
 
-    // THIS IS A VERY INSECURE OPERATION. BUT BECAUSE Content-Security-Policy FORBIDS SCRIPT TAGS AND SUCH, THIS SHOULD BE SAFE.
-    refWrapper.value.innerHTML = content;
+        if(elements === undefined) continue;
 
-    leds.value = Array.from(refWrapper.value.querySelectorAll("[led]"));
+        const fill = `fill: rgb(${ledVal.join(",")});`;
+
+        for(let elm of elements)
+            elm.setAttribute("style", fill);
+    }
 }
 
-onMounted(loadImage);
-watch(preview, loadImage);
+// Event: The animation that shall play changed
+function onBlocklyPreviewChange(preview?: ProcedureWithOptions<any>[]){
+    // Clears the preview
+    if(leds.value !== undefined)
+        for(let ledIdx in leds.value)
+            for(let elm of leds.value[ledIdx])
+                elm.setAttribute("style","");
+
+    if(preview === undefined){
+        visualizer.abortVisualizer();
+        return;
+    }
+
+    // (Re)starts the visualizer
+    visualizer.startVisualizer(preview);
+}
+
+function onPreviewElementChange(){
+    // Nothing to do, the visualizer will notice automagially
+}
 
 </script>

@@ -7,10 +7,19 @@ export class LoopProcLEDNode implements ILEDNode<LoopProcedureOptions> {
 
     async startNode(options: LoopProcedureOptions, ctrl: IVisualisationController): Promise<void> {
         const repeats = options.repeats < 0 ? Infinity : options.repeats;
+        
+        for(let i=0; i < repeats; i++){
+            const startTime = Date.now();
 
-        for(let i=0; i < repeats; i++)
+            // Runs the sub-procedures
             for(let proc of options.sub)
                 await proc.procedure.getLEDNode().startNode(proc.options, ctrl);
+
+            // Inserts a small delay if the runtime was below 500 ms
+            const runTime = Date.now() - startTime;
+            if(runTime < 500 && repeats === Infinity)
+                await ctrl.sleep(500);
+        }
     }
 
 }

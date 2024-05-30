@@ -2,6 +2,9 @@ import { IVisualisationController } from "@visualizer/definitions/VisualisationC
 import { VisualizerAbortError } from "@visualizer/definitions/VisualizerAbortError";
 import { HSV2RGB } from "@webapp/utils/color/ColorConverter";
 
+/**
+ * For (possibly) every led index this holds the led colors in an array of RGB with a range of 0 - 255
+ */
 export type LEDArray = {[ledIndex: number]: [number,number,number]};
 export type LEDPushCallback = (leds: LEDArray)=>void;
 
@@ -44,6 +47,11 @@ export class VisualisationController implements IVisualisationController {
         const self = this;
 
         return new Promise((res, rej)=>{
+
+            if(self.abortSignal.aborted){
+                rej(new VisualizerAbortError());
+                return;
+            }
 
             let timeoutId: NodeJS.Timeout = setTimeout(onDone, ms);
             
