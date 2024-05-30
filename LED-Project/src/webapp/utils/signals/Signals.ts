@@ -5,6 +5,11 @@ export const Signals = Object.freeze({
      */
     VAR_CHANGE: 1,
 
+    /**
+     * Requests the blockly workspace to build the config and then emit the normal events for that
+     */
+    REQUEST_CONFIG_BUILD: 6,
+
     //#region Blockly-Events
 
     /**

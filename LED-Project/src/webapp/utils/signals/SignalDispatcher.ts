@@ -14,6 +14,7 @@ export type Events = {
         setup: ProcedureWithOptions<any>[],
         loop: ProcedureWithOptions<any>[]
     },
+    [Signals.REQUEST_CONFIG_BUILD]: void
 }
 
 export const SignalDispatcher = mitt<Events>();

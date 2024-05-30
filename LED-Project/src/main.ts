@@ -19,6 +19,14 @@ import { createVuetify } from 'vuetify/lib/framework.mjs'
 import { createPinia } from 'pinia'
 import { registerBlockly } from '@webapp/blockly/RegisterBlockly'
 
+import hljs from 'highlight.js/lib/core';
+import arduino from 'highlight.js/lib/languages/arduino';
+
+import "highlight.js/scss/atom-one-dark.scss"
+
+// Then register the languages you need
+hljs.registerLanguage('arduino', arduino);
+
 // Registers the blockly-blocks
 registerBlockly();
 

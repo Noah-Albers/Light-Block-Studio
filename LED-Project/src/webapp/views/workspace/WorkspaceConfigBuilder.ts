@@ -19,7 +19,7 @@ let cmpElements: {
  * Note: This may be called multiple times, so a debounce function is required
  * @param {Workspace} ws the blockly workspace which changed
  */
-export function onWorkspaceChange(ws: Workspace){
+export function buildWorkspaceAndSendEvents(ws: Workspace, forceRebuild: boolean = false){
     
     // Gets all blocks that are not disabled (So basially only the top root blocks)
 	var blocks = ws.getTopBlocks().filter((block: Block)=>block.isEnabled());
@@ -64,12 +64,13 @@ export function onWorkspaceChange(ws: Workspace){
 
     // Checks if the configs are different from the previous ones and if so, sends the events
 
-    if(cmpElements.preview === undefined || !equals(previewConfig,cmpElements.preview)){
+    if(cmpElements.preview === undefined || !equals(previewConfig,cmpElements.preview) || forceRebuild){
         cmpElements.preview = previewConfig
         SignalDispatcher.emit(Signals.BLOCKLY_PREVIEW_CREATE_CONFIG, previewConfig);
     }
 
     if(
+        forceRebuild ||
         cmpElements.loop === undefined ||
         cmpElements.setup === undefined ||
         !equals(setupCfg.all, cmpElements.setup) ||

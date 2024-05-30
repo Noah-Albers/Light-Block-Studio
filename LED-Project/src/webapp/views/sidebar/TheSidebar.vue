@@ -3,7 +3,7 @@
         class="default-theme"
         :push-other-panes="false">
         <Pane>
-            <TheVisualizer/>
+            <TheUpperSidebar/>
         </Pane>
         <Pane>
 
@@ -61,7 +61,7 @@
     import TheOffBlock from "@webapp/views/offblock/TheOffBlock.vue";
     import { computed } from 'vue';
     import { getBlockDataObject, getBlockModel } from '@webapp/blockly/OnBlockUtils';
-    import TheVisualizer from "@webapp/views/visualizer/TheVisualizer.vue";
+    import TheUpperSidebar from "./TheUpperSidebar.vue";
 
     const tabs = ref({
         lower: null
