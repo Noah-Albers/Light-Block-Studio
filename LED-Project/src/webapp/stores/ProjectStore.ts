@@ -33,6 +33,9 @@ export const useProjectStore = defineStore('project', {
 
         loopPushLeds: true as boolean,
 
+        // If set, multiple empty lines will be trimmed down to a single one, improving code readability
+        trimEmptyLines: true as boolean,
+
         hooks: {
             pushleds: "FastLED.push();",
             sleep: "delay($$time$$);",

@@ -53,6 +53,7 @@ export function generateCode(setup: ProcedureWithOptions<any>[], loop: Procedure
         variables: getVariables(),
         template: store.codeTemplate,
         hooks: prepareCodeHooks(),
-        loopPushLeds: store.loopPushLeds
+        loopPushLeds: store.loopPushLeds,
+        trimEmptyLines: store.trimEmptyLines
     })
 }

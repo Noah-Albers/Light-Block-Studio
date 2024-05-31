@@ -49,10 +49,14 @@ export class CppGenerator implements ICppGenerator {
             variables["loop"] += "\n"+extCodeSupport.pushLeds();
 
         // Moves the template to zero
-        let template = setSpaces(settings.template, 0);
+        let code = setSpaces(settings.template, 0);
+        code = insertVariables(code, variables);
+
+        if(settings.trimEmptyLines)
+            code = code.replaceAll(/\n[\n \t]*\n{2,}/g, "\n")
 
         // Inserts the variables into the template
-        return insertVariables(template, variables);
+        return code;
     }
 }
 

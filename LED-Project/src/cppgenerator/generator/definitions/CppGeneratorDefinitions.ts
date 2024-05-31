@@ -111,7 +111,10 @@ export type GenerationSettings = {
     hooks: CodeHooks,
 
     // If a single push shall be added at the loop end (If the leds are dirty)
-    loopPushLeds: boolean
+    loopPushLeds: boolean,
+
+    // If set, multiple empty lines will be trimmed down to a single one, improving code readability
+    trimEmptyLines: boolean
 }
 
 /**
