@@ -52,7 +52,7 @@ export class CppGenerator implements ICppGenerator {
         let template = setSpaces(settings.template, 0);
 
         // Inserts the variables into the template
-        return insertVariables(template, variables);
+        return insertVariables(template, variables).replaceAll(/\n[\n \t]*\n{2,}/g, "\n");
     }
 }
 
