@@ -23,7 +23,7 @@ useSignal(Signals.BLOCKLY_ALL_CREATE_CONFIG, ({setup, loop})=>{
     formattedData.value = hljs.highlight(
         code,
         { language: 'arduino' }
-    ).value    
+    ).value
 });
 
 // Requests the config to be recreated

@@ -1,5 +1,11 @@
 <template>
   <v-app>
+    <v-overlay
+      v-model="menuOpen"
+      class="align-center justify-center"
+    >
+      <TheSettingsMenus/>
+    </v-overlay>
 
     <!-- Workspace and sidebar -->
     <v-main>
@@ -68,8 +74,12 @@
   import { sendSignalAwaitResponse } from "./utils/signals/SignalAwaiter";
   import { generateCode } from "./views/codeview/CodeGenerator"
   import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
+  import TheSettingsMenus from "./views/settingsmenu/TheSettingsMenu.vue";
+  import { ref } from 'vue';
 
   const store = useSettingsStore();
+
+  const menuOpen = ref(false);
 
   /**
    * When the copy-code button is clicked
@@ -91,6 +101,11 @@
 
   // Menu items on the bottom
   const bottomItems = [
+    {
+      title: "Settings",
+      icon: "mdi-cog",
+      action: ()=>menuOpen.value = true
+    },
     {
       title: "Copy Code",
       icon: "mdi-code-tags",

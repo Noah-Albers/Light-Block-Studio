@@ -25,9 +25,12 @@ void loop(){
 export const useProjectStore = defineStore('project', {
     state: () => ({
         // TODO: Comment this stuff
+
+        // Quick settings accessible from the quick access menu
         preview: "@Goggles.svg" as string,
         codeTemplate: CodeTemplate,
         pin: 0,
+
         loopPushLeds: true as boolean,
 
         hooks: {
