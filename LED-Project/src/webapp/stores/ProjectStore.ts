@@ -27,7 +27,18 @@ export const useProjectStore = defineStore('project', {
         // TODO: Comment this stuff
         preview: "@Goggles.svg" as string,
         codeTemplate: CodeTemplate,
-        pin: 0
+        pin: 0,
+        loopPushLeds: true as boolean,
+
+        hooks: {
+            pushleds: "FastLED.push();",
+            sleep: "delay($$time$$);",
+            sethsv: "leds[$$idx$$] = CHSV($$hue$$,$$saturation$$,$$value$$);",
+            millis: "millis()",
+
+            setup: "$$code$$",
+            loop: "$$code$$"
+        }
     }),
 
     getters: {

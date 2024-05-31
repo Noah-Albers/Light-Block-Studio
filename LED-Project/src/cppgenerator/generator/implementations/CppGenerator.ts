@@ -1,5 +1,5 @@
 import { IProcedure, ProcedureOptions, ProcedureWithOptions } from "src/procedure/definitions/Procedure";
-import { GenerationSettings, GetFnHandleByName, ICodeSupport, ICppGenerator, IExtendedCodeSupport } from "../definitions/CppGeneratorDefinitions";
+import { CodeGenerationType, GenerationSettings, GetFnHandleByName, ICodeSupport, ICppGenerator, IExtendedCodeSupport } from "../definitions/CppGeneratorDefinitions";
 import { CppFnManager } from "@cppgen/functionManager";
 import VariableSupplier from "@cppgen/functionManager/implementations/VariableSupplier";
 import { CodeSupport, ExtendedCodeSupport } from "./CodeSupport";
@@ -33,8 +33,8 @@ export class CppGenerator implements ICppGenerator {
         const extCodeSupport: IExtendedCodeSupport = new ExtendedCodeSupport(settings, varSup, funcGenerationResult.callGenerator, fnMapByProcName);
 
         // Generates the setup and loop codes
-        const setupResult = extCodeSupport.generateCodeForProcedures(setup, false);
-        const loopResult = extCodeSupport.generateCodeForProcedures(loop, setupResult.dirtyState);
+        const setupResult = extCodeSupport.generateCodeForProcedures(setup, false, CodeGenerationType.Setup);
+        const loopResult = extCodeSupport.generateCodeForProcedures(loop, setupResult.dirtyState, CodeGenerationType.Loop);
 
         // Generates the variable object
         
@@ -45,7 +45,7 @@ export class CppGenerator implements ICppGenerator {
         variables["loop"] = loopResult.code;
         variables["globals"] = funcGenerationResult.code;
 
-        if(loopResult.dirtyState)
+        if(loopResult.dirtyState && settings.loopPushLeds)
             variables["loop"] += "\n"+extCodeSupport.pushLeds();
 
         // Moves the template to zero

@@ -1,5 +1,5 @@
 import { CppArgs, ICppFnCallGenerator, ICppFnHandle, IVariableSupplier } from "@cppgen/functionManager";
-import { CodeResult, GenerationSettings, GetFnHandleByName, ICodeSupport, IExtendedCodeSupport } from "../definitions/CppGeneratorDefinitions";
+import { CodeGenerationType, CodeResult, GenerationSettings, GetFnHandleByName, ICodeSupport, IExtendedCodeSupport } from "../definitions/CppGeneratorDefinitions";
 import { ProcedureWithOptions } from "src/procedure/definitions/Procedure";
 import * as CodeShifter from "@cppgen/functionManager/utils/CodeShifter";
 
@@ -22,7 +22,7 @@ export class CodeSupport implements ICodeSupport{
     }
 
     public sleep(ms: number | string){
-        return `delay(${ms});`;
+        return this.settings.hooks.sleep(ms);
     }
 
     public setLedHSV(idx: string | number, h: string | number, s: string | number, v: string | number): string {
@@ -31,12 +31,15 @@ export class CodeSupport implements ICodeSupport{
         const iS = typeof s === "string" ? s : Math.round(s*255);
         const iV = typeof v === "string" ? v : Math.round(v*255);
 
-        return `leds[${idx}] = CHSV(${iH},${iS},${iV});`;
+        return this.settings.hooks.setHSV(idx,iH,iS,iV);
     }
 
+    public millis(): string {
+        return this.settings.hooks.millis();
+    }
 
     public pushLeds(){
-        return `FastLED.push();`;
+        return this.settings.hooks.pushLeds();
     }
 }
 
@@ -56,15 +59,20 @@ export class ExtendedCodeSupport extends CodeSupport implements IExtendedCodeSup
         return this.callGenerator.getCallFor<Args, ExtendedCodeSupport>(func, call);
     }
 
-    generateCodeForProcedures(chain: ProcedureWithOptions<any>[], dirtyState: boolean): CodeResult {
+    generateCodeForProcedures(chain: ProcedureWithOptions<any>[], dirtyState: boolean, type?: CodeGenerationType): CodeResult {
         // Initialize the dirty state flag
         let isDirty = dirtyState;
 
         // Initialize an empty string to accumulate the generated code
         let fullCode = "";
 
+        if(type === undefined)
+            type = CodeGenerationType.Normal;
+
         // Iterate over each procedure in the chain
-        for (let { options, procedure } of chain) {
+        for(let i=0;i<chain.length;i++){
+            let {options, procedure} = chain[i];
+
             // Retrieve the associated C++ functions registered by the procedure
             let associatedFunctions = this.fnMap[procedure.name];
 
@@ -75,9 +83,15 @@ export class ExtendedCodeSupport extends CodeSupport implements IExtendedCodeSup
                 associatedFunctions,
                 isDirty
             );
+            let code = codeResult.code;
 
+            
+            // Wraps the result in the user defined hook (If required)
+            if(type !== CodeGenerationType.Normal)
+                code = (type === CodeGenerationType.Setup ? this.settings.hooks.setup : this.settings.hooks.loop)(code, i);
+            
             // Append the generated code to the full code string
-            fullCode += this.setTabs(codeResult.code, 0) + "\n";
+            fullCode += this.setTabs(code, 0) + "\n";
 
             // Update the dirty state based on the result of the code generation
             isDirty = codeResult.dirtyState;

@@ -2,7 +2,7 @@
     <Splitpanes horizontal
         class="default-theme"
         :push-other-panes="false">
-        <Pane>
+        <Pane style="overflow: auto">
             <TheUpperSidebar/>
         </Pane>
         <Pane>

@@ -4,6 +4,38 @@ import { CC_CppFnHandles } from "src/procedure/definitions/ProcCodeConstructor";
 import { ProcedureWithOptions } from "src/procedure/definitions/Procedure";
 
 /**
+ * Holds hooks to change how specific portions of the code are generated from the outside
+ */
+export type CodeHooks = {
+    // Used to pushed leds to the "led" screen
+    pushLeds: ()=>string,
+
+    // Used to create a delay of "time" milliseconds
+    sleep: (time: number|string)=>string,
+
+    /**
+     * Used to set the led at index
+     * @param idx to the HSV color of
+     * @param h hue (0-255)
+     * @param s saturation (0-255)
+     * @param v value (0-255)
+     */
+    setHSV: (idx: number|string, h:number|string, s:number|string,v:number|string)=>string,
+
+    // In-Program getter to get how many milliseconds have passed since the program started. Useful for creating over time animations
+    millis: ()=>string,
+
+    /**
+     * Around every "line" (meaning code generated from a single module) 
+     * this is generated. Can be used to implement custom logic that switches between lines
+     * @param code the actual code of the line
+     * @param count an incrementing index which keeps track on which instruction index the current one is
+     */
+    setup: (code: string, count: number)=>string,
+    loop: (code: string, count: number)=>string,
+}
+
+/**
  * Settings which are passed to the cpp generator
  */
 export type GenerationSettings = {
@@ -63,7 +95,23 @@ export type GenerationSettings = {
      * 
      * The reserved values for "setup", "loop" and "global" will be ignored and overwritten.
      */
-    variables: {[key: string]: string}
+    variables: {[key: string]: string},
+
+    /**
+     * Hooks are used to influence how specific code is generated or inserted into the final piece.
+     * @example
+     * ```
+     * Hooking setLedHSV(index, hue, saturation, value)
+     * 
+     * Change from `leds[$$index$$] = CHSV($$hue$$, $$saturation$$, $$value$$)`
+     * 
+     * to `myCustomHandler($$index$$, $$hue$$, $$saturation$$, $$value$$)`
+     * ```
+     */
+    hooks: CodeHooks,
+
+    // If a single push shall be added at the loop end (If the leds are dirty)
+    loopPushLeds: boolean
 }
 
 /**
@@ -149,6 +197,19 @@ export interface ICodeSupport {
      * @returns The generated code to push LED states to the stripe.
      */
     pushLeds(): string;
+
+    /**
+     * Generates code which gives (In Cpp) back a long that holds how many milliseconds it has been since th controller started.
+     * This can be used to implement over time changing animations
+     */
+    millis(): string;
+}
+
+// Defines which type is code is currently being generated. Usually normal is correct
+export enum CodeGenerationType {
+    Normal,
+    Setup,
+    Loop
 }
 
 /**
@@ -172,9 +233,10 @@ export interface IExtendedCodeSupport extends ICodeSupport {
      * 
      * @param chain The chain of sub-procedures to generate code for.
      * @param dirtyState A flag indicating whether there is remaining data to be processed.
+     * @param type holds were the requested code is used. Leave this as undefined if you are not sure.
      * @returns An object containing generated code and the dirty state flag.
      */
-    generateCodeForProcedures(chain: ProcedureWithOptions<any>[], dirtyState: boolean): CodeResult;
+    generateCodeForProcedures(chain: ProcedureWithOptions<any>[], dirtyState: boolean, type?: CodeGenerationType): CodeResult;
 }
 
 /**
