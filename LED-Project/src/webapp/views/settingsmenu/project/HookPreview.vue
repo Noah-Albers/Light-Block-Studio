@@ -8,13 +8,14 @@
 
         <v-card-text>
             <Splitpanes class="default-theme"
-                style="min-width: 40rem"
+                style="min-width: 40rem;"
                 :push-other-panes="false">
                 <Pane>
                     <v-textarea hide-details
-                        :rows="props.rows"
+                        :rows="1"
                         :label="`Edit (${props.name})`"
                         variant="solo"
+                        auto-grow
                         v-model="model">
 
                     </v-textarea>
@@ -45,7 +46,6 @@
         type: String
     })
     const props = defineProps({
-        rows: { type: Number, default: 1 },
         name: { type: String, required: true },
         previewOptions: {
             type: Object as PropType<{ [key: string]: string | number }>,

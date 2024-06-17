@@ -8,7 +8,7 @@
 
     <v-card-text class="pa-0" >
       <v-window v-model="tab"
-        style="max-height: 80vh; overflow: auto">
+        style="height: 80vh; min-width: 80vw; overflow: auto">
         <v-window-item value="one">
           <TheProjectSettings />
         </v-window-item>
@@ -21,6 +21,13 @@
     </v-card-text>
   </v-card>
 </template>
+
+<style lang="scss" scoped>
+.v-window-item {
+  width: 100%;
+  height: 100%;
+}
+</style>
 
 <script setup
   lang="ts">

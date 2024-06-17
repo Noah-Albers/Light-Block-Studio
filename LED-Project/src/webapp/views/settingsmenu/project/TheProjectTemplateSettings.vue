@@ -1,5 +1,6 @@
 <template>
-    <v-textarea style="width: 50vw;" :rows="20" label="Template" variant="outlined" v-model="store.codeTemplate"></v-textarea>
+    <v-textarea auto-grow style="height: 100%;" :rows="20" label="Template" variant="outlined"
+        v-model="store.codeTemplate"></v-textarea>
 </template>
 
 <script setup

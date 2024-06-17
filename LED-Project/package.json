@@ -16,11 +16,12 @@
     "roboto-fontface": "*",
     "splitpanes": "^3.1.5",
     "vue": "^3.2.38",
-    "vuetify": "^3.0.0",
+    "vuetify": "^3.6.0",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@types/deep-equal": "^1.0.4",
+    "@types/dom-serial": "^1.0.6",
     "@types/node": "^18.11.9",
     "@types/splitpanes": "^2.2.6",
     "@types/webfontloader": "^1.6.35",

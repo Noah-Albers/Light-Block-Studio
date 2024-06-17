@@ -19,4 +19,9 @@ export interface IVisualizer {
      * @returns A Promise that resolves when the visualization is aborted.
      */
     abortVisualizer() : Promise<void>;
+
+    /**
+     * Returns if the visualizer is currently running
+     */
+    isRunning() : boolean;
 }

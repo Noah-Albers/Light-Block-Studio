@@ -11,7 +11,6 @@
         name="PushLEDs" />
 
     <HookPreview v-model="store.hooks.sethsv"
-        :rows="4"
         name="SetLedHSV"
         :preview-options="{ idx: 0, hue: 255, saturation: 50, value: 200 }" />
 

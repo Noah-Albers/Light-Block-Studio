@@ -1,6 +1,6 @@
 <template>
 
-    <div class="d-flex flex-row" style=" min-width: 40vw; min-height: 40vh;">
+    <div class="d-flex flex-row" style="height: 100%;">
         <v-tabs v-model="tab" bg-color="#f3f3f3"
             color="primary"
             direction="vertical">
@@ -15,7 +15,7 @@
                 value="template"></v-tab>
         </v-tabs>
 
-        <v-window v-model="tab" style="padding: 20px;">
+        <v-window v-model="tab" style="padding: 20px; width: 100%; height: 100%; overflow: auto;">
             <v-window-item value="general">
                 <TheGlobalSettings/>
             </v-window-item>

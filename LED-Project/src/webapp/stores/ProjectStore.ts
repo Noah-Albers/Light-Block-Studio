@@ -37,7 +37,7 @@ export const useProjectStore = defineStore('project', {
         trimEmptyLines: true as boolean,
 
         hooks: {
-            pushleds: "FastLED.push();",
+            pushleds: "FastLED.show();",
             sleep: "delay($$time$$);",
             sethsv: "leds[$$idx$$] = CHSV($$hue$$,$$saturation$$,$$value$$);",
             millis: "millis()",

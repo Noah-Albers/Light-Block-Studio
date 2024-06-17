@@ -68,4 +68,8 @@ export class Visualizer implements IVisualizer {
 
         return this.runCache;
     }
+
+    isRunning(): boolean {
+        return this.runCache !== undefined;
+    }
 }
