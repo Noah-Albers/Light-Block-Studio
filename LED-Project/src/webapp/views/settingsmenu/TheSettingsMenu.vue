@@ -13,13 +13,13 @@
           <TheProjectSettings />
         </v-window-item>
 
-        <v-window-item value="two"
-          style="padding: 1rem;">
+        <v-window-item value="two">
           <TheGlobalSettings />
         </v-window-item>
       </v-window>
     </v-card-text>
   </v-card>
+
 </template>
 
 <style lang="scss" scoped>

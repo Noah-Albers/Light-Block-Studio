@@ -48,7 +48,6 @@
     import { sendSignalAwaitResponse } from "../utils/signals/SignalAwaiter";
     import { generateCode } from "../views/codeview/CodeGenerator"
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
-import { emitKeypressEvents } from "readline";
 
     const store = useSettingsStore();
 

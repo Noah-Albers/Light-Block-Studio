@@ -46,4 +46,3 @@ const app = (
     }))
     .use(createPinia())
 ).mount('#app')
-
