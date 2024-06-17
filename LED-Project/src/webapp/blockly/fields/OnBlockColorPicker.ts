@@ -8,6 +8,7 @@ import { clamp } from "@utils/MathUtils";
 import { solveExpression } from "@mathSolver/index";
 import { useVariableStore } from "@webapp/stores/VariableStore";
 import { HSV2HEX } from "@webapp/utils/color/ColorConverter";
+import { calculatePreview } from "@webapp/utils/color/VariableColorConverter";
 
 
 export abstract class AbstractBlockColorPicker<CacheType extends (string|undefined)|[string|undefined,string|undefined], ValueType> extends Field {
@@ -73,16 +74,7 @@ export abstract class AbstractBlockColorPicker<CacheType extends (string|undefin
 
         let value = getDataObj(getBlockDataObject(this.sourceBlock_!).value[this.name!]);
 
-        const store = useVariableStore();
-
-        const resolvedValue = value.map((itm: number | string) => {
-            if (typeof itm === "number") return clamp(itm);
-
-            return clamp(solveExpression(itm, store.variable2ValueMap, 1));
-        }) as [number, number, number];
-
-        // Calculates the hex string
-        return HSV2HEX(...resolvedValue);
+        return calculatePreview(value);
     }
 
     //#endregion

@@ -1,5 +1,5 @@
 <template>
-    <v-textarea auto-grow style="height: 100%;" :rows="20" label="Template" variant="outlined"
+    <v-textarea auto-grow style="height: 100%;" :rows="20" label="Blueprint" variant="outlined"
         v-model="store.codeTemplate"></v-textarea>
 </template>
 

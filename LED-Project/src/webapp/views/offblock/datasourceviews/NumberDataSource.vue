@@ -1,9 +1,9 @@
 <template>
-    <v-text-field hide-details :label="source.getKey()" v-model="props.blockData[props.source.getKey()]">
+    <v-text-field density="compact" hide-details :label="source.getKey()" v-model="props.blockData[props.source.getKey()]">
         <template v-slot:append>
             <v-tooltip :text="source.getInformation()">
                 <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props" icon="mdi-information-outline" class="mr-5"></v-icon>
+                    <v-icon style="opacity: 1;" v-bind="props" icon="mdi-information-outline"></v-icon>
                 </template>
             </v-tooltip>
         </template>

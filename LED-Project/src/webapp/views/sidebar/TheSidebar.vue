@@ -5,7 +5,7 @@
         <Pane style="overflow: auto">
             <TheUpperSidebar/>
         </Pane>
-        <Pane>
+        <Pane style="overflow: auto;">
 
             <!--Overwrite the view with the blockly-block view if selected-->
             <TheOffBlock v-if="blockData !== null" :blockData="blockData.dataObj" :model="blockData.model" />
@@ -32,7 +32,6 @@
             </v-tabs>
 
             <v-window v-if="blockData === null"
-                style="height: 100%"
                 v-model="tabs.lower">
 
                 <!--Variables tab-->

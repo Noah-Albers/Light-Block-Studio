@@ -1,10 +1,14 @@
 <template>
-    Hey im the off-block view of the block:
-    Data: {{ blockData }}
-    <v-text-field label="Data" v-model="props.blockData['clr'][0]"></v-text-field>
-    List:<br/>
-    <component v-for="(source, index) in model.getSources()" :key="index" :is="getSourceView(source.getUniqueSourceName())"
-        :source="source" :blockData="props.blockData" />
+    
+    <h2 class="text-center mb-3" style="color: #3f3f3f">Block Settings</h2>
+
+    <template v-for="(source, index) in model.getSources()" :key="index">
+        <v-divider v-if="index === 0" class="mt-2 mb-2"></v-divider>
+        <div class="px-4">
+            <component :is="getSourceView(source.getUniqueSourceName())" :source="source" :blockData="props.blockData" />
+        </div>
+        <v-divider class="mt-2 mb-2"></v-divider>
+    </template>
 </template>
 
 <script lang="ts" setup>

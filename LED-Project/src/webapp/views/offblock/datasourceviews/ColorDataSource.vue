@@ -1,23 +1,28 @@
 <template>
-    <v-menu :close-on-content-click="false">
-        <template v-slot:activator="{ props }">
-            <v-btn variant="outlined" v-bind="props">
-                {{ source.getKey() }}:<div :style="'background:'+previewStore" class="preview"></div>
-            </v-btn>
-        </template>
-
-        <ColorPicker
-            v-model="props.blockData[source.getKey()]" 
-            @preview="mainHex=>previewStore = mainHex"
-            />
-    </v-menu>
+    <div class="d-flex justify-space-between align-center ga-4">
+        <v-menu :close-on-content-click="false" class="">
+            <template v-slot:activator="{ props }">
+                <v-btn variant="outlined" v-bind="props">
+                    {{ source.getKey() }}:<div :style="'background:' + preview" class="preview"></div>
+                </v-btn>
+            </template>
+    
+            <ColorPicker v-model="props.blockData[source.getKey()]" />
+        </v-menu>
+    
+        <v-tooltip :text="source.getInformation()">
+            <template v-slot:activator="{ props }">
+                <v-icon v-bind="props" icon="mdi-information-outline"></v-icon>
+            </template>
+        </v-tooltip>
+    </div>
 </template>
 
 <style lang="scss" scoped>
 .preview {
     margin-left: .4rem;
-    width: 40px;
-    height: 20px;
+    width: 60px;
+    height: 30px;
     border: 1px solid black;
     border-radius: 4px;
 }
@@ -30,9 +35,8 @@ import { BlockData } from '@webapp/blockly/OnBlockUtils';
 import { HSVColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
 import ColorPicker from "@webapp/widgets/colorpicker/ColorPicker.vue"
 import { ref } from 'vue';
-
-const previewStore = ref("");
-
+import { calculatePreview } from '@webapp/utils/color/VariableColorConverter';
+import { computed } from 'vue';
 
 const props = defineProps({
     source: {
@@ -43,6 +47,11 @@ const props = defineProps({
         type: Object as PropType<BlockData>,
         required: true
     }
+})
+
+
+const preview = computed(() => {
+    return calculatePreview(props.blockData[props.source.getKey()]);
 })
 
 </script>
