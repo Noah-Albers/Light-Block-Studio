@@ -56,7 +56,7 @@ export class CppGenerator implements ICppGenerator {
             code = code.replaceAll(/\n[\n \t]*\n{2,}/g, "\n")
 
         // Inserts the variables into the template
-        return code;
+        return code.replaceAll(/\n[\n \t]*\n{2,}/g, "\n");
     }
 }
 
