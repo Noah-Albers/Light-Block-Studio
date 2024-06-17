@@ -38,7 +38,7 @@
                     <v-tooltip :text="itm.info">
                         <template v-slot:activator="{ props }">
                             <v-icon v-bind="props"
-                                icon="mdi-information" />
+                                icon="mdi-information-outline" />
                         </template>
                     </v-tooltip>
 

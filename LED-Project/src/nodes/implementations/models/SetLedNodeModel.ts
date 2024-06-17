@@ -19,6 +19,10 @@ export class SetLedNodeModel implements INodeModel {
         info: "what color should be set"
     });
 
+    private testColorRange = new ColorRangeDataSource("testClr", [1,1,1], [0.5,1,1], {
+        info: "Im just a small test color"
+    })
+
     getModelName(): string {
         return "setled_simple";
     }
@@ -29,10 +33,10 @@ export class SetLedNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Led %1 in %2";
+        return "Led %1 in %2 %3";
     }
     getOnBlockSources(): IDataSource<any, any>[] {
-        return [this.idxField, this.colorField]
+        return [this.idxField, this.colorField, this.testColorRange]
     }
     getSources(): IDataSource<any, any>[] {
         return this.getOnBlockSources();
