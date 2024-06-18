@@ -17,8 +17,10 @@ export class LoopProcLEDNode implements ILEDNode<LoopProcedureOptions> {
 
             // Inserts a small delay if the runtime was below 500 ms
             const runTime = Date.now() - startTime;
-            if(runTime < 500 && repeats === Infinity)
+            if(runTime < 500 && repeats === Infinity){
+                ctrl.pushUpdate();
                 await ctrl.sleep(500);
+            }
         }
     }
 
