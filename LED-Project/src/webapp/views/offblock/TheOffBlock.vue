@@ -17,10 +17,12 @@ import { INodeModel } from '@nodes/definitions/Node';
 import { BlockData } from '@webapp/blockly/OnBlockUtils';
 import NumberDataSourceView from "./datasourceviews/NumberDataSource.vue";
 import ColorDataSourceView from './datasourceviews/ColorDataSource.vue';
+import ColorRangeDataSourceView from './datasourceviews/ColorRangeDataSource.vue';
 
 const mappings = {
     "number": NumberDataSourceView,
-    "color": ColorDataSourceView
+    "color": ColorDataSourceView,
+    "colorrange": ColorRangeDataSourceView
 }
 
 // Gets a IDataSource view by name and returns the component to render (Or undefined if not found)

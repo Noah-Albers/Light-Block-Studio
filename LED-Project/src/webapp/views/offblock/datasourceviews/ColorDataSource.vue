@@ -34,7 +34,6 @@ import { IDataSource } from '@nodes/definitions/DataSource';
 import { BlockData } from '@webapp/blockly/OnBlockUtils';
 import { HSVColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
 import ColorPicker from "@webapp/widgets/colorpicker/ColorPicker.vue"
-import { ref } from 'vue';
 import { calculatePreview } from '@webapp/utils/color/VariableColorConverter';
 import { computed } from 'vue';
 
