@@ -4,6 +4,7 @@ import { BLOCKLY_SUBBLOCKY_NAME, DATA_OBJECT_NAME, MODEL_OBJECT_NAME } from "./R
 import { IDataSourceSupplier, INodeModel } from "@nodes/definitions/Node";
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { BlockData } from "./OnBlockUtils";
+import { useVariableStore } from "@webapp/stores/VariableStore";
 
 
 class DataSourceSupplier implements IDataSourceSupplier {
@@ -55,7 +56,7 @@ class DataSourceSupplier implements IDataSourceSupplier {
     }
     
     get<X>(source: IDataSource<any, X>): X {
-        return source.resolve(this.dataObj![source.getKey()]);
+        return source.resolve(this.dataObj![source.getKey()], useVariableStore().variable2ValueMap);
     }
 }
 

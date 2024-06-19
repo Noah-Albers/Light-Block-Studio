@@ -1,6 +1,5 @@
 import { solveExpression } from "@mathSolver/index";
 import { IDataSource } from "@nodes/definitions/DataSource";
-import { useVariableStore } from "@webapp/stores/VariableStore";
 
 export type NumberDataConfig = {
     // Type of number: "int" for integer or "float" for floating-point
@@ -57,8 +56,8 @@ export class NumberDataSource implements IDataSource<string, number> {
         return this.config.type === "float";
     }
 
-    resolve(value: string): number {
-        let res = solveExpression(value, useVariableStore().variable2ValueMap, 1);
+    resolve(value: string, variables: { [name: string]: number; }): number {
+        let res = solveExpression(value, variables, 1);
 
         // Ensures an int if required
         if(!this.isFloat && !Number.isInteger(res))
@@ -78,7 +77,7 @@ export class NumberDataSource implements IDataSource<string, number> {
         return value;
     }
 
-    import(value: string | number | boolean | object): string {
+    import(value: string | number | boolean | object, variables: { [name: string]: number; }): string {
         return String(value);
     }
 }

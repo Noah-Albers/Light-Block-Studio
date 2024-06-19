@@ -1,8 +1,7 @@
-import { IDataSource } from "src/nodes/definitions/DataSource";
 import { HSVColor, VariableColorType, areVariableColorsEqual, isVariableColor, validateAndFixColor } from "./ColorDataSource";
 import { clamp } from "@utils/MathUtils";
 import { solveExpression } from "@mathSolver/index";
-import { useVariableStore } from "@webapp/stores/VariableStore";
+import { IDataSource } from "@nodes/definitions/DataSource";
 
 /**
  * Checks if a given value is of the type for a color-range
@@ -52,12 +51,12 @@ export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColo
         };
     }
 
-    resolve(value: ColorRangeType): HSVColorRange {
+    resolve(value: ColorRangeType, variables: { [name: string]: number; }): HSVColorRange {
         const mapper = (val: VariableColorType)=>val.map(x=>{
             if(typeof x === "number")
                 return clamp(x);
 
-            return clamp(solveExpression(x, useVariableStore().variable2ValueMap, 1));
+            return clamp(solveExpression(x, variables, 1));
         }) as HSVColor;
 
         return {
@@ -89,8 +88,7 @@ export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColo
         return value;
     }
 
-    import(value: string | number | boolean | object): ColorRangeType {
-        
+    import(value: string | number | boolean | object, _: { [name: string]: number; }): ColorRangeType {
         if(typeof value !== "object" || Array.isArray(value))
             return this.getDefaultValue();
 

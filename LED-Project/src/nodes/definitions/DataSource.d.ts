@@ -13,7 +13,7 @@ export interface IDataSource<Type, ResolvedType> {
      * Finalizes the value and calculates it. For example string formulars will be calculates with variables and such
      * @param value 
      */
-    resolve(value: Type): ResolvedType;
+    resolve(value: Type, variables: {[name: string]: number}): ResolvedType;
 
     /**
      * @returns a string which will be used as a key to store values later on.
@@ -46,5 +46,5 @@ export interface IDataSource<Type, ResolvedType> {
     /**
      * Takes in a json printable and returns the deserialized (imported) value
      */
-    import(value: string | boolean | number | object) : Type;
+    import(value: string | boolean | number | object, variables: {[name: string]: number}) : Type;
 }

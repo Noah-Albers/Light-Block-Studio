@@ -1,7 +1,6 @@
 import { solveExpression } from "@mathSolver/index";
+import { IDataSource } from "@nodes/definitions/DataSource";
 import { clamp } from "@utils/MathUtils";
-import { useVariableStore } from "@webapp/stores/VariableStore";
-import { IDataSource } from "src/nodes/definitions/DataSource";
 
 export type ColorDataConfig = {
     info: string | undefined
@@ -99,12 +98,12 @@ export class ColorDataSource implements IDataSource<VariableColorType, HSVColor>
         this.defaultValue = defaultValue;
     }
 
-    resolve(value: VariableColorType): HSVColor {
+    resolve(value: VariableColorType, variables: { [name: string]: number; }): HSVColor {
         return value.map(x=>{
             if(typeof x === "number")
                 return clamp(x);
 
-            return clamp(solveExpression(x, useVariableStore().variable2ValueMap, 1));
+            return clamp(solveExpression(x, variables, 1));
         }) as HSVColor;
     }
 
@@ -128,7 +127,7 @@ export class ColorDataSource implements IDataSource<VariableColorType, HSVColor>
         return value;
     }
 
-    import(value: string | number | boolean | object): VariableColorType {
+    import(value: string | number | boolean | object, _: { [name: string]: number; }): VariableColorType {
         return validateAndFixColor(value);
     }
 }
