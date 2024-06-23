@@ -8,7 +8,7 @@
         <Pane style="overflow: auto;">
 
             <!--Overwrite the view with the blockly-block view if selected-->
-            <TheOffBlock v-if="blockData !== null" :blockData="blockData.dataObj" :model="blockData.model" />
+            <TheOffBlock v-if="blockData !== null" :cache="blockData.cache" :blockData="blockData.dataObj" :model="blockData.model" />
 
             <!--The normal table view-->
             <v-tabs v-else
@@ -59,15 +59,16 @@
     import { Signals } from '@webapp/utils/signals/Signals';
     import TheOffBlock from "@webapp/views/offblock/TheOffBlock.vue";
     import { computed } from 'vue';
-    import { getBlockDataObject, getBlockModel } from '@webapp/blockly/OnBlockUtils';
+    import { getBlockDataObject, getBlockModel, getBlockCache } from '@webapp/blockly/OnBlockUtils';
     import TheUpperSidebar from "./TheUpperSidebar.vue";
+    import { ShallowRef, shallowRef } from 'vue';
 
     const tabs = ref({
         lower: null
     });
 
     // Holds the selected blockly-block
-    const selectedBlocklyBlock: Ref<Block | null> = ref(null);
+    const selectedBlocklyBlock: ShallowRef<Block | null> = shallowRef(null);
 
     /**
      * Computed property that holds some important block-elements like:
@@ -88,7 +89,11 @@
         // Gets the block-data object
         const dObj = getBlockDataObject(selectedBlocklyBlock.value);
 
+        // Gets the block cache object
+        const cache = getBlockCache(selectedBlocklyBlock.value);
+
         return {
+            cache,
             dataObj: dObj,
             model
         }

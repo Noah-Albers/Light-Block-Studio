@@ -7,14 +7,13 @@
                 </template>
             </v-tooltip>
         </template>
-
     </v-text-field>
 </template>
 
 <script lang="ts" setup>
 import { PropType } from 'vue';
 import { IDataSource } from '@nodes/definitions/DataSource';
-import { BlockData } from '@webapp/blockly/OnBlockUtils';
+import { BlockData, Cache } from '@webapp/blockly/OnBlockUtils';
 
 const props = defineProps({
     source: {
@@ -23,6 +22,10 @@ const props = defineProps({
     },
     blockData: {
         type: Object as PropType<BlockData>,
+        required: true
+    },
+    cache: {
+        type: Object as PropType<Cache>,
         required: true
     }
 })

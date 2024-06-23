@@ -56,6 +56,10 @@ const props = defineProps({
     blockData: {
         type: Object as PropType<BlockData>,
         required: true
+    },
+    cache: {
+        type: Object as PropType<Cache>,
+        required: true
     }
 })
 

@@ -5,7 +5,7 @@
     // The data should be displayed off the block
     "off-block";*/
 
-export interface IDataSource<Type, ResolvedType> {
+export interface IDataSource<Type, ResolvedType, Cache = any> {
     // TODO: Maybe use later
     //private hints: Hint[];
 
@@ -47,4 +47,7 @@ export interface IDataSource<Type, ResolvedType> {
      * Takes in a json printable and returns the deserialized (imported) value
      */
     import(value: string | boolean | number | object, variables: {[name: string]: number}) : Type;
+
+    // TODO: Comment
+    calculateCache?(vars: {[key: string]: number}, value: Type): Cache; 
 }

@@ -9,7 +9,7 @@ export interface IDataSourceSupplier {
      * Used to get data of a data source
      * @param source 
      */
-    get<X>(source: IDataSource<any,X>) : X;
+    get<X>(source: IDataSource<any,X,any>) : X;
 
     /**
      * Used to retreive the config and procedures of subblocks which have been registered
@@ -60,12 +60,12 @@ export interface INodeModel {
     /**
      * @returns a list of all Bricks which shall be used to construct the blockly block. 
      */
-    getOnBlockSources() : IDataSource<any, any>[];
+    getOnBlockSources() : IDataSource<any, any, any>[];
 
     /**
      * @returns all datasources which the node shall use
      */
-    getSources() : IDataSource<any, any>[];
+    getSources() : IDataSource<any, any, any>[];
 
     /**
      * This is called once the node shall be evaluated

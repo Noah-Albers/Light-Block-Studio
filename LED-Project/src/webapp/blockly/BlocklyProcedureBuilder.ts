@@ -55,7 +55,7 @@ class DataSourceSupplier implements IDataSourceSupplier {
         return cfg.all;
     }
     
-    get<X>(source: IDataSource<any, X>): X {
+    get<X>(source: IDataSource<any, X, any>): X {
         return source.resolve(this.dataObj![source.getKey()], useVariableStore().variable2ValueMap);
     }
 }

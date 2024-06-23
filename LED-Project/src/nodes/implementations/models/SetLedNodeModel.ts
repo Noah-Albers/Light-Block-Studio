@@ -35,10 +35,10 @@ export class SetLedNodeModel implements INodeModel {
     getBlockMessage(): string {
         return "Led %1 in %2 %3";
     }
-    getOnBlockSources(): IDataSource<any, any>[] {
+    getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.idxField, this.colorField, this.testColorRange]
     }
-    getSources(): IDataSource<any, any>[] {
+    getSources(): IDataSource<any, any, any>[] {
         return this.getOnBlockSources();
     }
     createConfigWithProcedure(supplier: IDataSourceSupplier) {

@@ -5,13 +5,15 @@ import { OnBlockTextInput } from "./fields/OnBlockTextfield";
 import { getBlocklyFieldNameFromModel } from "./DataSource2BlocklyField";
 import { BlockData } from "./OnBlockUtils";
 import { groupBy, mostFrequent } from "@utils/ArrayUtils";
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { OnBlockColorPicker } from "./fields/OnBlockColorPicker";
 import { OnBlockRangeColorPicker } from "./fields/OnBlockColorrangePicker";
+import { useVariableStore } from "@webapp/stores/VariableStore";
 
 // Names of custom element required for the blockly-blocks
 export const DATA_OBJECT_NAME = "dataObj";
 export const MODEL_OBJECT_NAME = "model";
+export const CACHE_OBJECT_NAME = "cache";
 
 // TODO: Ensure no other element has this name
 // Name used for the element that contains substatements
@@ -85,17 +87,29 @@ function registerNodeModel(model: INodeModel) {
     Blockly.Blocks[model.getModelName()] = {
         init: function () {
             // Creates the data object
-            const dataObj: BlockData = {};
+            const dataObj: BlockData = reactive({});
+
+            const store = useVariableStore();
+
+            const cacheObj: any = {};
 
             // Sets the default values for the on-block sources
-            for (let ds of model.getOnBlockSources())
-                dataObj[ds.getKey()] = ds.getDefaultValue();
+            for (let ds of model.getOnBlockSources()){
+                let key = ds.getKey();
+
+                dataObj[key] = ds.getDefaultValue();
+
+                if(ds.calculateCache !== undefined)
+                    cacheObj[key] = computed(()=>ds.calculateCache!(store.variable2ValueMap, dataObj[key]));
+            }
 
             // Adds the data object onto the block
             // Its made a Ref-Type to ensure that blocks and external components can react to changes
-            this[DATA_OBJECT_NAME] = reactive(dataObj);
+            this[DATA_OBJECT_NAME] = dataObj;
             // Adds the model to the block
             this[MODEL_OBJECT_NAME] = model;
+            // TODO: Comment
+            this[CACHE_OBJECT_NAME] = cacheObj;
 
             // Builds the block
             this.jsonInit(buildJSONObjectFor(model));

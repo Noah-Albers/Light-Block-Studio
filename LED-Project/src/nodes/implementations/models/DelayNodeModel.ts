@@ -24,10 +24,10 @@ export class DelayNodeModel implements INodeModel {
     getBlockMessage(): string {
         return "wait %1 ms";
     }
-    getOnBlockSources(): IDataSource<any, any>[] {
+    getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.delayField]
     }
-    getSources(): IDataSource<any, any>[] {
+    getSources(): IDataSource<any, any, any>[] {
         return [this.delayField]
     }
     createConfigWithProcedure(supplier: IDataSourceSupplier) {

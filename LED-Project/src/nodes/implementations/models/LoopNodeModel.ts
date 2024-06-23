@@ -24,10 +24,10 @@ export class LoopNodeModel implements INodeModel {
     getBlockMessage(): string {
         return "Repeat %1 times";
     }
-    getOnBlockSources(): IDataSource<any, any>[] {
+    getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.repeatField]
     }
-    getSources(): IDataSource<any, any>[] {
+    getSources(): IDataSource<any, any, any>[] {
         return this.getOnBlockSources();
     }
     createConfigWithProcedure(supplier: IDataSourceSupplier) {
