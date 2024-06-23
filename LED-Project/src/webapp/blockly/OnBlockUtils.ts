@@ -10,7 +10,7 @@ export type BlockData = {[key: string]: any};
  * @param block blockly block
  * @returns the custom led project data object of the block
  */
-export function getBlockDataObject(block: Block): Ref<BlockData> {
+export function getBlockDataObject(block: Block): BlockData {
     return (block as any)[DATA_OBJECT_NAME];
 }
 

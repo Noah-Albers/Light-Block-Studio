@@ -83,7 +83,7 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<[string|un
         // Just sets the background black
         DropDownDiv.setColour("rgb(0,0,0)", "");
 
-        const val = getBlockDataObject(this.sourceBlock_!).value[this.name!] as ColorRangeType
+        const val = getBlockDataObject(this.sourceBlock_!)[this.name!] as ColorRangeType
 
         // Requests the colorpicker to insert itself
         SignalDispatcher.emit(
@@ -128,7 +128,7 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<[string|un
         const dataRef = getBlockDataObject(this.sourceBlock_);
 
         // Updates the external value
-        dataRef.value[this.name!] = this.createUnbiasedValue(newValue);
+        dataRef[this.name!] = this.createUnbiasedValue(newValue);
 
         return newValue;        
     }

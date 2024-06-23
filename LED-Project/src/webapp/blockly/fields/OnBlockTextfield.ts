@@ -39,10 +39,10 @@ export class OnBlockTextInput extends FieldTextInput {
         const dataRef = getBlockDataObject(this.sourceBlock_);
 
         // Copies the default value
-        this.setValue(dataRef.value[this.name!]);
+        this.setValue(dataRef[this.name!]);
 
         // Creates a watcher to listen for external value changes
-        this.watcher = watch(dataRef.value, this.onValueChange.bind(this));
+        this.watcher = watch(dataRef, this.onValueChange.bind(this));
     }
 
 
@@ -71,7 +71,7 @@ export class OnBlockTextInput extends FieldTextInput {
         const dataRef = getBlockDataObject(this.sourceBlock_);
 
         // Updates the external value
-        dataRef.value[this.name!] = newValue;
+        dataRef[this.name!] = newValue;
 
         return newValue;
     }

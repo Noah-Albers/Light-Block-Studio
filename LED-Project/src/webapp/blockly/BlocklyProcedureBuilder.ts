@@ -3,7 +3,7 @@ import { Block } from "blockly";
 import { BLOCKLY_SUBBLOCKY_NAME, DATA_OBJECT_NAME, MODEL_OBJECT_NAME } from "./RegisterBlockly";
 import { IDataSourceSupplier, INodeModel } from "@nodes/definitions/Node";
 import { IDataSource } from "@nodes/definitions/DataSource";
-import { BlockData } from "./OnBlockUtils";
+import { BlockData, getBlockDataObject, getBlockModel } from "./OnBlockUtils";
 import { useVariableStore } from "@webapp/stores/VariableStore";
 
 
@@ -19,7 +19,7 @@ class DataSourceSupplier implements IDataSourceSupplier {
     }
     
     public get dataObj() : BlockData {
-        const obj = (this.block as any)[DATA_OBJECT_NAME].value as BlockData;
+        const obj = getBlockDataObject(this.block) as BlockData;
 
         if(obj === undefined)
             throw new Error("Block "+this.block.id+"has no data-object defined");
@@ -28,7 +28,7 @@ class DataSourceSupplier implements IDataSourceSupplier {
     }
     
     public get model() : INodeModel {
-        const obj = (this.block as any)[MODEL_OBJECT_NAME] as INodeModel;
+        const obj = getBlockModel(this.block) as INodeModel;
 
         if(obj === undefined)
             throw new Error("Block "+this.block.id+"has no model defined");

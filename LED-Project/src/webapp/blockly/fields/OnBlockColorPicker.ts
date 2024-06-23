@@ -45,10 +45,10 @@ export abstract class AbstractBlockColorPicker<CacheType extends (string|undefin
         const dataRef = getBlockDataObject(this.sourceBlock_);
 
         // Sets the value
-        this.setValue(this.createUnbiasedValue(getBlockDataObject(this.sourceBlock_!).value[this.name!]));
+        this.setValue(this.createUnbiasedValue(getBlockDataObject(this.sourceBlock_!)[this.name!]));
 
         // Creates a watcher to listen for external value changes
-        this.watcher = watchEffect(()=>this.onValueChange(dataRef.value[this.name!]));
+        this.watcher = watchEffect(()=>this.onValueChange(dataRef[this.name!]));
 
         // Listens for variable changes
         SignalDispatcher.on(Signals.VAR_CHANGE, this.onVariableChange.bind(this));
@@ -72,7 +72,7 @@ export abstract class AbstractBlockColorPicker<CacheType extends (string|undefin
         if(previousCache !== undefined)
             return previousCache;
 
-        let value = getDataObj(getBlockDataObject(this.sourceBlock_!).value[this.name!]);
+        let value = getDataObj(getBlockDataObject(this.sourceBlock_!)[this.name!]);
 
         return calculatePreview(value);
     }
@@ -198,7 +198,7 @@ export class OnBlockColorPicker extends AbstractBlockColorPicker<string|undefine
             Signals.BLOCKLY_COLOR_FIELD_REQ_ATTACH,
             {
                 elm: DropDownDiv.getContentDiv(),
-                mainValue: getBlockDataObject(this.sourceBlock_!).value[this.name!] as VariableColorType,
+                mainValue: getBlockDataObject(this.sourceBlock_!)[this.name!] as VariableColorType,
                 onChange: this.onEditorChangeValue.bind(this)
             }
         );
@@ -224,7 +224,7 @@ export class OnBlockColorPicker extends AbstractBlockColorPicker<string|undefine
         const dataRef = getBlockDataObject(this.sourceBlock_);
 
         // Updates the external value
-        dataRef.value[this.name!] = newValue;
+        dataRef[this.name!] = newValue;
 
         if(this.getValue() !== null){
             this.markCacheAsOld();

@@ -5,7 +5,7 @@ import { OnBlockTextInput } from "./fields/OnBlockTextfield";
 import { getBlocklyFieldNameFromModel } from "./DataSource2BlocklyField";
 import { BlockData } from "./OnBlockUtils";
 import { groupBy, mostFrequent } from "@utils/ArrayUtils";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import { OnBlockColorPicker } from "./fields/OnBlockColorPicker";
 import { OnBlockRangeColorPicker } from "./fields/OnBlockColorrangePicker";
 
@@ -93,7 +93,7 @@ function registerNodeModel(model: INodeModel) {
 
             // Adds the data object onto the block
             // Its made a Ref-Type to ensure that blocks and external components can react to changes
-            this[DATA_OBJECT_NAME] = ref(dataObj);
+            this[DATA_OBJECT_NAME] = reactive(dataObj);
             // Adds the model to the block
             this[MODEL_OBJECT_NAME] = model;
 
