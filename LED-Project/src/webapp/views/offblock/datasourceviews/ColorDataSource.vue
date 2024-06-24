@@ -1,9 +1,9 @@
 <template>
     <div class="d-flex justify-space-between align-center ga-4">
         <v-menu :close-on-content-click="false" class="">
-            <template v-slot:activator="{ props }">
-                <v-btn variant="outlined" v-bind="props">
-                    {{ source.getKey() }}:<div :style="'background:' + preview" class="preview"></div>
+            <template v-slot:activator="{ props: aProps }">
+                <v-btn variant="outlined" v-bind="aProps">
+                    {{ source.getKey() }}:<div :style="'background:' + props.cache.value.display" class="preview"></div>
                 </v-btn>
             </template>
     
@@ -32,10 +32,11 @@
 import { PropType } from 'vue';
 import { IDataSource } from '@nodes/definitions/DataSource';
 import { BlockData } from '@webapp/blockly/OnBlockUtils';
-import { HSVColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+import { CachedColor, HSVColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
 import ColorPicker from "@webapp/widgets/colorpicker/ColorPicker.vue"
 import { calculatePreview } from '@webapp/utils/color/VariableColorConverter';
 import { computed } from 'vue';
+import { ComputedRef } from 'vue';
 
 const props = defineProps({
     source: {
@@ -47,14 +48,10 @@ const props = defineProps({
         required: true
     },
     cache: {
-        type: Object as PropType<Cache>,
+        type: Object as PropType<ComputedRef<CachedColor>>,
         required: true
     }
 })
 
-
-const preview = computed(() => {
-    return calculatePreview(props.blockData[props.source.getKey()]);
-})
 
 </script>

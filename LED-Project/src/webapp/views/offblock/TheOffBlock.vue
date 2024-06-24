@@ -6,7 +6,7 @@
         <div class="px-4">
             <component :is="getSourceView(source.getUniqueSourceName())"
                 :source="source"
-                :cache="cache"
+                :cache="cache[source.getKey()]"
                 :blockData="props.blockData" />
         </div>
         <v-divider class="mt-2 mb-2"></v-divider>

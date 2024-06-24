@@ -1,6 +1,7 @@
 import { solveExpression } from "@mathSolver/index";
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { clamp } from "@utils/MathUtils";
+import { HSV2HEX } from "@webapp/utils/color/ColorConverter";
 
 export type ColorDataConfig = {
     info: string | undefined
@@ -17,6 +18,12 @@ export type VariableColorType = [string | number, string | number, string | numb
  * Normalized values for HUE, Saturation and Value to a range between 0 - 1
  */
 export type HSVColor = [number, number, number];
+
+// TODO: Comment
+export type CachedColor = {
+    display: string,
+    hsv: HSVColor
+};
 
 /**
  * Takes in two variable color types and returns if they are equal (Value wise)
@@ -85,7 +92,7 @@ const Defaults: Required<ColorDataConfig> = {
     info: undefined
 }
 
-export class ColorDataSource implements IDataSource<VariableColorType, HSVColor> {
+export class ColorDataSource implements IDataSource<VariableColorType, HSVColor, CachedColor> {
 
     private readonly config: Required<ColorDataConfig>;
     private readonly name: string;
@@ -96,6 +103,17 @@ export class ColorDataSource implements IDataSource<VariableColorType, HSVColor>
         this.config = {...Defaults, ...config};
         this.name = name;
         this.defaultValue = defaultValue;
+    }
+
+    calculateCache(vars: { [key: string]: number; }, value: VariableColorType): CachedColor {
+        const hsv = this.resolve(value, vars);
+
+        const display = HSV2HEX(...hsv);
+
+        return {
+            hsv,
+            display
+        }
     }
 
     resolve(value: VariableColorType, variables: { [name: string]: number; }): HSVColor {
