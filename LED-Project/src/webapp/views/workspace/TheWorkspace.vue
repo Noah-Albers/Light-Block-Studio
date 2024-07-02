@@ -13,6 +13,7 @@ import { onMounted } from 'vue';
 import { createToolbox } from "@webapp/blockly/RegisterBlockly";
 import { buildWorkspaceAndSendEvents } from "./WorkspaceConfigBuilder"; 
 import { useSignal } from "@webapp/utils/vue/VueSignalListener";
+import { useSettingsStore } from "@webapp/stores/SettingsStore";
 
 const Options = {
     // TODO: Add theme
@@ -53,6 +54,8 @@ const blocklyDiv = ref(null);
 // Workspace reference (Injected)
 let workspace: Blockly.WorkspaceSvg;
 
+const store = useSettingsStore();
+
 useSignal(Signals.REQUEST_CONFIG_BUILD, ()=>buildWorkspaceAndSendEvents(workspace, true));
 
 onMounted(() => {
@@ -88,7 +91,8 @@ onMounted(() => {
         switch(evt.type){
             // Waits for a block change (Select / deselect)
             case Blockly.Events.SELECTED:
-                SignalDispatcher.emit(Signals.BLOCKLY_BLOCK_SELECTION_CHANGE, workspace.getBlockById((evt as any).newElementId)!);
+                if(store.buildConfig.enablePreview)
+                    SignalDispatcher.emit(Signals.BLOCKLY_BLOCK_SELECTION_CHANGE, workspace.getBlockById((evt as any).newElementId)!);
             case Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE: case Blockly.Events.CREATE: case Blockly.Events.MOVE: case Blockly.Events.CHANGE:
                 // Runs the blockly change event
                 buildWorkspaceAndSendEvents(workspace);

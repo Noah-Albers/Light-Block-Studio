@@ -36,6 +36,10 @@ export const useSettingsStore = defineStore('settings', {
             enabled: true as boolean,
             // Which vendors are whitelisted
             whitelist: DefaultVendors.map(itm=>[itm[0], itm[1]]) as [string/*Name*/, number/*VendorID*/][]
+        },
+
+        buildConfig: {
+            enablePreview: false as boolean
         }
     }),
 

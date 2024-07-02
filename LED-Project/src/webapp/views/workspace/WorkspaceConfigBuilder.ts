@@ -1,6 +1,7 @@
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 import { Registry } from "@registry/Registry";
 import { buildProceduresOfBlock } from "@webapp/blockly/BlocklyProcedureBuilder";
+import { useSettingsStore } from "@webapp/stores/SettingsStore";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 import { Block, Workspace, getSelected } from "blockly";
@@ -19,17 +20,17 @@ let cmpElements: {
  * Note: This may be called multiple times, so a debounce function is required
  * @param {Workspace} ws the blockly workspace which changed
  */
-export function buildWorkspaceAndSendEvents(ws: Workspace, forceRebuild: boolean = false){
-    
-    // Gets all blocks that are not disabled (So basially only the top root blocks)
-	var blocks = ws.getTopBlocks().filter((block: Block)=>block.isEnabled());
+export function buildWorkspaceAndSendEvents(ws: Workspace, forceRebuild: boolean = false) {
 
-	// Gets the blocks
-    var setup = blocks.find(blg=>blg.type==="led_root_setup")!;
-    var loop = blocks.find(blg=>blg.type==="led_root_loop")!;
+    // Gets all blocks that are not disabled (So basially only the top root blocks)
+    var blocks = ws.getTopBlocks().filter((block: Block) => block.isEnabled());
+
+    // Gets the blocks
+    var setup = blocks.find(blg => blg.type === "led_root_setup")!;
+    var loop = blocks.find(blg => blg.type === "led_root_loop")!;
 
     let selectedBlock = getSelected() as any as Block | undefined;
-    if(selectedBlock === null) selectedBlock = undefined;
+    if (selectedBlock === null) selectedBlock = undefined;
 
     // Builds the configs
     const setupCfg = buildProceduresOfBlock(setup.getNextBlock(), selectedBlock);
@@ -37,18 +38,25 @@ export function buildWorkspaceAndSendEvents(ws: Workspace, forceRebuild: boolean
 
     // Gets the preview config which changes based on the users selection
     let previewConfig: ProcedureWithOptions<any>[] | undefined = (function getPreview() {
-        if(setupCfg.foundProc)
-            return [setupCfg.foundProc]
 
-        if(loopCfg.foundProc)
-            return [loopCfg.foundProc];
+        // If a preview is enabled
+        const enablePreview = useSettingsStore().buildConfig.enablePreview;
 
-        if(selectedBlock === loop || selectedBlock === setup) return undefined;
+        if(enablePreview){
+            if (setupCfg.foundProc)
+                return [setupCfg.foundProc]
+    
+            if (loopCfg.foundProc)
+                return [loopCfg.foundProc];
+    
+            if (selectedBlock === loop || selectedBlock === setup) return undefined;
+    
+            if (selectedBlock !== undefined)
+                return buildProceduresOfBlock(selectedBlock).all;
+        }
 
-        if(selectedBlock !== undefined)
-            return buildProceduresOfBlock(selectedBlock).all;
 
-        // If nothing is selected, run all setup procedures and add the loop procedures as infinit too
+        // If nothing is selected (or the preview is disabled), run all setup procedures and add the loop procedures as infinit too
         return [
             ...setupCfg.all,
             {
@@ -64,22 +72,22 @@ export function buildWorkspaceAndSendEvents(ws: Workspace, forceRebuild: boolean
 
     // Checks if the configs are different from the previous ones and if so, sends the events
 
-    if(cmpElements.preview === undefined || !equals(previewConfig,cmpElements.preview) || forceRebuild){
+    if (cmpElements.preview === undefined || !equals(previewConfig, cmpElements.preview) || forceRebuild) {
         cmpElements.preview = previewConfig
         SignalDispatcher.emit(Signals.BLOCKLY_PREVIEW_CREATE_CONFIG, previewConfig);
     }
 
-    if(
+    if (
         forceRebuild ||
         cmpElements.loop === undefined ||
         cmpElements.setup === undefined ||
         !equals(setupCfg.all, cmpElements.setup) ||
-        !equals(loopCfg.all, cmpElements.loop)){
-            cmpElements.setup = setupCfg.all;
-            cmpElements.loop = loopCfg.all;
-            SignalDispatcher.emit(Signals.BLOCKLY_ALL_CREATE_CONFIG, {
-                setup: setupCfg.all,
-                loop: loopCfg.all
-            });
-        }
+        !equals(loopCfg.all, cmpElements.loop)) {
+        cmpElements.setup = setupCfg.all;
+        cmpElements.loop = loopCfg.all;
+        SignalDispatcher.emit(Signals.BLOCKLY_ALL_CREATE_CONFIG, {
+            setup: setupCfg.all,
+            loop: loopCfg.all
+        });
+    }
 }

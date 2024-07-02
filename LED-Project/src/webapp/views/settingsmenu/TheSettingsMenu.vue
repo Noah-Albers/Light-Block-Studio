@@ -33,7 +33,7 @@
   lang="ts">
   import { ref } from 'vue';
   import TheProjectSettings from "./project/TheProjectSettings.vue";
-  import TheGlobalSettings from "./TheGlobalSettings.vue";
+  import TheGlobalSettings from "./global/TheGlobalSettings.vue";
   import { onUnmounted } from 'vue';
   import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
   import { Signals } from '@webapp/utils/signals/Signals';
