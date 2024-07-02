@@ -16,7 +16,7 @@
                     href="https://developer.mozilla.org/en-US/docs/Web/API/Serial">Serial Web API</a>,
                 which we use to communicate with the external hardware.
                 <br />
-                If you want still want to view your animations on real hardware, please use a <a target="_blank"
+                If you still want to view your animations on real hardware, please use a <a target="_blank"
                     href="https://caniuse.com/web-serial">browser</a> that supports the serial api
                 or use the <a href="TODO" target="_blank">electron version</a> of this application.
             </template>
