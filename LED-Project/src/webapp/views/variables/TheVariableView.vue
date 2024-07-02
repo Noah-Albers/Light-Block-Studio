@@ -1,114 +1,72 @@
 <template>
-
-    <!--TODO: TMP-->
-    <table style="width: 100%">
+    <v-table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Value</th>
-                <th><!--Action/Info column--></th>
+                <th class="text-left">
+                    Name
+                </th>
+                <th class="text-left">
+                    Calories
+                </th>
+                <th width="20px" class="text-left">
+                </th>
             </tr>
         </thead>
-
         <tbody>
 
             <!-- System Variables -->
-            <tr class="var-sys"
-                :key="idx"
-                v-for="itm, idx in varStore.systemVariables">
+            <tr class="var-sys" :key="idx" v-for="itm, idx in varStore.systemVariables">
                 <td>
-                    <v-text-field density="compact"
-                        variant="solo"
-                        hide-details
-                        single-line
-                        disabled
-                        readonly
+                    <v-text-field density="compact" variant="plain" hide-details single-line disabled readonly
                         v-model="itm.name"></v-text-field>
                 </td>
                 <td>
-                    <v-text-field readonly
-                        density="compact"
-                        disabled
-                        variant="solo"
-                        hide-details
-                        single-line
+                    <v-text-field readonly density="compact" disabled variant="plain" hide-details single-line
                         v-model="itm.value"></v-text-field>
                 </td>
                 <td>
                     <v-tooltip :text="itm.info">
                         <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props"
-                                icon="mdi-information-outline" />
+                            <v-icon v-bind="props" icon="mdi-information-outline" />
                         </template>
                     </v-tooltip>
 
                 </td>
             </tr>
-
+            
             <!-- User Variables -->
-            <tr class="var-usr"
-                v-for="itm, idx in varStore.variables"
-                :key="idx">
-                <td :class="itm.nameProblem !== undefined ? 'error' : ''">
-                    <v-text-field density="compact"
-                        label="Variable"
-                        variant="solo"
-                        hide-details
-                        single-line
-                        @update:model-value="onVarChange"
-                        v-model="itm.name"></v-text-field>
-                </td>
-                <td :class="typeof itm.value === 'string' ? 'error' : ''">
-                    <v-text-field density="compact"
-                        label="Value"
-                        variant="solo"
-                        hide-details
-                        single-line
-                        @update:model-value="onVarChange"
-                        maxlength="15"
-                        v-model.number="itm.value"></v-text-field>
+            <tr class="var-usr" v-for="itm, idx in varStore.variables" :key="idx">
+                <td>
+                    <v-text-field class="px-1" :class="itm.nameProblem !== undefined ? 'error' : ''" density="compact" label="Variable" variant="plain" hide-details single-line
+                        @update:model-value="onVarChange" v-model="itm.name"></v-text-field>
                 </td>
                 <td>
-                    <v-icon icon="mdi-delete"
-                        @click="varStore.removeVariable(idx)"
-                        title="Delete the variable" />
+                    <v-text-field class="px-1" :class="typeof itm.value === 'string' ? 'error' : ''" density="compact" label="Value" variant="plain" hide-details single-line
+                        @update:model-value="onVarChange" maxlength="15" v-model.number="itm.value"></v-text-field>
+                </td>
+                <td>
+                    <v-icon icon="mdi-delete" @click="varStore.removeVariable(idx)" title="Delete the variable" />
                 </td>
             </tr>
 
             <!-- Placeholder for new user variables -->
             <tr class="var-tmp">
                 <td>
-                    <v-text-field density="compact"
-                        label="Variable"
-                        variant="solo"
-                        hide-details
-                        single-line
-                        @keydown.enter="onNewVariable"
-                        bg-color="#ddd"
-                        v-model="tmpVariable.name"></v-text-field>
+                    <v-text-field class="px-1" density="compact" label="Variable" variant="plain" hide-details single-line
+                        @keydown.enter="onNewVariable" v-model="tmpVariable.name"></v-text-field>
                 </td>
                 <td>
-                    <v-text-field density="compact"
-                        label="Value"
-                        variant="solo"
-                        bg-color="#ddd"
-                        hide-details
-                        single-line
-                        maxlength="15"
-                        @keydown.enter="onNewVariable"
-                        v-model.number="tmpVariable.value"></v-text-field>
+                    <v-text-field class="px-1" density="compact" label="Value" variant="plain" hide-details single-line
+                        maxlength="15" @keydown.enter="onNewVariable" v-model.number="tmpVariable.value"></v-text-field>
                 </td>
                 <td></td>
             </tr>
         </tbody>
-    </table>
+    </v-table>
+
 
     <!-- Display error message if there's a problem -->
-    <v-alert type="error"
-        v-if="problemText !== false"
-        icon="mdi-information"
-        :text="problemText" />
-
+    <v-alert type="error" v-if="problemText !== false" icon="mdi-information" :text="problemText" />
 </template>
 
 <script setup
@@ -167,24 +125,28 @@
      */
     function onVarChange() {
         // Mounts a small timeout to let vue register the change
-        setTimeout(()=>{
-            
+        setTimeout(() => {
+
             // Updates the problems
             varStore.updateProblems()
-        
+
             // Sends the var change emit
             SignalDispatcher.emit(Signals.VAR_CHANGE);
 
         }, 100);
     }
 
-</script>
+    </script>
 
 <style scoped
     lang="scss">
-
     .error {
         box-shadow: 0 0 5px #b10000;
         transition: box-shadow 0.3s ease;
     }
+
+    .var-tmp {
+        color: gray;
+    }
+    
 </style>
