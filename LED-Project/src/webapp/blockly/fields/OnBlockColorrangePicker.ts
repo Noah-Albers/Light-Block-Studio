@@ -1,7 +1,7 @@
 import { VariableColorType } from "@nodes/implementations/datasources/ColorDataSource";
 import { AbstractBlockColorPicker } from "./OnBlockColorPicker";
-import { ColorRangeType, areColorRangesEqual, isColorRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource";
-import { getBlockDataObject } from "../OnBlockUtils";
+import { CachedRangeColor, ColorRangeType, areColorRangesEqual, isColorRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource";
+import { getBlockCacheOfSource, getBlockDataObject } from "../OnBlockUtils";
 import { DropDownDiv } from "blockly";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
@@ -18,19 +18,13 @@ type GradiantElement = {
 }
 
 
-export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<[string|undefined, string|undefined], ColorRangeType> {
+export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<ColorRangeType> {
 
     // Static field name
     public static readonly FIELD_NAME = "fld_clrrange_input";
 
     // Contains all HTML-References to the custom gradiant elements
     private gradiantElement?: GradiantElement;
-
-    constructor(){
-        super();
-        // Ensures the cache is valid
-        this.displayCache = [undefined, undefined];
-    }
 
     protected initView(): void {
         super.initView();
@@ -40,48 +34,17 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<[string|un
         this.borderRect_!.style.fill = `url(#${this.gradiantElement!.gradiant.id})`;
     }
 
-    protected createUnbiasedValue(value: ColorRangeType): ColorRangeType {
-        const ref = {
-            first: [...value.first],
-            second: [...value.second],
-        }
-
-        return ref as any;
-    }
-
-    protected markCacheAsOld(): void {
-        this.displayCache[0] = this.displayCache[1] = undefined;
-    }
-
-    protected getCachedValue(): [string, string] {
-        
-        this.displayCache[0] = this.calculateColorOf(data=>data.first as VariableColorType, cache=>cache[0]);
-        this.displayCache[1] = this.calculateColorOf(data=>data.second as VariableColorType, cache=>cache[1]);
-
-        return this.displayCache as [string,string];
-    }
-
     protected getPreviewSize(): [number, number] {
         return [40, 15];
-    }
-
-    // Event: When the editor changes the secondary value
-    protected onEditorChangeValue(main: VariableColorType, mainCache: string, secondary?: VariableColorType, secondaryCache?: string) {
-        // Updates the external value and stores the cache
-        this.displayCache[0] = mainCache;
-        this.displayCache[1] = secondaryCache!;
-
-        this.setValue({
-            second: secondary!,
-            first: main
-        });
-        this.markCacheAsOld();
     }
 
     protected showEditor_(_e?: Event | undefined): void {
 
         // Just sets the background black
         DropDownDiv.setColour("rgb(0,0,0)", "");
+
+        // Gets the cache
+        const cache = getBlockCacheOfSource<CachedRangeColor>(this.sourceBlock_!, this.name!);
 
         const val = getBlockDataObject(this.sourceBlock_!)[this.name!] as ColorRangeType
 
@@ -92,7 +55,7 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<[string|un
                 elm: DropDownDiv.getContentDiv(),
                 mainValue: val.first,
                 secondValue: val.second,
-                onChange: this.onEditorChangeValue.bind(this)
+                cache: cache
             }
         );
 
@@ -101,13 +64,16 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<[string|un
 
     protected render_(): void {
         if(this.gradiantElement !== undefined){
-            // Renders the gradiant
-            const clr = this.getCachedValue();
 
-            this.gradiantElement.stopC11.setAttribute("stop-color", clr[0]);
-            this.gradiantElement.stopC12.setAttribute("stop-color", clr[0]);
-            this.gradiantElement.stopC21.setAttribute("stop-color", clr[1]);
-            this.gradiantElement.stopC22.setAttribute("stop-color", clr[1]);
+            const cache = getBlockCacheOfSource<CachedRangeColor>(this.sourceBlock_!, this.name!).value;
+
+            const dpFirst = cache.first.display;
+            const dpSecond = cache.second.display;
+
+            this.gradiantElement.stopC11.setAttribute("stop-color", dpFirst);
+            this.gradiantElement.stopC12.setAttribute("stop-color", dpFirst);
+            this.gradiantElement.stopC21.setAttribute("stop-color", dpSecond);
+            this.gradiantElement.stopC22.setAttribute("stop-color", dpSecond);
         }
 
         super.render_();
@@ -117,20 +83,18 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<[string|un
 
         // Validates the newly passed value
         if(!isColorRangeColor(newValue) || this.sourceBlock_ === null)
-            return null;
+            return this.getValue();
 
-        if(this.getValue() !== null){
-            this.markCacheAsOld();
-            this.isDirty_ = true;
-        }
-        
         // Gets the data reference
         const dataRef = getBlockDataObject(this.sourceBlock_);
 
         // Updates the external value
-        dataRef[this.name!] = this.createUnbiasedValue(newValue);
+        dataRef[this.name!] = newValue;
 
-        return newValue;        
+        if (this.getValue() !== null)
+            this.render_();
+        
+        return newValue;    
     }
 
     /**

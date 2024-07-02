@@ -1,8 +1,6 @@
-import { solveExpression } from '@mathSolver/index';
-import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+import { CachedColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
 import { clamp, round3Digits } from '@utils/MathUtils';
-import { useVariableStore } from '@webapp/stores/VariableStore';
-import { HEX2HSV, HSV2HEX } from '@webapp/utils/color/ColorConverter';
+import { HEX2HSV } from '@webapp/utils/color/ColorConverter';
 import { useMouse } from '@webapp/utils/vue/VueMousemoveListener';
 import { ModelRef, Ref, computed } from 'vue'
 
@@ -10,14 +8,20 @@ export type ColorModel = ReturnType<typeof useColorModel>;
 
 
 // Logic of a color model (Cursor, locks, barriers and a lot of event listeners and such)
-export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlider: Ref<HTMLDivElement>, refHueSlider: Ref<HTMLDivElement>) {
-
-    const store = useVariableStore();
-
+export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlider: Ref<HTMLDivElement>, refHueSlider: Ref<HTMLDivElement>, cached: Ref<CachedColor>) {
     const isHueMouseDown = useMouse(onHueSliderMove);
     const isSatValMouseDown = useMouse(onSatValSliderMove);
 
+    // Sets the full model value
+    function setFullModelValue(value: VariableColorType){
 
+        const updated = model.value;
+        for(let idx=0;idx<3;idx++)
+            updated[idx] = typeof value[idx] === "string" ? value[idx] : clamp(round3Digits(value[idx] as number));
+
+        model.value = updated
+
+    }
 
     // Sets the model value of one of hue / saturation / value by index
     function setModelValue(idx: number, value: number | string) {
@@ -34,7 +38,7 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
 
     // Computed a style for the text-display
     const hexDisplayTextStyle = computed(() => {
-        if (coloredColorType.value[2] >= 1 / 2)
+        if (cached.value.hsv[2] >= 1 / 2)
             return "color: black; text-shadow: 1px 1px #aaa;";
 
         return "color: white; text-shadow: 1px 1px #444;";
@@ -46,40 +50,19 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
 
     // Computed: Css-Style for the hue cursor position
     const cursorHuePosition = computed(() => {
-        return (1-coloredColorType.value[0]) * 100;
+        return (1-cached.value.hsv[0]) * 100;
     });
 
     // Computed: Css-Style for the saturation / value cursor position
     const cursorSVPosition = computed(() => {
-        const top = (1 - coloredColorType.value[2]) * 100;
-        const left = (coloredColorType.value[1]) * 100;
+        const top = (1 - cached.value.hsv[2]) * 100;
+        const left = (cached.value.hsv[1]) * 100;
 
         return {
             top,
             left
         }
     })
-
-    // Computed: The HSV component's all as numbers (Expressions have been calculated)
-    const coloredColorType = computed(() => {
-
-        // Maps each value to their calculated value
-        return model.value.map(itm => {
-            if (typeof itm === "number") return clamp(itm);
-
-            return clamp(solveExpression(itm, store.variable2ValueMap, 1));
-        })
-    })
-
-    // Computed: The HSV componenets as a HEX-Css color #FFFFFF for example
-    const hexColor = computed(() => {
-        const asString = HSV2HEX(
-            coloredColorType.value[0] as number,
-            coloredColorType.value[1] as number,
-            coloredColorType.value[2] as number
-            , false);
-        return asString;
-    });
 
     //#endregion
 
@@ -105,7 +88,9 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
         // Validates the result
         if (clr === false) return;
 
-        model.value = [round3Digits(clr.h), round3Digits(clr.s), round3Digits(clr.v)];
+        setFullModelValue([
+            clr.h, clr.s, clr.v
+        ])
     }
 
 
@@ -136,7 +121,7 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
 
         const isString = typeof model.value[idx] === "string";
 
-        setModelValue(idx, isString ? coloredColorType.value[idx] : model.value[idx].toString());
+        setModelValue(idx, isString ? cached.value.hsv[idx] : model.value[idx].toString());
     }
 
     // Event: When the user moves the hue curser
@@ -182,9 +167,8 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
 
     return {
         // Color properties
-        locks, cursorHuePosition, cursorSVPosition, hexColor,
+        locks, cursorHuePosition, cursorSVPosition,
         hexDisplayTextStyle,
-        coloredColorType,
         
         // Mouse properties
         isHueMouseDown,
@@ -196,6 +180,10 @@ export function useColorModel(model: ModelRef<VariableColorType>, refSatValSlide
         onInputHexNumber,
         onLockClicked,
         onSatValMouseDown,
-        onTextInput
+        onTextInput,
+
+        // Change model
+        setFullModelValue,
+        setModelValue
     }
 }

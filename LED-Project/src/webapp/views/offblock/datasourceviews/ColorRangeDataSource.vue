@@ -18,7 +18,9 @@
             </template>
 
             <ColorPicker v-model="props.blockData[source.getKey()].first"
-                v-model:secondary="props.blockData[source.getKey()].second" />
+                v-model:secondary="props.blockData[source.getKey()].second"
+                :cache="props.cache.value"
+                />
         </v-menu>
 
         <v-tooltip :text="source.getInformation()">
@@ -44,7 +46,9 @@ import { BlockData } from '@webapp/blockly/OnBlockUtils';
 import ColorPicker from "@webapp/widgets/colorpicker/ColorPicker.vue"
 import { calculatePreview } from '@webapp/utils/color/VariableColorConverter';
 import { computed } from 'vue';
-import { ColorRangeType, HSVColorRange } from '@nodes/implementations/datasources/ColorRangeDataSource';
+import { CachedRangeColor, ColorRangeType, HSVColorRange } from '@nodes/implementations/datasources/ColorRangeDataSource';
+import { onMounted } from 'vue';
+import { ComputedRef } from 'vue';
 
 const gradiant_id = "grd" + Date.now();
 
@@ -58,7 +62,7 @@ const props = defineProps({
         required: true
     },
     cache: {
-        type: Object as PropType<any>,
+        type: Object as PropType<ComputedRef<CachedRangeColor>>,
         required: true
     }
 })

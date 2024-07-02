@@ -1,7 +1,8 @@
-import { HSVColor, VariableColorType, areVariableColorsEqual, isVariableColor, validateAndFixColor } from "./ColorDataSource";
+import { CachedColor, HSVColor, VariableColorType, areVariableColorsEqual, isVariableColor, validateAndFixColor } from "./ColorDataSource";
 import { clamp } from "@utils/MathUtils";
 import { solveExpression } from "@mathSolver/index";
 import { IDataSource } from "@nodes/definitions/DataSource";
+import { HSV2HEX } from "@webapp/utils/color/ColorConverter";
 
 /**
  * Checks if a given value is of the type for a color-range
@@ -35,7 +36,18 @@ const Defaults: Required<ColorDataConfig> = {
     info: undefined
 }
 
-export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColorRange> {
+
+/**
+ * Cache-Type which holds the cached data of a range color source
+ * 
+ * Meaning it holds the HSV-number values and the to string converted HEX-Value
+ */
+export type CachedRangeColor = {
+    first: CachedColor,
+    second: CachedColor
+};
+
+export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColorRange, CachedRangeColor> {
 
     private readonly config: Required<ColorDataConfig>;
     private readonly name: string;
@@ -49,6 +61,24 @@ export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColo
             first: defaultFirstValue,
             second: defaultSecondValue
         };
+    }
+
+    calculateCache(vars: { [key: string]: number; }, value: ColorRangeType): CachedRangeColor {
+        const res = this.resolve(value, vars);
+
+        const dpFirst = HSV2HEX(...res.first);
+        const dpSecond = HSV2HEX(...res.second);
+
+        return {
+            first: {
+                display: dpFirst,
+                hsv: res.first
+            },
+            second: {
+                display: dpSecond,
+                hsv: res.second
+            }
+        }
     }
 
     resolve(value: ColorRangeType, variables: { [name: string]: number; }): HSVColorRange {

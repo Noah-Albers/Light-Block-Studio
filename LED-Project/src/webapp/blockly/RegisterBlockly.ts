@@ -9,6 +9,7 @@ import { computed, reactive, ref } from "vue";
 import { OnBlockColorPicker } from "./fields/OnBlockColorPicker";
 import { OnBlockRangeColorPicker } from "./fields/OnBlockColorrangePicker";
 import { useVariableStore } from "@webapp/stores/VariableStore";
+import { ToolboxDefinition } from "blockly/core/utils/toolbox";
 
 // Names of custom element required for the blockly-blocks
 export const DATA_OBJECT_NAME = "dataObj";
@@ -93,9 +94,16 @@ function registerNodeModel(model: INodeModel) {
 
             const cacheObj: any = {};
 
+            const unionOfSources = [...new Set([...model.getSources(), ...model.getOnBlockSources()])];
+
             // Sets the default values for the on-block sources
-            for (let ds of model.getOnBlockSources()){
+            for (let ds of unionOfSources){
                 let key = ds.getKey();
+
+                if(dataObj[key] !== undefined){
+                    console.error(`Model '${model.getModelName()}' has multiple sources with the name '${key}'. Please give each source a unique name.`);
+                    return;
+                }
 
                 dataObj[key] = ds.getDefaultValue();
 
@@ -163,7 +171,7 @@ function registerBlocklyFields() {
          */
         (fld as any).fromJson = () => new (fld as any)();
 
-        Blockly.fieldRegistry.register(fld.FIELD_NAME, fld);
+        Blockly.fieldRegistry.register(fld.FIELD_NAME, fld as any);
     }
 }
 
@@ -171,7 +179,7 @@ function registerBlocklyFields() {
  * Creates the toolbox that is used for blockly
  * @returns the object which is used to define the blockly toolbox
  */
-export function createToolbox(): object {
+export function createToolbox(): ToolboxDefinition {
 
     // TODO: Figure out a way to name categorys properly
 
@@ -206,6 +214,8 @@ export function createToolbox(): object {
 
     // Maps the categorys to json content (Representation for the toolbox)
     const categorysAsJson = Object.keys(groupedModels).map(name => groupedItemsToCategory(name, groupedModels[name]));
+
+    // TODO
 
     return {
         "kind": "categoryToolbox",

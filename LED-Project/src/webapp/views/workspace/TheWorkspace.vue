@@ -1,9 +1,9 @@
 <template>
-<TheVueColorAttacher/>
-<div ref="blocklyDiv" style="height: 100%"></div>
+    <TheVueColorAttacher/>
+    <div ref="blocklyDiv" style="height: 100%"></div>
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 import TheVueColorAttacher from "@webapp/blockly/fields/color/TheVueColorAttacher.vue"
 import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
 import { Signals } from '@webapp/utils/signals/Signals';
@@ -51,14 +51,14 @@ const Toolbox = createToolbox();
 // Workspace reference (HTML)
 const blocklyDiv = ref(null);
 // Workspace reference (Injected)
-let workspace;
+let workspace: Blockly.WorkspaceSvg;
 
 useSignal(Signals.REQUEST_CONFIG_BUILD, ()=>buildWorkspaceAndSendEvents(workspace, true));
 
 onMounted(() => {
 
     // Creates the workspace
-    workspace = Blockly.inject(blocklyDiv.value, {
+    workspace = Blockly.inject(blocklyDiv.value!, {
         toolbox: Toolbox,
         ...Options
         // Other configuration options as needed
@@ -68,7 +68,7 @@ onMounted(() => {
 
     // Awaits a resize event and updates blockly accordingly
     var obs = new ResizeObserver(_ => Blockly.svgResize(workspace));
-    obs.observe(blocklyDiv.value);
+    obs.observe(blocklyDiv.value!);
 
     // Creates the base blocks
     const rootBlocks = ["led_root_setup", "led_root_loop"];
@@ -79,13 +79,16 @@ onMounted(() => {
         setup.render();	
     }
 
+    // Removes all undos (Prevents undoing adding the root and setup things...)
+    workspace.clearUndo();
+
     // Listens for blockly-events
     workspace.addChangeListener(evt=>{
 
         switch(evt.type){
             // Waits for a block change (Select / deselect)
             case Blockly.Events.SELECTED:
-                SignalDispatcher.emit(Signals.BLOCKLY_BLOCK_SELECTION_CHANGE, workspace.getBlockById(evt.newElementId));
+                SignalDispatcher.emit(Signals.BLOCKLY_BLOCK_SELECTION_CHANGE, workspace.getBlockById((evt as any).newElementId)!);
             case Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE: case Blockly.Events.CREATE: case Blockly.Events.MOVE: case Blockly.Events.CHANGE:
                 // Runs the blockly change event
                 buildWorkspaceAndSendEvents(workspace);

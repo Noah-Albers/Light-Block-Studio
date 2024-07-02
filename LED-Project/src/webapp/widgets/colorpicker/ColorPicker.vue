@@ -2,18 +2,18 @@
     <div :class="`frame ${isDualModel ? 'dualMode' : ''}`">
         <!-- HEX-Display (Shows the current color in hex and lets the user edit it)  -->
         <div class="hex-display">
-            <div :style="`background: ${mainModel.hexColor.value}`">
+            <div :style="`background: ${cachedColors.first.display}`">
                 <span>Spacer</span>
                 <input type="text"
-                    :value="mainModel.hexColor.value"
+                    :value="cachedColors.first.display"
                     :style="mainModel.hexDisplayTextStyle.value"
                     @change="mainModel.onInputHexNumber">
             </div>
 
             <div v-if="isDualModel"
-                :style="`background: ${secondModel!.hexColor.value}`">
+                :style="`background: ${cachedColors.second!.display}`">
                 <input type="text"
-                    :value="secondModel!.hexColor.value"
+                    :value="cachedColors.second!.display"
                     :style="secondModel!.hexDisplayTextStyle.value"
                     @change="secondModel!.onInputHexNumber">
             </div>
@@ -401,7 +401,10 @@ $text-size: 1.5rem;
     import Bar from "./Bar.vue"
     import { useMultiCursorMover } from "./MultiCursorMover";
     import { round3Digits } from '@utils/MathUtils';
-    import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+    import { CachedColor, HSVColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+    import { CachedRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource"
+    import { toRef } from 'vue';
+    import { ComputedRef } from 'vue';
 
     //#region Setup
 
@@ -413,7 +416,23 @@ $text-size: 1.5rem;
         (e: "preview", mainHex: string, secondHex?: string): void
     }>();
 
+    const cachedColors = computed(()=>{
+        const isSingle = (props.cache as any)["first"] === undefined;
+        
+        if(isSingle)
+            return {
+                first: props.cache as CachedColor,
+                second: undefined
+            }
+        return props.cache as CachedRangeColor
+    });
+
     const props = defineProps({
+        cache: {
+            type: Object as PropType<CachedColor | CachedRangeColor>,
+            required: true,
+        },
+
         disableShadows: {
             default: false,
             type: Boolean
@@ -444,22 +463,10 @@ $text-size: 1.5rem;
     })
 
     // Model with the logic of the color model
-    const mainModel = useColorModel(mainVModel, refSatValSlider, refHueSlider);
+    const mainModel = useColorModel(mainVModel, refSatValSlider, refHueSlider, computed(()=>cachedColors.value.first));
 
     // Model with the logic of the color model
-    const secondModel = isDualModel.value ? useColorModel(secondVModel as ModelRef<VariableColorType>, refSatValSlider, refHueSlider) : undefined;
-
-    function emitPreviewEvent(){
-        emit("preview", mainModel.hexColor.value, isDualModel.value ? secondModel!.hexColor.value : undefined);
-    }
-
-    // Registers the event updater for the previews
-    watch(mainModel.hexColor, emitPreviewEvent);
-    watch(mainModel.locks, emitPreviewEvent)
-    if(isDualModel.value){
-        watch(secondModel!.hexColor, emitPreviewEvent);
-        watch(secondModel!.locks, emitPreviewEvent);
-    }
+    const secondModel = isDualModel.value ? useColorModel(secondVModel as ModelRef<VariableColorType>, refSatValSlider, refHueSlider, computed(()=>cachedColors.value.second!)) : undefined;
 
     const startMover = isDualModel.value ? useMultiCursorMover(mainModel, secondModel!, mainVModel, secondVModel as ModelRef<VariableColorType>, refSatValSlider) : undefined;
 
@@ -515,11 +522,11 @@ $text-size: 1.5rem;
 
 
     const mainShadow = computed(() => {
-        return `hsla(${360 * mainModel.coloredColorType.value[0]},100%, 50%,1)`;
+        return `hsla(${360 * cachedColors.value.first.hsv[0]},100%, 50%,1)`;
     });
 
     const secondShadow = computed(() => {
-        return `hsla(${360 * secondModel!.coloredColorType.value[0]},100%, 50%,1)`;
+        return `hsla(${360 * cachedColors.value.second!.hsv[0]},100%, 50%,1)`;
     });
 
     // Style to use for the background color of the saturation / value slider
@@ -540,10 +547,24 @@ $text-size: 1.5rem;
 
     // Event: Colors shall be randomized
     function actionRandomizeColors() {
-        mainVModel.value = mainVModel.value.map(()=>round3Digits(Math.random())) as any;
+        function biasedRandomColor(){
+            let x = Math.random();
+
+            return 1 - 1/(10*x+1) + .09;
+        }
+
+        mainModel.setFullModelValue([
+            Math.random(),
+            biasedRandomColor(),
+            biasedRandomColor()
+        ])
 
         if (isDualModel.value)
-            secondVModel.value = secondVModel.value!.map(()=>round3Digits(Math.random())) as any;
+            secondModel!.setFullModelValue([
+                Math.random(),
+                biasedRandomColor(),
+                biasedRandomColor()
+            ])
     }
 
     // Event: Colors shall be swapped
@@ -563,9 +584,9 @@ $text-size: 1.5rem;
             clrNewMain[i] = which[i] ? secondVModel.value![i] : mainVModel.value![i];
         }
 
-        // Stores the swaped values
-        mainVModel.value = clrNewMain as any;
-        secondVModel.value = clrNewSec as any;
+        // Applies the swapped colors
+        mainModel.setFullModelValue(clrNewMain as any);
+        secondModel!.setFullModelValue(clrNewSec as any);
     }
 
     //#endregion

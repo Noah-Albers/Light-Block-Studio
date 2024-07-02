@@ -25,7 +25,6 @@ const props = defineProps({
         required: true
     },
     cache: {
-        type: Object as PropType<any>,
         required: true
     }
 })

@@ -1,10 +1,14 @@
 import { INodeModel } from "@nodes/definitions/Node";
 import { Block } from "blockly";
-import { Ref, ref } from "vue";
+import { ComputedRef, Ref, ref } from "vue";
 import { CACHE_OBJECT_NAME, DATA_OBJECT_NAME, MODEL_OBJECT_NAME } from "./RegisterBlockly";
 
 export type BlockData = {[key: string]: any};
 export type Cache = {[key: string]: any}
+
+export function getBlockCacheOfSource<T>(block: Block, name: string) : ComputedRef<T> {
+    return getBlockCache(block)[name];
+}
 
 // TODO: Comment
 export function getBlockCache(block: Block) : Cache {

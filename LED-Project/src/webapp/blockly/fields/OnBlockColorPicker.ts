@@ -1,29 +1,21 @@
 import { Field, DropDownDiv } from "blockly";
-import { BlockData, getBlockDataObject } from "../OnBlockUtils";
-import { WatchStopHandle, watch, watchEffect } from "vue";
+import { BlockData, getBlockCacheOfSource, getBlockDataObject } from "../OnBlockUtils";
+import { WatchStopHandle, watchEffect } from "vue";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
-import { VariableColorType, isVariableColor } from "@nodes/implementations/datasources/ColorDataSource";
-import { clamp } from "@utils/MathUtils";
-import { solveExpression } from "@mathSolver/index";
-import { useVariableStore } from "@webapp/stores/VariableStore";
-import { HSV2HEX } from "@webapp/utils/color/ColorConverter";
-import { calculatePreview } from "@webapp/utils/color/VariableColorConverter";
+import { CachedColor, VariableColorType, isVariableColor } from "@nodes/implementations/datasources/ColorDataSource";
 
-
-export abstract class AbstractBlockColorPicker<CacheType extends (string|undefined)|[string|undefined,string|undefined], ValueType> extends Field {
+export abstract class AbstractBlockColorPicker<ValueType> extends Field {
 
     // Reference to the watcher that watches this fields propery
     private watcher?: WatchStopHandle;
 
-    protected displayCache: CacheType = undefined!;
-
     // Defines the size of the preview element
-    protected abstract getPreviewSize() : [number, number];
+    protected abstract getPreviewSize(): [number, number];
 
     //#region Setup
 
-    constructor(){
+    constructor() {
         super(undefined);
         this.SERIALIZABLE = true
     }
@@ -45,36 +37,13 @@ export abstract class AbstractBlockColorPicker<CacheType extends (string|undefin
         const dataRef = getBlockDataObject(this.sourceBlock_);
 
         // Sets the value
-        this.setValue(this.createUnbiasedValue(getBlockDataObject(this.sourceBlock_!)[this.name!]));
+        this.onValueChange(dataRef[this.name!]);
 
         // Creates a watcher to listen for external value changes
-        this.watcher = watchEffect(()=>this.onValueChange(dataRef[this.name!]));
+        this.watcher = watchEffect(() => this.onValueChange(dataRef[this.name!]));
 
         // Listens for variable changes
         SignalDispatcher.on(Signals.VAR_CHANGE, this.onVariableChange.bind(this));
-    }
-
-    // Creates the value but without any reference to the original object
-    protected abstract createUnbiasedValue(value: ValueType) : ValueType;
-
-    //#endregion
-
-    //#region Cache
-
-    // Marks the cache string to be old and that the cache shall be recalculated
-    protected abstract markCacheAsOld() : void;
-    protected abstract getCachedValue() : Required<CacheType>;
-
-    // Helper function to calculate the hex-string (Cache)
-    protected calculateColorOf(getDataObj: (data: BlockData)=>VariableColorType, getCache: (cache: CacheType)=>string|undefined) : string {
-        const previousCache = getCache(this.displayCache);
-
-        if(previousCache !== undefined)
-            return previousCache;
-
-        let value = getDataObj(getBlockDataObject(this.sourceBlock_!)[this.name!]);
-
-        return calculatePreview(value);
     }
 
     //#endregion
@@ -102,17 +71,20 @@ export abstract class AbstractBlockColorPicker<CacheType extends (string|undefin
 
     // Event: A variable changed, therefor the colors must be recalculated
     protected onVariableChange() {
-        this.markCacheAsOld();
         this.render_();
     };
+
+
+    protected valueSetDelay: NodeJS.Timeout | undefined;
 
     /**
      * Event: When the value changes externally
      */
     protected onValueChange(newValue: BlockData) {
-        this.setValue(newValue);
+        this.render_();
+        this.setValue({ value: newValue });
     }
-    
+
 
     //#endregion
 
@@ -121,7 +93,7 @@ export abstract class AbstractBlockColorPicker<CacheType extends (string|undefin
     protected updateSize_(margin?: number | undefined): void {
         const size = this.getPreviewSize();
 
-        if(this.borderRect_ === null)
+        if (this.borderRect_ === null)
             return;
 
         // Updates width and height
@@ -152,46 +124,35 @@ export abstract class AbstractBlockColorPicker<CacheType extends (string|undefin
 
 }
 
-export class OnBlockColorPicker extends AbstractBlockColorPicker<string|undefined, VariableColorType> {
+export class OnBlockColorPicker extends AbstractBlockColorPicker<VariableColorType> {
 
     // Static field name
     public static readonly FIELD_NAME = "fld_clr_input";
 
-    constructor(){
+    constructor() {
         super();
-    }
-
-    protected createUnbiasedValue(value: VariableColorType): VariableColorType {
-        return [...value];
-    }
-
-    protected markCacheAsOld(): void {
-        this.displayCache = undefined;
-    }
-
-    protected getCachedValue(): string {
-
-        return this.displayCache = this.calculateColorOf(d=>d as VariableColorType,d=>d);
     }
 
     protected getPreviewSize(): [number, number] {
         return [25, 15];
     }
 
-    protected onEditorChangeValue(value: VariableColorType, colorCache: string) {
-        // Updates the external value and stores the cache
-        this.displayCache = colorCache;
-        // Sets the value of the block
-        this.setValue(value);
+    // Event: When the preview shall be updated with the new cache
+    protected onUpdatePreview() {
+        const cache = getBlockCacheOfSource<CachedColor>(this.sourceBlock_!, this.name!).value.display;
 
-        // Updates the color of the dropdown
-        DropDownDiv.setColour(this.getCachedValue(), "");
+        if (this.borderRect_ !== null)
+            this.borderRect_!.style.fill = cache;
+        DropDownDiv.setColour(cache, "");
     }
 
     protected showEditor_(_e?: Event | undefined): void {
 
+        // Gets the cache
+        const cache = getBlockCacheOfSource<CachedColor>(this.sourceBlock_!, this.name!);
+
         // Sets the block-background color as the dropdown background-color
-        DropDownDiv.setColour(this.getCachedValue(), "");
+        this.onUpdatePreview();
 
         // Requests the colorpicker to insert itself
         SignalDispatcher.emit(
@@ -199,7 +160,7 @@ export class OnBlockColorPicker extends AbstractBlockColorPicker<string|undefine
             {
                 elm: DropDownDiv.getContentDiv(),
                 mainValue: getBlockDataObject(this.sourceBlock_!)[this.name!] as VariableColorType,
-                onChange: this.onEditorChangeValue.bind(this)
+                cache: cache
             }
         );
 
@@ -207,17 +168,16 @@ export class OnBlockColorPicker extends AbstractBlockColorPicker<string|undefine
     }
 
     protected render_(): void {
-        // Updates the color
-        if(this.borderRect_ !== null)
-            this.borderRect_.style.fill = this.getCachedValue();
+        this.onUpdatePreview();
 
         super.render_();
     }
 
+    // Event: When a new external value is loaded
     protected doClassValidation_(newValue?: unknown): any {
 
         // Validates the newly passed value
-        if(!isVariableColor(newValue) || this.sourceBlock_ === null)
+        if (!isVariableColor(newValue) || this.sourceBlock_ === null)
             return this.getValue();
 
         // Gets the data reference
@@ -226,11 +186,9 @@ export class OnBlockColorPicker extends AbstractBlockColorPicker<string|undefine
         // Updates the external value
         dataRef[this.name!] = newValue;
 
-        if(this.getValue() !== null){
-            this.markCacheAsOld();
+        if (this.getValue() !== null)
             this.render_();
-        }
-        return newValue;        
+        return newValue;
     }
 }
 

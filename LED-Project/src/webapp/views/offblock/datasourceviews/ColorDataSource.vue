@@ -1,13 +1,16 @@
 <template>
     <div class="d-flex justify-space-between align-center ga-4">
-        <v-menu :close-on-content-click="false" class="">
+        <v-menu :close-on-content-click="false" :close-on-back="false" class="">
             <template v-slot:activator="{ props: aProps }">
                 <v-btn variant="outlined" v-bind="aProps">
                     {{ source.getKey() }}:<div :style="'background:' + props.cache.value.display" class="preview"></div>
                 </v-btn>
             </template>
     
-            <ColorPicker v-model="props.blockData[source.getKey()]" />
+            <ColorPicker
+                v-model="props.blockData[source.getKey()]"
+                :cache="cache.value"
+                />
         </v-menu>
     
         <v-tooltip :text="source.getInformation()">

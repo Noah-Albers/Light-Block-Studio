@@ -4,9 +4,9 @@
         <ColorPicker
             v-if="mainModel !== undefined"
             
+            :cache="cache!"
             v-model="mainModel"
             v-model:secondary="secondaryModel"
-            @preview="onModelUpdate"
             :disable-arrows="config.noArrows"
             :disable-shadows="config.noShadows"
             />
@@ -19,7 +19,9 @@
     import { Ref, ref, onMounted } from 'vue';
     import ColorPicker from "../../../widgets/colorpicker/ColorPicker.vue";
     import { EventArgsBlocklyClrReqAttach } from "@webapp/utils/signals/SignalArgumentTypes"
-    import { VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+    import { CachedColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+import { ComputedRef } from 'vue';
+import { CachedRangeColor } from '@nodes/implementations/datasources/ColorRangeDataSource';
     
     /**
      * 
@@ -46,29 +48,20 @@
         noShadows: false
     })
 
-    // The models for the color picker (Or range picker)
-    const secondaryModel: Ref<VariableColorType | undefined> = ref();
-    const mainModel: Ref<VariableColorType | undefined> = ref();
+    let mainModel: Ref<VariableColorType | undefined> = ref(undefined);
+    let cache: ComputedRef<CachedColor | CachedRangeColor> | undefined = undefined;
 
-    // Callbacks which send changes to the value and a cached hex-string back.
-    let onChange: ((mainValue: VariableColorType, mainCachedColor: string, secondValue?: VariableColorType, secondCache?: string)=>void) | undefined;
-    
-    function onModelUpdate(mainHex: string, secondHex?: string){
-        onChange!(
-            mainModel.value!,
-            mainHex,
-            secondaryModel.value,
-            secondHex
-        )
-    }
+    // The models for the color picker (Or range picker)
+    let secondaryModel: Ref<VariableColorType | undefined> = ref(undefined);
 
     // Event: Attach is requested
-    function onRequestAttachment({elm, onChange: onC, mainValue, secondValue, disableArrows, disableShadows}: EventArgsBlocklyClrReqAttach){
+    function onRequestAttachment({elm, cache: c, mainValue, secondValue, disableArrows, disableShadows}: EventArgsBlocklyClrReqAttach){
 
-        // Updates the internal model value and registers the change handler
-        secondaryModel.value = secondValue === undefined ? undefined : secondValue.map(x=>x) as VariableColorType;
-        onChange = onC;
-        
+        mainModel.value = mainValue;
+        cache = c;
+
+        secondaryModel.value = secondValue;
+
         // Updates the config
         config.value = {
             noArrows: disableArrows || false,
@@ -77,9 +70,6 @@
         
         // Moves the child
         elm.appendChild(refInner.value);
-
-        // Sets the main model to render the color picker only now
-        mainModel.value = mainValue.map(x=>x) as VariableColorType;
     }
 
     // Event: Detach is requested (Meaning cleanup / dispose)
@@ -88,8 +78,8 @@
 
         // Cleanup
         mainModel.value = undefined;
+        cache = undefined;
         secondaryModel.value = undefined;
-        onChange = undefined;
     }
 
     // Registers the signal-listeners for the attach and detach requests

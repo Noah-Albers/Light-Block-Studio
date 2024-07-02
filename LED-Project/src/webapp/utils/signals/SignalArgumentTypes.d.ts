@@ -1,4 +1,6 @@
-import { VariableColorType } from "@nodes/implementations/datasources/ColorDataSource"
+import { CachedColor, VariableColorType } from "@nodes/implementations/datasources/ColorDataSource"
+import { CachedRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource"
+import { ComputedRef } from "vue"
 
 export type EventArgsBlocklyClrReqAttach = {
     // HTML-Element to attach the element to
@@ -10,8 +12,9 @@ export type EventArgsBlocklyClrReqAttach = {
     // Inital value for the secondary model (If not set, no secondary model is used)
     secondValue?: VariableColorType
 
-    // Change listener (Changed on the colors will be passed to this, also directly with an RGB-color string (HEX) which can be passed to css)
-    onChange: (mainValue: VariableColorType, mainCachedColor: string, secondValue?: VariableColorType, secondCache?: string)=>void,
+    // Caches used by the block
+    cache: ComputedRef<CachedColor | CachedRangeColor>,
+
 
     // Only used if a second model is in use
 
