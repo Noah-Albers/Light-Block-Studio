@@ -2,6 +2,11 @@ import { CachedColor, VariableColorType } from "@nodes/implementations/datasourc
 import { CachedRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource"
 import { ComputedRef } from "vue"
 
+export type EventArgsPopup = {
+    timeout?: number,
+    text?: string
+}
+
 export type EventArgsBlocklyClrReqAttach = {
     // HTML-Element to attach the element to
     elm: Element,

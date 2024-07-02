@@ -1,20 +1,12 @@
 <template>
-
     <!-- Navigation bar -->
-    <v-navigation-drawer width="60"
-        permanent
-        location="right">
+    <v-navigation-drawer width="60" permanent location="right">
 
         <!-- Upper list -->
-        <v-list lines="one"
-            density="default">
-            <v-list-item v-for="(item, name) in MainViews"
-                @click="store.mainView = name"
-                :key="name"
-                :active="store.mainView === name"
-                :prepend-icon="item.icon">
-                <v-tooltip activator="parent"
-                    location="left">
+        <v-list lines="one" density="default">
+            <v-list-item v-for="(item, name) in MainViews" @click="store.mainView = name" :key="name"
+                :active="store.mainView === name" :prepend-icon="item.icon">
+                <v-tooltip activator="parent" location="left">
                     {{ name }}
                 </v-tooltip>
             </v-list-item>
@@ -22,15 +14,10 @@
 
         <!-- Lower list -->
         <template v-slot:append>
-            <v-list lines="one"
-                density="comfortable">
-                <v-list-item rounded="xl"
-                    v-for="(item, idx) in bottomItems"
-                    @click="item.action"
-                    :key="idx"
+            <v-list lines="one" density="comfortable">
+                <v-list-item rounded="xl" v-for="(item, idx) in bottomItems" @click="item.action" :key="idx"
                     :prepend-icon="item.icon">
-                    <v-tooltip activator="parent"
-                        location="left">
+                    <v-tooltip activator="parent" location="left">
                         {{ item.title }}
                     </v-tooltip>
                 </v-list-item>
@@ -48,6 +35,7 @@
     import { sendSignalAwaitResponse } from "../utils/signals/SignalAwaiter";
     import { generateCode } from "../views/codeview/CodeGenerator"
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
+import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 
     const store = useSettingsStore();
 
@@ -68,6 +56,8 @@
             const code = generateCode(setup, loop);
 
             await navigator.clipboard.writeText(code);
+
+            SignalDispatcher.emit(Signals.DISPLAY_POPUP, { text: "Code copied" })
         } catch (err) {
             console.error("Failed to copy / create code", err);
         }
@@ -88,6 +78,6 @@
     ]
 
 
-</script>
+    </script>
 
 <style lang="scss"></style>

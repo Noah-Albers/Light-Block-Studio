@@ -1,5 +1,10 @@
 <template>
   <v-app>
+    <!-- Snackbar to display information-->
+    <v-snackbar :timeout="popupOptions!.timeout || 800" v-model="popupOpen">
+        {{ popupOptions?.text }}
+    </v-snackbar>
+
     <v-overlay v-model="menuOpen"
       class="align-center justify-center">
       <TheSettingsMenus />
@@ -33,6 +38,18 @@
   import TheSettingsMenus from "./views/settingsmenu/TheSettingsMenu.vue";
   import { ref } from 'vue';
   import TheNavbar from "./views/TheNavbar.vue";
+  import { useSignal } from './utils/vue/VueSignalListener';
+  import { Signals } from './utils/signals/Signals';
+  import { EventArgsPopup } from './utils/signals/SignalArgumentTypes';
+  import { Ref } from 'vue';
+
+  const popupOpen = ref(false);
+  const popupOptions: Ref<EventArgsPopup> = ref({});
+
+  useSignal(Signals.DISPLAY_POPUP, opts=>{
+    popupOptions.value = opts;
+    popupOpen.value = true;
+  });
 
   const menuOpen = ref(false);
 </script>

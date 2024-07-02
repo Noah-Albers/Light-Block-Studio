@@ -10,6 +10,12 @@ export const Signals = Object.freeze({
      */
     REQUEST_CONFIG_BUILD: 6,
 
+    /**
+     * Requests the application to show a snackbar with the given information
+     * @argument {EventArgsPopup} the data to display inside the snackbar
+     */
+    DISPLAY_POPUP: 7,
+
     //#region Blockly-Events
 
     /**
