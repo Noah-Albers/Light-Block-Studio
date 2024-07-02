@@ -37,7 +37,7 @@
   import TheSidebar from "./views/sidebar/TheSidebar.vue";
   import TheSettingsMenus from "./views/settingsmenu/TheSettingsMenu.vue";
   import { ref } from 'vue';
-  import TheNavbar from "./views/TheNavbar.vue";
+  import TheNavbar from "./views/navbar/TheNavbar.vue";
   import { useSignal } from './utils/vue/VueSignalListener';
   import { Signals } from './utils/signals/Signals';
   import { EventArgsPopup } from './utils/signals/SignalArgumentTypes';

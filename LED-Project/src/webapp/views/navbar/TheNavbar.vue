@@ -4,11 +4,8 @@
 
         <!-- Upper list -->
         <v-list lines="one" density="default">
-            <v-list-item v-for="(item, name) in MainViews" @click="store.mainView = name" :key="name"
+            <v-list-item v-tooltip:left="name" v-for="(item, name) in MainViews" @click="store.mainView = name" :key="name"
                 :active="store.mainView === name" :prepend-icon="item.icon">
-                <v-tooltip activator="parent" location="left">
-                    {{ name }}
-                </v-tooltip>
             </v-list-item>
         </v-list>
 
@@ -16,10 +13,7 @@
         <template v-slot:append>
             <v-list lines="one" density="comfortable">
                 <v-list-item rounded="xl" v-for="(item, idx) in bottomItems" @click="item.action" :key="idx"
-                    :prepend-icon="item.icon">
-                    <v-tooltip activator="parent" location="left">
-                        {{ item.title }}
-                    </v-tooltip>
+                    :prepend-icon="item.icon" v-tooltip:left="item.title">
                 </v-list-item>
             </v-list>
         </template>
@@ -30,10 +24,10 @@
 <script setup
     lang="ts">
 
-    import { MainViews, useSettingsStore } from "../stores/SettingsStore";
-    import { Signals } from '../utils/signals/Signals';
-    import { sendSignalAwaitResponse } from "../utils/signals/SignalAwaiter";
-    import { generateCode } from "../views/codeview/CodeGenerator"
+    import { MainViews, useSettingsStore } from "@webapp/stores/SettingsStore";
+    import { Signals } from '@webapp/utils/signals/Signals';
+    import { sendSignalAwaitResponse } from "@webapp/utils/signals/SignalAwaiter";
+    import { generateCode } from "@webapp/views/codeview/CodeGenerator"
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 

@@ -2,12 +2,8 @@
     <div class="d-flex position-relative justify-center align-center h-100 px-10">
 
         <!-- Tutorial show button -->
-        <v-tooltip text="Tutorial">
-            <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" style="position: absolute; top: 1rem; right: 1rem" icon="mdi-help"
-                    @click="console.log('TODO Provide a link for a tutorial on the serial preview.')" />
-            </template>
-        </v-tooltip>
+        <v-btn v-tooltip="'Tutorial'" style="position: absolute; top: 1rem; right: 1rem" icon="mdi-help"
+            @click="console.log('TODO Provide a link for a tutorial on the serial preview.')" />
 
         <!-- Serial not supported -->
         <v-card v-if="serial === false" subtitle="Serial API is not supported in your browser" title="Serial API Problem">

@@ -23,11 +23,7 @@
                 />
         </v-menu>
 
-        <v-tooltip :text="source.getInformation()">
-            <template v-slot:activator="{ props }">
-                <v-icon v-bind="props" icon="mdi-information-outline"></v-icon>
-            </template>
-        </v-tooltip>
+        <v-icon v-tooltip:left="source.getInformation()" v-bind="props" icon="mdi-information-outline"></v-icon>
     </div>
 </template>
 

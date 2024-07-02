@@ -25,24 +25,21 @@
                         v-model="itm.value"></v-text-field>
                 </td>
                 <td>
-                    <v-tooltip :text="itm.info">
-                        <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props" icon="mdi-information-outline" />
-                        </template>
-                    </v-tooltip>
-
+                    <v-icon v-tooltip:left="itm.info" icon="mdi-information-outline" />
                 </td>
             </tr>
-            
+
             <!-- User Variables -->
             <tr class="var-usr" v-for="itm, idx in varStore.variables" :key="idx">
                 <td>
-                    <v-text-field class="px-1" :class="itm.nameProblem !== undefined ? 'error' : ''" density="compact" label="Variable" variant="plain" hide-details single-line
-                        @update:model-value="onVarChange" v-model="itm.name"></v-text-field>
+                    <v-text-field class="px-1" :class="itm.nameProblem !== undefined ? 'error' : ''" density="compact"
+                        label="Variable" variant="plain" hide-details single-line @update:model-value="onVarChange"
+                        v-model="itm.name"></v-text-field>
                 </td>
                 <td>
-                    <v-text-field class="px-1" :class="typeof itm.value === 'string' ? 'error' : ''" density="compact" label="Value" variant="plain" hide-details single-line
-                        @update:model-value="onVarChange" maxlength="15" v-model.number="itm.value"></v-text-field>
+                    <v-text-field class="px-1" :class="typeof itm.value === 'string' ? 'error' : ''" density="compact"
+                        label="Value" variant="plain" hide-details single-line @update:model-value="onVarChange"
+                        maxlength="15" v-model.number="itm.value"></v-text-field>
                 </td>
                 <td>
                     <v-icon icon="mdi-delete" @click="varStore.removeVariable(idx)" title="Delete the variable" />
@@ -148,5 +145,4 @@
     .var-tmp {
         color: gray;
     }
-    
 </style>

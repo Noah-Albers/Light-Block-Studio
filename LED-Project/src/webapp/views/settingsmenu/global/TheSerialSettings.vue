@@ -1,12 +1,7 @@
 <template>
-    <v-tooltip
-        text="Used to prevent random USB-Devices from showing up when connecting to hardware. Disable if your device isn't listed"
-        location="top">
-        <template v-slot:activator="{ props }">
-            <v-checkbox v-bind="props" label="Hide unknown Serial-Vendors"
-                v-model="store.whitelistUsbVendors.enabled"></v-checkbox>
-        </template>
-    </v-tooltip>
+    <v-checkbox
+        v-tooltip:top="'Used to prevent random USB-Devices from showing up when connecting to hardware. Disable if your device isn\'t listed'"
+        label="Hide unknown Serial-Vendors" v-model="store.whitelistUsbVendors.enabled"></v-checkbox>
 
     <v-card class="me-auto pa-2">
         <template v-slot:prepend>
@@ -54,38 +49,38 @@
     const newItem = ref(["", ""]);
 
     // Event: Whent the button to restore the default vendors is clicked
-    function askRestoreDefaults(){
-        if(!confirm("Do you wish to restore the vendor settings to their defaults?"))
+    function askRestoreDefaults() {
+        if (!confirm("Do you wish to restore the vendor settings to their defaults?"))
             return;
 
         store.restoreVendorDefaults();
     }
 
     // Event: When the button to add a new vendor is clicked
-    function onAddNewClicked(){
+    function onAddNewClicked() {
         const name = newItem.value[0];
         const vendorId = newItem.value[1];
 
         // Ensures both are given
-        if(name.trim().length <= 0){
+        if (name.trim().length <= 0) {
             alert("Please specify a name.");
             return;
         }
 
-        if(!/^0x[\da-fA-F]+$/.test(vendorId)){
+        if (!/^0x[\da-fA-F]+$/.test(vendorId)) {
             alert("Please specify the vendor id in the following format:\n0xABCDEF (Hexcode)");
             return;
         }
 
         const parsedID = parseInt(vendorId);
 
-        if(store.doesVendorIDExist(parsedID)){
+        if (store.doesVendorIDExist(parsedID)) {
             alert("A vendor with that id already exists. Duplicates are not allowed.");
             return;
         }
 
         // Parses and adds the vendor id
-        store.addVendor(name,parsedID)
+        store.addVendor(name, parsedID)
     }
 
     </script>
