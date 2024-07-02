@@ -8,7 +8,7 @@ import { HSV2HEX } from "@webapp/utils/color/ColorConverter";
  * Checks if a given value is of the type for a color-range
  */
 export function isColorRangeColor(value: any) : value is ColorRangeType {
-    if(typeof value !== "object" || Array.isArray(value))
+    if(typeof value !== "object" || Array.isArray(value) || value === null)
         return false;
 
     return isVariableColor(value.first) && isVariableColor(value.second);

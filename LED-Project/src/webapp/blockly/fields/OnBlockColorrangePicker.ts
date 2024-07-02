@@ -1,7 +1,7 @@
 import { VariableColorType } from "@nodes/implementations/datasources/ColorDataSource";
 import { AbstractBlockColorPicker } from "./OnBlockColorPicker";
 import { CachedRangeColor, ColorRangeType, areColorRangesEqual, isColorRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource";
-import { getBlockCacheOfSource, getBlockDataObject } from "../OnBlockUtils";
+import { BlockData, getBlockCacheOfSource, getBlockDataObject } from "../OnBlockUtils";
 import { DropDownDiv } from "blockly";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
@@ -25,6 +25,18 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<ColorRange
 
     // Contains all HTML-References to the custom gradiant elements
     private gradiantElement?: GradiantElement;
+
+    protected onInitializeBlockWithData(dataRef: BlockData): void {
+        const value = this.getValue();
+
+        if (isColorRangeColor(value))
+            dataRef[this.name!] = {
+                first: [...value.first],
+                second: [...value.second],
+            };
+        else
+            this.onValueChange(dataRef[this.name!]);
+    }
 
     protected initView(): void {
         super.initView();
@@ -63,7 +75,7 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<ColorRange
     }
 
     protected render_(): void {
-        if(this.gradiantElement !== undefined){
+        if (this.gradiantElement !== undefined) {
 
             const cache = getBlockCacheOfSource<CachedRangeColor>(this.sourceBlock_!, this.name!).value;
 
@@ -81,8 +93,15 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<ColorRange
 
     protected doClassValidation_(newValue?: unknown): any {
 
+        // Checks if the value is already set (Note: Uses Memory-Ref compare here)
+        if (this.getValue() === newValue)
+            return newValue;
+
+        if (newValue === undefined)
+            return this.getValue();
+
         // Validates the newly passed value
-        if(!isColorRangeColor(newValue) || this.sourceBlock_ === null)
+        if (!isColorRangeColor(newValue) || this.sourceBlock_ === null)
             return this.getValue();
 
         // Gets the data reference
@@ -93,24 +112,24 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<ColorRange
 
         if (this.getValue() !== null)
             this.render_();
-        
-        return newValue;    
+
+        return newValue;
     }
 
     /**
      * Creates the SVG-Gradiant element and attaches it to the field
      */
-    private createSVGGradiantElement(){
+    private createSVGGradiantElement() {
         const grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient")
         const attr = grad.setAttribute.bind(grad);
 
-        attr("x1","0%");
-        attr("y1","60%");
+        attr("x1", "0%");
+        attr("y1", "60%");
 
-        attr("x2","100%");
-        attr("y2","40%");
+        attr("x2", "100%");
+        attr("y2", "40%");
 
-        const cStop = (offset: string)=>{
+        const cStop = (offset: string) => {
             const s = document.createElementNS("http://www.w3.org/2000/svg", "stop");
             s.setAttribute("offset", offset);
             grad.appendChild(s);
@@ -127,7 +146,7 @@ export class OnBlockRangeColorPicker extends AbstractBlockColorPicker<ColorRange
         }
 
         // Inserts the relevant information
-        this.gradiantElement.gradiant.setAttribute("id", "grd_"+Date.now());
+        this.gradiantElement.gradiant.setAttribute("id", "grd_" + Date.now());
 
         // Appends the gradiant element
         this.getSvgRoot()!.appendChild(this.gradiantElement.gradiant);

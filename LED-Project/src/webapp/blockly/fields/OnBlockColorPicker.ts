@@ -26,6 +26,8 @@ export abstract class AbstractBlockColorPicker<ValueType> extends Field {
         this.borderRect_!.style.fillOpacity = "1";
     }
 
+    protected abstract onInitializeBlockWithData(data: BlockData): void;
+
     // Event: Blockly init's this block
     init(): void {
         super.init();
@@ -33,11 +35,9 @@ export abstract class AbstractBlockColorPicker<ValueType> extends Field {
         // Ensures that the source block exists
         if (this.sourceBlock_ === null) return;
 
-        // Gets the data reference
         const dataRef = getBlockDataObject(this.sourceBlock_);
 
-        // Sets the value
-        this.onValueChange(dataRef[this.name!]);
+        this.onInitializeBlockWithData(dataRef);
 
         // Creates a watcher to listen for external value changes
         this.watcher = watchEffect(() => this.onValueChange(dataRef[this.name!]));
@@ -82,7 +82,7 @@ export abstract class AbstractBlockColorPicker<ValueType> extends Field {
      */
     protected onValueChange(newValue: BlockData) {
         this.render_();
-        this.setValue({ value: newValue });
+        this.setValue(newValue);
     }
 
 
@@ -129,8 +129,11 @@ export class OnBlockColorPicker extends AbstractBlockColorPicker<VariableColorTy
     // Static field name
     public static readonly FIELD_NAME = "fld_clr_input";
 
-    constructor() {
-        super();
+    protected onInitializeBlockWithData(dataRef: BlockData): void {
+        if (isVariableColor(this.getValue()))
+            dataRef[this.name!] = [...this.getValue()];
+        else
+            this.onValueChange(dataRef[this.name!]);
     }
 
     protected getPreviewSize(): [number, number] {
@@ -175,6 +178,12 @@ export class OnBlockColorPicker extends AbstractBlockColorPicker<VariableColorTy
 
     // Event: When a new external value is loaded
     protected doClassValidation_(newValue?: unknown): any {
+        // Checks if the value is already set (Note: Uses Memory-Ref compare here)
+        if (this.getValue() === newValue)
+            return newValue;
+
+        if (newValue === undefined)
+            return this.getValue();
 
         // Validates the newly passed value
         if (!isVariableColor(newValue) || this.sourceBlock_ === null)
