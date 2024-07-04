@@ -1,6 +1,6 @@
 import mitt from "mitt";
 import { Signals } from "./Signals";
-import { Block } from "blockly";
+import { Block, WorkspaceSvg } from "blockly";
 import { EventArgsBlocklyClrReqAttach, EventArgsPopup } from "./SignalArgumentTypes";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 
@@ -15,7 +15,8 @@ export type Events = {
         loop: ProcedureWithOptions<any>[]
     },
     [Signals.REQUEST_CONFIG_BUILD]: void,
-    [Signals.DISPLAY_POPUP]: EventArgsPopup
+    [Signals.DISPLAY_POPUP]: EventArgsPopup,
+    [Signals.BLOCKLY_REQUEST_WORKSPACE]: (ws: WorkspaceSvg)=>void
 }
 
 export const SignalDispatcher = mitt<Events>();

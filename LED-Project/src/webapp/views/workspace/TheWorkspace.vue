@@ -55,6 +55,7 @@ const blocklyDiv = ref(null);
 let workspace: Blockly.WorkspaceSvg;
 
 useSignal(Signals.REQUEST_CONFIG_BUILD, ()=>buildWorkspaceAndSendEvents(workspace, true));
+useSignal(Signals.BLOCKLY_REQUEST_WORKSPACE,res=>res(workspace));
 
 onMounted(() => {
 

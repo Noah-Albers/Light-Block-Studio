@@ -42,5 +42,10 @@ export const Signals = Object.freeze({
     BLOCKLY_PREVIEW_CREATE_CONFIG: 4,
     BLOCKLY_ALL_CREATE_CONFIG: 5,
 
+    /**
+     * Requests blockly to send the current workspace instance
+     */
+    BLOCKLY_REQUEST_WORKSPACE: 8,
+
     //#endregion
 })

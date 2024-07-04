@@ -27,6 +27,13 @@ export const useVariableStore = defineStore('variables', {
 
     getters: {
 
+        export() : {name: string, value: string|number}[] {
+            return this.variables.map(v=>({
+                name: v.name,
+                value: v.value  
+            }))
+        },
+
         /**
          * Computed property which stores all variables in a [varName]: varValue object
          * @returns 
