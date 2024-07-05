@@ -1,3 +1,4 @@
+import { SettingsExport } from '@webapp/importexport/SaveStateType'
 import { defineStore } from 'pinia'
 
 export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg"]
@@ -68,7 +69,7 @@ export const useProjectStore = defineStore('project', {
     }),
 
     getters: {
-        export(): object {
+        export(): SettingsExport {
 
             const _ = (defaultValue: any, actualValue: any)=>{
                 if(defaultValue === actualValue) return undefined;

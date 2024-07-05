@@ -4,15 +4,11 @@ import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { useVariableStore } from "@webapp/stores/VariableStore";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
-import { Block, WorkspaceSvg } from "blockly";
+import { Block, BlockSvg, WorkspaceSvg } from "blockly";
+import { BlockExport, BlockStackExport, FullExport } from "./SaveStateType";
 
 // TODO: Comment all
 
-type BlockExport = {
-    type: string,
-    data: {[key: string]: string | boolean | number | object},
-    subblocks?: BlockExport[]
-}
 
 async function getRootBlocks(){
     // Gets the workspace
@@ -36,7 +32,7 @@ async function getRootBlocks(){
     }
 }
 
-function getBlockExport(block: Block) : BlockExport | undefined {
+function getBlockExport(block: BlockSvg) : BlockExport | undefined {
     // Gets the model
     const model = getBlockModel(block);
 
@@ -59,7 +55,7 @@ function getBlockExport(block: Block) : BlockExport | undefined {
 
     // Generates the subexports
     if(model.hasSubNodes())
-        subnodeExports = generateBlockExports(block.getInputTargetBlock(BLOCKLY_SUBBLOCKY_NAME)!);
+        subnodeExports = generateBlockExports(block.getInputTargetBlock(BLOCKLY_SUBBLOCKY_NAME)! as BlockSvg);
 
     return {
         data: exportedData,
@@ -68,14 +64,22 @@ function getBlockExport(block: Block) : BlockExport | undefined {
     }
 }
 
-function generateBlockExports(block: Block) : BlockExport[] {
+function getBlockStackExport(root: BlockSvg) : BlockStackExport {
+    return {
+        blocks: generateBlockExports(root),
+        x: root.relativeCoords.x,
+        y: root.relativeCoords.y  
+    }
+}
+
+function generateBlockExports(block: BlockSvg) : BlockExport[] {
     const list: BlockExport[] = [];
 
     while(block !== null){
         let exp = getBlockExport(block);
 
         // Moves to the next block
-        (block as Block | null) = block.getNextBlock();
+        (block as BlockSvg | null) = block.getNextBlock();
         
         if(exp === undefined)
             continue;
@@ -86,21 +90,17 @@ function generateBlockExports(block: Block) : BlockExport[] {
     return list;
 }
 
-export async function exportProject() : Promise<string> {
+export async function exportProject() : Promise<FullExport> {
 
     // 1. Gets the blockly-blocks
     const rootBlocks = await getRootBlocks();
 
-    // Gets the loop and setup exports
-    const loopExports = generateBlockExports(rootBlocks.loop);
-    const setupExports = generateBlockExports(rootBlocks.setup);
+    // Gets the loop, setup and other block exports
+    const loopExports = getBlockStackExport(rootBlocks.loop);
+    const setupExports = getBlockStackExport(rootBlocks.setup);
     
     // Gets the others with extra coordinates
-    const otherExports = rootBlocks.other.map(topBlock => ({
-        exports: generateBlockExports(topBlock),
-        x: topBlock.relativeCoords.x,
-        y: topBlock.relativeCoords.y  
-    }));
+    const otherExports = rootBlocks.other.map(getBlockStackExport);
 
     // 2. Get project settings
     const projectSettingsExports = useProjectStore().export;
@@ -108,13 +108,15 @@ export async function exportProject() : Promise<string> {
     // 3. Get variables
     const variableExports = useVariableStore().export;
 
-    return JSON.stringify({
+    const fullExport: FullExport = {
+        settings: projectSettingsExports,
+        variables: variableExports,
         workspace: {
             loop: loopExports,
             setup: setupExports,
             other: otherExports
-        },
-        settings: projectSettingsExports,
-        variables: variableExports
-    });
+        }
+    }
+
+    return fullExport;
 }

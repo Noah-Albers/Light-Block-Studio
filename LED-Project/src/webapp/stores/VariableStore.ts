@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { SystemVariable, Variable } from './definitions/Variables'
 import { isValidVariableName } from '@mathSolver/index';
+import { VariablesExport } from '@webapp/importexport/SaveStateType';
 
 // Defines reserved keywords that can't be used as variable names
 const RESERVED = [
@@ -27,7 +28,7 @@ export const useVariableStore = defineStore('variables', {
 
     getters: {
 
-        export() : {name: string, value: string|number}[] {
+        export() : VariablesExport {
             return this.variables.map(v=>({
                 name: v.name,
                 value: v.value  

@@ -24,7 +24,7 @@ const isOpen = ref(false);
 async function onExportClicked(){
 
     // TODO: Handle exports
-    console.log(JSON.parse(await exportProject()));
+    console.log(await exportProject());
 }
 
 </script>
