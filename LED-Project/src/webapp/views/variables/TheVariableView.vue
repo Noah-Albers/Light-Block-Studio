@@ -6,7 +6,7 @@
                     Name
                 </th>
                 <th class="text-left">
-                    Calories
+                    Value
                 </th>
                 <th width="20px" class="text-left">
                 </th>

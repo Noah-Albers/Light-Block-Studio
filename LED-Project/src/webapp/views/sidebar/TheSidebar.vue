@@ -1,6 +1,6 @@
 <template>
     <Splitpanes horizontal class="default-theme" :push-other-panes="false">
-        <Pane style="overflow: auto">
+        <Pane style="overflow: auto;" class="position-relative">
             <TheUpperSidebar />
         </Pane>
         <Pane style="overflow: auto;" class="position-relative">

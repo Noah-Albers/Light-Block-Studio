@@ -1,5 +1,5 @@
 <template>
-    <pre><code v-html="formattedData"></code></pre>
+    <pre class="pa-2"><code v-html="formattedData"></code></pre>
 </template>
 
 <script lang="ts" setup>

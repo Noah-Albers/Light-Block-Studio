@@ -1,14 +1,14 @@
-import { useProjectStore } from '@webapp/stores/ProjectStore';
+import { BuildInPreviews, useProjectStore } from '@webapp/stores/ProjectStore';
 import { storeToRefs } from 'pinia';
-import { Ref, onMounted, onUnmounted, ref, watch } from 'vue'
+import { Ref, onMounted, onUnmounted, ref, toRef, toRefs, watch } from 'vue'
 
 export type LEDs = {[key: number]: SVGElement[]};
 
 // Composable function to use signals on components that can be removed from the dom and readded
 export function useProjectImage(refWrapper: Ref<Element>, imgChangeCallback: ()=>void) {
 
-    const {preview} = storeToRefs(useProjectStore());
-    
+    const store = useProjectStore();
+
     // Holds all loaded leds
     const leds = ref(undefined as undefined | LEDs);
 
@@ -41,24 +41,38 @@ export function useProjectImage(refWrapper: Ref<Element>, imgChangeCallback: ()=
     // Loads the currently set image into the component
     async function loadImage() {
 
-        if(!preview.value.startsWith("@")){
-            setLoadedImage(preview.value);
+        // Validates the preview
+        if(typeof store.selectedPreview === "number"){
+            // Ensures the selected preview is within the correct confines
+            if(store.selectedPreview < 0 || store.selectedPreview >= store.previews.length){
+                
+                setTimeout(()=>{
+                    // Resets the preview and continues
+                    store.resetPreview();
+                }, 500);
+                return;
+            }
+
+            // Loads the custom svg
+            setLoadedImage(store.previews[store.selectedPreview]);
             return;
         }
 
+        // Otherwise loads one of the default values
+
         try {
-            // Validates to be a simple file name and not an url or something else
-            if(!/^@[a-zA-Z0-9_\-.]+$/g.test(preview.value)){
+            // Validates to be one of the build-in previews
+            if(!BuildInPreviews.includes(store.selectedPreview)){
                 setTimeout(()=>{
                     // Resets the preview and continues
-                    preview.value = "@Goggles.svg";
+                    store.resetPreview();
                 }, 500);
                 return;
             }
 
 
             // Loads the preview
-            const content = await (await fetch("previews/"+preview.value.substring(1))).text();
+            const content = await (await fetch("previews/"+store.selectedPreview)).text();
             setLoadedImage(content);
         }catch(err){
             console.error("Failed to request preview ",err);
@@ -66,7 +80,7 @@ export function useProjectImage(refWrapper: Ref<Element>, imgChangeCallback: ()=
     }
 
     onMounted(loadImage);
-    watch(preview, loadImage);
+    watch(toRefs(store).selectedPreview, loadImage);
 
     return leds;
 }

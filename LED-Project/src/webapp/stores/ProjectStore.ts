@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 
+export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg"]
+
 const Defaults = {
     codeTemplate: `#include <FastLED.h>
 #define LED_PIN $$pin$$
@@ -33,7 +35,7 @@ void loop(){
         loop: "$$code$$"
     },
 
-    preview: "@Goggles.svg",
+    selectedPreview: BuildInPreviews[0],
 }
 
 export const useProjectStore = defineStore('project', {
@@ -41,7 +43,6 @@ export const useProjectStore = defineStore('project', {
         // TODO: Comment this stuff
 
         // Quick settings accessible from the quick access menu
-        preview: Defaults.preview as string,
         codeTemplate: Defaults.codeTemplate,
         pin: 0,
 
@@ -58,7 +59,12 @@ export const useProjectStore = defineStore('project', {
 
             setup: Defaults.hooks.setup,
             loop: Defaults.hooks.loop
-        }
+        },
+
+        // List of previews stored inside the projects (SVG-Files)
+        previews: [] as string[],
+        // Which preview is selected (String if it's a build-in one, number if it's the index of one of the custom loaded ones)
+        selectedPreview: Defaults.selectedPreview as number | string
     }),
 
     getters: {
@@ -70,7 +76,6 @@ export const useProjectStore = defineStore('project', {
             }
 
             return {
-                preview: _(Defaults.preview, this.preview),
                 codeTemplate: _(Defaults.codeTemplate, this.codeTemplate),
                 hooks: {
                     pushleds: _(Defaults.hooks.pushleds, this.hooks.pushleds),
@@ -80,6 +85,8 @@ export const useProjectStore = defineStore('project', {
                     setup: _(Defaults.hooks.setup, this.hooks.setup),
                     loop: _(Defaults.hooks.loop, this.hooks.loop),
                 },
+                previews: this.previews,
+                selectedPreview: this.selectedPreview,
 
                 pin: this.pin,
                 loopPushLeds: this.loopPushLeds,
@@ -89,5 +96,8 @@ export const useProjectStore = defineStore('project', {
     },
 
     actions: {
+        resetPreview(){
+            this.selectedPreview = BuildInPreviews[0]
+        }
     },
 })
