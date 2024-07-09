@@ -1,11 +1,11 @@
 <template>
     <div v-for="id in aliveElements" :class="`render-element-${id}`" :key="id">
         <component
-            :is="mapping[id].renderer"
-            :source="mapping[id].source"
-            :blockData="mapping[id].dataObj"
-            :cache="mapping[id].cache.value"
-            @extraInfo="mapping[id].extraInfo"
+        :is="mapping[id].renderer"
+        :source="mapping[id].source"
+        :blockData="mapping[id].dataObj"
+        :cache="mapping[id].cache.value"
+        :extraInfo="mapping[id].extraInfo"
         />
     </div>
 </template>
@@ -39,7 +39,7 @@ function getIdByElement(base: HTMLElement): number | undefined {
     return undefined;
 }
 
-useSignal(Signals.REQUEST_VUE_HTML_INJECT, (base: EventVue2HTMLRequest<any>) => {
+useSignal(Signals.BLOCKLY_REQUEST_VUE_HTML_INJECT, (base: EventVue2HTMLRequest<any>) => {
 
     // Creates an internal id
     const id = counter.value++;
@@ -53,7 +53,7 @@ useSignal(Signals.REQUEST_VUE_HTML_INJECT, (base: EventVue2HTMLRequest<any>) => 
     aliveElements.value.push(id);
 });
 
-useSignal(Signals.REQUEST_VUE_HTML_DETACH, base => {
+useSignal(Signals.BLOCKLY_REQUEST_VUE_HTML_DETACH, base => {
 
     // Gets the id
     const id = getIdByElement(base);
@@ -80,7 +80,8 @@ onUpdated(() => {
     // For every untriggered element (Elements which didn't have their HTML transplanted yet)
     for (let id of [...untriggered]) {
         // Gets the element from the DOM
-        const elm = document.querySelector(".render-element-" + id);
+        const elm = document.querySelector(".render-element-" + id)!;
+
 
         // Checks if the element actually exists
         if (elm === null)

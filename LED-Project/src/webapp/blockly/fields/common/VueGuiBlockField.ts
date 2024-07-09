@@ -32,7 +32,7 @@ export abstract class VueGuiBlockField<ExtraInfo = undefined> extends Field {
 
     // Event: When the editor is closed
     protected onDisposeEditor() {
-        SignalDispatcher.emit(Signals.REQUEST_VUE_HTML_DETACH, DropDownDiv.getContentDiv());
+        SignalDispatcher.emit(Signals.BLOCKLY_REQUEST_VUE_HTML_DETACH, DropDownDiv.getContentDiv());
     }
 
     //#endregion
@@ -51,7 +51,7 @@ export abstract class VueGuiBlockField<ExtraInfo = undefined> extends Field {
 
         // Requests the colorpicker to insert itself
         SignalDispatcher.emit(
-            Signals.REQUEST_VUE_HTML_INJECT,
+            Signals.BLOCKLY_REQUEST_VUE_HTML_INJECT,
             {
                 base: DropDownDiv.getContentDiv(),
                 dataObj: dataObj,

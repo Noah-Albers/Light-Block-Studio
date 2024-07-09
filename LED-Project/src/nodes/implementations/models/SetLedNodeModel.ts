@@ -1,10 +1,9 @@
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
 import { NumberDataSource } from "../datasources/NumberDataSource";
-import { ColorDataSource, VariableColorType } from "../datasources/ColorDataSource";
+import { ColorDataSource } from "../datasources/ColorDataSource";
 import { ColorRangeDataSource } from "../datasources/ColorRangeDataSource";
 import { Registry } from "@registry/Registry";
-import { ExperimentalDataSource } from "@webapp/experimental/ExperimentalDataSource";
 
 export class SetLedNodeModel implements INodeModel {
 
@@ -22,10 +21,6 @@ export class SetLedNodeModel implements INodeModel {
 
     private testColorRange = new ColorRangeDataSource("testClr", [1,1,1], [0.5,1,1], {
         info: "Im just a small test color"
-    })
-
-    private testExpView = new ExperimentalDataSource("yeet", "0.5 + 2", {
-        info: "Yeah smth like this i guess"
     })
 
     getModelName(): string {

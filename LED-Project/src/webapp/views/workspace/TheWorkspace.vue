@@ -1,11 +1,9 @@
 <template>
-    <RequestInject v-if="false"/>
-    <TheVueColorAttacher/>
+    <RequestInject />
     <div ref="blocklyDiv" style="height: 100%"></div>
 </template>
 
 <script lang="ts" setup>
-import TheVueColorAttacher from "@webapp/blockly/fields/color/TheVueColorAttacher.vue"
 import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
 import { Signals } from '@webapp/utils/signals/Signals';
 import Blockly from 'blockly';
@@ -56,7 +54,7 @@ const blocklyDiv = ref(null);
 // Workspace reference (Injected)
 let workspace: Blockly.WorkspaceSvg;
 
-useSignal(Signals.REQUEST_CONFIG_BUILD, ()=>buildWorkspaceAndSendEvents(workspace, true));
+useSignal([Signals.REQUEST_CONFIG_BUILD, Signals.VAR_CHANGE], ()=>buildWorkspaceAndSendEvents(workspace, true));
 useSignal(Signals.BLOCKLY_REQUEST_WORKSPACE,res=>res(workspace));
 
 onMounted(() => {

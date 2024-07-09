@@ -1,10 +1,23 @@
 import { onMounted, onUnmounted } from 'vue'
 import { Events, SignalDispatcher } from '../signals/SignalDispatcher'
 
+function handleEvents(isOn: boolean, event: (keyof Events) | (keyof Events)[], handler: (_: any)=>any) {
+  const mount = isOn ? SignalDispatcher.on : SignalDispatcher.off;
+  
+
+  if(!Array.isArray(event)){
+    mount(event, handler);
+    return;
+  }
+
+  for(let evt of event)
+    mount(evt, handler);
+}
+
 // Composable function to use signals on components that can be removed from the dom and readded
-export function useSignal<Key extends keyof Events>(type: Key, handler: (_: any)=>any) {
+export function useSignal(type: (keyof Events) | (keyof Events)[], handler: (_: any)=>any) {
 
   // Hooks into the life cycle of the component its used on
-  onMounted(() => SignalDispatcher.on(type, handler as any));
-  onUnmounted(() => SignalDispatcher.off(type, handler as any));
+  onMounted(() => handleEvents(true, type, handler));
+  onUnmounted(() => handleEvents(false, type, handler));
 }
