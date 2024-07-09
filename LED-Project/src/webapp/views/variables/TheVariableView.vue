@@ -17,11 +17,11 @@
             <!-- System Variables -->
             <tr class="var-sys" :key="idx" v-for="itm, idx in varStore.systemVariables">
                 <td>
-                    <v-text-field density="compact" variant="plain" hide-details single-line disabled readonly
+                    <v-text-field class="px-1" density="compact" variant="plain" hide-details single-line disabled readonly
                         v-model="itm.name"></v-text-field>
                 </td>
                 <td>
-                    <v-text-field readonly density="compact" disabled variant="plain" hide-details single-line
+                    <v-text-field class="px-1" readonly density="compact" disabled variant="plain" hide-details single-line
                         v-model="itm.value"></v-text-field>
                 </td>
                 <td>
