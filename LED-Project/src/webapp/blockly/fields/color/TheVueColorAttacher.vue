@@ -20,8 +20,8 @@
     import ColorPicker from "../../../widgets/colorpicker/ColorPicker.vue";
     import { EventArgsBlocklyClrReqAttach } from "@webapp/utils/signals/SignalArgumentTypes"
     import { CachedColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
-import { ComputedRef } from 'vue';
-import { CachedRangeColor } from '@nodes/implementations/datasources/ColorRangeDataSource';
+    import { ComputedRef } from 'vue';
+    import { CachedRangeColor } from '@nodes/implementations/datasources/ColorRangeDataSource';
     
     /**
      * 

@@ -98,6 +98,8 @@ export class ColorDataSource implements IDataSource<VariableColorType, HSVColor,
     private readonly name: string;
     private readonly defaultValue: VariableColorType;
 
+    public static SOURCE_NAME: string = "color";
+
     constructor(name: string, defaultValue: VariableColorType, config: ColorDataConfig){
         // Merge provided config with defaults
         this.config = {...Defaults, ...config};
@@ -125,10 +127,6 @@ export class ColorDataSource implements IDataSource<VariableColorType, HSVColor,
         }) as HSVColor;
     }
 
-    getUniqueSourceName(): string {
-        return "color"
-    }
-    
     getKey(): string {
         return this.name;
     }

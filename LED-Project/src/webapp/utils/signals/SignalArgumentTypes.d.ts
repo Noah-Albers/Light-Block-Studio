@@ -1,7 +1,22 @@
+import { IDataSource } from "@nodes/definitions/DataSource"
+import { INodeModel } from "@nodes/definitions/Node"
 import { CachedColor, VariableColorType } from "@nodes/implementations/datasources/ColorDataSource"
 import { CachedRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource"
-import { ComputedRef } from "vue"
+import { Component, ComputedRef } from "vue"
 
+// TODO: Comment
+export type EventVue2HTMLRequest<T> = {
+    base: Element,
+
+    cache: ComputedRef<any>,
+    dataObj: object,
+    source: IDataSource,
+    renderer: Component,
+
+    extraInfo: T
+}
+
+// TODO: Comment
 export type EventArgsPopup = {
     timeout?: number,
     text?: string

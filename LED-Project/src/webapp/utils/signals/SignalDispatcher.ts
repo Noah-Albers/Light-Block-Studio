@@ -1,7 +1,7 @@
 import mitt from "mitt";
 import { Signals } from "./Signals";
 import { Block, WorkspaceSvg } from "blockly";
-import { EventArgsBlocklyClrReqAttach, EventArgsPopup } from "./SignalArgumentTypes";
+import { EventArgsBlocklyClrReqAttach, EventArgsPopup, EventVue2HTMLRequest } from "./SignalArgumentTypes";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 
 export type Events = {
@@ -16,7 +16,9 @@ export type Events = {
     },
     [Signals.REQUEST_CONFIG_BUILD]: void,
     [Signals.DISPLAY_POPUP]: EventArgsPopup,
-    [Signals.BLOCKLY_REQUEST_WORKSPACE]: (ws: WorkspaceSvg)=>void
+    [Signals.BLOCKLY_REQUEST_WORKSPACE]: (ws: WorkspaceSvg)=>void,
+    [Signals.REQUEST_VUE_HTML_INJECT]: EventVue2HTMLRequest,
+    [Signals.REQUEST_VUE_HTML_DETACH]: Element
 }
 
 export const SignalDispatcher = mitt<Events>();

@@ -9,6 +9,9 @@ export interface IDataSource<Type, ResolvedType, Cache = any> {
     // TODO: Maybe use later
     //private hints: Hint[];
 
+    // TODO: Required
+    // public static readonly SOURCE_NAME: string;
+
     /**
      * Finalizes the value and calculates it. For example string formulars will be calculates with variables and such
      * @param value 
@@ -20,12 +23,6 @@ export interface IDataSource<Type, ResolvedType, Cache = any> {
      * Meaning that this is not a key/name for the whole class but for a single instance.
      */
     getKey() : string;
-
-    /**
-     * @returns a string which represents a unique key for this datasource type.
-     * So this is the name for the whole class
-     */
-    getUniqueSourceName() : string;
 
     /**
      * @returns the default value of the field

@@ -53,6 +53,8 @@ export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColo
     private readonly name: string;
     private readonly defaultValue: ColorRangeType;
 
+    public static SOURCE_NAME: string = "colorrange";
+
     constructor(name: string, defaultFirstValue: VariableColorType, defaultSecondValue: VariableColorType, config: ColorDataConfig){
         // Merge provided config with defaults
         this.config = {...Defaults, ...config};
@@ -93,10 +95,6 @@ export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColo
             first: mapper(value.first),
             second: mapper(value.second),
         } as HSVColorRange
-    }
-
-    getUniqueSourceName(): string {
-        return "colorrange"
     }
     
     getKey(): string {

@@ -1,15 +1,13 @@
 import Blockly from "blockly";
 import { INodeModel } from "@nodes/definitions/Node";
 import { Registry } from "@registry/Registry";
-import { OnBlockTextInput } from "./fields/OnBlockTextfield";
-import { getBlocklyFieldNameFromModel } from "./DataSource2BlocklyField";
 import { BlockData } from "./OnBlockUtils";
 import { groupBy, mostFrequent } from "@utils/ArrayUtils";
-import { computed, reactive, ref } from "vue";
-import { OnBlockColorPicker } from "./fields/OnBlockColorPicker";
-import { OnBlockRangeColorPicker } from "./fields/OnBlockColorrangePicker";
+import { Component, computed, reactive } from "vue";
 import { useVariableStore } from "@webapp/stores/VariableStore";
 import { ToolboxDefinition } from "blockly/core/utils/toolbox";
+import { getBlocklyFields2Register } from "./fields/registry/FieldRegistry";
+import { IDataSource } from "@nodes/definitions/DataSource";
 
 // Names of custom element required for the blockly-blocks
 export const DATA_OBJECT_NAME = "dataObj";
@@ -97,18 +95,18 @@ function registerNodeModel(model: INodeModel) {
             const unionOfSources = [...new Set([...model.getSources(), ...model.getOnBlockSources()])];
 
             // Sets the default values for the on-block sources
-            for (let ds of unionOfSources){
+            for (let ds of unionOfSources) {
                 let key = ds.getKey();
 
-                if(dataObj[key] !== undefined){
+                if (dataObj[key] !== undefined) {
                     console.error(`Model '${model.getModelName()}' has multiple sources with the name '${key}'. Please give each source a unique name.`);
                     return;
                 }
 
                 dataObj[key] = ds.getDefaultValue();
 
-                if(ds.calculateCache !== undefined)
-                    cacheObj[key] = computed(()=>ds.calculateCache!(store.variable2ValueMap, dataObj[key]));
+                if (ds.calculateCache !== undefined)
+                    cacheObj[key] = computed(() => ds.calculateCache!(store.variable2ValueMap, dataObj[key]));
             }
 
             // Adds the data object onto the block
@@ -155,24 +153,44 @@ function registerOtherBlocks() {
     };
 }
 
+
+// Stores a list of loopup elements to use for the off-block data presentation
+let offblockElements: { [key: string]: Component };
+let datasource2fieldMapping: {dsClass: any, name: string}[]
+
+
 /**
  * Registers custom fields to blockly that are used
  */
 function registerBlocklyFields() {
     // List of all fields
-    const LIST = [OnBlockTextInput, OnBlockColorPicker, OnBlockRangeColorPicker]
+    const list = getBlocklyFields2Register();
 
+    // Creates a lookup object for off-block objects
+    offblockElements = {};
+    datasource2fieldMapping = [];
 
     // Iterates over all fields
-    for (const fld of LIST) {
+    for (const fld of list) {
         /**
          * Supplies a simple fromJson function that does nothing but create a new field of the required type.
          * This is done because the export/import will happen without the blocks only on the models / datasources
          */
-        (fld as any).fromJson = () => new (fld as any)();
+        (fld.BlocklyField as any).fromJson = () => new (fld.BlocklyField as any)();
 
-        Blockly.fieldRegistry.register(fld.FIELD_NAME, fld as any);
+        // Registers the blockly-field
+        Blockly.fieldRegistry.register(fld.BlocklyField.FIELD_NAME, fld.BlocklyField as any);
+
+        if(fld.DataSource.SOURCE_NAME === undefined)
+            throw new Error(`Datasource '${fld.DataSource.constructor.name}' doesn't have a SOURCE_NAME defined. Please fix it by adding static SOURCE_NAME = '<Somename>';`);
+
+        // Adds the loopUp element
+        offblockElements[fld.DataSource.SOURCE_NAME] = fld.OffBlockView;
+
+        // Adds the data source mapping
+        datasource2fieldMapping.push({ dsClass: fld.DataSource, name: fld.BlocklyField.FIELD_NAME })
     }
+
 }
 
 /**
@@ -234,4 +252,26 @@ export function registerBlockly() {
     Registry.nodeModels.forEach(registerNodeModel);
 
     registerBlocklyFields();
+}
+
+
+/**
+ * Takes in a
+ * @param datasource 
+ * @returns the corresponding name of the blockly-field which shall be used for that data source
+ */
+function getBlocklyFieldNameFromModel(ds: IDataSource<any, any, any>): string {
+
+    // Finds the correct one
+    for (const itm of datasource2fieldMapping){
+        if(ds instanceof itm.dsClass)
+            return itm.name
+    }
+
+    throw new Error(`No blockly on-block field found for model ${ds.constructor.name}`);
+}
+
+// TODO
+export function getOffBlockView(ds: IDataSource<any,any,any>): Component {
+    return offblockElements[(ds as any).constructor.SOURCE_NAME];
 }

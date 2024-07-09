@@ -4,6 +4,7 @@ import { NumberDataSource } from "../datasources/NumberDataSource";
 import { ColorDataSource, VariableColorType } from "../datasources/ColorDataSource";
 import { ColorRangeDataSource } from "../datasources/ColorRangeDataSource";
 import { Registry } from "@registry/Registry";
+import { ExperimentalDataSource } from "@webapp/experimental/ExperimentalDataSource";
 
 export class SetLedNodeModel implements INodeModel {
 
@@ -23,6 +24,10 @@ export class SetLedNodeModel implements INodeModel {
         info: "Im just a small test color"
     })
 
+    private testExpView = new ExperimentalDataSource("yeet", "0.5 + 2", {
+        info: "Yeah smth like this i guess"
+    })
+
     getModelName(): string {
         return "setled_simple";
     }
@@ -33,10 +38,10 @@ export class SetLedNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Led %1 in %2 %3";
+        return "Led %1 %2 %3";
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
-        return [this.idxField, this.colorField, this.testColorRange]
+        return [this.colorField, this.testColorRange, this.idxField]
     }
     getSources(): IDataSource<any, any, any>[] {
         return this.getOnBlockSources();

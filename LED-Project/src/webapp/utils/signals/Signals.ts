@@ -1,5 +1,9 @@
 
 export const Signals = Object.freeze({
+    // TODO
+    REQUEST_VUE_HTML_INJECT: 9,
+    REQUEST_VUE_HTML_DETACH: 10,
+
     /**
      * When a variable is added/removed or changed by the user
      */

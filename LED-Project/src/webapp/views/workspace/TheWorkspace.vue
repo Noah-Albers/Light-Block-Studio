@@ -1,4 +1,5 @@
 <template>
+    <RequestInject v-if="false"/>
     <TheVueColorAttacher/>
     <div ref="blocklyDiv" style="height: 100%"></div>
 </template>
@@ -14,6 +15,7 @@ import { createToolbox } from "@webapp/blockly/RegisterBlockly";
 import { buildWorkspaceAndSendEvents } from "./WorkspaceConfigBuilder"; 
 import { useSignal } from "@webapp/utils/vue/VueSignalListener";
 import { useSettingsStore } from "@webapp/stores/SettingsStore";
+import RequestInject from "./RequestInject.vue";
 
 const Options = {
     // TODO: Add theme

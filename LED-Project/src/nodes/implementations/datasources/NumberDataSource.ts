@@ -22,11 +22,13 @@ const Defaults : Required<NumberDataConfig> = {
     type: "float"
 }
 
-export class NumberDataSource implements IDataSource<string, number> {
+export class NumberDataSource implements IDataSource<string, number, undefined> {
 
     private readonly config: Required<NumberDataConfig>;
     private readonly name: string;
     private readonly defaultValue: string;
+
+    public static SOURCE_NAME: string = "number";
 
     constructor(name: string, defaultValue: string, config: NumberDataConfig){
         // Merge provided config with defaults
@@ -37,10 +39,6 @@ export class NumberDataSource implements IDataSource<string, number> {
 
     getDefaultValue(): string {
         return this.defaultValue;
-    }
-
-    getUniqueSourceName(): string {
-        return "number";
     }
 
     getKey(): string {

@@ -1,4 +1,6 @@
 <template>
+  <RequestInject/>
+
   <v-app>
     <!-- Snackbar to display information-->
     <v-snackbar :timeout="popupOptions!.timeout || 800" v-model="popupOpen">
@@ -42,6 +44,8 @@
   import { Signals } from './utils/signals/Signals';
   import { EventArgsPopup } from './utils/signals/SignalArgumentTypes';
   import { Ref } from 'vue';
+  import RequestInject from './experimental/RequestInject.vue';
+  import ExternalTest from './experimental/ExternalTest.vue';
 
   const popupOpen = ref(false);
   const popupOptions: Ref<EventArgsPopup> = ref({});
