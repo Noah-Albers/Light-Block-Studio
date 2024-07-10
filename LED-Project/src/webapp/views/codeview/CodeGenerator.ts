@@ -13,8 +13,12 @@ function getVariables(){
     for(let name in varStore.variable2ValueMap)
         obj[name] = varStore.variable2ValueMap[name].toString();
 
+    // Project store
+    const store = useProjectStore();
+
     // Adds some default overwrites
-    obj["pin"] = useProjectStore().pin.toString()
+    obj["pin"] = (store.pin || 0).toString()
+    obj["amt"] = (store.amount || 0).toString()
 
     return obj;
 }

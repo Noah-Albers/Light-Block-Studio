@@ -30,6 +30,7 @@ export type SettingsExport = {
     previews: string[],
     selectedPreview: string | number,
     pin: number,
+    amount: number,
     loopPushLeds: boolean
     trimEmptyLines: boolean
 }

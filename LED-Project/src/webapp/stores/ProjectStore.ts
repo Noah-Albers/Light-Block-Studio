@@ -41,12 +41,18 @@ void loop(){
 
 export const useProjectStore = defineStore('project', {
     state: () => ({
-        // TODO: Comment this stuff
 
         // Quick settings accessible from the quick access menu
-        codeTemplate: Defaults.codeTemplate,
-        pin: 0,
 
+        // Template to insert the generated code into
+        codeTemplate: Defaults.codeTemplate,
+        // Pin where the neopixel led stripe is connected to
+        pin: 0 as number | undefined,
+        // Amount of Pixel connected to the stripe
+        amount: 0 as number | undefined,
+
+        // If a final led push shall be done at the end of the loop code.
+        // Usually an unimportant setting but it may become important
         loopPushLeds: true as boolean,
 
         // If set, multiple empty lines will be trimmed down to a single one, improving code readability
@@ -95,7 +101,8 @@ export const useProjectStore = defineStore('project', {
                 previews: this.previews,
                 selectedPreview: this.selectedPreview,
 
-                pin: this.pin,
+                pin: this.pin || 0,
+                amount: this.amount || 0,
                 loopPushLeds: this.loopPushLeds,
                 trimEmptyLines: this.trimEmptyLines,
             }

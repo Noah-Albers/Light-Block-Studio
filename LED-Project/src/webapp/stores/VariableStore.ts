@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { SystemVariable, Variable } from './definitions/Variables'
 import { isValidVariableName } from '@mathSolver/index';
 import { VariablesExport } from '@webapp/importexport/SaveStateType';
+import { useProjectStore } from './ProjectStore';
 
 // Defines reserved keywords that can't be used as variable names
 const RESERVED = [
@@ -12,21 +13,22 @@ const RESERVED = [
 
 export const useVariableStore = defineStore('variables', {
     state: () => ({
-        variables: [] as Variable[],
-        systemVariables: {
-
-            // Holds the amount of leds that is set inside the settings
-            AMOUNT: {
-                name: "amt",
-                // TODO: Update
-                value: 0,
-                
-                info: "Holds the amount of leds set inside the settings."
-            } as SystemVariable
-        }
+        variables: [] as Variable[]
     }),
 
     getters: {
+        // Returns system defined variables
+        systemVariables() {
+            return {
+                // Holds the amount of leds that is set inside the settings
+                AMOUNT: {
+                    name: "amt",
+                    value: useProjectStore().amount || 0,
+                    
+                    info: "Holds the amount of leds set inside the settings."
+                } as SystemVariable
+            }
+        },
 
         export() : VariablesExport {
             return this.variables.map(v=>({
