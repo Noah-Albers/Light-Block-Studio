@@ -1,15 +1,5 @@
-
-/*export type Hint =
-    // The data should be displayed on the block
-    "on-block" |
-    // The data should be displayed off the block
-    "off-block";*/
-
 export interface IDataSource<Type, ResolvedType, Cache = any> {
-    // TODO: Maybe use later
-    //private hints: Hint[];
-
-    // TODO: Required
+    // Note!: This is required to be implemented by every class that inherits from IDataSource
     // public static readonly SOURCE_NAME: string;
 
     /**
@@ -45,6 +35,14 @@ export interface IDataSource<Type, ResolvedType, Cache = any> {
      */
     import(value: string | boolean | number | object, variables: {[name: string]: number}) : Type;
 
-    // TODO: Comment
+    /**
+     * Takes in the current workspace variable and the value of the source and calculates the cache from it.
+     * This is done such that expensive calculations only have to run once for each change.
+     * 
+     * What the datasource uses the cache for however is it's guess
+     * 
+     * @param vars the variables (As name: number pairs) 
+     * @param value the value of the datasource
+     */
     calculateCache?(vars: {[key: string]: number}, value: Type): Cache; 
 }

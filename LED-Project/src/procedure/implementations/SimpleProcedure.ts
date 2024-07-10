@@ -3,7 +3,10 @@ import { IDiagnostics } from "@procedure/definitions/ProcDiagnostics";
 import { ILEDNode } from "@procedure/definitions/ProcLEDNode";
 import { IProcedure, ProcedureOptions, ProcedureWithOptions } from "@procedure/definitions/Procedure";
 
-// TODO: Comment
+/**
+ * Simple procedure is a default implementation of the IProcedure that only takes in the required objects that are used
+ * to define a procedure. This means that it only returns what is given and doesn't implement any specific behaviour
+ */
 export class SimpleProcedure<Options extends ProcedureOptions> implements IProcedure<Options> {
 
     public readonly name: string;

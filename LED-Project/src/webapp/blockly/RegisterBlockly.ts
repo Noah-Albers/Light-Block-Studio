@@ -5,7 +5,7 @@ import { BlockData } from "./OnBlockUtils";
 import { groupBy, mostFrequent } from "@utils/ArrayUtils";
 import { Component, computed, reactive } from "vue";
 import { useVariableStore } from "@webapp/stores/VariableStore";
-import { ToolboxDefinition } from "blockly/core/utils/toolbox";
+import { ToolboxDefinition, ToolboxItemInfo } from "blockly/core/utils/toolbox";
 import { getBlocklyFields2Register } from "./fields/registry/FieldRegistry";
 import { IDataSource } from "@nodes/definitions/DataSource";
 
@@ -114,7 +114,7 @@ function registerNodeModel(model: INodeModel) {
             this[DATA_OBJECT_NAME] = dataObj;
             // Adds the model to the block
             this[MODEL_OBJECT_NAME] = model;
-            // TODO: Comment
+            // Adds the cache object as a vuejs-computed value
             this[CACHE_OBJECT_NAME] = cacheObj;
 
             // Builds the block
@@ -233,11 +233,9 @@ export function createToolbox(): ToolboxDefinition {
     // Maps the categorys to json content (Representation for the toolbox)
     const categorysAsJson = Object.keys(groupedModels).map(name => groupedItemsToCategory(name, groupedModels[name]));
 
-    // TODO
-
     return {
         "kind": "categoryToolbox",
-        "contents": categorysAsJson
+        "contents": categorysAsJson as ToolboxItemInfo[]
     }
 }
 
@@ -271,7 +269,10 @@ function getBlocklyFieldNameFromModel(ds: IDataSource<any, any, any>): string {
     throw new Error(`No blockly on-block field found for model ${ds.constructor.name}`);
 }
 
-// TODO
+/**
+ * Using the datasource as input it returns the vue-component that shall be rendered for it off ite block
+ * @param ds the datasource
+ */
 export function getOffBlockView(ds: IDataSource<any,any,any>): Component {
     return offblockElements[(ds as any).constructor.SOURCE_NAME];
 }

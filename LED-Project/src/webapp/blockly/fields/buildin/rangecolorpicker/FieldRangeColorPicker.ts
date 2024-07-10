@@ -22,7 +22,7 @@ type GradiantElement = {
 
 export class ColorRangePickerField extends VueGuiBlockField {
 
-    public static readonly FIELD_NAME = "new_color_TODO_lul_range"
+    public static readonly FIELD_NAME = "colorrange"
 
     // Contains all HTML-References to the custom gradiant elements
     private gradiantElement?: GradiantElement;

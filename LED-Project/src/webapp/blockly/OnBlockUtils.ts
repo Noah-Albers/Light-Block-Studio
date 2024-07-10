@@ -3,14 +3,18 @@ import { Block } from "blockly";
 import { ComputedRef, Ref, ref } from "vue";
 import { CACHE_OBJECT_NAME, DATA_OBJECT_NAME, MODEL_OBJECT_NAME } from "./RegisterBlockly";
 
+// Type that indicates that this is vue-js reactive data that is stored on the block
 export type BlockData = {[key: string]: any};
+// Type that indicates that this is vue-js computed data that is stored on the block.
+// IT IS READ-ONLY
 export type Cache = {[key: string]: any}
 
+// Gets the cache of a specific source of a block
 export function getBlockCacheOfSource<T>(block: Block, name: string) : ComputedRef<T> {
     return getBlockCache(block)[name];
 }
 
-// TODO: Comment
+// Gets the cache of a specific block
 export function getBlockCache(block: Block) : Cache {
     return (block as any)[CACHE_OBJECT_NAME];
 }

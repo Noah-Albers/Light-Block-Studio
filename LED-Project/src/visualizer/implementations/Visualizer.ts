@@ -43,7 +43,6 @@ export class Visualizer implements IVisualizer {
             if(err instanceof VisualizerAbortError)
                 return;
 
-            // TODO: Implement better error handling
             console.warn("Error cought inside the visualizer: ", err);
         } finally {
             this.runCache = undefined;

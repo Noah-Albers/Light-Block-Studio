@@ -52,12 +52,18 @@ export const useProjectStore = defineStore('project', {
         // If set, multiple empty lines will be trimmed down to a single one, improving code readability
         trimEmptyLines: true as boolean,
 
+        // Strings which are used when generating code as placeholders
         hooks: {
+            // When the internal led stripe is pushed to the hardware
             pushleds: Defaults.hooks.pushleds,
+            // When the microcontroller is supposed to sleep
             sleep: Defaults.hooks.sleep,
+            // Sets a given led using Hue, Saturation, Value with 0-255 values
             sethsv: Defaults.hooks.sethsv,
+            // Returns how many milliseconds the microcontroller has been running
             millis: Defaults.hooks.millis,
 
+            // Wrapper for setup and loop blocks
             setup: Defaults.hooks.setup,
             loop: Defaults.hooks.loop
         },

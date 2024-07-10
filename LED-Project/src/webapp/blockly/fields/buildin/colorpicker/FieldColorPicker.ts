@@ -6,9 +6,9 @@ import { watch } from "vue";
 import { DropDownDiv } from "blockly";
 import { CachedColor, isVariableColor, VariableColorType } from "@nodes/implementations/datasources/ColorDataSource";
 
-export class NewColorPickerField extends VueGuiBlockField {
+export class ColorPickerField extends VueGuiBlockField {
 
-    public static readonly FIELD_NAME = "new_color_TODO"
+    public static readonly FIELD_NAME = "color"
 
     // Watches for "external" changes
     private valueWatcher: WatchStopHandle|undefined;

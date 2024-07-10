@@ -1,5 +1,5 @@
 import { Component } from "vue"
-import { NewColorPickerField } from "../buildin/colorpicker/FieldColorPicker"
+import { ColorPickerField } from "../buildin/colorpicker/FieldColorPicker"
 import OffBlockColorPicker from "../buildin/colorpicker/OffBlockColorPicker.vue"
 import OffBlockRangeColorPicker from "../buildin/rangecolorpicker/OffBlockRangeColorPicker.vue"
 import OffBlockNumber from "../buildin/number/OffBlockNumber.vue"
@@ -17,7 +17,7 @@ type FieldCollection = {
 
 export function getBlocklyFields2Register() : FieldCollection[] {
     return [
-        { BlocklyField: NewColorPickerField, OffBlockView: OffBlockColorPicker, DataSource: ColorDataSource },
+        { BlocklyField: ColorPickerField, OffBlockView: OffBlockColorPicker, DataSource: ColorDataSource },
         { BlocklyField: ColorRangePickerField, OffBlockView: OffBlockRangeColorPicker, DataSource: ColorRangeDataSource },
         { BlocklyField: NumberField, OffBlockView: OffBlockNumber, DataSource: NumberDataSource }
     ]

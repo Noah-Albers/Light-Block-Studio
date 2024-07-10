@@ -19,9 +19,13 @@ export type VariableColorType = [string | number, string | number, string | numb
  */
 export type HSVColor = [number, number, number];
 
-// TODO: Comment
+/**
+ * Cache of a color
+ */
 export type CachedColor = {
+    // The HEX-Display string that can be passed to css (Example: #AA00FF)
     display: string,
+    // The HSV-Color
     hsv: HSVColor
 };
 
