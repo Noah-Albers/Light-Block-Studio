@@ -13,7 +13,11 @@ export enum ConnectionType {
     CONNECTING
 }
 
-// TODO: Comment
+/**
+ * Vue-Plugin that exposes the serial interface to connect to
+ * 
+ * TODO: Comment after fully implemented
+ */
 export function useSerialHandler() {
 
     if (!("serial" in navigator)) return false;

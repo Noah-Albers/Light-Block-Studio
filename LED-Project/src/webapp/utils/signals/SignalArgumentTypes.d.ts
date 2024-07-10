@@ -4,21 +4,26 @@ import { CachedColor, VariableColorType } from "@nodes/implementations/datasourc
 import { CachedRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource"
 import { Component, ComputedRef } from "vue"
 
-// TODO: Comment
 export type EventVue2HTMLRequest<T> = {
+    // The base HTML-Element to inject the vue component into
     base: Element,
 
+    // The cache, data object and Datasource of the given block
     cache: ComputedRef<any>,
     dataObj: object,
     source: IDataSource,
+
+    // The vue component to render
     renderer: Component,
 
+    // Some extra info to pass if required
     extraInfo: T
 }
 
-// TODO: Comment
 export type EventArgsPopup = {
+    // How long to display the popup
     timeout?: number,
+    // Text to display inside the popup
     text?: string
 }
 

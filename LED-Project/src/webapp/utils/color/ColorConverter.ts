@@ -1,11 +1,18 @@
-import { rgbToHex } from "blockly/core/utils/colour";
 
-// TODO: Comment
+/**
+ * Takes in a string and validates it to be a css hex-color string with 6 digits.
+ * Format example: #ff00aa or #ABddD0
+ */
 function isHexColor(color: string){
     return color.match(/^#[a-f0-9]{6}$/i) !== null;
 }
 
-// TODO: Comment
+/**
+ * Converts a given hex color string as validated by isHexColor
+ * to it's normalized Hue saturation value (0-1) value
+ * 
+ * or false if the given string is not a valid hex color
+ */
 export function HEX2HSV(color: string) : {h: number, s: number, v: number} | false {
 
     const rgb = HEX2RGB(color);
@@ -15,7 +22,12 @@ export function HEX2HSV(color: string) : {h: number, s: number, v: number} | fal
     return RGB2HSV(rgb.r, rgb.g, rgb.b);
 }
 
-// TODO: Comment
+/**
+ * Converts a given hex color string as validated by isHexColor
+ * to it's 0-255 bit RGB value
+ * 
+ * or false if the given string is not a valid hex color
+ */
 export function HEX2RGB(color: string) : {
     r: number,
     g: number,

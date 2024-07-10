@@ -26,14 +26,13 @@ function getVariables(){
 function prepareCodeHooks(){
     const projStore = useProjectStore();
 
+    // Simple function that replaces variables inside a string with their values
     function RP(base: string, replacements: {[key: string]: number | string}) {
         for(let rep in replacements)
             base = base.replaceAll(`$$${rep}$$`, replacements[rep].toString());
 
         return base;
     }
-
-    // TODO: Add performance improvements here
 
     const hooks: CodeHooks = {
         loop: (code: string, count: number) => RP(projStore.hooks.loop, { code, count }),
