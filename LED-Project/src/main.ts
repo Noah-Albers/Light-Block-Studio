@@ -19,19 +19,24 @@ import { createVuetify } from 'vuetify/lib/framework.mjs'
 import { createPinia } from 'pinia'
 import { registerBlockly } from '@webapp/blockly/RegisterBlockly'
 
+// Global compoenents
+import VueBrowser from "@webapp/desktopapi/v-browser.vue";
+import VueDesktop from "@webapp/desktopapi/v-desktop.vue";
+
+// Highlight js
 import hljs from 'highlight.js/lib/core';
 import arduino from 'highlight.js/lib/languages/arduino';
 
 import "highlight.js/scss/atom-one-dark.scss"
 
-// Then register the languages you need
+// Registers arduino to highlight js for displaying the generated code
 hljs.registerLanguage('arduino', arduino);
 
 // Registers the blockly-blocks
 registerBlockly();
 
 const app = (
-    createApp(App)
+  createApp(App)
     .use(createVuetify({
       theme: {
         themes: {
@@ -45,4 +50,6 @@ const app = (
       },
     }))
     .use(createPinia())
+    .component("v-browser", VueBrowser)
+    .component("v-desktop", VueDesktop)
 ).mount('#app')
