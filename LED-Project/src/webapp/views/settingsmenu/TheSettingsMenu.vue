@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-10">
+  <v-card>
     <v-tabs v-model="tab"
       bg-color="primary">
       <v-tab value="one">Project Settings</v-tab>

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { reactive, ref } from 'vue';
 
 type View = { icon: string };
 type Views = keyof typeof MainViews
@@ -18,47 +19,60 @@ export const DefaultVendors: [string, number][] = [
     ["EspressIF", 0x303A]
 ]
 
-export const useSettingsStore = defineStore('settings', {
-    state: () => ({
+export const useSettingsStore = defineStore('settings', () => {
 
-        // Which view is selected
-        mainView: ViewVisualizer as Views,
+    //#region Settings
 
-        // Settings for the serial preview
-        serialPreview: {
-            pin: 0 as number,
-            ledAmount: 16 as number,
-        },
+    // Which view is selected
+    const mainView = ref(ViewVisualizer as Views);
 
-        // Settings for whitelisting USB-Vendors
-        whitelistUsbVendors: {
-            // If the whitelist should be enabled
-            enabled: true as boolean,
-            // Which vendors are whitelisted
-            whitelist: DefaultVendors.map(itm=>[itm[0], itm[1]]) as [string/*Name*/, number/*VendorID*/][]
-        },
+    // Settings for the serial preview
+    const serialPreview = reactive({
+        pin: 0 as number,
+        ledAmount: 16 as number,
+    });
 
-        buildConfig: {
-            enablePreview: false as boolean
-        }
-    }),
+    // Settings for whitelisting USB-Vendors
+    const whitelistUsbVendors = reactive({
+        // If the whitelist should be enabled
+        enabled: true as boolean,
+        // Which vendors are whitelisted
+        whitelist: DefaultVendors.map(itm => [itm[0], itm[1]]) as [string/*Name*/, number/*VendorID*/][]
+    });
 
-    actions: {
+    const buildConfig = reactive({
+        enablePreview: false as boolean
+    });
 
-        restoreVendorDefaults(){
-            return this.whitelistUsbVendors.whitelist = DefaultVendors.map(itm=>[itm[0], itm[1]]);
-        },
+    //#endregion
 
-        addVendor(name: string, id: number){
-            this.whitelistUsbVendors.whitelist.push([name, id]);
-        },
+    //#region USB-Actions
 
-        removeVendor(id: number){
-            this.whitelistUsbVendors.whitelist = this.whitelistUsbVendors.whitelist.filter(itm=>itm[1] !== id)
-        },
-
-        doesVendorIDExist(id: number) : boolean {
-            return this.whitelistUsbVendors.whitelist.some(itm=>itm[1] === id);
-        }
+    // Restore the default vendor list
+    function restoreVendorDefaults() {
+        whitelistUsbVendors.whitelist = DefaultVendors.map(itm => [itm[0], itm[1]]);
     }
-})
+
+    // Add a vendor to the whitelist
+    function addVendor(name: string, id: number) {
+        whitelistUsbVendors.whitelist.push([name, id]);
+    }
+
+    // Remove a vendor from the whitelist
+    function removeVendor(id: number) {
+        whitelistUsbVendors.whitelist = whitelistUsbVendors.whitelist.filter(itm => itm[1] !== id);
+    }
+
+    // Check if a vendor ID exists in the whitelist
+    function doesVendorIDExist(id: number): boolean {
+        return whitelistUsbVendors.whitelist.some(itm => itm[1] === id);
+    }
+
+    //#endregion
+
+    return {
+        mainView, serialPreview, whitelistUsbVendors, buildConfig,
+
+        restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist
+    };
+});

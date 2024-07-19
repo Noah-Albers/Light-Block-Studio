@@ -1,4 +1,4 @@
-import { ExportedSettingsType } from '@webapp/serialisation/project/ProjectSchema'
+import { ExportedSettingsType } from '@webapp/storage/project/ProjectSchema'
 import { defineStore } from 'pinia'
 import { ref } from 'vue';
 
