@@ -1,19 +1,22 @@
 <template>
   <v-app>
+    <!--The application bar on top-->
+    <v-app-bar :elevation="1" height="20">
+      <TheTaskbar/>
+    </v-app-bar>
+
     <!-- Snackbar to display information-->
     <v-snackbar :timeout="popupOptions!.timeout || 800" v-model="popupOpen">
-        {{ popupOptions?.text }}
+      {{ popupOptions?.text }}
     </v-snackbar>
 
-    <v-overlay v-model="menuOpen"
-      class="align-center justify-center">
+    <v-overlay v-model="menuOpen" class="align-center justify-center">
       <TheSettingsMenus />
     </v-overlay>
 
     <!-- Workspace and sidebar -->
     <v-main>
-      <Splitpanes class="default-theme"
-        :push-other-panes="false">
+      <Splitpanes class="default-theme" :push-other-panes="false">
         <Pane>
           <TheWorkspace />
         </Pane>
@@ -31,11 +34,14 @@
 <script setup
   lang="ts">
 
+  const items = [{title: "abc"}, {title: "def"}];
+
   import { Splitpanes, Pane } from 'splitpanes'
   import 'splitpanes/dist/splitpanes.css'
   import TheWorkspace from "./views/workspace/TheWorkspace.vue";
   import TheSidebar from "./views/sidebar/TheSidebar.vue";
   import TheSettingsMenus from "./views/settingsmenu/TheSettingsMenu.vue";
+  import TheTaskbar from "./views/taskbar/TheTaskbar.vue";
   import { ref } from 'vue';
   import TheNavbar from "./views/navbar/TheNavbar.vue";
   import { useSignal } from './utils/vue/VueSignalListener';
@@ -46,10 +52,10 @@
   const popupOpen = ref(false);
   const popupOptions: Ref<EventArgsPopup> = ref({});
 
-  useSignal(Signals.DISPLAY_POPUP, opts=>{
+  useSignal(Signals.DISPLAY_POPUP, opts => {
     popupOptions.value = opts;
     popupOpen.value = true;
   });
 
   const menuOpen = ref(false);
-</script>
+  </script>
