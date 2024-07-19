@@ -17,7 +17,8 @@
     "splitpanes": "^3.1.5",
     "vue": "^3.2.38",
     "vuetify": "^3.6.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/deep-equal": "^1.0.4",

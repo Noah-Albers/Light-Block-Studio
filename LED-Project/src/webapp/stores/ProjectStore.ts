@@ -1,9 +1,12 @@
-import { SettingsExport } from '@webapp/importexport/SaveStateType'
+import { ExportedSettingsType } from '@webapp/serialisation/project/ProjectSchema'
 import { defineStore } from 'pinia'
+import { ref } from 'vue';
 
+// List of all buildin previews (Filenames)
 export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg"]
 
-const Defaults = {
+// Holds most default values
+export const Defaults = {
     codeTemplate: `#include <FastLED.h>
 #define LED_PIN $$pin$$
 #define LED_AMT $$amt$$
@@ -37,81 +40,141 @@ void loop(){
     },
 
     selectedPreview: BuildInPreviews[0],
+
+    loopPushLeds: true,
+    trimEmptyLines: true
 }
 
-export const useProjectStore = defineStore('project', {
-    state: () => ({
+export const useProjectStore = defineStore('project', () => {
+    // Prevents duplicated default assignments when the restoreDefaults function is called anyway every time the store is initialized
+    const __set = <T>() => ref(undefined as T);
+    // This is the one used for the hooks
+    const __hook = () => undefined as any as string
 
-        // Quick settings accessible from the quick access menu
+    //#region Settings
 
-        // Template to insert the generated code into
-        codeTemplate: Defaults.codeTemplate,
-        // Pin where the neopixel led stripe is connected to
-        pin: 0 as number | undefined,
-        // Amount of Pixel connected to the stripe
-        amount: 0 as number | undefined,
+    //#region Quicksettings
+    // Quick settings accessible from the quick access menu
 
-        // If a final led push shall be done at the end of the loop code.
-        // Usually an unimportant setting but it may become important
-        loopPushLeds: true as boolean,
+    // Template to insert the generated code into
+    const codeTemplate = __set<string>();
 
-        // If set, multiple empty lines will be trimmed down to a single one, improving code readability
-        trimEmptyLines: true as boolean,
+    // Pin where the neopixel led stripe is connected to
+    const pin = __set<number | undefined>();
 
-        // Strings which are used when generating code as placeholders
-        hooks: {
-            // When the internal led stripe is pushed to the hardware
-            pushleds: Defaults.hooks.pushleds,
-            // When the microcontroller is supposed to sleep
-            sleep: Defaults.hooks.sleep,
-            // Sets a given led using Hue, Saturation, Value with 0-255 values
-            sethsv: Defaults.hooks.sethsv,
-            // Returns how many milliseconds the microcontroller has been running
-            millis: Defaults.hooks.millis,
+    // Amount of Pixel connected to the stripe
+    const amount = __set<number | undefined>();
 
-            // Wrapper for setup and loop blocks
-            setup: Defaults.hooks.setup,
-            loop: Defaults.hooks.loop
-        },
+    // If a final led push shall be done at the end of the loop code.
+    // Usually an unimportant setting but it may become important
+    const loopPushLeds = __set<boolean>();
 
-        // List of previews stored inside the projects (SVG-Files)
-        previews: [] as string[],
-        // Which preview is selected (String if it's a build-in one, number if it's the index of one of the custom loaded ones)
-        selectedPreview: Defaults.selectedPreview as number | string
-    }),
+    // If set, multiple empty lines will be trimmed down to a single one, improving code readability
+    const trimEmptyLines = __set<boolean>();
 
-    getters: {
-        export(): SettingsExport {
+    // Strings which are used when generating code as placeholders
+    const hooks = ref({
+        // When the internal led stripe is pushed to the hardware
+        pushleds: __hook(),
+        // When the microcontroller is supposed to sleep
+        sleep: __hook(),
+        // Sets a given led using Hue, Saturation, Value with 0-255 values
+        sethsv: __hook(),
+        // Returns how many milliseconds the microcontroller has been running
+        millis: __hook(),
+        // Wrapper for setup and loop blocks
+        setup: __hook(),
+        loop: __hook(),
+    });
+    //#endregion
 
-            const _ = (defaultValue: any, actualValue: any)=>{
-                if(defaultValue === actualValue) return undefined;
-                return actualValue;
-            }
+    // List of previews stored inside the projects (SVG-Files)
+    const previews = __set<string[]>();
 
-            return {
-                codeTemplate: _(Defaults.codeTemplate, this.codeTemplate),
-                hooks: {
-                    pushleds: _(Defaults.hooks.pushleds, this.hooks.pushleds),
-                    sleep: _(Defaults.hooks.sleep, this.hooks.sleep),
-                    sethsv: _(Defaults.hooks.sethsv, this.hooks.sethsv),
-                    millis: _(Defaults.hooks.millis, this.hooks.millis),
-                    setup: _(Defaults.hooks.setup, this.hooks.setup),
-                    loop: _(Defaults.hooks.loop, this.hooks.loop),
-                },
-                previews: this.previews,
-                selectedPreview: this.selectedPreview,
+    // Which preview is selected (String if it's a build-in one, number if it's the index of one of the custom loaded ones)
+    const selectedPreview = __set<number | string>();
 
-                pin: this.pin || 0,
-                amount: this.amount || 0,
-                loopPushLeds: this.loopPushLeds,
-                trimEmptyLines: this.trimEmptyLines,
-            }
+    //#endregion
+
+    //#region Utilities
+    // Resets the preview to it's default
+    function resetPreview() {
+        selectedPreview.value = BuildInPreviews[0];
+    }
+
+    // Restores the default values
+    function restoreDefaults() {
+        codeTemplate.value = Defaults.codeTemplate;
+        pin.value = 0;
+        amount.value = 1;
+        loopPushLeds.value = Defaults.loopPushLeds;
+        trimEmptyLines.value = Defaults.trimEmptyLines;
+        previews.value = [];
+        selectedPreview.value = Defaults.selectedPreview;
+
+        for (let rawKey in Defaults.hooks) {
+            let key = rawKey as keyof typeof Defaults.hooks;
+            hooks.value[key] = Defaults.hooks[key];
         }
-    },
+    }
 
-    actions: {
-        resetPreview(){
-            this.selectedPreview = BuildInPreviews[0]
+    //#endregion
+    //#region Import/Export
+
+    // Takes in an already validated exported type to re-import the store
+    function importData(data: ExportedSettingsType) {
+        // The code template and hooks may not be set in every settings export to prevent
+        // a lot of duplicated data if only the default values have been used
+        if (data.codeTemplate) codeTemplate.value = data.codeTemplate;
+
+        for (let rawKey in data.hooks) {
+            let key = rawKey as keyof typeof data.hooks;
+            if (data.hooks[key] === undefined) continue;
+            hooks.value[key] = data.hooks[key];
         }
-    },
-})
+
+        amount.value = data.amount;
+        loopPushLeds.value = data.loopPushLeds;
+        pin.value = data.pin;
+        previews.value = data.previews;
+        selectedPreview.value = data.selectedPreview;
+        trimEmptyLines.value = data.trimEmptyLines;
+    }
+
+    // Serializes and exports the store
+    function exportData(): ExportedSettingsType {
+        // Compares two values and returns undefined if they are equal to prevent cluttering default values
+        const _ = <T>(defaultValue: T, actualValue: T) => {
+            return defaultValue === actualValue ? undefined : actualValue;
+        };
+
+        return {
+            codeTemplate: _(Defaults.codeTemplate, codeTemplate.value),
+            hooks: {
+                pushleds: _(Defaults.hooks.pushleds, hooks.value.pushleds),
+                sleep: _(Defaults.hooks.sleep, hooks.value.sleep),
+                sethsv: _(Defaults.hooks.sethsv, hooks.value.sethsv),
+                millis: _(Defaults.hooks.millis, hooks.value.millis),
+                setup: _(Defaults.hooks.setup, hooks.value.setup),
+                loop: _(Defaults.hooks.loop, hooks.value.loop),
+            },
+            previews: previews.value,
+            selectedPreview: selectedPreview.value,
+            pin: pin.value || 0,
+            amount: amount.value || 0,
+            loopPushLeds: loopPushLeds.value,
+            trimEmptyLines: trimEmptyLines.value,
+        };
+    }
+
+    //#endregion
+
+    // Ensures the default values are set, ah, well by default
+    restoreDefaults();
+
+    return {
+        codeTemplate, pin, amount, loopPushLeds, trimEmptyLines, hooks, previews, selectedPreview,
+
+        importData, exportData, resetPreview, restoreDefaults
+    };
+});

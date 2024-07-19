@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-import { exportProject } from '@webapp/importexport/ImportExportSystem';
 import { ref } from 'vue';
 
 const isOpen = ref(false);
@@ -24,7 +23,6 @@ const isOpen = ref(false);
 async function onExportClicked(){
 
     // TODO: Handle exports
-    console.log(await exportProject());
 }
 
 </script>

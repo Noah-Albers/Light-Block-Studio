@@ -20,6 +20,13 @@ type GradiantElement = {
     gradiant: SVGGradientElement
 }
 
+// Counter to generate unique id's for the svg gradiant element
+// Yes using Date.now() was good until the serialisation came into play.
+let gradIdCounter = 0;
+function getAndIncrementId(){
+    return `grd_${gradIdCounter++}`;
+}
+
 export class ColorRangePickerField extends VueGuiBlockField {
 
     public static readonly FIELD_NAME = "colorrange"
@@ -88,7 +95,7 @@ export class ColorRangePickerField extends VueGuiBlockField {
         }
 
         // Inserts the relevant information
-        this.gradiantElement.gradiant.setAttribute("id", "grd_" + Date.now());
+        this.gradiantElement.gradiant.setAttribute("id", getAndIncrementId());
 
         // Appends the gradiant element
         this.getSvgRoot()!.appendChild(this.gradiantElement.gradiant);

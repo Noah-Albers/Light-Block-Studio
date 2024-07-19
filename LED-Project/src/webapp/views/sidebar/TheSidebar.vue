@@ -11,7 +11,6 @@
             <!--Overwrite the view with the blockly-block view if selected-->
             <TheOffBlock v-else :cache="blockData.cache" :blockData="blockData.dataObj" :model="blockData.model" />
 
-
         </Pane>
     </Splitpanes>
 </template>
