@@ -1,5 +1,5 @@
 import { C } from "@webapp/utils/html/HTMLBuilder";
-import { MenuItem } from "@webapp/utils/taskbar/TaskBar";
+import { Button, Menu, MenuItem } from "@webapp/utils/taskbar/TaskBar";
 import { importProject } from "../project/ProjectImporter";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { exportProject } from "../project/ProjectExporter";
@@ -9,44 +9,78 @@ import { exportProject } from "../project/ProjectExporter";
  */
 export function createBrowserStorageMenuItems(): MenuItem[] {
 
-    let items: MenuItem[] = [];
-
-    // Open (Upload File)
-    items.push({ text: "Open (Upload File)", action: uploadFile, title: "Upload a file into this webpage" });
-
-    // TODO
-    // Open from Browser
-    //      -> File
-    // Delete file from Browser
-    // Save (Download File)
-    // Save in Browser
-
-    // Checks if localstorage is supported
-    if(isLocalstorageSupported()){
-        items = [
-            ...items,
-            {
-                text: "Open from Browser", items: ()=>createLocalstorageMenu(true),
-            }, {
-                text: "Delete from Browser", items: ()=>createLocalstorageMenu(false),
-            }, {
-                text: "Save in Browser", action: ()=>saveLocalstorageProject(false)
-            }, {
-                text: "Save as in Browser", action: ()=>saveLocalstorageProject(true)
-            }
-        ];
-    }else{
-        for(let item of [
-            "Open from Browser",
-            "Delete from Browser",
-            "Save in Browser",
-            "Save as in Browser"
-        ])
-            items.push({ text: item, items: [], disabled: true, title: "Localstorage is not enabled in browser" });
+    function createLocalstorageButton(text: string, type: "action" | "items", value: ()=>any, icon?: string): Button | Menu {
+        if(isLocalstorageSupported())
+            return {
+                [type]: value(),
+                text,
+                icon
+            } as any as Button | Menu;
+        return {
+            [type]: ()=>[],
+            text,
+            icon,
+            title: "Localstorage is not enabled in this browser"
+        } as any as Button | Menu
     }
 
+    // Open (Upload File)
+    const buttonUploadFile: Button = {
+        text: "Open (Upload File)", action: uploadFile,
+        title: "Upload a file into this webpage", icon: "mdi-upload"
+    };
 
-    return items;
+    // Save (Download File)
+    const buttonDownloadFile: Button = {
+        text: "Save (Download File)", action: ()=>{console.log('TODO')},
+        title: "Download the project file on your drive", icon: "mdi-download"
+    }
+
+    // Menu to open a project from browser storage
+    const menuOpenFromBrowser: Menu = createLocalstorageButton(
+        "Open from Browser", "items", ()=>createLocalstorageMenu(true),
+        "mdi-open-in-app"
+    ) as Menu;
+
+    // Menu to delete a project from browser storage
+    const menuDeleteFromBrowser: Menu = createLocalstorageButton(
+        "Delete... (Browser)", "items", ()=>createLocalstorageMenu(false),
+        "mdi-delete-outline"
+    ) as Menu;
+
+    // Menu to save a project in browser storage
+    const buttonSaveInBrowser: Menu = createLocalstorageButton(
+        "Save... (Browser)", "action", ()=>()=>saveLocalstorageProject(false),
+        "mdi-content-save-outline"
+    ) as Menu;
+
+    // Menu to save a project with a specific name in browser storage
+    const buttonSaveAsInBrowser: Menu = createLocalstorageButton(
+        "Save as... (Browser)", "action", ()=>()=>saveLocalstorageProject(true),
+        "mdi-content-save-all-outline"
+    ) as Menu;
+
+
+
+
+    return [
+        // New
+        buttonUploadFile,
+        menuOpenFromBrowser,
+        // Open recent menu (Desktop only)
+
+        "seperator",
+        buttonDownloadFile,
+        buttonSaveInBrowser,
+        buttonSaveAsInBrowser,
+
+        "seperator",
+        menuDeleteFromBrowser
+
+        // "seperator"
+        // Examples
+        // Templates
+    ];
 }
 
 function getProjectSaveAsName(){
@@ -82,22 +116,24 @@ function isLocalstorageSupported(){
 // Creates a menu with the localstorage projects
 // If isOpen is true, clicking a project will open it
 // If isOpen is false, clicking a project will delete it
-function createLocalstorageMenu(isOpen: boolean) : MenuItem[]{
+function createLocalstorageMenu(isOpen: boolean) : ()=>MenuItem[]{
+    return ()=>{
+        const projs = listLocalstorageProjects().map(name=>({
+            text: name,
+            action: isOpen ? ()=>loadLocalstorageProject(name) : ()=>deleteLocalstorageProject(name),
+            icon: isOpen ? undefined : "mdi-delete-outline"
+        }));
     
-    const projs = listLocalstorageProjects().map(name=>({
-        text: name,
-        action: isOpen ? ()=>loadLocalstorageProject(name) : ()=>deleteLocalstorageProject(name)
-    }));
-
-    if(projs.length <= 0)
+        if(projs.length > 0)
+            return projs;
+    
         return [{
             text: "...",
             title: "No projects found",
             disabled: true,
-            action: ()=>{}
+            action: ()=>{},
         }];
-
-    return projs;
+    }
 }
 
 // Returns a list of projects which are stored inside the browsers localstorage
@@ -109,7 +145,7 @@ function listLocalstorageProjects() {
 }
 
 // Takes in a filename to load from local-storage
-async function loadLocalstorageProject(name: string) {
+function loadLocalstorageProject(name: string) {
     const itm = localStorage.getItem(PROJECTS_PREFIX+name);
 
     if(itm === null){
@@ -117,16 +153,7 @@ async function loadLocalstorageProject(name: string) {
         return;
     }
 
-    const res = await importProject(name, itm, (msg, btnTrue, btnFalse)=>{
-        return Promise.resolve(confirm(`${msg}:\n\nOk: ${btnTrue}\nCancle: ${btnFalse};`))
-    });
-
-    if(res.success)
-        return;
-
-    alert(`Failed to load Project...\nPlease check the console for more information on the error.`);
-
-    console.warn("Failed to load Project", res.message);
+    onProjectLoad(name, itm);
 }
 
 // Takes in a filename of a local-storage project and deltes it
@@ -160,8 +187,18 @@ async function saveLocalstorageProject(askName: boolean){
 //#region Up/Download from device
 
 // Event: When a project got loaded and shall be imported
-function onProjectLoad(rawProj: string) {
-    console.log("TODO: Import project:",rawProj);
+async function onProjectLoad(filename: string, rawProj: string) {
+    const res = await importProject(filename, rawProj, (msg, btnTrue, btnFalse)=>{
+        return Promise.resolve(confirm(`${msg}:\n\nOk: ${btnTrue}\nCancle: ${btnFalse};`))
+    });
+
+    if(res.success)
+        return;
+
+    if(res.message !== undefined)
+        alert(`Failed to load Project...\nPlease check the console for more information on the error.`);
+
+    console.warn("Failed to load Project", res.message);
 }
 
 /**
@@ -171,13 +208,13 @@ function uploadFile() {
 
     // Step 2
     // Event: When the text is finally read on
-    function onReadText(evt: Event) {
+    function onReadText(filename: string, evt: Event) {
         try {
             // Gets the content
             var cont = (evt as any).target.result;
 
             // Tries to load the environment from that file
-            onProjectLoad(cont);
+            onProjectLoad(filename, cont);
         } catch (exc) {
             console.warn("Failed to open file",exc);
         }
@@ -191,7 +228,7 @@ function uploadFile() {
             return false;
 
         var reader = new FileReader();
-        reader.onload = onReadText;
+        reader.onload = (evt)=>onReadText(file.name, evt);
         reader.readAsText(file);
 
         return false;

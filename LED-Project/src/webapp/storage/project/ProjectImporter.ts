@@ -143,6 +143,11 @@ type ImportResult = {
 
 export async function importProject(filename: string, raw: unknown, doAskUser: (msg: string, btnTrue: string, btnFalse: string)=>Promise<boolean>) : Promise<ImportResult>{
 
+    // Askes if the user really wants to import the project as his previous work would be gone
+    if(!await doAskUser("Do you really want to open the project? Your current project will be closed.", "Open", "Abort"))
+        return { success: false }
+
+    // Ensures the raw project is given
     if(typeof raw === "string"){
         // Tries to parse
         try {

@@ -1,5 +1,9 @@
 <template>
-<TBMenu :top-level="true" :menu="itm"  v-for="itm, idx of props.taskbar" :key="idx"/>
+    <table>
+        <tbody>
+            <TBMenu :top-level="true" :menu="itm"  v-for="itm, idx of props.taskbar" :key="idx"/>
+        </tbody>
+    </table>
 </template>
 
 <script lang="ts" setup>
