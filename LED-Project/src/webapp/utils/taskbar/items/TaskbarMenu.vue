@@ -1,19 +1,36 @@
 <template>
-    <v-menu close-delay="0" v-model="menuOpen" :disabled="props.menu.disabled === true" open-delay="0" :open-on-hover="!props.topLevel" :location="props.topLevel ? 'bottom' : 'right'" transition="none">
+    <v-menu :close-delay="0" v-model="menuOpen" :disabled="props.menu.disabled === true" :open-delay="0" :open-on-hover="!props.topLevel" :location="props.topLevel ? 'bottom' : 'right'" transition="none">
         <template v-slot:activator="{ props: p }">
-            <div :title="props.menu.title" v-bind="p" :class="{'cursor-pointer mx-1': true, 'disabled': props.menu.disabled === true}">
-                <input :disabled="props.menu.disabled === true" type="button" :value="props.menu.text" />
-                <v-icon v-if="!props.topLevel" icon="mdi-menu-right"></v-icon>
-            </div>
+            <tr :title="props.menu.title" v-bind="p" :class="{'cursor-pointer': true, 'disabled': props.menu.disabled === true}">
+                <td>
+                    <v-icon v-if="props.menu.icon" :icon="props.menu.icon"></v-icon>
+                </td>
+                <td>
+                    <input :disabled="props.menu.disabled === true" type="button" :value="props.menu.text" />
+                </td>
+                <td>
+                    <v-icon v-if="!props.topLevel" icon="mdi-menu-right"></v-icon>
+                </td>
+            </tr>
         </template>
 
         <v-sheet class="d-flex flex-column">
-            <TBItem v-for="itm, idx of renderItems" :item="itm" :key="idx"/>
+
+        <table>
+            <tbody>
+                <TBItem :item="itm" v-for="itm, idx of renderItems" :key="idx"/>
+            </tbody>
+        </table>
+
         </v-sheet>
     </v-menu>
 </template>
 
 <style lang="scss" scoped>
+.v-icon{
+    opacity: .7 !important;
+}
+
 .disabled, input[disabled]{
     color: gray;
     cursor: default !important;

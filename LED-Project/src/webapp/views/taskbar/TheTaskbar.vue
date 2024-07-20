@@ -13,18 +13,9 @@ import { createBrowserStorageMenuItems } from "@webapp/storage/browser/BrowserSt
 const TheTaskbar: Menu[] = [
 {
         text: "File",
-        items: ()=>([
+        items: [
             ...createBrowserStorageMenuItems(),
-            { text: "Item 1", action: ()=>console.log('lul'), disabled: true },
-            "seperator",
-            { text: "Item 2", action: ()=>console.log('lul') },
-            { text: "Item 3", disabled: true, items: ()=>([
-                { text: "Item 4", action: ()=>console.log('lul') },
-                { text: "Item 5", action: ()=>console.log('lul') },
-                { text: "Item 6", action: ()=>console.log('lul') },
-            ]) },
-            { text: "Item 7", action: ()=>console.log('lul') },
-        ])
+        ]
     }
 ]
 

@@ -1,13 +1,21 @@
 <template>
-    <div :title="props.button.title">
-        <input :disabled="props.button.disabled === true" type="button" class="mx-1" :value="props.button.text" @click="props.button.action"/>
-        <!--This icon is here to space the buttons correctly with the menus-->
-        <v-icon></v-icon>
-    </div>
+    <tr @click="props.button.disabled ? undefined : props.button.action()" :class="{'cursor-pointer': true, 'disabled': props.button.disabled === true}" :title="props.button.title">
+        <td>
+            <v-icon v-if="props.button.icon" :icon="props.button.icon"></v-icon>
+        </td>
+        <td>
+            {{ props.button.text }}
+        </td>
+        <td></td>
+    </tr>
 </template>
 
 <style lang="scss" scoped>
-input[disabled]{
+.v-icon{
+    opacity: .7;
+}
+
+.disabled *{
     color: gray;
     cursor: default !important;
 }
