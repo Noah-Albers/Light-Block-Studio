@@ -13,8 +13,6 @@
         <template v-slot:append>
             <v-list lines="one" density="comfortable">
 
-                <TheImportExportMenu />
-
                 <v-list-item rounded="xl" v-for="(item, idx) in bottomItems" @click="item.action" :key="idx"
                     :prepend-icon="item.icon" v-tooltip:left="item.title">
                 </v-list-item>
@@ -33,7 +31,6 @@
     import { generateCode } from "@webapp/views/codeview/CodeGenerator"
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
     import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
-    import TheImportExportMenu from "./TheImportExportMenu.vue";
 
     const store = useSettingsStore();
 
