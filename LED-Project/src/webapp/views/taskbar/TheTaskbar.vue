@@ -6,17 +6,14 @@
 
 import VueTaskbar from "@webapp/utils/taskbar/TaskBar.vue"
 import { Menu } from "@webapp/utils/taskbar/TaskBar"
-import { createBrowserStorageMenuItems } from "@webapp/storage/browser/BrowserStorage";
+import { FileTab } from "./FileTab";
+import { ViewTab } from "./ViewTab";
 
 // The taskbar to show at the top of the screen
 // TODO: Update taskbar
 const TheTaskbar: Menu[] = [
-{
-        text: "File",
-        items: [
-            ...createBrowserStorageMenuItems(),
-        ]
-    }
+    FileTab,
+    ViewTab
 ]
 
 </script>

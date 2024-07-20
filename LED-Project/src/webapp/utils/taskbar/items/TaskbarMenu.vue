@@ -1,6 +1,6 @@
 <template>
     <v-menu :close-delay="0" v-model="menuOpen" :disabled="props.menu.disabled === true" :open-delay="0" :open-on-hover="!props.topLevel" :location="props.topLevel ? 'bottom' : 'right'" transition="none">
-        <template v-slot:activator="{ props: p }">
+        <template v-if="!props.topLevel" v-slot:activator="{ props: p }">
             <tr :title="props.menu.title" v-bind="p" :class="{'cursor-pointer': true, 'disabled': props.menu.disabled === true}">
                 <td>
                     <v-icon v-if="props.menu.icon" :icon="props.menu.icon"></v-icon>
@@ -12,6 +12,11 @@
                     <v-icon v-if="!props.topLevel" icon="mdi-menu-right"></v-icon>
                 </td>
             </tr>
+        </template>
+        <template v-else v-slot:activator="{ props: p }">
+            <span class="cursor-pointer mx-1" v-bind="p">
+                {{ props.menu.text }}
+            </span>
         </template>
 
         <v-sheet class="d-flex flex-column">

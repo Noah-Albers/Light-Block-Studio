@@ -38,19 +38,19 @@ export function createBrowserStorageMenuItems(): MenuItem[] {
 
     // Menu to open a project from browser storage
     const menuOpenFromBrowser: Menu = createLocalstorageButton(
-        "Open from Browser", "items", ()=>createLocalstorageMenu(true),
+        "Open (Browser)", "items", ()=>createLocalstorageMenu(true),
         "mdi-open-in-app"
     ) as Menu;
 
     // Menu to delete a project from browser storage
     const menuDeleteFromBrowser: Menu = createLocalstorageButton(
-        "Delete... (Browser)", "items", ()=>createLocalstorageMenu(false),
+        "Delete (Browser)", "items", ()=>createLocalstorageMenu(false),
         "mdi-delete-outline"
     ) as Menu;
 
     // Menu to save a project in browser storage
     const buttonSaveInBrowser: Menu = createLocalstorageButton(
-        "Save... (Browser)", "action", ()=>()=>saveLocalstorageProject(false),
+        "Save (Browser)", "action", ()=>()=>saveLocalstorageProject(false),
         "mdi-content-save-outline"
     ) as Menu;
 
