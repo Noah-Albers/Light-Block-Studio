@@ -6,6 +6,7 @@
 
 import VueTaskbar from "@webapp/utils/taskbar/TaskBar.vue"
 import { Menu } from "@webapp/utils/taskbar/TaskBar"
+import { createBrowserStorageMenuItems } from "@webapp/storage/browser/BrowserStorage";
 
 // The taskbar to show at the top of the screen
 // TODO: Update taskbar
@@ -13,10 +14,11 @@ const TheTaskbar: Menu[] = [
 {
         text: "File",
         items: ()=>([
-            { text: "Item 1", action: ()=>console.log('lul') },
+            ...createBrowserStorageMenuItems(),
+            { text: "Item 1", action: ()=>console.log('lul'), disabled: true },
             "seperator",
             { text: "Item 2", action: ()=>console.log('lul') },
-            { text: "Item 3", items: ()=>([
+            { text: "Item 3", disabled: true, items: ()=>([
                 { text: "Item 4", action: ()=>console.log('lul') },
                 { text: "Item 5", action: ()=>console.log('lul') },
                 { text: "Item 6", action: ()=>console.log('lul') },

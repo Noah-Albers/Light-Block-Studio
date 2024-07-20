@@ -8,8 +8,8 @@ import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { Coordinate } from "blockly/core/utils/coordinate";
 
 // Imports the project settings
-function importProjectSettings(data: ExportedSettingsType){
-    useProjectStore().importData(data);
+function importProjectSettings(filename: string, data: ExportedSettingsType){
+    useProjectStore().importData(filename, data);
 }
 
 // Imports the variables and returns the new map which can be used to import the nodes
@@ -50,17 +50,13 @@ async function importWorkspace(data: ExportedWorkspaceType, variables: {[name: s
         // Gets all sources
         const sources = [...new Set([...mdl.getSources(), ...mdl.getOnBlockSources()])];
 
-        console.log("====IMP BLOCK ("+mdl.getModelName()+")====")
         for(let src of sources){
             try {
-                console.log("\tImport source"+src.getKey())
-
                 dataObj[src.getKey()] = src.import(node.data[src.getKey()], variables);
             }catch(err){
                 console.warn("Error importing datasource, falling back on default",err);
             }
         }
-        console.log("\n\t"+JSON.stringify(dataObj));
 
         if(appendTo !== undefined)
             appendTo.nextConnection.connect(block.previousConnection);
@@ -145,7 +141,19 @@ type ImportResult = {
     message?: string
 }
 
-export async function importProject(raw: unknown, doAskUser: (msg: string, btnTrue: string, btnFalse: string)=>Promise<boolean>) : Promise<ImportResult>{
+export async function importProject(filename: string, raw: unknown, doAskUser: (msg: string, btnTrue: string, btnFalse: string)=>Promise<boolean>) : Promise<ImportResult>{
+
+    if(typeof raw === "string"){
+        // Tries to parse
+        try {
+            raw = JSON.parse(raw);
+        }catch(err){
+            return {
+                success: false,
+                message: `${err}`
+            }
+        }
+    }
 
     // Tries to import the project
     var res = ProjectSchema.safeParse(raw);
@@ -174,7 +182,7 @@ export async function importProject(raw: unknown, doAskUser: (msg: string, btnTr
     const vars = importVariables(res.data.variables);
     
     // 2. Import project settings
-    importProjectSettings(res.data.settings);
+    importProjectSettings(filename,res.data.settings);
     
     // 3. Import blocks
     importWorkspace(res.data.workspace, vars);

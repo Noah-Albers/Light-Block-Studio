@@ -53,6 +53,9 @@ export const useProjectStore = defineStore('project', () => {
 
     //#region Settings
 
+    // Name of the project (Is/Will be the filename)
+    const projectName = __set<string>();
+
     //#region Quicksettings
     // Quick settings accessible from the quick access menu
 
@@ -104,6 +107,8 @@ export const useProjectStore = defineStore('project', () => {
 
     // Restores the default values
     function restoreDefaults() {
+        projectName.value = "Untitled led Project";
+
         codeTemplate.value = Defaults.codeTemplate;
         pin.value = 0;
         amount.value = 1;
@@ -122,7 +127,9 @@ export const useProjectStore = defineStore('project', () => {
     //#region Import/Export
 
     // Takes in an already validated exported type to re-import the store
-    function importData(data: ExportedSettingsType) {
+    function importData(name: string, data: ExportedSettingsType) {
+        projectName.value = name;
+
         // The code template and hooks may not be set in every settings export to prevent
         // a lot of duplicated data if only the default values have been used
         if (data.codeTemplate) codeTemplate.value = data.codeTemplate;
@@ -173,7 +180,7 @@ export const useProjectStore = defineStore('project', () => {
     restoreDefaults();
 
     return {
-        codeTemplate, pin, amount, loopPushLeds, trimEmptyLines, hooks, previews, selectedPreview,
+        codeTemplate, pin, amount, loopPushLeds, trimEmptyLines, hooks, previews, selectedPreview, projectName,
 
         importData, exportData, resetPreview, restoreDefaults
     };

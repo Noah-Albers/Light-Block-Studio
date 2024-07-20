@@ -16,7 +16,8 @@ export type Events = {
     [Signals.DISPLAY_POPUP]: EventArgsPopup,
     [Signals.BLOCKLY_REQUEST_WORKSPACE]: (ws: WorkspaceSvg)=>void,
     [Signals.BLOCKLY_REQUEST_VUE_HTML_INJECT]: EventVue2HTMLRequest<any>,
-    [Signals.BLOCKLY_REQUEST_VUE_HTML_DETACH]: Element
+    [Signals.BLOCKLY_REQUEST_VUE_HTML_DETACH]: Element,
+    [Signals.BLOCKLY_CLICK_IN_WORKSAPCE]: void
 }
 
 export const SignalDispatcher = mitt<Events>();

@@ -57,5 +57,9 @@
     popupOpen.value = true;
   });
 
+  // Ensures vuetify registers blockly clicks. (Used to close ui overlay elements like menus)
+  useSignal(Signals.BLOCKLY_CLICK_IN_WORKSAPCE, ()=>{
+  });
+
   const menuOpen = ref(false);
   </script>

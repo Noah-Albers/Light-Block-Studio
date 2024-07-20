@@ -1,8 +1,8 @@
 <template>
-    <v-menu open-delay="0" :open-on-hover="!props.topLevel" :location="props.topLevel ? 'bottom' : 'right'" transition="none">
+    <v-menu close-delay="0" v-model="menuOpen" :disabled="props.menu.disabled === true" open-delay="0" :open-on-hover="!props.topLevel" :location="props.topLevel ? 'bottom' : 'right'" transition="none">
         <template v-slot:activator="{ props: p }">
-            <div v-bind="p" class="cursor-pointer mx-1">
-                <input type="button" :value="props.menu.text" />
+            <div :title="props.menu.title" v-bind="p" :class="{'cursor-pointer mx-1': true, 'disabled': props.menu.disabled === true}">
+                <input :disabled="props.menu.disabled === true" type="button" :value="props.menu.text" />
                 <v-icon v-if="!props.topLevel" icon="mdi-menu-right"></v-icon>
             </div>
         </template>
@@ -13,11 +13,25 @@
     </v-menu>
 </template>
 
+<style lang="scss" scoped>
+.disabled, input[disabled]{
+    color: gray;
+    cursor: default !important;
+}
+</style>
+
 <script lang="ts" setup>
-import { PropType } from "vue";
+import { PropType, ref } from "vue";
 import { Menu } from "../TaskBar";
 import TBItem from "../TaskbarItem.vue"
 import { computed } from "vue";
+import { Signals } from "@webapp/utils/signals/Signals";
+import { useSignal } from "@webapp/utils/vue/VueSignalListener";
+
+// If the menu is open
+const menuOpen = ref(false);
+useSignal(Signals.BLOCKLY_CLICK_IN_WORKSAPCE, ()=>menuOpen.value = false);
+
 
 const props = defineProps({
     menu: {
@@ -31,7 +45,9 @@ const props = defineProps({
 });
 
 const renderItems=computed(()=>{
-    return props.menu.items();
+    if(typeof props.menu.items === "function")
+        return props.menu.items();
+    return props.menu.items;
 });
 
 </script>

@@ -86,7 +86,6 @@ onMounted(() => {
 
     // Listens for blockly-events
     workspace.addChangeListener(evt=>{
-
         switch(evt.type){
             // Waits for a block change (Select / deselect)
             case Blockly.Events.SELECTED:
@@ -95,6 +94,11 @@ onMounted(() => {
                 // Runs the blockly change event
                 buildWorkspaceAndSendEvents(workspace);
                 return;
+            case Blockly.Events.CLICK:
+                // Dispatches an event to signal that the workspace has been clicked
+                // Used to help vuetify close some menu's which otherwise wont register the click
+                SignalDispatcher.emit(Signals.BLOCKLY_CLICK_IN_WORKSAPCE);
+                break;
         }
     });
 
