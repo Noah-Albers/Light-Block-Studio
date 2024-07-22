@@ -1,4 +1,9 @@
 export type Template = {
+    // Name of the template
+    name: string,
+    // Author of the template
+    author: string,
+
     /**
      * Basic code where everything is inserted into.
      * 
@@ -7,10 +12,13 @@ export type Template = {
      * $$setup$$, $$loop$$ and $$globals$$ and can optionally have more specified by variables which
      * will also then be enclosed in $$ characters and print into the blueprint
      */
-    blueprint: string,
+    blueprint?: string,
 
     // Hooks which hook into specific parts of the code generation
-    hooks: Hooks
+    hooks?: {[key in keyof Hooks]?: string};
+
+    // Variables which are used by the blueprint or hooks
+    variables?: {[key: string]: number}
 }
 
 // The hooks which can be used to "hook" into which specific parts of the code are generated

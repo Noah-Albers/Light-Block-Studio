@@ -32,6 +32,7 @@
 </template>
 
 <style lang="scss">
+
 // Global splitpane scss
 .splitpanes-dark-theme {
   background: #313131;
