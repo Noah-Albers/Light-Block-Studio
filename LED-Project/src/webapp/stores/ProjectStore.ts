@@ -111,8 +111,8 @@ export const useProjectStore = defineStore('project', () => {
         projectName.value = "Untitled led Project";
 
         codeBlueprint.value = Defaults.codeBlueprint;
-        pin.value = 0;
-        amount.value = 1;
+        pin.value = 3;
+        amount.value = 32;
         loopPushLeds.value = Defaults.loopPushLeds;
         trimEmptyLines.value = Defaults.trimEmptyLines;
         previews.value = [];
