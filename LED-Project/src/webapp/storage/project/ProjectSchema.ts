@@ -46,7 +46,7 @@ export const InternalSchemas = {
 
     // The settings schema
     SettingsSchema: z.object({
-        codeTemplate: z.string().optional(),
+        codeBlueprint: z.string().optional(),
         hooks: z.object({
             pushleds: z.string().optional(),
             sleep: z.string().optional(),

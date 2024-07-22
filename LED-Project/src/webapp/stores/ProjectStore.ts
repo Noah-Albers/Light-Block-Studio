@@ -1,13 +1,14 @@
+import { Hooks } from '@template/definitions/Template';
 import { ExportedSettingsType } from '@webapp/storage/project/ProjectSchema'
 import { defineStore } from 'pinia'
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 
 // List of all buildin previews (Filenames)
 export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg"]
 
 // Holds most default values
 export const Defaults = {
-    codeTemplate: `#include <FastLED.h>
+    codeBlueprint: `#include <FastLED.h>
 #define LED_PIN $$pin$$
 #define LED_AMT $$amt$$
 
@@ -37,7 +38,7 @@ void loop(){
 
         setup: "$$code$$",
         loop: "$$code$$"
-    },
+    } as Hooks,
 
     selectedPreview: BuildInPreviews[0],
 
@@ -59,8 +60,8 @@ export const useProjectStore = defineStore('project', () => {
     //#region Quicksettings
     // Quick settings accessible from the quick access menu
 
-    // Template to insert the generated code into
-    const codeTemplate = __set<string>();
+    // Blueprint to insert the generated code into
+    const codeBlueprint = __set<string>();
 
     // Pin where the neopixel led stripe is connected to
     const pin = __set<number | undefined>();
@@ -76,7 +77,7 @@ export const useProjectStore = defineStore('project', () => {
     const trimEmptyLines = __set<boolean>();
 
     // Strings which are used when generating code as placeholders
-    const hooks = ref({
+    const hooks: Ref<Hooks> = ref({
         // When the internal led stripe is pushed to the hardware
         pushleds: __hook(),
         // When the microcontroller is supposed to sleep
@@ -109,7 +110,7 @@ export const useProjectStore = defineStore('project', () => {
     function restoreDefaults() {
         projectName.value = "Untitled led Project";
 
-        codeTemplate.value = Defaults.codeTemplate;
+        codeBlueprint.value = Defaults.codeBlueprint;
         pin.value = 0;
         amount.value = 1;
         loopPushLeds.value = Defaults.loopPushLeds;
@@ -130,9 +131,9 @@ export const useProjectStore = defineStore('project', () => {
     function importData(name: string, data: ExportedSettingsType) {
         projectName.value = name;
 
-        // The code template and hooks may not be set in every settings export to prevent
+        // The code blueprint and hooks may not be set in every settings export to prevent
         // a lot of duplicated data if only the default values have been used
-        if (data.codeTemplate) codeTemplate.value = data.codeTemplate;
+        if (data.codeBlueprint) codeBlueprint.value = data.codeBlueprint;
 
         for (let rawKey in data.hooks) {
             let key = rawKey as keyof typeof data.hooks;
@@ -156,7 +157,7 @@ export const useProjectStore = defineStore('project', () => {
         };
 
         return {
-            codeTemplate: _(Defaults.codeTemplate, codeTemplate.value),
+            codeBlueprint: _(Defaults.codeBlueprint, codeBlueprint.value),
             hooks: {
                 pushleds: _(Defaults.hooks.pushleds, hooks.value.pushleds),
                 sleep: _(Defaults.hooks.sleep, hooks.value.sleep),
@@ -180,7 +181,7 @@ export const useProjectStore = defineStore('project', () => {
     restoreDefaults();
 
     return {
-        codeTemplate, pin, amount, loopPushLeds, trimEmptyLines, hooks, previews, selectedPreview, projectName,
+        codeBlueprint, pin, amount, loopPushLeds, trimEmptyLines, hooks, previews, selectedPreview, projectName,
 
         importData, exportData, resetPreview, restoreDefaults
     };

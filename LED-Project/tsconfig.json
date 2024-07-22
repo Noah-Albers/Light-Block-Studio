@@ -25,7 +25,8 @@
       "@mathSolver/*": ["./src/mathSolver/*"],
       "@nodes/*": ["./src/nodes/*"],
       "@registry/*": ["./src/registry/*"],
-      "@utils/*": ["./src/jsutils/*"]
+      "@utils/*": ["./src/jsutils/*"],
+      "@template/*": ["./src/template/*"]
      }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

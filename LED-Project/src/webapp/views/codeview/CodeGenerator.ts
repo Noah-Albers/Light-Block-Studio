@@ -54,7 +54,7 @@ export function generateCode(setup: ProcedureWithOptions<any>[], loop: Procedure
 
     return generator.generate(setup, loop, {
         variables: getVariables(),
-        template: store.codeTemplate,
+        template: store.codeBlueprint,
         hooks: prepareCodeHooks(),
         loopPushLeds: store.loopPushLeds,
         trimEmptyLines: store.trimEmptyLines

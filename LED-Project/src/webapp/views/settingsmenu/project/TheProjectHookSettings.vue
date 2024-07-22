@@ -1,3 +1,5 @@
+<!--TODO: Add infos about what each hook does and which variables are available-->
+
 <template>
 
     <HookPreview v-model="store.hooks.sleep"
@@ -26,7 +28,7 @@
 
 <script setup lang="ts">
     import { useProjectStore } from "@webapp/stores/ProjectStore";
-import HookPreview from "./HookPreview.vue";
+    import HookPreview from "./HookPreview.vue";
 
     const store = useProjectStore();
 
