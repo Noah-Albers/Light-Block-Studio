@@ -1,7 +1,7 @@
 <template>
 
     <div class="d-flex flex-row" style="height: 100%;">
-        <v-tabs v-model="tab" bg-color="#f3f3f3"
+        <v-tabs v-model="tab"
             color="primary"
             direction="vertical">
             <v-tab prepend-icon="mdi-cog"

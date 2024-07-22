@@ -6,18 +6,16 @@
 <script lang="ts" setup>
 import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
 import { Signals } from '@webapp/utils/signals/Signals';
-import Blockly from 'blockly';
+import Blockly, { BlocklyOptions } from 'blockly';
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 import { createToolbox } from "@webapp/blockly/RegisterBlockly";
 import { buildWorkspaceAndSendEvents } from "./WorkspaceConfigBuilder"; 
 import { useSignal } from "@webapp/utils/vue/VueSignalListener";
-import { useSettingsStore } from "@webapp/stores/SettingsStore";
 import RequestInject from "./RequestInject.vue";
 
-const Options = {
-    // TODO: Add theme
-    //theme: "sle_dark",
+const Options: BlocklyOptions = {
+    theme: "project_blockly_theme",
     collapse: false,
     comments: false,
     disable: false,

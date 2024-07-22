@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-row" style="height: 100%;">
-        <v-tabs v-model="tab" bg-color="#f3f3f3" color="primary" direction="vertical">
+        <v-tabs v-model="tab" color="primary" direction="vertical">
             <v-tab prepend-icon="mdi-application-cog-outline" text="General" value="general"></v-tab>
             <v-tab prepend-icon="mdi-usb" text="Serial API" value="serial"></v-tab>
 

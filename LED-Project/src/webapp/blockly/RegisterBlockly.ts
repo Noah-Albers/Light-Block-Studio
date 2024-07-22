@@ -153,10 +153,30 @@ function registerOtherBlocks() {
     };
 }
 
+// Registers the theme used by the blockly workspace
+function registerTheme() {
+    Blockly.Theme.defineTheme('project_blockly_theme', {
+        name: "project_blockly_theme",
+        base: Blockly.Themes.Classic,
+        componentStyles: {
+            workspaceBackgroundColour: '#1e1e1e',
+            toolboxBackgroundColour: 'rgb(51, 51, 51)',
+            toolboxForegroundColour: '#fff',
+            flyoutBackgroundColour: '#252526',
+            flyoutForegroundColour: '#ccc',
+            flyoutOpacity: 1,
+            scrollbarColour: '#797979',
+            insertionMarkerColour: '#fff',
+            insertionMarkerOpacity: 0.3,
+            scrollbarOpacity: 0.4,
+            cursorColour: '#d0d0d0',
+        }
+    });
+}
 
 // Stores a list of loopup elements to use for the off-block data presentation
 let offblockElements: { [key: string]: Component };
-let datasource2fieldMapping: {dsClass: any, name: string}[]
+let datasource2fieldMapping: { dsClass: any, name: string }[]
 
 
 /**
@@ -181,7 +201,7 @@ function registerBlocklyFields() {
         // Registers the blockly-field
         Blockly.fieldRegistry.register(fld.BlocklyField.FIELD_NAME, fld.BlocklyField as any);
 
-        if(fld.DataSource.SOURCE_NAME === undefined)
+        if (fld.DataSource.SOURCE_NAME === undefined)
             throw new Error(`Datasource '${fld.DataSource.constructor.name}' doesn't have a SOURCE_NAME defined. Please fix it by adding static SOURCE_NAME = '<Somename>';`);
 
         // Adds the loopUp element
@@ -244,6 +264,8 @@ export function createToolbox(): ToolboxDefinition {
  * This registers all node-models to blockly as blockly blocks
  */
 export function registerBlockly() {
+    registerTheme();
+
     registerOtherBlocks();
 
     // Iterates over all models and registers them
@@ -261,8 +283,8 @@ export function registerBlockly() {
 function getBlocklyFieldNameFromModel(ds: IDataSource<any, any, any>): string {
 
     // Finds the correct one
-    for (const itm of datasource2fieldMapping){
-        if(ds instanceof itm.dsClass)
+    for (const itm of datasource2fieldMapping) {
+        if (ds instanceof itm.dsClass)
             return itm.name
     }
 
@@ -273,6 +295,6 @@ function getBlocklyFieldNameFromModel(ds: IDataSource<any, any, any>): string {
  * Using the datasource as input it returns the vue-component that shall be rendered for it off ite block
  * @param ds the datasource
  */
-export function getOffBlockView(ds: IDataSource<any,any,any>): Component {
+export function getOffBlockView(ds: IDataSource<any, any, any>): Component {
     return offblockElements[(ds as any).constructor.SOURCE_NAME];
 }

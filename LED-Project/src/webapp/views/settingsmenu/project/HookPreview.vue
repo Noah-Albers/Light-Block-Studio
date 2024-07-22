@@ -7,7 +7,7 @@
         </v-card-item>
 
         <v-card-text>
-            <Splitpanes class="default-theme"
+            <Splitpanes class="dark-theme"
                 style="min-width: 40rem;"
                 :push-other-panes="false">
                 <Pane>

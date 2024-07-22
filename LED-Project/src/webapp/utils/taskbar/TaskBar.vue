@@ -6,6 +6,12 @@
     </table>
 </template>
 
+<style lang="scss" scoped>
+* {
+    user-select: none;
+}
+</style>
+
 <script lang="ts" setup>
 import TBMenu from "./items/TaskbarMenu.vue";
 import { PropType } from "vue";

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app theme="dark">
     <!--The application bar on top-->
     <v-app-bar :elevation="1" height="20">
       <TheTaskbar/>
@@ -16,7 +16,7 @@
 
     <!-- Workspace and sidebar -->
     <v-main>
-      <Splitpanes class="default-theme" :push-other-panes="false">
+      <Splitpanes class="dark-theme" :push-other-panes="false">
         <Pane>
           <TheWorkspace />
         </Pane>
