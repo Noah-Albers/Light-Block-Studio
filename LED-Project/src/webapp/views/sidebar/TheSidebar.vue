@@ -1,5 +1,5 @@
 <template>
-    <Splitpanes horizontal class="dark-theme" :push-other-panes="false">
+    <Splitpanes horizontal class="splitpanes-dark-theme" :push-other-panes="false">
         <Pane style="overflow: auto;" class="position-relative">
             <TheUpperSidebar />
         </Pane>

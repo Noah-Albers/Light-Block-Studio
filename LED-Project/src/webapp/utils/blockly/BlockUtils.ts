@@ -2,11 +2,39 @@ import { WorkspaceSvg } from "blockly";
 import { SignalDispatcher } from "../signals/SignalDispatcher";
 import { Signals } from "../signals/Signals";
 
+// Requests the workspace from the TheWorkspace.vue component
+export function getWorkspace() : Promise<WorkspaceSvg> {
+    return new Promise(res=>SignalDispatcher.emit(Signals.BLOCKLY_REQUEST_WORKSPACE, res));
+}
+
+/**
+ * Resets and create the default workspace with the loop and setup blocks
+ */
+export function resetWorkspace(ws: WorkspaceSvg){
+
+    ws.clear();
+
+    const setup = ws.newBlock("led_root_setup");
+    setup.moveBy(100,100);
+    setup.initSvg();
+    setup.render();
+
+    const loop = ws.newBlock("led_root_loop");
+    loop.moveBy(350,100);
+    loop.initSvg();
+    loop.render();
+
+    // Removes all undos (Prevents undoing adding the root and setup things...)
+    ws.clearUndo();
+
+    return { setup, loop  }
+}
+
 /**
  * Async version of the getRooBlocksUsingWS method which doesn't require a workspace
  */
 export async function getRootBlocks() {
-    return getRootBlocksUsingWS(await new Promise(res=>SignalDispatcher.emit(Signals.BLOCKLY_REQUEST_WORKSPACE, res)));
+    return getRootBlocksUsingWS(await getWorkspace());
 }
 
 /**

@@ -1,11 +1,12 @@
 import { Block, BlockSvg, utils as BlocklyUtils } from "blockly";
 import { ExportedNodeStackType, ExportedNodeType, ExportedProjectType, ExportedSettingsType, ExportedVariablesType, ExportedWorkspaceType, ProjectSchema } from "./ProjectSchema";
 import { Registry } from "@registry/Registry";
-import { getRootBlocks } from "@webapp/utils/blockly/BlockUtils";
+import { getRootBlocks, getWorkspace, resetWorkspace } from "@webapp/utils/blockly/BlockUtils";
 import { getBlockDataObject, getBlockModel } from "@webapp/blockly/OnBlockUtils";
 import { useVariableStore } from "@webapp/stores/VariableStore";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { Coordinate } from "blockly/core/utils/coordinate";
+import { BLOCKLY_SUBBLOCKY_NAME } from "@webapp/blockly/RegisterBlockly";
 
 // Imports the project settings
 function importProjectSettings(filename: string, data: ExportedSettingsType){
@@ -30,8 +31,6 @@ function importVariables(data: ExportedVariablesType){
 // Takes in exported workspace data and the already importet variables and  then loads the workspace from them
 async function importWorkspace(data: ExportedWorkspaceType, variables: {[name: string]: number}){
 
-    const { loop, other, setup, workspace: ws } = await getRootBlocks();
-
     // Takes in a single node and retreives the blockly-object from it
     function parseNode(node: ExportedNodeType, appendTo?: BlockSvg){
         // Ignores unregistered nodes
@@ -55,6 +54,18 @@ async function importWorkspace(data: ExportedWorkspaceType, variables: {[name: s
                 dataObj[src.getKey()] = src.import(node.data[src.getKey()], variables);
             }catch(err){
                 console.warn("Error importing datasource, falling back on default",err);
+            }
+        }
+
+        // Handles possible subblocks
+        if(mdl.hasSubNodes() && node.subnodes !== undefined){
+            // Creates the blocks (Reversed to load them correctly)
+            for(let i=node.subnodes.length-1; i>=0;i--) {
+                const subnode = node.subnodes[i];
+
+                // Parses the block
+                const subBlock = parseNode(subnode)!;
+                block.getInput(BLOCKLY_SUBBLOCKY_NAME)!.connection!.connect(subBlock.previousConnection);
             }
         }
 
@@ -88,22 +99,11 @@ async function importWorkspace(data: ExportedWorkspaceType, variables: {[name: s
         head.moveTo(new BlocklyUtils.Coordinate(main.x, main.y));
     }
 
-    // Clears the workspace
+    const ws = await getWorkspace();
 
-    // Deletes all blocks that are not the setup and root
-    for(let blg of other)
-        blg.dispose();
-
-    // Deletes the blocks connected to setup
-    const afterSetup = setup.getNextBlock();
-    if(afterSetup !== null)
-        afterSetup.dispose();
-
-    // Deletes the blocks connected to loop
-    const afterLoop = setup.getNextBlock();
-    if(afterLoop !== null)
-        afterLoop.dispose();
-
+    // Resets the workspace
+    const { setup, loop } = resetWorkspace(ws);
+    
     // Imports setup, loop and any other top blocks
     importTopBlock(data.setup, setup);
     importTopBlock(data.loop, loop);
@@ -144,8 +144,8 @@ type ImportResult = {
 export async function importProject(filename: string, raw: unknown, doAskUser: (msg: string, btnTrue: string, btnFalse: string)=>Promise<boolean>) : Promise<ImportResult>{
 
     // Askes if the user really wants to import the project as his previous work would be gone
-    if(!await doAskUser("Do you really want to open the project? Your current project will be closed.", "Open", "Abort"))
-        return { success: false }
+    /*if(!await doAskUser("Do you really want to open the project? Your current project will be closed.", "Open", "Abort"))
+        return { success: false }*/
 
     // Ensures the raw project is given
     if(typeof raw === "string"){

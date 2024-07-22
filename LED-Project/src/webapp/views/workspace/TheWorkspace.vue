@@ -8,6 +8,7 @@ import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
 import { Signals } from '@webapp/utils/signals/Signals';
 import Blockly, { BlocklyOptions } from 'blockly';
 import { ref } from 'vue';
+import { resetWorkspace } from "@webapp/utils/blockly/BlockUtils";
 import { onMounted } from 'vue';
 import { createToolbox } from "@webapp/blockly/RegisterBlockly";
 import { buildWorkspaceAndSendEvents } from "./WorkspaceConfigBuilder"; 
@@ -70,17 +71,8 @@ onMounted(() => {
     var obs = new ResizeObserver(_ => Blockly.svgResize(workspace));
     obs.observe(blocklyDiv.value!);
 
-    // Creates the base blocks
-    const rootBlocks = ["led_root_setup", "led_root_loop"];
-    for(let i=0;i<rootBlocks.length;i++){
-        var setup = workspace.newBlock(rootBlocks[i]);
-        setup.moveBy(100 + 250*i,100);
-        setup.initSvg();
-        setup.render();	
-    }
-
-    // Removes all undos (Prevents undoing adding the root and setup things...)
-    workspace.clearUndo();
+    // Creates the default workspace
+    resetWorkspace(workspace);
 
     // Listens for blockly-events
     workspace.addChangeListener(evt=>{

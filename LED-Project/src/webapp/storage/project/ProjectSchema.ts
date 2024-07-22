@@ -11,13 +11,13 @@ const BaseNodeSchema = z.object({
 })
 
 export type ExportedNodeType = z.infer<typeof BaseNodeSchema> & {
-    subnodes: ExportedNodeType[]
+    subnodes?: ExportedNodeType[]
 }
 
 export type ExportedNodeStackType = z.infer<typeof NodeStackSchema>;
 
 const NodeSchema: z.ZodType<ExportedNodeType> = BaseNodeSchema.extend({
-    subnodes: z.lazy(() => NodeSchema.array()),
+    subnodes: z.lazy(() => NodeSchema.array()).optional(),
 })
 
 const NodeStackSchema = z.object({

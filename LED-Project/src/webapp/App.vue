@@ -16,7 +16,7 @@
 
     <!-- Workspace and sidebar -->
     <v-main>
-      <Splitpanes class="dark-theme" :push-other-panes="false">
+      <Splitpanes class="splitpanes-dark-theme" :push-other-panes="false">
         <Pane>
           <TheWorkspace />
         </Pane>
@@ -30,6 +30,27 @@
     <TheNavbar @settings-icon-clicked="menuOpen = true" />
   </v-app>
 </template>
+
+<style lang="scss">
+// Global splitpane scss
+.splitpanes-dark-theme {
+  background: #313131;
+
+  .splitpanes__splitter{
+    background: #212121;
+  }
+}
+
+.splitpanes--vertical > .splitpanes__splitter{
+  min-width: 10px;
+}
+
+.splitpanes--horizontal > .splitpanes__splitter{
+  min-height: 10px;
+}
+
+
+</style>
 
 <script setup
   lang="ts">

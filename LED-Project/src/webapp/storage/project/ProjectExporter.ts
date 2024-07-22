@@ -33,7 +33,7 @@ async function getWorkspaceExport(): Promise<ExportedWorkspaceType> {
             exportedData[src.getKey()] = src.export(dataObj[src.getKey()]);
         });
 
-        let subnodeExports: ExportedNodeType[] = [];
+        let subnodeExports: ExportedNodeType[] | undefined = undefined;
 
         // Generates the subexports
         if (model.hasSubNodes())
