@@ -64,6 +64,8 @@ export function useSerialHandler() {
             await stopSerial();
             await visualizer.abortVisualizer();
 
+            console.log("Search list: ",getSerialSearchList())
+
             // Request the serial port from the user
             const possiblePort = await navigator.serial.requestPort(getSerialSearchList());
 
@@ -76,16 +78,13 @@ export function useSerialHandler() {
 
             // Updates the status
             port = possiblePort;
-            writer = port.writable.getWriter()
+            writer = port.writable.getWriter();
+
             connected.value = ConnectionType.CONNECTED;
             port.ondisconnect = stopSerial;
 
             // Sends a request for the config
             SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD);
-
-
-            console.log("Done");
-
 
         } catch (err) {
             const str = err + "";
@@ -103,12 +102,12 @@ export function useSerialHandler() {
         if (connected.value !== ConnectionType.CONNECTED) return;
 
         // Simulates an initial "reset" push
-        /*const obj: LEDArray = {};
+        const obj: LEDArray = {};
 
         for (let i = 0; i < useSettingsStore().serialPreview.ledAmount; i++)
-            obj[i] = [Math.min(10*i,255), 255, 255];*/
+            obj[i] = [0, 0, 0];
 
-        //onVisualizerPushLeds(obj);
+        onVisualizerPushLeds(obj);
 
         if (preview === undefined) {
             visualizer.abortVisualizer();
@@ -124,7 +123,6 @@ export function useSerialHandler() {
     function onVisualizerPushLeds(array: LEDArray) {
         if (writer === undefined) return;
 
-
         const data = [];
 
         // Fills in the data
@@ -134,12 +132,10 @@ export function useSerialHandler() {
             data.push(rgb[0]);
             data.push(rgb[1]);
             data.push(rgb[2]);
-            console.log("AS HEX: "+(rgb[0] << 16 | rgb[1] << 8 | rgb[2]).toString(16))
         }
 
         // Appends the push command
         data.push(255);
-        console.log("Sending ", data);
 
         // Generates the data to send
         writer.write(new Uint8Array(data));
