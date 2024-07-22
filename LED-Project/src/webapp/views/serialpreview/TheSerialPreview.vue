@@ -24,11 +24,11 @@
 
                 <!-- Connected section -->
                 <template v-if="serial.status.value === ConnectionType.CONNECTED">
-
-                    connected
-
-
-                    <v-btn @click="serial.stopSerial">Close</v-btn>
+                    <div class="d-flex flex-column justify-center">
+                        <p class="text-center text-h4 mb-3 text-green-lighten-1">Connected</p>
+    
+                        <v-btn class="mx-auto" color="red" @click="serial.stopSerial">Close</v-btn>
+                    </div>
                 </template>
 
                 <!-- Disconnected section -->
@@ -54,7 +54,7 @@
                 <!-- Loading section -->
                 <template v-else>
                     <p class="mb-10">Opening port</p>
-                    <v-progress-circular color="primary" indeterminate :size="66" :width="5"></v-progress-circular>
+                    <v-progress-circular class="w-100" color="primary" indeterminate :size="66" :width="5"></v-progress-circular>
                 </template>
 
             </template>
@@ -66,7 +66,6 @@
     lang="ts">
     import { useSettingsStore } from "@webapp/stores/SettingsStore";
     import { useSerialHandler, ConnectionType } from "./SerialHandler";
-    import { ref } from "vue";
 
     const settings = useSettingsStore();
     const serial = useSerialHandler();
