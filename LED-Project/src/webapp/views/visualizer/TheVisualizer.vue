@@ -10,7 +10,7 @@
                 icon="mdi-swap-horizontal" />
         </template>
 
-        <TheVisualizerMenu/>
+        <TheVisualizerMenu />
     </v-overlay>
 </template>
 
@@ -43,10 +43,11 @@
 
 <script lang="ts"
     setup>
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useProjectImage } from "./VisualisationProjectImageLoader"
     import { useSignal } from '@webapp/utils/vue/VueSignalListener';
     import { Signals } from '@webapp/utils/signals/Signals';
+    import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
     import { Visualizer } from '@visualizer/index';
     import { LEDArray } from '@visualizer/implementations/VisualisationController';
@@ -101,4 +102,6 @@
         // Nothing to do, the visualizer will notice automagially
     }
 
+    // Requests the config to be recreated
+    onMounted(() => SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD));
     </script>

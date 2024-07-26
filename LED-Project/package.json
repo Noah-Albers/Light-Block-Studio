@@ -7,9 +7,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fluent/bundle": "^0.18.0",
     "@mdi/font": "7.0.96",
     "blockly": "^10.4.3",
     "deep-equal": "^2.2.3",
+    "fluent-vue": "^3.6.0",
     "highlight.js": "^11.9.0",
     "mitt": "^3.0.1",
     "pinia": "^2.0.23",
