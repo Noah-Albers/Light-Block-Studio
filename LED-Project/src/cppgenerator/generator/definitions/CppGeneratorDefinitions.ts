@@ -114,7 +114,10 @@ export type GenerationSettings = {
     loopPushLeds: boolean,
 
     // If set, multiple empty lines will be trimmed down to a single one, improving code readability
-    trimEmptyLines: boolean
+    trimEmptyLines: boolean,
+
+    // List of keywords that are reserved and shall not be used used by any variable or function as a name
+    reservedKeywords: string[],
 }
 
 /**

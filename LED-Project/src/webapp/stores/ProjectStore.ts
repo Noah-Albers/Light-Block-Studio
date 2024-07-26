@@ -1,10 +1,28 @@
 import { Hooks } from '@template/definitions/Template';
 import { ExportedSettingsType } from '@webapp/storage/project/ProjectSchema'
 import { defineStore } from 'pinia'
-import { Ref, ref } from 'vue';
+import { computed, Ref, ref } from 'vue';
 
 // List of all buildin previews (Filenames)
-export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg"]
+export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg"];
+
+// List of keywords that are used and/or reserved by the arduino ide / programming language
+// Note: This does not list all keywords but only the most common ones
+const arduinoReservedKeywords = [
+    "digitalRead", "digitalWrite", "pinMode", "analogRead", "analogReadResolution", "analogReference",
+    "analogWrite", "analogWriteResolution", "noTone", "pulseIn", "pulseInLong", "shiftIn", "shiftOut",
+    "tone", "delay", "delayMicroseconds", "micros", "millis", "abs", "constrain", "map", "max", "min",
+    "pow", "sq", "sqrt", "cos", "sin", "tan", "isAlpha", "isAlphaNumeric", "isAscii", "isControl",
+    "isDigit", "isGraph", "isHexadecimalDigit", "isLowerCase", "isPrintable", "isPunct", "isSpace",
+    "isUpperCase", "isWhitespace", "random", "randomSeed", "bit", "bitClear", "bitRead", "bitSet",
+    "bitWrite", "highByte", "lowByte", "attachInterrupt", "detachInterrupt", "digitalPinToInterrupt",
+    "interrupts", "noInterrupts", "Serial",
+    "HIGH", "LOW", "INPUT", "INPUT_PULLUP", "OUTPUT", "INPUT_PULLDOWN",
+    "LED_BUILDIN", "true", "false", "int", "unsigned", "signed", "long", "byte", "char", "float", "bool",
+    "boolean", "double", "char", "short", "size_t", "string", "String", "void", "const", "scope", "static",
+    "volatile", "PROGMEM", "sizeof", "setup", "loop", "break", "continue", "do", "while", "else", "for",
+    "goto", "if", "return", "switch", "case", "while"
+];
 
 // Holds most default values
 export const Defaults = {
@@ -90,6 +108,13 @@ export const useProjectStore = defineStore('project', () => {
         setup: __hook(),
         loop: __hook(),
     });
+
+    // TODO: Add interface to edit / modify reserved keywords
+
+    // Keywords that are reserved and shall not be used by any code
+    const customReservedKeywords = __set<string[]>();
+    const useArduinoReservedKeywords = __set<boolean>();
+
     //#endregion
 
     // List of previews stored inside the projects (SVG-Files)
@@ -97,6 +122,15 @@ export const useProjectStore = defineStore('project', () => {
 
     // Which preview is selected (String if it's a build-in one, number if it's the index of one of the custom loaded ones)
     const selectedPreview = __set<number | string>();
+
+    //#endregion
+
+    //#region Computed getters
+
+    const usedReservedKeywords = computed(()=>[
+        ...(useArduinoReservedKeywords.value ? arduinoReservedKeywords : []),
+        ...customReservedKeywords.value
+    ]);
 
     //#endregion
 
@@ -117,6 +151,8 @@ export const useProjectStore = defineStore('project', () => {
         trimEmptyLines.value = Defaults.trimEmptyLines;
         previews.value = [];
         selectedPreview.value = Defaults.selectedPreview;
+        customReservedKeywords.value = [];
+        useArduinoReservedKeywords.value = true;
 
         for (let rawKey in Defaults.hooks) {
             let key = rawKey as keyof typeof Defaults.hooks;
@@ -172,6 +208,8 @@ export const useProjectStore = defineStore('project', () => {
             amount: amount.value || 0,
             loopPushLeds: loopPushLeds.value,
             trimEmptyLines: trimEmptyLines.value,
+            customReservedKeywords: customReservedKeywords.value,
+            useArduinoReservedKeywords: useArduinoReservedKeywords.value,
         };
     }
 
@@ -182,6 +220,7 @@ export const useProjectStore = defineStore('project', () => {
 
     return {
         codeBlueprint, pin, amount, loopPushLeds, trimEmptyLines, hooks, previews, selectedPreview, projectName,
+        customReservedKeywords, useArduinoReservedKeywords, usedReservedKeywords,
 
         importData, exportData, resetPreview, restoreDefaults
     };

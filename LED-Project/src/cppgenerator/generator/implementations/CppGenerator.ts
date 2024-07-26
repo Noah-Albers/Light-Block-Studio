@@ -11,6 +11,9 @@ export class CppGenerator implements ICppGenerator {
     generate(setup: ProcedureWithOptions<any>[], loop: ProcedureWithOptions<any>[], settings: GenerationSettings): string {
         
         const varSup = new VariableSupplier();
+        // Registers reserved keywords
+        varSup.registerReservedKeywords(settings.reservedKeywords);
+
         const funcManager = new CppFnManager<ICodeSupport>(varSup);
         
         // 1. Register all functions and get the mapper from the procedures

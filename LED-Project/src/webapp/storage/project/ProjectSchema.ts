@@ -68,7 +68,10 @@ export const InternalSchemas = {
         amount: z.number().transform(int()).transform(min(0)),
 
         loopPushLeds: z.boolean().default(Defaults.loopPushLeds),
-        trimEmptyLines: z.boolean().default(Defaults.trimEmptyLines)
+        trimEmptyLines: z.boolean().default(Defaults.trimEmptyLines),
+
+        customReservedKeywords: z.array(z.string()),
+        useArduinoReservedKeywords: z.boolean(),
     })
 }
 
