@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts" setup>
-
 import VueTaskbar from "@webapp/utils/taskbar/TaskBar.vue"
 import { Menu } from "@webapp/utils/taskbar/TaskBar"
 import { FileTab } from "./FileTab";

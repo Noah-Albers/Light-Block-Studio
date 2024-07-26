@@ -1,5 +1,6 @@
+import { changeLanguage } from '@localisation/Fluent';
 import { defineStore } from 'pinia'
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch, watchEffect } from 'vue';
 
 type View = { icon: string };
 type Views = keyof typeof MainViews
@@ -21,7 +22,20 @@ export const DefaultVendors: [string, number][] = [
 
 export const useSettingsStore = defineStore('settings', () => {
 
+    //#region Language
+
+    // Which language is selected
+    const language = ref(undefined as any as "en" | "de");
+
+    // Ensures the language change is reflected
+    watchEffect(()=>changeLanguage(language.value));
+
+    // Sets the default language
+    language.value = "de";
+    //#endregion
+
     //#region Settings
+
 
     // Which view is selected
     const mainView = ref(ViewVisualizer as Views);
@@ -71,7 +85,7 @@ export const useSettingsStore = defineStore('settings', () => {
     //#endregion
 
     return {
-        mainView, serialPreview, whitelistUsbVendors, buildConfig,
+        mainView, serialPreview, whitelistUsbVendors, buildConfig, language,
 
         restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist
     };

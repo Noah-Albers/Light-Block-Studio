@@ -31,6 +31,7 @@ export default defineConfig({
       "@registry": fileURLToPath(new URL('./src/registry', import.meta.url)),
       "@utils": fileURLToPath(new URL('./src/jsutils', import.meta.url)),
       "@template": fileURLToPath(new URL('./src/template', import.meta.url)),
+      "@localisation": fileURLToPath(new URL('./src/localisation', import.meta.url)),
     },
     extensions: [
       '.js',

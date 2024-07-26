@@ -26,7 +26,8 @@
       "@nodes/*": ["./src/nodes/*"],
       "@registry/*": ["./src/registry/*"],
       "@utils/*": ["./src/jsutils/*"],
-      "@template/*": ["./src/template/*"]
+      "@template/*": ["./src/template/*"],
+      "@localisation/*": ["./src/localisation/*"]
      }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

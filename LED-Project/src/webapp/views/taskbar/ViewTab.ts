@@ -1,4 +1,4 @@
-import { MainViews, useSettingsStore, ViewVisualizer } from "@webapp/stores/SettingsStore";
+import { MainViews, useSettingsStore } from "@webapp/stores/SettingsStore";
 import { Button, Menu } from "@webapp/utils/taskbar/TaskBar";
 
 export const ViewTab: Menu = {
