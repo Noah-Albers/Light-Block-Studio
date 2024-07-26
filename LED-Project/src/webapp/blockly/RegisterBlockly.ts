@@ -32,7 +32,7 @@ function buildJSONObjectFor(model: INodeModel) {
     const msg = model.getBlockMessage();
     const onBlockSources = model.getOnBlockSources();
 
-    const regex = /(\d+)/g;
+    const regex = /(%\d+)/g;
     /**
      * JSON-Objects which represent the arguments for the blockly-message
      * @example Element
@@ -46,12 +46,12 @@ function buildJSONObjectFor(model: INodeModel) {
 
     // Creates the new blockly-message and also adds the fields / arguments into an array
     let newMsg = msg.replace("\n", "%0").replace(regex, (_, capturedGroup: string) => {
-        const value = parseInt(capturedGroup);
+        const value = parseInt(capturedGroup.substring(1));
 
         // If a newline is found
         if (value === 0) {
             args.push({ "type": "input_dummy" })
-            return `${args.length}`;
+            return `%${args.length}`;
         }
 
         // Gets the requested on-block-source
@@ -62,7 +62,7 @@ function buildJSONObjectFor(model: INodeModel) {
             "type": getBlocklyFieldNameFromModel(source),
             "name": source.getKey(),
         });
-        return `${args.length}`;
+        return `%${args.length}`;
     });
 
     // Builds the blockly required json
