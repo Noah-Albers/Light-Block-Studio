@@ -56,8 +56,6 @@
 <script setup
   lang="ts">
 
-  const items = [{title: "abc"}, {title: "def"}];
-
   import { Splitpanes, Pane } from 'splitpanes'
   import 'splitpanes/dist/splitpanes.css'
   import TheWorkspace from "./views/workspace/TheWorkspace.vue";
@@ -77,10 +75,6 @@
   useSignal(Signals.DISPLAY_POPUP, opts => {
     popupOptions.value = opts;
     popupOpen.value = true;
-  });
-
-  // Ensures vuetify registers blockly clicks. (Used to close ui overlay elements like menus)
-  useSignal(Signals.BLOCKLY_CLICK_IN_WORKSAPCE, ()=>{
   });
 
   const menuOpen = ref(false);
