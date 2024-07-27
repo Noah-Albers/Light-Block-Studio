@@ -2,12 +2,13 @@ import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
 import { NumberDataSource } from "../datasources/NumberDataSource";
 import { Registry } from "@registry/Registry";
+import { $t } from "@localisation/Fluent";
 
 export class DelayNodeModel implements INodeModel {
 
     // Field for the delay
     private delayField = new NumberDataSource("delay", "100", {
-        info: "How long the block will wait",
+        info: $t('models_delay_field_delay_info'),
         type: "int",
         min: 10
     })
@@ -22,7 +23,7 @@ export class DelayNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "wait %1 ms";
+        return $t("models_delay_block");
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.delayField]

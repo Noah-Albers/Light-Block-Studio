@@ -1,1 +1,1 @@
-language-name = German
+models_delay_block = warte %1 ms

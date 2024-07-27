@@ -2,12 +2,13 @@ import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
 import { NumberDataSource } from "../datasources/NumberDataSource";
 import { Registry } from "@registry/Registry";
+import { $t } from "@localisation/Fluent";
 
 export class LoopNodeModel implements INodeModel {
 
     // Index of the field
     private repeatField = new NumberDataSource("repeats", "2", {
-        info: "How often the blocks shall be run.",
+        info: $t('models_loop_field_repeats_info'),
         type: "int",
         min: 0
     })
@@ -22,7 +23,7 @@ export class LoopNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Repeat %1 times";
+        return $t('models_loop_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.repeatField]

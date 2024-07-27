@@ -30,3 +30,5 @@ export function changeLanguage(language: "de" | "en"){
         }
     })();
 }
+
+export const $t = Fluent.$t;

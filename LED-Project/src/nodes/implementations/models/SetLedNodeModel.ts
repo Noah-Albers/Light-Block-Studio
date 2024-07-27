@@ -4,24 +4,21 @@ import { NumberDataSource } from "../datasources/NumberDataSource";
 import { ColorDataSource } from "../datasources/ColorDataSource";
 import { ColorRangeDataSource } from "../datasources/ColorRangeDataSource";
 import { Registry } from "@registry/Registry";
+import { $t } from "@localisation/Fluent";
 
 export class SetLedNodeModel implements INodeModel {
 
     // Index of the field
     private idxField = new NumberDataSource("idx", "0", {
-        info: "Index of the led. Starting from 0 (first).",
+        info: $t('models_color_field_color_index_info'),
         type: "int",
         min: 0
     })
 
     // Field to select the color
     private colorField = new ColorDataSource("clr", [1,1,1], {
-        info: "what color should be set"
+        info: $t('models_color_field_color_color')
     });
-
-    private testColorRange = new ColorRangeDataSource("testClr", [1,1,1], [0.5,1,1], {
-        info: "Im just a small test color"
-    })
 
     getModelName(): string {
         return "setled_simple";
@@ -33,10 +30,10 @@ export class SetLedNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Led %1 %2 %3";
+        return $t('models_color_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
-        return [this.colorField, this.testColorRange, this.idxField]
+        return [this.colorField, this.idxField]
     }
     getSources(): IDataSource<any, any, any>[] {
         return this.getOnBlockSources();
