@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { SystemVariable, Variable } from './definitions/Variables'
 import { isValidVariableName } from '@mathSolver/index';
 import { useProjectStore } from './ProjectStore';
+import { $t } from '@localisation/Fluent';
 
 // Defines reserved keywords that can't be used as variable names
 const RESERVED = [
@@ -24,7 +25,7 @@ export const useVariableStore = defineStore('variables', {
                     name: "amt",
                     value: useProjectStore().amount || 0,
                     
-                    info: "Holds the amount of leds set inside the settings."
+                    info: $t('variables_system_amount_info')
                 } as SystemVariable
             }
         },

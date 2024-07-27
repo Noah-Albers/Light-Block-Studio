@@ -4,8 +4,8 @@
 
         <!-- Upper list -->
         <v-list lines="one" density="default">
-            <v-list-item v-tooltip:left="name" v-for="(item, name) in MainViews" @click="store.mainView = name" :key="name"
-                :active="store.mainView === name" :prepend-icon="item.icon">
+            <v-list-item v-tooltip:left="item.name()" v-for="(item, key) in MainViews" @click="store.mainView = key" :key="key"
+                :active="store.mainView === item.name()" :prepend-icon="item.icon">
             </v-list-item>
         </v-list>
 

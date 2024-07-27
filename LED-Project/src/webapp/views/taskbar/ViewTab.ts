@@ -5,11 +5,11 @@ export const ViewTab: Menu = {
     text: "View",
     items: ()=>[
         {
-            text: "Switch", items: Object.keys(MainViews).map(name=>({
-                text: name,
-                action: switchView(name),
-                icon: MainViews[name].icon,
-                disabled: useSettingsStore().mainView === name
+            text: "Switch", items: Object.keys(MainViews).map(key=>({
+                text: MainViews[key].name(),
+                action: switchView(key),
+                icon: MainViews[key].icon,
+                disabled: useSettingsStore().mainView === key
             } as Button))
         }
     ]

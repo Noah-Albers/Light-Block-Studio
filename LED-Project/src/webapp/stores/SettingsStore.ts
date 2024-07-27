@@ -1,18 +1,19 @@
-import { SupportedLanguages } from '@localisation/Fluent';
+import { $t, SupportedLanguages } from '@localisation/Fluent';
 import { defineStore } from 'pinia'
-import { reactive, ref, watch, watchEffect } from 'vue';
+import { reactive, ref } from 'vue';
 
-type View = { icon: string };
+// Note: The function to the translation key is so that it isn't initialized until needed (Prevents wrong and invalid translations)
+type View = { icon: string, name: ()=>string };
 type Views = keyof typeof MainViews
 
-export const ViewVisualizer = "Visualizer";
-export const ViewCode = "Code";
-export const ViewSerial = "Serial Preview";
+export const ViewVisualizer = "visualizer";
+export const ViewCode = "code";
+export const ViewSerial = "serial";
 
 export const MainViews: {[key: string]: View} = {
-    [ViewCode]: { icon: "mdi-code-tags" },
-    [ViewVisualizer]: { icon: "mdi-play-box-outline" },
-    [ViewSerial]: { icon: "mdi-usb" }
+    [ViewCode]: { icon: "mdi-code-tags", name: ()=>$t('view_code_name') },
+    [ViewVisualizer]: { icon: "mdi-play-box-outline", name: ()=>$t("view_visualizer_name") },
+    [ViewSerial]: { icon: "mdi-usb", name: ()=>$t('view_serial_name') }
 }
 
 export const DefaultVendors: [string, number][] = [
