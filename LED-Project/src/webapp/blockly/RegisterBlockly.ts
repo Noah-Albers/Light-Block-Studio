@@ -8,6 +8,7 @@ import { useVariableStore } from "@webapp/stores/VariableStore";
 import { ToolboxDefinition, ToolboxItemInfo } from "blockly/core/utils/toolbox";
 import { getBlocklyFields2Register } from "./fields/registry/FieldRegistry";
 import { IDataSource } from "@nodes/definitions/DataSource";
+import { $t } from "@localisation/Fluent";
 
 // Names of custom element required for the blockly-blocks
 export const DATA_OBJECT_NAME = "dataObj";
@@ -219,8 +220,6 @@ function registerBlocklyFields() {
  */
 export function createToolbox(): ToolboxDefinition {
 
-    // TODO: Figure out a way to name categorys properly
-
     /**
      * Uses the grouped items and maps them into a category-object for the toolbox.
      * @param category The name of the category.
@@ -241,7 +240,7 @@ export function createToolbox(): ToolboxDefinition {
         // Builds the toolbox category
         return {
             "kind": "category",
-            "name": category,
+            "name": $t(`blockly_category_${category}`),
             "colour": color,
             "contents": modelsAsJson
         }

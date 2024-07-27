@@ -1,4 +1,4 @@
-import { changeLanguage } from '@localisation/Fluent';
+import { SupportedLanguages } from '@localisation/Fluent';
 import { defineStore } from 'pinia'
 import { reactive, ref, watch, watchEffect } from 'vue';
 
@@ -25,13 +25,7 @@ export const useSettingsStore = defineStore('settings', () => {
     //#region Language
 
     // Which language is selected
-    const language = ref(undefined as any as "en" | "de");
-
-    // Ensures the language change is reflected
-    watchEffect(()=>changeLanguage(language.value));
-
-    // Sets the default language
-    language.value = "de";
+    const language = ref("en" as any as SupportedLanguages);
     //#endregion
 
     //#region Settings

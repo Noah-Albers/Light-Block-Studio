@@ -4,7 +4,7 @@ import { TemplatesSubTab } from "./filetab/TemplatesSubtab";
 
 export const FileTab: Menu = {
     text: "File",
-    items: [
+    items: ()=>[
         ...createBrowserStorageMenuItems(),
         "seperator",
         TemplatesSubTab

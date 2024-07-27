@@ -1,12 +1,12 @@
-import { Block, BlockSvg, utils as BlocklyUtils } from "blockly";
-import { ExportedNodeStackType, ExportedNodeType, ExportedProjectType, ExportedSettingsType, ExportedVariablesType, ExportedWorkspaceType, ProjectSchema } from "./ProjectSchema";
+import { BlockSvg, utils as BlocklyUtils } from "blockly";
+import { ExportedNodeStackType, ExportedNodeType, ExportedSettingsType, ExportedVariablesType, ExportedWorkspaceType, ProjectSchema } from "./ProjectSchema";
 import { Registry } from "@registry/Registry";
-import { getRootBlocks, getWorkspace, resetWorkspace } from "@webapp/utils/blockly/BlockUtils";
+import { getWorkspace, resetWorkspace } from "@webapp/utils/blockly/BlockUtils";
 import { getBlockDataObject, getBlockModel } from "@webapp/blockly/OnBlockUtils";
 import { useVariableStore } from "@webapp/stores/VariableStore";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
-import { Coordinate } from "blockly/core/utils/coordinate";
 import { BLOCKLY_SUBBLOCKY_NAME } from "@webapp/blockly/RegisterBlockly";
+import { $t } from "@localisation/Fluent";
 
 // Imports the project settings
 function importProjectSettings(filename: string, data: ExportedSettingsType){
@@ -144,8 +144,8 @@ type ImportResult = {
 export async function importProject(filename: string, raw: unknown, doAskUser: (msg: string, btnTrue: string, btnFalse: string)=>Promise<boolean>) : Promise<ImportResult>{
 
     // Askes if the user really wants to import the project as his previous work would be gone
-    /*if(!await doAskUser("Do you really want to open the project? Your current project will be closed.", "Open", "Abort"))
-        return { success: false }*/
+    if(!await doAskUser($t('import_prompt_reallywant'), $t('import_prompt_reallywant_yes'), $t('import_prompt_reallywant_no')))
+        return { success: false }
 
     // Ensures the raw project is given
     if(typeof raw === "string"){
@@ -172,9 +172,13 @@ export async function importProject(filename: string, raw: unknown, doAskUser: (
     const noneExistentNodes = checkUnrecognizedNodes(res.data.workspace);
     if(noneExistentNodes.amount > 0){
         // Askes the user if he wants to abort importing the project or if he wants to continue
-        const msg = `Warning: There are ${noneExistentNodes.amount} Nodes which have a type that we don't recognize. These are: '${noneExistentNodes.names.join("', '")}'. Maybe there are Plugins you still need to enable? Do you still want to load the Project? The unrecognized nodes will be removed.`;
+        const msg = $t('import_prompt_unrecognizednodes', {
+            amount: noneExistentNodes.amount,
+            names: noneExistentNodes.names.join("', '")
+        });
 
-        const askRes = await doAskUser(msg, "Continue at my own risk", "Abort");
+
+        const askRes = await doAskUser(msg, $t('import_prompt_unrecognizednodes_yes'), $t('import_prompt_unrecognizednodes_no'));
 
         if(askRes !== true)
             return {

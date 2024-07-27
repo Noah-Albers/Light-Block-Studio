@@ -10,13 +10,31 @@ import { registerNodeModels } from "./registers/RegisterNodeModels";
 import { registerProcedures } from "./registers/RegisterProcedures";
 import { registerTemplates } from "./registers/RegisterTemplates";
 
-export const Registry = {
-    // All procedures which
-    procedures: registerProcedures(),
-
-    // All node models
-    nodeModels: registerNodeModels(),
-
-    // All registered templates
-    tempaltes: registerTemplates()
+type RegisteryType = {
+    procedures: ReturnType<typeof registerProcedures>,
+    nodeModels: ReturnType<typeof registerNodeModels>,
+    // TODO: Rename to correct name
+    tempaltes: ReturnType<typeof registerTemplates>
 }
+
+// Called on the initial setup to initialize most stuff
+export function setupRegistery(){
+
+    Registry = {
+        // All procedures which
+        procedures: registerProcedures(),
+    
+        // All node models
+        nodeModels: registerNodeModels(),
+    
+        // All registered templates
+        tempaltes: registerTemplates()
+    }
+}
+
+/**
+ * Note: Only available after the initial setup has been run. Dont try to use it before.
+ * Tho almost all code will run after that. So you probably dont need to worry about that.
+ */
+export let Registry: RegisteryType = undefined as any;
+

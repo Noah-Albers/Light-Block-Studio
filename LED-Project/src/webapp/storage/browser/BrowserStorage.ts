@@ -3,6 +3,7 @@ import { Button, Menu, MenuItem } from "@webapp/utils/taskbar/TaskBar";
 import { importProject } from "../project/ProjectImporter";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { exportProject } from "../project/ProjectExporter";
+import { $t } from "@localisation/Fluent";
 
 /**
  * Creates the menu items to use the browser for storing projects and settings
@@ -20,43 +21,43 @@ export function createBrowserStorageMenuItems(): MenuItem[] {
             [type]: ()=>[],
             text,
             icon,
-            title: "Localstorage is not enabled in this browser"
+            title: $t('storage_error_notsupported')
         } as any as Button | Menu
     }
 
     // Open (Upload File)
     const buttonUploadFile: Button = {
-        text: "Open (Upload File)", action: uploadFile,
-        title: "Upload a file into this webpage", icon: "mdi-upload"
+        text: $t('taskbar_storage_openupload_text'), action: uploadFile,
+        title: $t('taskbar_storage_openupload_title'), icon: "mdi-upload"
     };
 
     // Save (Download File)
     const buttonDownloadFile: Button = {
-        text: "Save (Download File)", action: ()=>{console.log('TODO')},
-        title: "Download the project file on your drive", icon: "mdi-download"
+        text: $t('taskbar_storage_savedownload_text'), action: ()=>{console.log('TODO')},
+        title: $t('taskbar_storage_savedownload_title'), icon: "mdi-download"
     }
 
     // Menu to open a project from browser storage
     const menuOpenFromBrowser: Menu = createLocalstorageButton(
-        "Open (Browser)", "items", ()=>createLocalstorageMenu(true),
+        $t('taskbar_storage_openbrowser'), "items", ()=>createLocalstorageMenu(true),
         "mdi-open-in-app"
     ) as Menu;
 
     // Menu to delete a project from browser storage
     const menuDeleteFromBrowser: Menu = createLocalstorageButton(
-        "Delete (Browser)", "items", ()=>createLocalstorageMenu(false),
+        $t('taskbar_storage_deletebrowser'), "items", ()=>createLocalstorageMenu(false),
         "mdi-delete-outline"
     ) as Menu;
 
     // Menu to save a project in browser storage
     const buttonSaveInBrowser: Menu = createLocalstorageButton(
-        "Save (Browser)", "action", ()=>()=>saveLocalstorageProject(false),
+        $t('taskbar_storage_savebrowser'), "action", ()=>()=>saveLocalstorageProject(false),
         "mdi-content-save-outline"
     ) as Menu;
 
     // Menu to save a project with a specific name in browser storage
     const buttonSaveAsInBrowser: Menu = createLocalstorageButton(
-        "Save as... (Browser)", "action", ()=>()=>saveLocalstorageProject(true),
+        $t('taskbar_storage_saveasbrowser'), "action", ()=>()=>saveLocalstorageProject(true),
         "mdi-content-save-all-outline"
     ) as Menu;
 
@@ -90,14 +91,14 @@ function getProjectSaveAsName(){
 
     while(name === undefined){
         // Askes the user for a name
-        name = prompt("Save as", store.projectName) || undefined;
+        name = prompt($t('storage_prompt_save_as'), store.projectName) || undefined;
 
         if(name === undefined)
             return undefined;
 
         if(
             localStorage.getItem(PROJECTS_PREFIX+name) !== null &&
-            confirm(`A project named '${name}' already exists. Do you want to overwrite it?`)
+            confirm($t('storage_prompt_alreadyexists', { name }))
         )
             break;
     }
@@ -128,8 +129,8 @@ function createLocalstorageMenu(isOpen: boolean) : ()=>MenuItem[]{
             return projs;
     
         return [{
-            text: "No projects found...",
-            title: "No projects found",
+            text: $t('storage_error_nofound_text'),
+            title: $t('storage_error_nofound_title'),
             disabled: true,
             action: ()=>{},
         }];
@@ -159,7 +160,7 @@ function loadLocalstorageProject(name: string) {
 // Takes in a filename of a local-storage project and deltes it
 function deleteLocalstorageProject(name: string){
     // Confirms the deletion
-    if(!confirm(`Do you really want to delete the Project '${name}'?`))
+    if(!confirm($t('storage_prompt_reallydelete', { name })))
         return;
 
     localStorage.removeItem(PROJECTS_PREFIX+name);
@@ -189,6 +190,9 @@ async function saveLocalstorageProject(askName: boolean){
 // Event: When a project got loaded and shall be imported
 async function onProjectLoad(filename: string, rawProj: string) {
     const res = await importProject(filename, rawProj, (msg, btnTrue, btnFalse)=>{
+
+        // TODO: Translate after replacing confirm with a web-based call to action
+
         return Promise.resolve(confirm(`${msg}:\n\nOk: ${btnTrue}\nCancle: ${btnFalse};`))
     });
 
@@ -196,7 +200,7 @@ async function onProjectLoad(filename: string, rawProj: string) {
         return;
 
     if(res.message !== undefined)
-        alert(`Failed to load Project...\nPlease check the console for more information on the error.`);
+        alert($t('storage_error_failedtoload'));
 
     console.warn("Failed to load Project", res.message);
 }

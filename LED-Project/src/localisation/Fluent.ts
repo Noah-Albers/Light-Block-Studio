@@ -1,34 +1,41 @@
 
-import { FluentBundle, FluentResource } from '@fluent/bundle'
+import { FluentBundle, FluentResource, FluentVariable } from '@fluent/bundle'
 
 import enFile from "@localisation/languages/en.ftl?raw";
 import deFile from "@localisation/languages/de.ftl?raw";
-import { createFluentVue } from 'fluent-vue';
+import { createFluentVue, FluentVue } from 'fluent-vue';
 
-// Creates the languages
-const Languages = (()=> {
+export type SupportedLanguages = "en" | "de";
+
+// Creates the languages and loads them
+const loadLanguage = ((lang: SupportedLanguages)=> {
+
+    // Loads english in any case as a backup
     const en = new FluentBundle("en");
-    const de = new FluentBundle("de");
-
     en.addResource(new FluentResource(enFile));
-    de.addResource(new FluentResource(deFile));
+    
+    const languages = [en];
 
-    return { en, de }
-})();
+    switch(lang){
+        case "de":
+            const de = new FluentBundle("de");
+            de.addResource(new FluentResource(deFile));
+            languages.unshift(de)
+            break;
+    }
+    
+    return languages;
+});
 
-// Creates the vue language binding
-export const Fluent = createFluentVue({ bundles: [] });
+export let Fluent: FluentVue = undefined as any;
+export let $t: (key: string, value?: Record<string, FluentVariable>) => string = undefined as any;
 
-// Function to change the language. This must be called at least once at the start to set the initial language
-export function changeLanguage(language: "de" | "en"){
-    Fluent.bundles = (()=>{
-        switch(language){
-            case "de":
-                return [Languages.de, Languages.en];
-            case "en": default:
-                return [Languages.en]
-        }
-    })();
+export function setupFluent(usedLanguage: SupportedLanguages){
+    Fluent = createFluentVue({
+        bundles: loadLanguage(usedLanguage)
+    });
+
+    $t = Fluent.$t;
+
+    return Fluent;
 }
-
-export const $t = Fluent.$t;
