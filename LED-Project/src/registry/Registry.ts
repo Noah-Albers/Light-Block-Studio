@@ -13,8 +13,7 @@ import { registerTemplates } from "./registers/RegisterTemplates";
 type RegisteryType = {
     procedures: ReturnType<typeof registerProcedures>,
     nodeModels: ReturnType<typeof registerNodeModels>,
-    // TODO: Rename to correct name
-    tempaltes: ReturnType<typeof registerTemplates>
+    templates: ReturnType<typeof registerTemplates>
 }
 
 // Called on the initial setup to initialize most stuff
@@ -28,7 +27,7 @@ export function setupRegistery(){
         nodeModels: registerNodeModels(),
     
         // All registered templates
-        tempaltes: registerTemplates()
+        templates: registerTemplates()
     }
 }
 

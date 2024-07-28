@@ -12,6 +12,16 @@
         item-value="value"
         :items="[{value: 'de', name: 'German'}, {value:'en', name: 'English'}]"
         variant="outlined"></v-select>
+        <v-alert
+            icon="mdi-info"
+            :text="$t('globalsettings_general_language-info')"
+            type="info"
+            variant="tonal"
+            ></v-alert>
+
+    <v-checkbox :label="$t('globalsettings_general_isDeveloper')"
+        v-tooltip="$t('globalsettings_general_isDeveloper-tooltip')"
+        v-model="store.isDeveloper"></v-checkbox>
 </template>
     
 <script setup

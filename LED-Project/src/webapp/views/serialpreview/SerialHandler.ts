@@ -16,11 +16,10 @@ export enum ConnectionType {
 
 /**
  * Vue-Plugin that exposes the serial interface to connect to
- * 
- * TODO: Comment after fully implemented
  */
 export function useSerialHandler() {
 
+    // Ensures serial is available in this environment
     if (!("serial" in navigator)) return false;
 
     const connected = ref(ConnectionType.DISCONNECTED);
@@ -29,12 +28,16 @@ export function useSerialHandler() {
     let port: SerialPort | undefined = undefined;
     let writer: WritableStreamDefaultWriter<any> | undefined = undefined;
 
+    // Uses the visualizer to hook send data to the hardware
     const visualizer = new Visualizer(onVisualizerPushLeds);
 
+    // Hooks into the preview create config signal to restart any animations
     useSignal(Signals.BLOCKLY_PREVIEW_CREATE_CONFIG, onBlocklyPreviewChange);
 
+    // Hooks the unmounted event to abort any serial communication
     onUnmounted(stopSerial);
 
+    // Kills all and any serial communication
     async function stopSerial() {
         if (port === undefined) return;
         try {
@@ -59,6 +62,7 @@ export function useSerialHandler() {
         }
     }
 
+    // Function to start a serial connection
     async function startSerial() {
         try {
             // Ensures no prior serial port is open

@@ -43,5 +43,5 @@ function createTemplateTab(template: Template) : Button {
 export const createTemplateSubTab: ()=>Menu = ()=>({
     text: $t('templates_title'),
     icon: "mdi-text-box",
-    items: ()=>Object.values(Registry.tempaltes).map(createTemplateTab)
+    items: ()=>Object.values(Registry.templates).map(createTemplateTab)
 })

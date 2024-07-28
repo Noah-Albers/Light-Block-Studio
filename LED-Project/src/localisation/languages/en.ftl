@@ -37,7 +37,7 @@ navbar_settings = Settings
 navbar_copycode = Copy Code
 offblock_title = Block Settings
 serial_generallerror = Error with the serial port { $error }
-serial_not_supported =
+serial_not_supported = .title = Serial API Problem
     .title = Serial API Problem
     .subtitle = Serial API is not supported in your browser
 serial_not_supported_text =
@@ -48,7 +48,7 @@ serial_not_supported_text =
     If you still want to view your animations on real hardware, please use a <a target="_blank"
         href="https://caniuse.com/web-serial">browser</a> that supports the serial api
     or use the <a href="TODO" target="_blank">electron version</a> of this application.
-serial_supported =
+serial_supported = .title = Serial Preview
     .title = Serial Preview
     .subtitle = View your animation on real hardware
 serial_status_connected = Connected
@@ -73,10 +73,10 @@ globalsettings_serial_usb_vendorname = Vendor Name (Info Only)
 globalsettings_serial_usb_vendorid = Vendor-ID
 globalsettings_serial_usb_add = Add
 hooks_title = Hook ({ $hook })
-hooks_edit_field =
+hooks_edit_field = .label = Edit ({ $hook })
     .label = Edit ({ $hook })
 hooks_preview = Preview ({ $hook })
-projectsettings_blueprint =
+projectsettings_blueprint = .label = Blueprint
     .label = Blueprint
 projectsettings_global_endLedPush = Add Led Push on Loop end
 projectsettings_global_endLedPush-tooltip = If a final pushLed's call shall be ended at the end of the loop code
@@ -99,11 +99,11 @@ tab_view = View
 tab_view_switch = Switch
 variables_view_name = Name
 variables_view_value = Value
-variables_view_field_variable =
+variables_view_field_variable = .label = Variable
     .label = Variable
-variables_view_field_value =
+variables_view_field_value = .label = Value
     .label = Value
-variables_view_field_delete =
+variables_view_field_delete = .title = Delete the variable
     .title = Delete the variable
 variables_error_invalidValue = '{ $name }' has an invalid value.
 variables_error_duplicated = '{ $name }' is duplicated.
@@ -135,3 +135,7 @@ colorpicker_property_name_saturation = Saturation
 colorpicker_property_name_value = Value
 blockly_rootblock_setup = Run on setup
 blockly_rootblock_loop = Run on loop
+globalsettings_general_isDeveloper = Enable Developer mode
+globalsettings_general_isDeveloper-tooltip = This shows some extra options which are usefull when developing the application.
+tab_developer = Developer
+globalsettings_general_language-info = Language changes only become effective after a restart.

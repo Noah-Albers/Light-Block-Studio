@@ -8,7 +8,7 @@
         </v-btn>
       </v-main>
     </v-app>
-  </template>
+</template>
   
 <script setup lang="ts">
 import {runAllTests} from "@test/AllTests.test";

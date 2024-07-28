@@ -52,7 +52,6 @@ export interface INodeModel {
     getOnBlockSettings() : OnBlockSettings;
 
     /**
-     * TODO: Replace with language lookup
      * @returns String that represents the message to use for the block
      */
     getBlockMessage() : string;

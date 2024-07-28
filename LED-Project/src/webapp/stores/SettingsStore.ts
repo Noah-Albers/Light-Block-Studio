@@ -31,6 +31,9 @@ export const useSettingsStore = defineStore('settings', () => {
 
     //#region Settings
 
+    // If the developermode is enabled
+    // TODO: Change when fully packaged
+    const isDeveloper = ref(true);
 
     // Which view is selected
     const mainView = ref(ViewVisualizer as Views);
@@ -80,7 +83,7 @@ export const useSettingsStore = defineStore('settings', () => {
     //#endregion
 
     return {
-        mainView, serialPreview, whitelistUsbVendors, buildConfig, language,
+        mainView, serialPreview, whitelistUsbVendors, buildConfig, language, isDeveloper,
 
         restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist
     };
