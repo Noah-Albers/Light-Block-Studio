@@ -1,3 +1,4 @@
+import { $t } from "@localisation/Fluent";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 import { LEDArray } from "@visualizer/implementations/VisualisationController";
 import { Visualizer } from "@visualizer/index";
@@ -64,8 +65,6 @@ export function useSerialHandler() {
             await stopSerial();
             await visualizer.abortVisualizer();
 
-            console.log("Search list: ",getSerialSearchList())
-
             // Request the serial port from the user
             const possiblePort = await navigator.serial.requestPort(getSerialSearchList());
 
@@ -92,7 +91,7 @@ export function useSerialHandler() {
             if (str.indexOf("No port selected by the user")) return;
 
             // TODO: Show better error
-            alert("Error with the serial port" + str);
+            alert($t('serial_generallerror', { error: str }))
         }
     }
 

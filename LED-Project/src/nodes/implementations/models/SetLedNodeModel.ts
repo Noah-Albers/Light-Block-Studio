@@ -33,7 +33,7 @@ export class SetLedNodeModel implements INodeModel {
         return $t('models_color_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
-        return [this.colorField, this.idxField]
+        return [this.idxField, this.colorField]
     }
     getSources(): IDataSource<any, any, any>[] {
         return this.getOnBlockSources();

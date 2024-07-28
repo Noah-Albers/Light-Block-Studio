@@ -5,13 +5,13 @@
             color="primary"
             direction="vertical">
             <v-tab prepend-icon="mdi-cog"
-                text="General"
+                :text="$t('projectsettings_category_general')"
                 value="general"></v-tab>
             <v-tab prepend-icon="mdi-hook"
-                text="Hooks"
+                :text="$t('projectsettings_category_hooks')"
                 value="hook"></v-tab>
             <v-tab prepend-icon="mdi-text-box"
-                text="Blueprint"
+                :text="$t('projectsettings_category_blueprint')"
                 value="codePreset"></v-tab>
         </v-tabs>
 

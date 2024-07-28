@@ -3,7 +3,7 @@
         style="margin-right: 4rem;"
         hover>
         <v-card-item>
-            <v-card-title> Hook ({{ props.name }})</v-card-title>
+            <v-card-title> {{ $t('hooks_title', {hook: $props.name}) }}</v-card-title>
         </v-card-item>
 
         <v-card-text>
@@ -13,7 +13,7 @@
                 <Pane>
                     <v-textarea hide-details
                         :rows="1"
-                        :label="`Edit (${props.name})`"
+                        v-bind="$ta('hooks_edit_field', { hook: $props.name })"
                         variant="solo"
                         auto-grow
                         v-model="model">
@@ -22,9 +22,9 @@
                 </Pane>
                 <Pane>
                     <v-card>
-                        <v-card-title style="color: gray; font-size: 0.85rem; padding: 0; padding-left: .5rem;">Preview
-                            ({{
-                props.name }})</v-card-title>
+                        <v-card-title style="color: gray; font-size: 0.85rem; padding: 0; padding-left: .5rem;">
+                            {{ $t('hooks_preview', { hook: $props.name }) }}
+                        </v-card-title>
                         <v-card-text style="padding: 0; padding-left: .5rem;">
                             <pre><code v-html="formatted"></code></pre>
                         </v-card-text>

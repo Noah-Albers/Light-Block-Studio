@@ -134,7 +134,7 @@ function registerOtherBlocks() {
     Blockly.Blocks['led_root_setup'] = {
         init: function () {
             this.appendDummyInput()
-                .appendField("Run on setup");
+                .appendField($t('blockly_rootblock_setup'));
             this.setNextStatement(true, null);
             this.setColour(60);
             this.setDeletable(false);
@@ -145,7 +145,7 @@ function registerOtherBlocks() {
     Blockly.Blocks['led_root_loop'] = {
         init: function () {
             this.appendDummyInput()
-                .appendField("Run on loop");
+                .appendField($t('blockly_rootblock_loop'));
             this.setNextStatement(true, null);
             this.setColour(60);
             this.setDeletable(false);

@@ -1,34 +1,34 @@
 <template>
     <v-checkbox
         hide-details
-        v-tooltip="`If a final pushLed's call shall be ended at the end of the loop code`"
-        label="Add Led Push on Loop end" v-model="store.loopPushLeds"></v-checkbox>
+        v-tooltip="$t('projectsettings_global_endLedPush-tooltip')"
+        :label="$t('projectsettings_global_endLedPush')" v-model="store.loopPushLeds"></v-checkbox>
 
     <v-checkbox
         hide-details
-        v-tooltip:top="'If set, multiple empty lines will be trimmed down to a single one, improving code readability'"
-        label="Trim empty lines" v-model="store.trimEmptyLines"></v-checkbox>
+        v-tooltip:top="$t('projectsettings_global_trimEmptyLines-tooltip')"
+        :label="$t('projectsettings_global_trimEmptyLines')" v-model="store.trimEmptyLines"></v-checkbox>
         
     <v-number-input
         class="mt-4"
-        label="Pin"
+        :label="$t('projectsettings_global_pin')"
         hide-details
         variant="outlined"
         v-model="store.pin"
         :min="0"
         :max="999"
-        v-tooltip="'Which PIN the WS2812 (Neopixel) Stripe is connected to'"
+        v-tooltip="$t('projectsettings_global_pin-tooltip')"
         width="200"
         ></v-number-input>
 
     <v-number-input
         class="mt-4"
-        label="Pixel-Amount"
+        :label="$t('projectsettings_global_amount')"
         hide-details
         variant="outlined"
         v-model="store.amount"
         :min="0"
-        v-tooltip="'How many pixels are connected to the LED-Stripe'"
+        v-tooltip="$t('projectsettings_global_amount-tooltip')"
         width="200"
         ></v-number-input>
 </template>

@@ -1,12 +1,13 @@
 import { createBrowserStorageMenuItems } from "@webapp/storage/browser/BrowserStorage";
 import { Menu } from "@webapp/utils/taskbar/TaskBar";
-import { TemplatesSubTab } from "./filetab/TemplatesSubtab";
+import { $t } from "@localisation/Fluent";
+import { createTemplateSubTab } from "./filetab/TemplatesSubtab";
 
-export const FileTab: Menu = {
-    text: "File",
+export const createFileTab : ()=>Menu = ()=>({ 
+    text: $t('tab_file'),
     items: ()=>[
         ...createBrowserStorageMenuItems(),
         "seperator",
-        TemplatesSubTab
+        createTemplateSubTab()
     ]
-}
+})

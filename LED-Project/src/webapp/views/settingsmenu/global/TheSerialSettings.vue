@@ -1,14 +1,15 @@
 <template>
     <v-checkbox
-        v-tooltip:top="'Used to prevent random USB-Devices from showing up when connecting to hardware. Disable if your device isn\'t listed'"
-        label="Hide unknown Serial-Vendors" v-model="store.whitelistUsbVendors.enabled"></v-checkbox>
+        :label="$t('globalsettings_serial_hideUnknownVendors')"
+        v-tooltip="$t('globalsettings_serial_hideUnknownVendors-tooltip')"
+        v-model="store.whitelistUsbVendors.enabled"></v-checkbox>
 
     <v-card class="me-auto pa-2">
         <template v-slot:prepend>
-            <h1 class="text-subtitle-1">Additional USB-Vendors</h1>
+            <h1 class="text-subtitle-1">{{ $t('globalsettings_serial_additional_usb_vendors') }}</h1>
         </template>
         <template v-slot:append>
-            <v-btn color="error" @click="askRestoreDefaults">Restore defaults</v-btn>
+            <v-btn color="error" @click="askRestoreDefaults">{{ $t('globalsettings_serial_usb_restore_default') }}</v-btn>
 
         </template>
         <v-list>
@@ -24,15 +25,19 @@
         <v-container>
             <v-row>
                 <v-col cols="12" md="5">
-                    <v-text-field variant="outlined" v-model="newItem[0]" label="Vendor Name (Info Only)"
+                    <v-text-field variant="outlined" v-model="newItem[0]"
+                        :label="$t('globalsettings_serial_usb_vendorname')"
                         hide-details></v-text-field>
                 </v-col>
 
                 <v-col cols="12" md="5">
-                    <v-text-field variant="outlined" v-model="newItem[1]" label="Vendor-ID" hide-details></v-text-field>
+                    <v-text-field variant="outlined" v-model="newItem[1]"
+                    :label="$t('globalsettings_serial_usb_vendorid')" hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="2" class="mt-2">
-                    <v-btn prepend-icon="mdi-plus" color="primary" @click="onAddNewClicked">Add</v-btn>
+                    <v-btn prepend-icon="mdi-plus" color="primary" @click="onAddNewClicked">
+                        {{ $t('globalsettings_serial_usb_add') }}
+                    </v-btn>
                 </v-col>
             </v-row>
         </v-container>

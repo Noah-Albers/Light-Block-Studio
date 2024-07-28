@@ -31,29 +31,29 @@
                     <v-list-item v-if="isDualModel"
                         @click="actionSwapColors([true, true, true])"
                         prepend-icon="mdi-swap-horizontal">
-                        <v-list-item-title>Swap Colors</v-list-item-title>
+                        <v-list-item-title>{{ $t('colorpicker_actions_swapColors') }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item v-if="isDualModel"
                         @click="actionSwapColors([true, false, false])"
                         prepend-icon="mdi-swap-horizontal">
-                        <v-list-item-title>Swap Hue</v-list-item-title>
+                        <v-list-item-title>{{ $t('colorpicker_actions_swapHue') }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item v-if="isDualModel"
                         @click="actionSwapColors([false, true, false])"
                         prepend-icon="mdi-swap-horizontal">
-                        <v-list-item-title>Swap Saturation</v-list-item-title>
+                        <v-list-item-title>{{ $t('colorpicker_actions_swapSaturation') }}</v-list-item-title>
                     </v-list-item>
                     <v-list-item v-if="isDualModel"
                         @click="actionSwapColors([false, false, true])"
                         prepend-icon="mdi-swap-horizontal">
-                        <v-list-item-title>Swap Value</v-list-item-title>
+                        <v-list-item-title>{{ $t('colorpicker_actions_swapValue') }}</v-list-item-title>
                     </v-list-item>
                     <v-list-item
                         @click="actionRandomizeColors()"
                         prepend-icon="mdi-dice-2">
-                        <v-list-item-title>Randomize</v-list-item-title>
+                        <v-list-item-title>{{ $t('colorpicker_actions_randomize') }}</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -395,16 +395,14 @@ $text-size: 1.5rem;
 
 <script setup
     lang="ts">
-    import { PropType, Ref, ref, watchEffect, computed, ModelRef, watch } from 'vue';
+    import { PropType, Ref, ref, computed, ModelRef } from 'vue';
     import { useColorModel } from "./ColorModel";
     import Cursor from "./Cursor.vue"
     import Bar from "./Bar.vue"
     import { useMultiCursorMover } from "./MultiCursorMover";
-    import { round3Digits } from '@utils/MathUtils';
-    import { CachedColor, HSVColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
+    import { CachedColor, VariableColorType } from '@nodes/implementations/datasources/ColorDataSource';
     import { CachedRangeColor } from "@nodes/implementations/datasources/ColorRangeDataSource"
-    import { toRef } from 'vue';
-    import { ComputedRef } from 'vue';
+    import { $t } from "@localisation/Fluent";
 
     //#region Setup
 
@@ -444,7 +442,11 @@ $text-size: 1.5rem;
         }
     });
 
-    const propertyNames = ["Hue", "Saturation", "Value"];
+    const propertyNames = [
+        $t('colorpicker_property_name_hue'),
+        $t('colorpicker_property_name_saturation'),
+        $t('colorpicker_property_name_value'),
+    ];
 
     // Main model of the component
     const mainVModel = defineModel("modelValue", {

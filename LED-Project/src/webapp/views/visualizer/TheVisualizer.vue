@@ -6,7 +6,7 @@
     <!-- Switch preview -->
     <v-overlay class="align-center justify-center">
         <template #activator="{ props }">
-            <v-btn v-bind="props" v-tooltip="'Switch Preview'" style="position: absolute; top: 1rem; right: 1rem"
+            <v-btn v-bind="props" v-tooltip="$t('visualizer_button_switchPreview')" style="position: absolute; top: 1rem; right: 1rem"
                 icon="mdi-swap-horizontal" />
         </template>
 

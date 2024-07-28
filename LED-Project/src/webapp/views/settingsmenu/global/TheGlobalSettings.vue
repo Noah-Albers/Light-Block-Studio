@@ -1,8 +1,8 @@
 <template>
     <div class="d-flex flex-row" style="height: 100%;">
         <v-tabs v-model="tab" color="primary" direction="vertical">
-            <v-tab prepend-icon="mdi-application-cog-outline" text="General" value="general"></v-tab>
-            <v-tab prepend-icon="mdi-usb" text="Serial API" value="serial"></v-tab>
+            <v-tab prepend-icon="mdi-application-cog-outline" :text="$t('globalsettings_category_general')" value="general"></v-tab>
+            <v-tab prepend-icon="mdi-usb" :text="$t('globalsettings_category_serial')" value="serial"></v-tab>
 
         </v-tabs>
 
@@ -25,4 +25,4 @@
 
     const tab = ref();
 
-    </script>
+</script>

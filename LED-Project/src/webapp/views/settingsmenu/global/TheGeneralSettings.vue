@@ -1,15 +1,16 @@
 <template>
-    <v-checkbox label="Specify config for selected?"
-        v-tooltip="'If a block is selected, only the config for this block shall be build.'"
+    <v-checkbox :label="$t('globalsettings_general_specific_config')"
+        v-tooltip="$t('globalsettings_general_specific_config-tooltip')"
         v-model="store.buildConfig.enablePreview"></v-checkbox>
 
     <v-select
-        v-tooltip="'Which language to use for the application'"
+        :lable="$t('globalsettings_general_language')"
+        v-tooltip="$t('globalsettings_general_language-tooltip')"
         chips
         v-model="store.language"
         item-title="name"
         item-value="value"
-        label="Language" :items="[{value: 'de', name: 'German'}, {value:'en', name: 'English'}]"
+        :items="[{value: 'de', name: 'German'}, {value:'en', name: 'English'}]"
         variant="outlined"></v-select>
 </template>
     
@@ -20,4 +21,4 @@
 
     const store = useSettingsStore();
 
-    </script>
+</script>

@@ -3,10 +3,10 @@
         <thead>
             <tr>
                 <th class="text-left">
-                    Name
+                    {{ $t('variables_view_name') }}
                 </th>
                 <th class="text-left">
-                    Value
+                    {{ $t('variables_view_value') }}
                 </th>
                 <th width="20px" class="text-left">
                 </th>
@@ -33,27 +33,32 @@
             <tr class="var-usr" v-for="itm, idx in varStore.variables" :key="idx">
                 <td>
                     <v-text-field class="px-1" :class="itm.nameProblem !== undefined ? 'error' : ''" density="compact"
-                        label="Variable" variant="plain" hide-details single-line @update:model-value="onVarChange"
+                        v-bind="$ta('variables_view_field_variable')"
+                        variant="plain" hide-details single-line @update:model-value="onVarChange"
                         v-model="itm.name"></v-text-field>
                 </td>
                 <td>
                     <v-text-field class="px-1" :class="typeof itm.value === 'string' ? 'error' : ''" density="compact"
+                        v-bind="$ta('variables_view_field_value')"
                         label="Value" variant="plain" hide-details single-line @update:model-value="onVarChange"
                         maxlength="15" v-model.number="itm.value"></v-text-field>
                 </td>
                 <td>
-                    <v-icon icon="mdi-delete" @click="varStore.removeVariable(idx)" title="Delete the variable" />
+                    <v-icon v-bind="$ta('variables_view_field_delete')" icon="mdi-delete" @click="varStore.removeVariable(idx)" />
                 </td>
             </tr>
 
             <!-- Placeholder for new user variables -->
             <tr class="var-tmp">
                 <td>
-                    <v-text-field class="px-1" density="compact" label="Variable" variant="plain" hide-details single-line
+                    <v-text-field class="px-1" density="compact"
+                        v-bind="$ta('variables_view_field_variable')"
+                        variant="plain" hide-details single-line
                         @keydown.enter="onNewVariable" v-model="tmpVariable.name"></v-text-field>
                 </td>
                 <td>
-                    <v-text-field class="px-1" density="compact" label="Value" variant="plain" hide-details single-line
+                    <v-text-field class="px-1" density="compact" variant="plain" hide-details single-line
+                        v-bind="$ta('variables_view_field_value')"
                         maxlength="15" @keydown.enter="onNewVariable" v-model.number="tmpVariable.value"></v-text-field>
                 </td>
                 <td></td>
@@ -74,6 +79,7 @@
     import { ComputedRef } from "vue";
     import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
     import { Signals } from "@webapp/utils/signals/Signals";
+    import { $t } from "@localisation/Fluent";
 
     const varStore = useVariableStore();
 
@@ -95,14 +101,9 @@
 
         // Checks for variable problem
         if (typeof v.value === "string")
-            return `'${v.name}' has an invalid value.`;
+            return $t('variables_error_invalidValue', { name: v.name })
 
-        switch (v.nameProblem) {
-            case "duplicated": return `'${v.name}' is duplicated.`;
-            case "firstChar": return `Variable names can't start with '${v.name[0]}'`;
-            case "invalid": default: return `'${v.name}' is an invalid name.`;
-            case "reserved": return `'${v.name}' is a reserved variable.`
-        }
+        return $t(`variables_error_${v.nameProblem}`, { name: v.name });
     });
 
     /**

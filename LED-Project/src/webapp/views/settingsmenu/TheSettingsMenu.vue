@@ -2,8 +2,8 @@
   <v-card>
     <v-tabs v-model="tab"
       bg-color="primary">
-      <v-tab value="one">Project Settings</v-tab>
-      <v-tab value="two">Global Settings</v-tab>
+      <v-tab value="one">{{ $t('projectssettings-title') }}</v-tab>
+      <v-tab value="two">{{  $t('globalsettings-title') }}</v-tab>
     </v-tabs>
 
     <v-card-text class="pa-0" >

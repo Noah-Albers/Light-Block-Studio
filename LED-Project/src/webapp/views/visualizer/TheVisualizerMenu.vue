@@ -1,11 +1,15 @@
 <template>
     <v-card class="ma-10" style="height: 80vh; min-width: 80vw; overflow: auto">
-        <v-toolbar :elevation="4" title="Select a visualisation preview" color="primary">
-                <v-btn @click="$el.querySelector('.custom_upload_file').click()" v-tooltip="'Upload a custom preview!'" prepend-icon="mdi-upload" text="Upload" elevation="3" class="mr-2"/>
-                <v-btn @click="onSaveClicked" v-tooltip="'Save and continue!'" :disabled="selected === store.selectedPreview" text="Save" prepend-icon="mdi-content-save-outline" class="mr-5" elevation="3" />
+        <v-toolbar :elevation="4" :title="$t('visualizer_previewselector_open')" color="primary">
+            <v-btn @click="$el.querySelector('.custom_upload_file').click()"
+                v-tooltip="$t('visualizer_previewselector_upload-tooltip')" prepend-icon="mdi-upload"
+                :text="$t('visualizer_previewselector_upload')" elevation="3" class="mr-2" />
+            <v-btn @click="onSaveClicked" v-tooltip="$t('visualizer_previewselector_save-tooltip')"
+                :disabled="selected === store.selectedPreview" :text="$t('visualizer_previewselector_save')"
+                prepend-icon="mdi-content-save-outline" class="mr-5" elevation="3" />
 
-                <!--Hidden text input-->
-                <input accept="svg" multiple class="custom_upload_file" type="file" @change="onFileUpload" hidden>
+            <!--Hidden file input-->
+            <input accept="svg" multiple class="custom_upload_file" type="file" @change="onFileUpload" hidden>
         </v-toolbar>
         <v-container>
             <v-row>
@@ -16,13 +20,13 @@
                                 {{ preview.key }}
                             </template>
                             <template v-slot:title v-else>
-                                Custom #{{ preview.key+1 }}
+                                {{ $t('visualizer_previewselector_customPreview', { index: preview.key + 1 }) }}
                             </template>
                             <template v-if="preview.isBuildin">
-                                <v-icon class="mr-4" v-tooltip="'BuildIn'" color="#ddd" icon="mdi-wrench" />
+                                <v-icon class="mr-4" v-tooltip="$t('visualizer_previewselector_icon_buildin')" color="#ddd" icon="mdi-wrench" />
                             </template>
                             <template v-else>
-                                <v-icon class="mr-4" v-tooltip="'Delete'" color="#ddd" icon="mdi-delete"
+                                <v-icon class="mr-4" v-tooltip="$t('visualizer_previewselector_icon_delete')" color="#ddd" icon="mdi-delete"
                                     @click="onTrashClicked(preview)" />
                             </template>
                         </v-toolbar>
@@ -62,6 +66,7 @@
 import { useProjectStore, BuildInPreviews } from "@webapp/stores/ProjectStore";
 import { computed } from "vue";
 import { ref } from 'vue';
+import { $t } from "@localisation/Fluent";
 
 type PreviewType = {
     value: string,
@@ -86,16 +91,16 @@ function onSaveClicked() {
 }
 
 // Event: When a custom preview file is uploaded
-function onFileUpload(evt: any){
+function onFileUpload(evt: any) {
 
-    function onReadFile(evt: any){
-        try{
+    function onReadFile(evt: any) {
+        try {
             // Gets the content
             var cont = (evt as any).target.result;
-        
+
             // Adds the image
             store.previews.push(cont);
-        }catch(exc){
+        } catch (exc) {
             console.error("Failed to load SVG-Preview-file_ ", exc)
         }
     }
@@ -106,8 +111,8 @@ function onFileUpload(evt: any){
     // List of files that are invalid
     const errors: string[] = [];
 
-    for(let file of files){
-        if(!file.name.toLowerCase().endsWith(".svg")){
+    for (let file of files) {
+        if (!file.name.toLowerCase().endsWith(".svg")) {
             errors.push(file.name);
             continue;
         }
@@ -118,13 +123,13 @@ function onFileUpload(evt: any){
         reader.readAsText(file);
     }
 
-    if(errors.length > 0)
-        alert(`${errors.join(", ")} file(s) are/is invalid (Must be .svg file(s)).`);
+    if (errors.length > 0)
+        alert($t('visualizer_previewselector_upload_import_error', { count: errors.length, files: errors.join(", ")}));
 }
 
 // Event: The trash icon on a custom preview got clicked
 function onTrashClicked(elm: PreviewType) {
-    if (!confirm(`Do you really want to delete #${elm.key}?`))
+    if(!confirm($t('visualizer_previewselector_upload_confirm', { key: elm.key })))
         return;
 
     // Deletes the preview

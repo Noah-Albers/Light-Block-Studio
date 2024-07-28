@@ -1,3 +1,4 @@
+import { $t } from "@localisation/Fluent";
 import { Registry } from "@registry/Registry";
 import { Hooks, Template } from "@template/definitions/Template";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
@@ -7,7 +8,7 @@ import { Button, Menu } from "@webapp/utils/taskbar/TaskBar";
 // Event: When the hook is clicked
 function onClickOnTemplate({ blueprint, hooks, variables }: Template){
     // Askes the user if he really wants to load the template
-    if(!confirm("Do you really want to load the template? All your previous work will be lost.")) return;
+    if(!confirm($t('templates_prompt_load'))) return;
 
     const projStore = useProjectStore();
     const varStore = useVariableStore();
@@ -34,13 +35,13 @@ function onClickOnTemplate({ blueprint, hooks, variables }: Template){
 // Takes in a template and creates its tab
 function createTemplateTab(template: Template) : Button {
     return {
-        text: `${template.name} from ${template.author}`,
+        text: $t('template_name', { template: template.name, author: template.author }),
         action: ()=>onClickOnTemplate(template)
     }
 }
 
-export const TemplatesSubTab : Menu = {
-    text: "Templates",
+export const createTemplateSubTab: ()=>Menu = ()=>({
+    text: $t('templates_title'),
     icon: "mdi-text-box",
     items: ()=>Object.values(Registry.tempaltes).map(createTemplateTab)
-}
+})

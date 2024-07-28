@@ -31,6 +31,7 @@
     import { generateCode } from "@webapp/views/codeview/CodeGenerator"
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
     import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
+    import { $t } from "@localisation/Fluent";
 
     const store = useSettingsStore();
 
@@ -52,7 +53,7 @@
 
             await navigator.clipboard.writeText(code);
 
-            SignalDispatcher.emit(Signals.DISPLAY_POPUP, { text: "Code copied" })
+            SignalDispatcher.emit(Signals.DISPLAY_POPUP, { text: $t('popup_codecopied') })
         } catch (err) {
             console.error("Failed to copy / create code", err);
         }
@@ -61,12 +62,12 @@
     // Menu items on the bottom
     const bottomItems = [
         {
-            title: "Settings",
+            title: $t('navbar_settings'),
             icon: "mdi-cog",
             action: () => emit("settingsIconClicked")
         },
         {
-            title: "Copy Code",
+            title: $t('navbar_copycode'),
             icon: "mdi-code-tags",
             action: onCopyCodeClicked
         }

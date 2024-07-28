@@ -1,5 +1,5 @@
 <template>
-    <h2 class="text-center mb-3" style="color: #3f3f3f">Block Settings</h2>
+    <h2 class="text-center mb-3" style="color: #ececec">{{ $t('offblock_title') }}</h2>
 
     <template v-for="(source, index) in model.getSources()" :key="index">
         <v-divider v-if="index === 0" class="mt-2 mb-2"></v-divider>

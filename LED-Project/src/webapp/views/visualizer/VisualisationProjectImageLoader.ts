@@ -1,6 +1,5 @@
 import { BuildInPreviews, useProjectStore } from '@webapp/stores/ProjectStore';
-import { storeToRefs } from 'pinia';
-import { Ref, onMounted, onUnmounted, ref, toRef, toRefs, watch } from 'vue'
+import { Ref, onMounted, ref, toRefs, watch } from 'vue'
 
 export type LEDs = {[key: number]: SVGElement[]};
 

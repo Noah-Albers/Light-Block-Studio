@@ -29,6 +29,7 @@ const loadLanguage = ((lang: SupportedLanguages)=> {
 
 export let Fluent: FluentVue = undefined as any;
 export let $t: (key: string, value?: Record<string, FluentVariable>) => string = undefined as any;
+export let $ta: (key: string, value?: Record<string, FluentVariable>) => Record<string, string> = undefined as any;
 
 export function setupFluent(usedLanguage: SupportedLanguages){
     Fluent = createFluentVue({
@@ -36,6 +37,7 @@ export function setupFluent(usedLanguage: SupportedLanguages){
     });
 
     $t = Fluent.$t;
+    $ta = Fluent.$ta;
 
     return Fluent;
 }

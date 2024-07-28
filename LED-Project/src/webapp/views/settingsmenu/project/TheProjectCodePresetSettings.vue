@@ -1,5 +1,7 @@
 <template>
-    <v-textarea auto-grow style="height: 100%;" :rows="20" label="Blueprint" variant="outlined"
+    <v-textarea auto-grow style="height: 100%;" :rows="20"
+        variant="outlined"
+        v-bind="$ta('projectsettings_blueprint')"
         v-model="store.codeBlueprint"></v-textarea>
 </template>
 
@@ -7,4 +9,4 @@
     lang="ts">
     import { useProjectStore } from '@webapp/stores/ProjectStore';
     const store = useProjectStore();
-</script>
+    </script>
