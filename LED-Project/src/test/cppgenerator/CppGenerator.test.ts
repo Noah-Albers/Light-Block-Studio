@@ -1,13 +1,13 @@
 import { CppFnInformation, CppType } from "@cppgen/functionManager";
 import { CppGenerator, ICodeSupport } from "@cppgen/generator";
-import { assertArraysEqual, assertStringsEqual } from "@test/TestUtils";
-import { SimpleFunctionCodeConstructor } from "@procedure/definitions/implementations/SimpleFunctionCodeConstructor";
-import { SimpleProcedure } from "@procedure/definitions/implementations/SimpleProcedure";
+import { assertStringsEqual } from "@test/TestUtils";
 import { LoopProcedure } from "@procedure/procedures/LoopProcedure/LoopProcedure";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 import { IDiagnostics } from "@procedure/definitions/ProcDiagnostics";
 import { ILEDNode } from "@procedure/definitions/ProcLEDNode";
 import { IVisualisationController } from "@visualizer/definitions/VisualisationController";
+import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
+import { SimpleProcedure } from "@procedure/implementations/SimpleProcedure";
 
 
 
@@ -111,7 +111,18 @@ export function runTest_cppgenerator_codegenerator(){
         `,
         variables: {
             "AMT": "30"
-        }
+        },
+        hooks: {
+            loop(code, count) { return code },
+            millis(){ return "millis()" },
+            pushLeds() { return "pushLeds()" },
+            setHSV(idx, h, s, v) { return `leds[${idx}] = CHSV(${h},${s},${v})` },
+            setup(code, count) { return code },
+            sleep(time) { return `delay(${time})` },
+        },
+        loopPushLeds: false,
+        reservedKeywords: [],
+        trimEmptyLines: true
     })
 
     const REQUIRED = (

@@ -1,4 +1,4 @@
-import { CppFnManager, CppFnInformation, CppType, IVariableSupplier } from "@cppgen/functionManager/index";
+import { CppFnManager, CppFnInformation, CppType } from "@cppgen/functionManager/index";
 import { assertArraysEqual, assertStringsEqual } from "@test/TestUtils";
 
 type AddFunction = {

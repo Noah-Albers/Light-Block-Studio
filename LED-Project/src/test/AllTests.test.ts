@@ -1,13 +1,13 @@
-import { runTest_cppfnmanager_codegenerator } from "./cppgenerator/functionManager/CppFnManager.test";
 import { runTest_cppgenerator_codegenerator } from "./cppgenerator/CppGenerator.test";
-import { runTest_registered_procedures } from "./procedures/Procedures.test";
+import { runTest_cppfnmanager_codegenerator } from "./cppgenerator/functionManager/CppFnManager.test";
 import { runTest_mathSolver } from "./mathSolver/MathSolver.test";
+import { runTest_registered_procedures } from "./procedures/Procedures.test";
 
 export const ALL_TESTS = [
-    runTest_mathSolver
-    /*runTest_cppfnmanager_codegenerator,
+    runTest_mathSolver,
+    runTest_cppfnmanager_codegenerator,
     runTest_cppgenerator_codegenerator,
-    runTest_registered_procedures*/
+    runTest_registered_procedures
 ]
 
 export function runAllTests(){

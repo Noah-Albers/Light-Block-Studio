@@ -139,3 +139,5 @@ globalsettings_general_isDeveloper = Enable Developer mode
 globalsettings_general_isDeveloper-tooltip = This shows some extra options which are usefull when developing the application.
 tab_developer = Developer
 globalsettings_general_language-info = Language changes only become effective after a restart.
+tab_developer_runTests = Run tests
+developer_runtests_info = Test have been run, please check the Browser console
