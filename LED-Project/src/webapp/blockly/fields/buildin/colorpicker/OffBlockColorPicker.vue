@@ -3,7 +3,7 @@
         <v-menu :close-on-content-click="false" :close-on-back="false" class="">
             <template v-slot:activator="{ props: aProps }">
                 <v-btn variant="outlined" v-bind="aProps">
-                    {{ source.getKey() }}:<div :style="'background:' + props.cache.display" class="preview"></div>
+                    {{ source.getDisplayTitle() }}:<div :style="'background:' + props.cache.display" class="preview"></div>
                 </v-btn>
             </template>
     

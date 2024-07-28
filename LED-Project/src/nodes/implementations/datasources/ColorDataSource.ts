@@ -4,7 +4,8 @@ import { clamp } from "@utils/MathUtils";
 import { HSV2HEX } from "@webapp/utils/color/ColorConverter";
 
 export type ColorDataConfig = {
-    info: string | undefined
+    info: string | undefined,
+    displayTitle: string
 }
 
 /**
@@ -93,7 +94,8 @@ export function isVariableColor(value: any): value is VariableColorType {
 }
 
 const Defaults: Required<ColorDataConfig> = {
-    info: undefined
+    info: undefined,
+    displayTitle: undefined as any
 }
 
 export class ColorDataSource implements IDataSource<VariableColorType, HSVColor, CachedColor> {
@@ -109,6 +111,10 @@ export class ColorDataSource implements IDataSource<VariableColorType, HSVColor,
         this.config = {...Defaults, ...config};
         this.name = name;
         this.defaultValue = defaultValue;
+    }
+
+    getDisplayTitle(): string {
+        return this.config.displayTitle;
     }
 
     calculateCache(vars: { [key: string]: number; }, value: VariableColorType): CachedColor {

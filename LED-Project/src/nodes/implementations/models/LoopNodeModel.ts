@@ -8,6 +8,7 @@ export class LoopNodeModel implements INodeModel {
 
     // Index of the field
     private repeatField = new NumberDataSource("repeats", "2", {
+        displayTitle: $t('models_loop_field_repeats_title'),
         info: $t('models_loop_field_repeats_info'),
         type: "int",
         min: 0

@@ -20,7 +20,8 @@ export function areColorRangesEqual(first: ColorRangeType, second: ColorRangeTyp
 }
 
 export type ColorDataConfig = {
-    info: string | undefined
+    info: string | undefined,
+    displayTitle: string
 }
 
 export type ColorRangeType = {
@@ -33,7 +34,8 @@ export type HSVColorRange = {
 }
 
 const Defaults: Required<ColorDataConfig> = {
-    info: undefined
+    info: undefined,
+    displayTitle: undefined as any
 }
 
 
@@ -63,6 +65,10 @@ export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColo
             first: defaultFirstValue,
             second: defaultSecondValue
         };
+    }
+
+    getDisplayTitle(): string {
+        return this.config.displayTitle;
     }
 
     calculateCache(vars: { [key: string]: number; }, value: ColorRangeType): CachedRangeColor {

@@ -10,6 +10,7 @@ export class SetLedNodeModel implements INodeModel {
 
     // Index of the field
     private idxField = new NumberDataSource("idx", "0", {
+        displayTitle: $t('models_color_field_color_index_title'),
         info: $t('models_color_field_color_index_info'),
         type: "int",
         min: 0
@@ -17,6 +18,7 @@ export class SetLedNodeModel implements INodeModel {
 
     // Field to select the color
     private colorField = new ColorDataSource("clr", [1,1,1], {
+        displayTitle: $t('models_color_field_color_title'),
         info: $t('models_color_field_color_color')
     });
 

@@ -3,7 +3,7 @@
         <v-menu :close-on-content-click="false" class="">
             <template v-slot:activator="{ props }">
                 <v-btn variant="outlined" v-bind="props">
-                    {{ source.getKey() }}:
+                    {{ source.getDisplayTitle() }}:
                     <svg width="80" height="30" class="preview">
                         <linearGradient x1="0%" y1="60%" x2="100%" y2="40%" :id="gradiant_id">
                             <stop offset="0%" :stop-color="previewFirst"></stop>

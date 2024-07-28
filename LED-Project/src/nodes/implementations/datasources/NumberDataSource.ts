@@ -9,7 +9,9 @@ export type NumberDataConfig = {
     // Maximum value allowed (optional)
     max?: number,
 
-    info: string | undefined
+    info: string | undefined,
+
+    displayTitle: string
 }
 
 // Default configuration values
@@ -19,7 +21,8 @@ const Defaults : Required<NumberDataConfig> = {
     max: undefined as any,
     min: undefined as any,
 
-    type: "float"
+    type: "float",
+    displayTitle: undefined as any
 }
 
 export class NumberDataSource implements IDataSource<string, number, undefined> {
@@ -35,6 +38,10 @@ export class NumberDataSource implements IDataSource<string, number, undefined> 
         this.config = {...Defaults, ...config};
         this.name = name;
         this.defaultValue = defaultValue;
+    }
+
+    getDisplayTitle(): string {
+        return this.config.displayTitle;
     }
 
     getDefaultValue(): string {

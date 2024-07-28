@@ -1,6 +1,6 @@
 models_delay_block = Warte %1 ms
 blockly_category_control = Kontrolle
-blockly_category_led = LED
+blockly_category_led = Led
 colorpicker_actions_randomize = Randomisieren
 colorpicker_actions_swapColors = Farben tauschen
 colorpicker_actions_swapHue = Farbton tauschen
@@ -23,7 +23,7 @@ globalsettings_serial_usb_add = Hinzufügen
 globalsettings_serial_usb_restore_default = Standardeinstellungen wiederherstellen
 globalsettings_serial_usb_vendorid = Hersteller-ID
 globalsettings_serial_usb_vendorname = Name des Anbieters (nur Info)
-hooks_edit_field =
+hooks_edit_field = .label = Bearbeiten ({ $hook })
     .label = Bearbeiten ({ $hook })
 hooks_preview = Vorschau ({ $hook })
 hooks_title = Hook ({ $hook })
@@ -43,7 +43,7 @@ navbar_copycode = Code kopieren
 navbar_settings = Einstellungen
 offblock_title = Blockeinstellungen
 popup_codecopied = Code kopiert
-projectsettings_blueprint =
+projectsettings_blueprint = .label = Blaupause
     .label = Blaupause
 projectsettings_category_blueprint = Entwurf
 projectsettings_category_general = Allgemein
@@ -61,7 +61,7 @@ serial_action_connect = Verbinden!
 serial_codecopyerror = Der Skriptcode konnte nicht kopiert werden. Bitte kopiere ihn manuell: { $script }
 serial_copyscript = Skript kopieren
 serial_generallerror = Fehler mit der seriellen Schnittstelle { $error }
-serial_not_supported =
+serial_not_supported = .title = Problem mit der seriellen API
     .title = Problem mit der seriellen API
     .subtitle = Die serielle API wird von deinem Browser nicht unterstützt.
 serial_not_supported_text =
@@ -77,7 +77,7 @@ serial_settings_ledpin = LED-Daten-Pin
 serial_status_closed = Schließen
 serial_status_connected = In Verbindung gebracht
 serial_status_connecting = Port öffnen
-serial_supported =
+serial_supported = .title = Serielle Vorschau
     .title = Serielle Vorschau
     .subtitle = Bestaune deine Animtionen auf echter Hardware
 storage_error_failedtoload = Projekt konnte nicht geladen werden...\n Bitte überprüfe die Browser-Konsole auf weitere Informationen zu dem Fehler.
@@ -91,11 +91,11 @@ tab_file = Datei
 tab_view = Ansicht
 tab_view_switch = Ändern
 taskbar_storage_deletebrowser = Löschen (Browser)
-taskbar_storage_openbrowser = Browser öffnen)
+taskbar_storage_openbrowser = Öffnen (Browser)
 taskbar_storage_openupload_text = Öffnen (Datei hochladen)
 taskbar_storage_openupload_title = Lade eine Datei auf diese Webseite hoch
 taskbar_storage_saveasbrowser = Speichern unter... (Browser)
-taskbar_storage_savebrowser = Sicherer Browser)
+taskbar_storage_savebrowser = Speichern (Browser)
 taskbar_storage_savedownload_text = Speichern (Datei herunterladen)
 taskbar_storage_savedownload_title = Lade die Projektdatei auf dein Laufwerk herunter
 template_name = { $template } von { $author }
@@ -107,11 +107,11 @@ variables_error_invalid = „{ $name }“ ist ein ungültiger Name.
 variables_error_invalidValue = „{ $name }“ hat einen ungültigen Wert.
 variables_error_reserved = „{ $name }“ ist eine reservierte Variable.
 variables_system_amount_info = Enthält die Anzahl der in den Einstellungen festgelegten LEDs.
-variables_view_field_delete =
+variables_view_field_delete = .title = Variable löschen
     .title = Variable löschen
-variables_view_field_value =
+variables_view_field_value = .label = Wert
     .label = Wert
-variables_view_field_variable =
+variables_view_field_variable = .label = Variable
     .label = Variable
 variables_view_name = Name
 variables_view_value = Wert
@@ -141,3 +141,7 @@ globalsettings_general_isDeveloper-tooltip = Dies zeigt zusätzliche Optionen, d
 globalsettings_general_language-info = Sprachänderungen werden erst nach einem Neustart wirksam.
 tab_developer = Entwickler
 tab_developer_runTests = Tests durchführen
+models_color_field_color_index_title = Index (Start)
+models_color_field_color_title = Farbe
+models_delay_field_delay_title = Verzögerung
+models_loop_field_repeats_title = Wiederholungen

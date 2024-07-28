@@ -8,6 +8,7 @@ export class DelayNodeModel implements INodeModel {
 
     // Field for the delay
     private delayField = new NumberDataSource("delay", "100", {
+        displayTitle: $t('models_delay_field_delay_title'),
         info: $t('models_delay_field_delay_info'),
         type: "int",
         min: 10

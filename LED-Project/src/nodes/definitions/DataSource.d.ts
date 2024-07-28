@@ -8,6 +8,9 @@ export interface IDataSource<Type, ResolvedType, Cache = any> {
      */
     resolve(value: Type, variables: {[name: string]: number}): ResolvedType;
 
+    // String that has the name or title of this datasource
+    getDisplayTitle() : string;
+
     /**
      * @returns a string which will be used as a key to store values later on.
      * Meaning that this is not a key/name for the whole class but for a single instance.

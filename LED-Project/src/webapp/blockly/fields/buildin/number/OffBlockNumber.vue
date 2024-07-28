@@ -1,5 +1,5 @@
 <template>
-    <v-text-field density="compact" hide-details :label="source.getKey()" v-model="props.blockData[props.source.getKey()]">
+    <v-text-field density="compact" hide-details :label="source.getDisplayTitle()" v-model="props.blockData[props.source.getKey()]">
         <template v-slot:append>
             <v-icon v-tooltip:left="source.getInformation()" style="opacity: 1;" v-bind="props" icon="mdi-information-outline"></v-icon>
         </template>
