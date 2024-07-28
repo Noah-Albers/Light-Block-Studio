@@ -135,3 +135,9 @@ visualizer_previewselector_upload_import_error =
     }
 blockly_rootblock_loop = Führe dauerhaft aus
 blockly_rootblock_setup = Führe einmal aus
+developer_runtests_info = Die Tests wurden durchgeführt. Bitte überprüfe die Browserkonsole.
+globalsettings_general_isDeveloper = Aktivieren den Entwicklermodus
+globalsettings_general_isDeveloper-tooltip = Dies zeigt zusätzliche Optionen, die bei der Entwicklung der Anwendung nützlich sind.
+globalsettings_general_language-info = Sprachänderungen werden erst nach einem Neustart wirksam.
+tab_developer = Entwickler
+tab_developer_runTests = Tests durchführen
