@@ -4,10 +4,8 @@ models_loop_field_repeats_info = How often the blocks shall be run.
 models_loop_block = Repeat %1 times
 models_color_block = Color %1 in %2
 models_color_field_color_color = what color should be set
-models_color_field_color_index = undefined
 models_color_field_color_index_info = Index of the led. Starting from 0 (first).
 storage_error_notsupported = Localstorage is not enabled in this browser
-taskbar_storage_openupload = [object Object]
 taskbar_storage_openupload_text = Open (Upload File)
 taskbar_storage_openupload_title = Upload a file into this webpage
 taskbar_storage_savedownload_text = Save (Download File)
@@ -21,7 +19,7 @@ storage_prompt_alreadyexists = A project named { $name } already exists. Do you 
 storage_error_nofound_text = No projects found...
 storage_error_nofound_title = No projects found
 storage_prompt_reallydelete = Do you really want to delete the Project '{ $name }'?
-storage_error_failedtoload = Failed to load Project...{'\n'}Please check the console for more information on the error.
+storage_error_failedtoload = Failed to load Project...\n Please check the console for more information on the error.
 import_prompt_reallywant = Do you really want to open the project? Your current project will be closed.
 import_prompt_reallywant_yes = Open
 import_prompt_reallywant_no = Abort
@@ -39,7 +37,7 @@ navbar_settings = Settings
 navbar_copycode = Copy Code
 offblock_title = Block Settings
 serial_generallerror = Error with the serial port { $error }
-serial_not_supported = .title = Serial API Problem
+serial_not_supported =
     .title = Serial API Problem
     .subtitle = Serial API is not supported in your browser
 serial_not_supported_text =
@@ -50,7 +48,7 @@ serial_not_supported_text =
     If you still want to view your animations on real hardware, please use a <a target="_blank"
         href="https://caniuse.com/web-serial">browser</a> that supports the serial api
     or use the <a href="TODO" target="_blank">electron version</a> of this application.
-serial_supported = .title = Serial Preview
+serial_supported =
     .title = Serial Preview
     .subtitle = View your animation on real hardware
 serial_status_connected = Connected
@@ -60,7 +58,7 @@ serial_settings_ledamount = LED-Amount
 serial_copyscript = Copy Script
 serial_action_connect = Connect!
 serial_status_connecting = Opening port
-serial_codecopyerror = Failed to copy the script code, please copy it manually:{ "\n\n" } { $script }
+serial_codecopyerror = Failed to copy the script code, please copy it manually: { $script }
 globalsettings_general_specific_config = Specify config for selected?
 globalsettings_general_specific_config-tooltip = If a block is selected, only the config for this block shall be build.
 globalsettings_general_language = Language
@@ -75,10 +73,10 @@ globalsettings_serial_usb_vendorname = Vendor Name (Info Only)
 globalsettings_serial_usb_vendorid = Vendor-ID
 globalsettings_serial_usb_add = Add
 hooks_title = Hook ({ $hook })
-hooks_edit_field = .label = Edit ({ $hook })
+hooks_edit_field =
     .label = Edit ({ $hook })
 hooks_preview = Preview ({ $hook })
-projectsettings_blueprint = .label = Blueprint
+projectsettings_blueprint =
     .label = Blueprint
 projectsettings_global_endLedPush = Add Led Push on Loop end
 projectsettings_global_endLedPush-tooltip = If a final pushLed's call shall be ended at the end of the loop code
@@ -101,11 +99,11 @@ tab_view = View
 tab_view_switch = Switch
 variables_view_name = Name
 variables_view_value = Value
-variables_view_field_variable = .label = Variable
+variables_view_field_variable =
     .label = Variable
-variables_view_field_value = .label = Value
+variables_view_field_value =
     .label = Value
-variables_view_field_delete = .title = Delete the variable
+variables_view_field_delete =
     .title = Delete the variable
 variables_error_invalidValue = '{ $name }' has an invalid value.
 variables_error_duplicated = '{ $name }' is duplicated.
@@ -118,7 +116,7 @@ visualizer_previewselector_upload-tooltip = Upload a custom preview!
 visualizer_previewselector_upload = Upload
 visualizer_previewselector_save-tooltip = Save and continue!
 visualizer_previewselector_save = Save
-visualizer_previewselector_customPreview = Custom # { $index }
+visualizer_previewselector_customPreview = Custom #{ $index }
 visualizer_previewselector_icon_buildin = BuildIn
 visualizer_previewselector_icon_delete = Delete
 visualizer_previewselector_upload_import_error =

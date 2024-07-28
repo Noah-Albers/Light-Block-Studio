@@ -9,6 +9,7 @@ import { ToolboxDefinition, ToolboxItemInfo } from "blockly/core/utils/toolbox";
 import { getBlocklyFields2Register } from "./fields/registry/FieldRegistry";
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { $t } from "@localisation/Fluent";
+import { useSettingsStore } from "@webapp/stores/SettingsStore";
 
 // Names of custom element required for the blockly-blocks
 export const DATA_OBJECT_NAME = "dataObj";
@@ -154,6 +155,20 @@ function registerOtherBlocks() {
     };
 }
 
+// Registers the language to use for blockly
+async function registerBlocklyLanguage(){
+
+    switch(useSettingsStore().language){
+        // English is default, therefor nothing is required
+        case "en": default: return;
+        case "de":
+            const locale = (await import("blockly/msg/de")).default;
+            Blockly.setLocale(locale);
+            break;
+    }
+
+}
+
 // Registers the theme used by the blockly workspace
 function registerTheme() {
     Blockly.Theme.defineTheme('project_blockly_theme', {
@@ -264,6 +279,8 @@ export function createToolbox(): ToolboxDefinition {
  */
 export function registerBlockly() {
     registerTheme();
+
+    registerBlocklyLanguage();
 
     registerOtherBlocks();
 

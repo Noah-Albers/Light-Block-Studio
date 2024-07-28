@@ -26,7 +26,7 @@ export const useSettingsStore = defineStore('settings', () => {
     //#region Language
 
     // Which language is selected
-    const language = ref("en" as any as SupportedLanguages);
+    const language = ref("de" as any as SupportedLanguages);
     //#endregion
 
     //#region Settings
