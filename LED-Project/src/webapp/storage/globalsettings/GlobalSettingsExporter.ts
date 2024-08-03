@@ -26,7 +26,7 @@ function getPlainSettings() : ExportedGlobalPlainSettings{
 
 // Exports the global config as a json-serializable object.
 // Can be loaded again using the global settings importer
-export function exportProject(): ExportedGlobalSettingsType {
+export function exportGlobalSettings(): ExportedGlobalSettingsType {
     return {
         plainSettings: getPlainSettings()
 

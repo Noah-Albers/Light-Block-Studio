@@ -24,6 +24,14 @@ export function importGlobalsettings(raw: unknown) {
 
     const store = useSettingsStore();
 
+    if(typeof raw === "string"){
+        try{
+            raw = JSON.parse(raw);
+        }catch(err){
+            console.error("Failed to load global settings:",err);
+        }
+    }
+
     // Tries to import the project
     var res = GlobalSettingsSchema.safeParse(raw);
     if(!res.success){

@@ -20,38 +20,49 @@ import hljs from 'highlight.js/lib/core';
 import arduino from 'highlight.js/lib/languages/arduino';
 
 import "highlight.js/scss/atom-one-dark.scss"
+import { setupGlobalSettingsManager } from '@webapp/storage/globalsettings/GlobalSettingsManager'
 
-// Registers arduino to highlight js for displaying the generated code
-hljs.registerLanguage('arduino', arduino);
+function setupApplication(){
+  
+  // Registers arduino to highlight js for displaying the generated code
+  hljs.registerLanguage('arduino', arduino);
 
-// Prepares the application
-const app = (
-  createApp(App)
-    .use(createVuetify({
-      theme: {
-        themes: {
-          light: {
-            colors: {
-              primary: '#1867C0',
-              secondary: '#5CBBF6',
+  // Creates the vue application
+  let app = (
+    createApp(App)
+      .component("v-browser", VueBrowser)
+      .component("v-desktop", VueDesktop)
+      .use(createVuetify({
+        theme: {
+          themes: {
+            light: {
+              colors: {
+                primary: '#1867C0',
+                secondary: '#5CBBF6',
+              },
             },
           },
         },
-      },
-    }))
-    // Note: Pinia must be registered before fluent tries to read the language
-    .use(createPinia())
-    // TODO: Load global settings here
-    .use(setupFluent(useSettingsStore().language))
-    .component("v-browser", VueBrowser)
-    .component("v-desktop", VueDesktop)
-);
+      }))
+      // Note: Pinia must be registered before fluent tries to read the language
+      .use(createPinia())
+    )
 
-// Creates the registery
-setupRegistery();
+    // Loads the global settings AFTER pinia is registered
+    setupGlobalSettingsManager();
+    
+    // Continue with the fue application and adds fluent for language support
+    app = app.use(setupFluent(useSettingsStore().language));
 
-// Setups the blockly workspace
-registerBlockly();
+    // Creates the registery
+    setupRegistery();
+    
+    // Setups the blockly workspace
+    registerBlockly();
 
-// Mounts the application
-app.mount('#app');
+    // Mounts the application
+    app.mount("#app");
+}
+
+
+setupApplication();

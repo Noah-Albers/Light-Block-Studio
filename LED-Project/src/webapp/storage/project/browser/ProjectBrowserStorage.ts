@@ -1,9 +1,10 @@
 import { C } from "@webapp/utils/html/HTMLBuilder";
 import { Button, Menu, MenuItem } from "@webapp/utils/taskbar/TaskBar";
-import { importProject } from "../project/ProjectImporter";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
-import { exportProject } from "../project/ProjectExporter";
 import { $t } from "@localisation/Fluent";
+import { exportProject } from "../ProjectExporter";
+import { importProject } from "../ProjectImporter";
+import { isLocalstorageSupported } from "@utils/Localstorage";
 
 /**
  * Creates the menu items to use the browser for storing projects and settings
@@ -77,10 +78,6 @@ export function createBrowserStorageMenuItems(): MenuItem[] {
 
         "seperator",
         menuDeleteFromBrowser
-
-        // "seperator"
-        // Examples
-        // Templates
     ];
 }
 
@@ -109,10 +106,6 @@ function getProjectSaveAsName(){
 //#region Localstorage
 
 const PROJECTS_PREFIX = "proj_";
-
-function isLocalstorageSupported(){
-    return typeof(Storage) !== "undefined" && typeof(localStorage) !== "undefined";
-}
 
 // Creates a menu with the localstorage projects
 // If isOpen is true, clicking a project will open it

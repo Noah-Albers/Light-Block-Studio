@@ -45,9 +45,9 @@ offblock_title = Blockeinstellungen
 popup_codecopied = Code kopiert
 projectsettings_blueprint = .label = Blaupause
     .label = Blaupause
-projectsettings_category_blueprint = Entwurf
+projectsettings_category_blueprint = Blaupause
 projectsettings_category_general = Allgemein
-projectsettings_category_hooks = Haken
+projectsettings_category_hooks = Hooks
 projectsettings_global_amount = Pixelmenge
 projectsettings_global_amount-tooltip = Wie viele Pixel sind mit dem LED-Stripe verbunden?
 projectsettings_global_endLedPush = Fügt einen LED-Push am Schleifenende hinzu

@@ -1,7 +1,12 @@
 <template>
-    <div class="d-flex flex-row" style="height: 100%;">
+    <v-browser v-if="!isLocalstorageSupported()">
+        <!--TODO: Lang once the desktop stuff has been added as well-->
+        <v-alert density="compact" variant="tonal" class="ma-3" type="warning" text="Your browser doesn't support localstorage. Please be aware that your Settings wont be saved."></v-alert>
+    </v-browser>
+    <div class="d-flex flex-row">
         <v-tabs v-model="tab" color="primary" direction="vertical">
-            <v-tab prepend-icon="mdi-application-cog-outline" :text="$t('globalsettings_category_general')" value="general"></v-tab>
+            <v-tab prepend-icon="mdi-application-cog-outline" :text="$t('globalsettings_category_general')"
+                value="general"></v-tab>
             <v-tab prepend-icon="mdi-usb" :text="$t('globalsettings_category_serial')" value="serial"></v-tab>
 
         </v-tabs>
@@ -14,6 +19,7 @@
                 <TheSerialSettings />
             </v-window-item>
         </v-window>
+        <!--TODO: Show info if browser storage is not supported that settings will not be saved-->
     </div>
 </template>
 
@@ -23,6 +29,8 @@
     import TheSerialSettings from "./TheSerialSettings.vue"
     import TheGeneralSettings from './TheGeneralSettings.vue';
 
+    import { isLocalstorageSupported } from "@utils/Localstorage";
+
     const tab = ref();
 
-</script>
+    </script>
