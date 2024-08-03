@@ -6,7 +6,7 @@
     </v-app-bar>
 
     <!-- Snackbar to display information-->
-    <v-snackbar :timeout="popupOptions!.timeout || 800" v-model="popupOpen">
+    <v-snackbar :color="popupOptions.type || 'info'" :timeout="popupOptions!.timeout || 800" v-model="popupOpen">
       {{ popupOptions?.text }}
     </v-snackbar>
 

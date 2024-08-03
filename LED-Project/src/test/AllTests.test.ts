@@ -10,6 +10,10 @@ export const ALL_TESTS = [
     runTest_registered_procedures
 ]
 
+/**
+ * Runs all tests and
+ * @returns how many error occurred
+ */
 export function runAllTests(){
 
     const logInfo = (msg: string)=>console.log("%c"+msg, "color: #C9B79C"); 
@@ -51,6 +55,5 @@ export function runAllTests(){
 
     logInfo("================Result================");
 
-
-
+    return errors.length;
 }

@@ -24,7 +24,10 @@ export type EventArgsPopup = {
     // How long to display the popup
     timeout?: number,
     // Text to display inside the popup
-    text?: string
+    text?: string,
+    
+    // Which type for notification shall be shown
+    type?: "info" | "warning" | "error" | "success"
 }
 
 export type EventArgsBlocklyClrReqAttach = {

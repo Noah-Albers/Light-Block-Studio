@@ -6,14 +6,15 @@ import { Menu } from "@webapp/utils/taskbar/TaskBar";
 
 // Event: When the run tests button is clicked
 function onRuntestsClicked(){
+    
+    const errorAmount = runAllTests();
 
     // Shows a popup as an info
     SignalDispatcher.emit(Signals.DISPLAY_POPUP, {
-        text: $t('developer_runtests_info'),
-        timeout: 5000
+        text: errorAmount <= 0 ? $t('developer_runtests_info_success') : $t('developer_runtests_info_error', { errors: errorAmount }),
+        timeout: 5000,
+        type: errorAmount <= 0 ? "success" : "warning"
     })
-
-    runAllTests();
 }
 
 export const createDeveloperTab: ()=>Menu = ()=>({

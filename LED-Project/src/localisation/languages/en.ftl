@@ -140,8 +140,13 @@ globalsettings_general_isDeveloper-tooltip = This shows some extra options which
 tab_developer = Developer
 globalsettings_general_language-info = Language changes only become effective after a restart.
 tab_developer_runTests = Run tests
-developer_runtests_info = Test have been run, please check the Browser console
 models_loop_field_repeats_title = Repeats
 models_delay_field_delay_title = Delay
 models_color_field_color_index_title = Index (Start)
 models_color_field_color_title = Color
+developer_runtests_info_success = All tests have finished successfully.
+developer_runtests_info_error =
+    { $errors ->
+        [one] One test has
+        *[other] { $errors } tests have
+    } failed, please check the Browser console.

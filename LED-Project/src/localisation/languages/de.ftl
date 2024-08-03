@@ -135,7 +135,7 @@ visualizer_previewselector_upload_import_error =
     }
 blockly_rootblock_loop = Führe dauerhaft aus
 blockly_rootblock_setup = Führe einmal aus
-developer_runtests_info = Die Tests wurden durchgeführt. Bitte überprüfe die Browserkonsole.
+developer_runtests_info =
 globalsettings_general_isDeveloper = Aktivieren den Entwicklermodus
 globalsettings_general_isDeveloper-tooltip = Dies zeigt zusätzliche Optionen, die bei der Entwicklung der Anwendung nützlich sind.
 globalsettings_general_language-info = Sprachänderungen werden erst nach einem Neustart wirksam.
@@ -145,3 +145,9 @@ models_color_field_color_index_title = Index (Start)
 models_color_field_color_title = Farbe
 models_delay_field_delay_title = Verzögerung
 models_loop_field_repeats_title = Wiederholungen
+developer_runtests_info_error =
+    { $errors ->
+        [one] Ein Test ist
+        *[other] { $errors } Tests sind
+    } fehlgeschlagen. Bitte überprüfe die Browserkonsole.
+developer_runtests_info_success = Alle Tests wurden erfolgreich durchgeführt.
