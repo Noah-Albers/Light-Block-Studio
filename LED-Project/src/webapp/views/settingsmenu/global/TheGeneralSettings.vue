@@ -9,8 +9,8 @@
         chips
         v-model="store.language"
         item-title="name"
-        item-value="value"
-        :items="[{value: 'de', name: 'German'}, {value:'en', name: 'English'}]"
+        item-value="key"
+        :items="SupportedLanguages"
         variant="outlined"></v-select>
         <v-alert
             icon="mdi-info"
@@ -28,6 +28,8 @@
     lang="ts">
 
     import { useSettingsStore } from '@webapp/stores/SettingsStore';
+    import { computed } from "vue";
+    import { $t, SupportedLanguages } from "@localisation/Fluent"
 
     const store = useSettingsStore();
 

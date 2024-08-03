@@ -5,10 +5,18 @@ import enFile from "@localisation/languages/en.ftl?raw";
 import deFile from "@localisation/languages/de.ftl?raw";
 import { createFluentVue, FluentVue } from 'fluent-vue';
 
-export type SupportedLanguages = "en" | "de";
+export const SupportedLanguages = [{
+    key: "en",
+    name: "English"
+}, {
+    key: "de",
+    name: "Deutsch"
+}] as const;
+
+export type SupportedLanguagesType = typeof SupportedLanguages[number]["key"];
 
 // Creates the languages and loads them
-const loadLanguage = ((lang: SupportedLanguages)=> {
+const loadLanguage = ((lang: SupportedLanguagesType)=> {
 
     // Loads english in any case as a backup
     const en = new FluentBundle("en");
@@ -31,7 +39,7 @@ export let Fluent: FluentVue = undefined as any;
 export let $t: (key: string, value?: Record<string, FluentVariable>) => string = undefined as any;
 export let $ta: (key: string, value?: Record<string, FluentVariable>) => Record<string, string> = undefined as any;
 
-export function setupFluent(usedLanguage: SupportedLanguages){
+export function setupFluent(usedLanguage: SupportedLanguagesType){
     Fluent = createFluentVue({
         bundles: loadLanguage(usedLanguage)
     });

@@ -1,20 +1,19 @@
-import { $t, SupportedLanguages } from '@localisation/Fluent';
+import { $t, SupportedLanguagesType } from '@localisation/Fluent';
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue';
 
 // Note: The function to the translation key is so that it isn't initialized until needed (Prevents wrong and invalid translations)
-type View = { icon: string, name: ()=>string };
-type Views = keyof typeof MainViews
+export type View = keyof typeof MainViews
 
-export const ViewVisualizer = "visualizer";
-export const ViewCode = "code";
-export const ViewSerial = "serial";
+export const ViewVisualizer = "visualizer" as const;
+export const ViewCode = "code" as const;
+export const ViewSerial = "serial" as const;
 
-export const MainViews: {[key: string]: View} = {
+export const MainViews = {
     [ViewCode]: { icon: "mdi-code-tags", name: ()=>$t('view_code_name') },
     [ViewVisualizer]: { icon: "mdi-play-box-outline", name: ()=>$t("view_visualizer_name") },
     [ViewSerial]: { icon: "mdi-usb", name: ()=>$t('view_serial_name') }
-}
+} as const;
 
 export const DefaultVendors: [string, number][] = [
     ["Arduino", 0x2341],
@@ -23,25 +22,26 @@ export const DefaultVendors: [string, number][] = [
 
 export const useSettingsStore = defineStore('settings', () => {
 
-    //#region Language
-
-    // Which language is selected
-    const language = ref("de" as any as SupportedLanguages);
-    //#endregion
+    // Prevents duplicated default assignments when the restoreDefaults function is called anyway every time the store is initialized
+    const __setRef = <T>() => ref(undefined as T);
+    const __set = <T>() => undefined as T;
 
     //#region Settings
 
+    // Which language is selected
+    const language = __setRef<SupportedLanguagesType>();
+
     // If the developermode is enabled
-    // TODO: Change when fully packaged
-    const isDeveloper = ref(true);
+    const isDeveloper = __setRef<boolean>();
 
     // Which view is selected
-    const mainView = ref(ViewVisualizer as Views);
+    const mainView = __setRef<View>();
 
     // Settings for the serial preview
+    // TODO: Maybe remove in the future
     const serialPreview = reactive({
-        pin: 0 as number,
-        ledAmount: 16 as number,
+        pin: __set<number>(),
+        ledAmount: __set<number>(),
     });
 
     // Settings for whitelisting USB-Vendors
@@ -49,11 +49,11 @@ export const useSettingsStore = defineStore('settings', () => {
         // If the whitelist should be enabled
         enabled: true as boolean,
         // Which vendors are whitelisted
-        whitelist: DefaultVendors.map(itm => [itm[0], itm[1]]) as [string/*Name*/, number/*VendorID*/][]
+        whitelist: __set<[string/*Name*/, number/*VendorID*/][]>()
     });
 
     const buildConfig = reactive({
-        enablePreview: false as boolean
+        enablePreview: __set<boolean>()
     });
 
     //#endregion
@@ -82,9 +82,34 @@ export const useSettingsStore = defineStore('settings', () => {
 
     //#endregion
 
+    //#region Utilities
+
+    // Restores the default values
+    function restoreDefaults(){
+        language.value = "en";
+
+        // TODO: Change when fully packaged or change to environment variable or smth.
+        isDeveloper.value = false;
+
+        mainView.value = ViewVisualizer;
+
+        serialPreview.pin = 2;
+        serialPreview.ledAmount = 16;
+
+        whitelistUsbVendors.enabled = true;
+        whitelistUsbVendors.whitelist = DefaultVendors.map(itm => [itm[0], itm[1]]);
+
+        buildConfig.enablePreview = false;
+    }
+
+    //#endregion
+
+    // Ensures the default values are set, ah, well by default
+    restoreDefaults();
+
     return {
         mainView, serialPreview, whitelistUsbVendors, buildConfig, language, isDeveloper,
 
-        restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist
+        restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist, restoreDefaults
     };
 });

@@ -41,6 +41,7 @@ const app = (
     }))
     // Note: Pinia must be registered before fluent tries to read the language
     .use(createPinia())
+    // TODO: Load global settings here
     .use(setupFluent(useSettingsStore().language))
     .component("v-browser", VueBrowser)
     .component("v-desktop", VueDesktop)

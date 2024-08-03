@@ -30,7 +30,7 @@ const NodeStackSchema = z.object({
 
 //#region Schemas
 
-export const InternalSchemas = {
+const InternalSchemas = {
 
     WorkspaceSchema: z.object({
         loop: NodeStackSchema,
