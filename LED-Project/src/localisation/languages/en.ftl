@@ -47,7 +47,7 @@ serial_not_supported_text =
     <br />
     If you still want to view your animations on real hardware, please use a <a target="_blank"
         href="https://caniuse.com/web-serial">browser</a> that supports the serial api
-    or use the <a href="TODO" target="_blank">electron version</a> of this application.
+    or use the <a href="TODO" target="_blank">desktop version</a> of this application.
 serial_supported = .title = Serial Preview
     .title = Serial Preview
     .subtitle = View your animation on real hardware

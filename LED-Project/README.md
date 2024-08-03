@@ -1,44 +1,8 @@
-# default
 
-## Project setup
+This file will be added at some point and up until then be used for notes.
 
-```
-# yarn
-yarn
+# Why electron over tauri?
+Because electron uses Chromium on all Platforms while Tauri uses WebKit on Linux and MacOS.
+And because at the time of writing this WebKit doesn't support Webserial, we would have to write some native integration code for the serial communication when previewing animations on hardware devices.
 
-# npm
-npm install
-
-# pnpm
-pnpm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-# yarn
-yarn dev
-
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-```
-
-### Compiles and minifies for production
-
-```
-# yarn
-yarn build
-
-# npm
-npm run build
-
-# pnpm
-pnpm build
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://vitejs.dev/config/).
+Maybe at some later point this project will start to use Tauri if they ever add an option to use chromium on all devices or if WebKit at some point starts to support Web-Serial.

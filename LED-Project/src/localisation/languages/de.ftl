@@ -71,7 +71,7 @@ serial_not_supported_text =
     <br />
     Wenn du jedoch deine Animationen trotzdem auf echter Hardware anschauen möchtest, nutze bitte einen <a target="_blank"
     href="https://caniuse.com/web-serial">Browser</a> der die serielle API unterstützt oder benutzte die
-    <a href="TODO" target="_blank">Electron Version</a> dieser Anwendung.
+    <a href="TODO" target="_blank">Desktop Version</a> dieser Anwendung.
 serial_settings_ledamount = LED-Anzahl
 serial_settings_ledpin = LED-Daten-Pin
 serial_status_closed = Schließen
