@@ -1,10 +1,9 @@
 {
-  "name": "LED-Project",
+  "name": "led-project-application",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "buildWebapp": "vue-tsc --noEmit && vite build"
   },
   "dependencies": {
     "@fluent/bundle": "^0.18.0",

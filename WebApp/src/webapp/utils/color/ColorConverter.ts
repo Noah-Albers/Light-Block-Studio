@@ -49,7 +49,7 @@ export function HEX2RGB(color: string) : {
  * Modified version of https://stackoverflow.com/a/8023734
  */
 export function RGB2HSV(r: number, g: number, b: number) {
-    let rabs, gabs, babs, rr, gg, bb, h, s, v, diff, diffc;
+    let rabs:number, gabs:number, babs:number, rr:number, gg:number, bb:number, h:number, s:number, v:number, diff:number, diffc:(c: number)=>number;
     rabs = r / 255;
     gabs = g / 255;
     babs = b / 255;

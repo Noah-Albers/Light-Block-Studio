@@ -18,6 +18,6 @@ const TheTaskbar = computed(()=>[
     createFileTab(),
     createViewTab(),
     settings.isDeveloper ? createDeveloperTab() : undefined
-].filter(x=>x!==undefined))
+].filter(x=>x!==undefined) as Menu[])
 
 </script>

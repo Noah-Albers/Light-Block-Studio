@@ -15,7 +15,18 @@ function testCodeConstructor(presumedCodeConstructor: ICodeConstructor<any>, pro
     let cppFnManager = new CppFnManager(varSup);
     let settings: GenerationSettings = {
         template: "",
-        variables: {}
+        variables: {},
+        hooks: {
+            loop(code, count) { return code },
+            millis(){ return "millis()" },
+            pushLeds() { return "pushLeds()" },
+            setHSV(idx, h, s, v) { return `leds[${idx}] = CHSV(${h},${s},${v})` },
+            setup(code, count) { return code },
+            sleep(time) { return `delay(${time})` },
+        },
+        loopPushLeds: true,
+        reservedKeywords: [],
+        trimEmptyLines: false
     };
 
     // Tries to register functions

@@ -1,0 +1,11 @@
+{
+  "name": "led-project-distibution",
+  "version": "1.0.0",
+  "description": "this npm folder is for the finalized and packaged versions of the webapp to be distributed through electron",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

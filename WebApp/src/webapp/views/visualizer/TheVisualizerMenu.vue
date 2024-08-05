@@ -20,7 +20,7 @@
                                 {{ preview.key }}
                             </template>
                             <template v-slot:title v-else>
-                                {{ $t('visualizer_previewselector_customPreview', { index: preview.key + 1 }) }}
+                                {{ $t('visualizer_previewselector_customPreview', { index: (preview.key as number) + 1 }) }}
                             </template>
                             <template v-if="preview.isBuildin">
                                 <v-icon class="mr-4" v-tooltip="$t('visualizer_previewselector_icon_buildin')" color="#ddd" icon="mdi-wrench" />

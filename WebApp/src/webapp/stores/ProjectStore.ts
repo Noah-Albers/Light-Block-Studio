@@ -173,8 +173,9 @@ export const useProjectStore = defineStore('project', () => {
 
         for (let rawKey in data.hooks) {
             let key = rawKey as keyof typeof data.hooks;
-            if (data.hooks[key] === undefined) continue;
-            hooks.value[key] = data.hooks[key];
+            let value = data.hooks[key];
+            if (value === undefined) continue;
+            hooks.value[key] = value;
         }
 
         amount.value = data.amount;

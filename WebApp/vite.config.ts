@@ -17,6 +17,9 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
+  build: {
+    outDir: "../Distribute/webapp/"
+  },
   define: { 'process.env': {} },
   resolve: {
     alias: {

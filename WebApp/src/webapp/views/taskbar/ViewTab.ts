@@ -1,5 +1,5 @@
 import { $t } from "@localisation/Fluent";
-import { MainViews, useSettingsStore } from "@webapp/stores/SettingsStore";
+import { MainViews, useSettingsStore, View } from "@webapp/stores/SettingsStore";
 import { Button, Menu } from "@webapp/utils/taskbar/TaskBar";
 
 export const createViewTab: ()=>Menu = ()=>({
@@ -7,9 +7,9 @@ export const createViewTab: ()=>Menu = ()=>({
     items: ()=>[
         {
             text: $t('tab_view_switch'), items: Object.keys(MainViews).map(key=>({
-                text: MainViews[key].name(),
-                action: switchView(key),
-                icon: MainViews[key].icon,
+                text: MainViews[key as View].name(),
+                action: switchView(key as View),
+                icon: MainViews[key as View].icon,
                 disabled: useSettingsStore().mainView === key
             } as Button))
         }
