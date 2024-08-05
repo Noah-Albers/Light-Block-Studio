@@ -88,8 +88,7 @@ export const useSettingsStore = defineStore('settings', () => {
     function restoreDefaults(){
         language.value = "en";
 
-        // TODO: Change when fully packaged or change to environment variable or smth.
-        isDeveloper.value = false;
+        isDeveloper.value = window.location.hostname === "localhost";
 
         mainView.value = ViewVisualizer;
 
