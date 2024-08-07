@@ -30,9 +30,10 @@ export class SetLedRangeSimpleProcLEDNode implements ILEDNode<LEDRangeProcedureO
     async startNode({ h, idxEnd, idxStart, ledDelay, s, v }: LEDRangeProcedureOptions, ctrl: IVisualisationController): Promise<void> {
         
         const dir = idxStart > idxEnd ? -1 : 1;
+        const offset = idxStart > idxEnd ? -1 : 0;
 
         for (let i = idxStart; i != idxEnd; i+=dir) {
-            ctrl.setLedHSV(i, h, s, v);
+            ctrl.setLedHSV(i+offset, h, s, v);
             if(ledDelay > 0){
                 ctrl.pushUpdate();
                 await ctrl.sleep(ledDelay);
@@ -67,16 +68,19 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
     generateFunctionCode({h, s, v, idxEnd, idxStart, ledDelay}: CppFnInformation<LEDRangeProcedureOptions>, gen: ICodeSupport): string {
         const i = gen.registerVariable("i");
 
-
         const compareOperation = idxStart.available && idxEnd.available ? (
-            idxStart.value > idxEnd.value ? `>= ` : `< `
+            idxStart.value > idxEnd.value ? `>=` : `<`
         ) : "!=";
 
         const operationKnown = idxStart.available && idxEnd.available;
 
         const vDir = operationKnown ? "" : gen.registerVariable("dir");
+        const vOffset = operationKnown ? "" : gen.registerVariable("offset");
 
-        const dirInitializer = operationKnown ? "" : `byte ${vDir} = ${idxStart} > ${idxEnd} ? -1 : 1;`;
+        const initializerCode = operationKnown ? [] : [
+            `byte ${vDir} = ${idxStart} > ${idxEnd} ? -1 : 1;`,
+            `byte ${vOffset} = ${idxStart} > ${idxEnd} ? -1 : 0;`,
+        ];
 
         const iterationOperation = idxStart.available && idxEnd.available ? (
             idxStart.value > idxEnd.value ? `${i}--` : `${i}++`
@@ -98,13 +102,16 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
                 gen.sleep(ledDelay),
             ]),
             `}`
-        ]
+        ];
 
         return [
-            dirInitializer,
+            ...initializerCode,
             `for(int ${i}=${idxStart};${i}${compareOperation}${idxEnd};${iterationOperation}){`,
             ...tab([
-                gen.setLedHSV(i,h,s,v),
+                `${gen.setLedHSV(
+                    i + (operationKnown ? "" : `+${vOffset}`)
+                    ,h,s,v)
+                }`,
                 ...delayCode
             ]),
             "}",
