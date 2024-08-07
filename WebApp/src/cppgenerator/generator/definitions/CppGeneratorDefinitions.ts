@@ -1,5 +1,5 @@
 
-import { CppArgs, ICppFnHandle } from "@cppgen/functionManager";
+import { CppArgs, CppFnArgInformation, ICppFnHandle } from "@cppgen/functionManager";
 import { CC_CppFnHandles } from "src/procedure/definitions/ProcCodeConstructor";
 import { ProcedureWithOptions } from "src/procedure/definitions/Procedure";
 
@@ -152,6 +152,8 @@ export type CodeResult = {
     dirtyState: boolean
 }
 
+export type VariableNumber = number | string | CppFnArgInformation<number>;
+
 /**
  * Interface representing a supporting tool for code and function generators.
  * 
@@ -168,7 +170,7 @@ export interface ICodeSupport {
      * @see CodeShifter#setSpaces for more info
      */
     setTabs(code: string, tabs: number) : string;
-    
+
     /**
      * Requests a variable with a unique name.
      * 
@@ -184,7 +186,7 @@ export interface ICodeSupport {
      * @param ms The duration of the sleep in milliseconds.
      * @returns The generated C++ code for the sleep operation.
      */
-    sleep(ms: number | string): string;
+    sleep(ms: VariableNumber): string;
 
     /**
      * Generates code to set the x-th LED to the specified RGB color value.
@@ -195,7 +197,7 @@ export interface ICodeSupport {
      * @param v the value component of the color (0-1), except if its a variable string, then 0-255 (Integer)
      * @returns The generated code to set the LED color.
      */
-    setLedHSV(idx: number | string, h: number | string, s: number | string, v: number | string): string;
+    setLedHSV(idx: VariableNumber, h: VariableNumber, s: VariableNumber, v: VariableNumber): string;
 
     /**
      * Generates code to push all set LED states to the stripe to be displayed.

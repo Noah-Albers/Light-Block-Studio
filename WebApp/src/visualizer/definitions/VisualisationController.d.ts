@@ -34,9 +34,9 @@ export interface IVisualisationController {
      * Sets the color of an LED at the specified index.
      * 
      * @param idx The index of the LED.
-     * @param h the red value of the led (0-1)
-     * @param s the green value of the led (0-1)
-     * @param v the blue value of the led (0-1)
+     * @param h the red value of the led (0-255)
+     * @param s the green value of the led (0-255)
+     * @param v the blue value of the led (0-255)
      * 
      * @example
      * // Set LED 1 (index 0) to red

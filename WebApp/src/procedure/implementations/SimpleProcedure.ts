@@ -14,13 +14,15 @@ export class SimpleProcedure<Options extends ProcedureOptions> implements IProce
     private readonly exampleConfig : Options;
     private readonly diagnostics: IDiagnostics<Options>;
     private readonly ledNode: ILEDNode<Options>;
+    private readonly prepareConfigHandler: undefined | ((cfg: Options)=>void);
 
-    constructor(name: string, codeConstructor: ICodeConstructor<Options,any>, diagnostics: IDiagnostics<Options>, ledNode: ILEDNode<Options>, exampleConfig: Options){
+    constructor(name: string, codeConstructor: ICodeConstructor<Options,any>, diagnostics: IDiagnostics<Options>, ledNode: ILEDNode<Options>, exampleConfig: Options, prepareConfig?: (cfg: Options)=>void){
         this.name = name;
         this.codeConstructor = codeConstructor;
         this.diagnostics = diagnostics;
         this.exampleConfig = Object.freeze(exampleConfig);
         this.ledNode = ledNode;
+        this.prepareConfigHandler = prepareConfig;
     }
 
     getLEDNode(): ILEDNode<Options> {
@@ -42,5 +44,9 @@ export class SimpleProcedure<Options extends ProcedureOptions> implements IProce
     getCodeConstructor(): ICodeConstructor<Options, any> {
         return this.codeConstructor;
     }
-
+    
+    prepareConfig(cfg: Options): void {
+        if(this.prepareConfigHandler !== undefined)
+            this.prepareConfigHandler(cfg)
+    }
 }

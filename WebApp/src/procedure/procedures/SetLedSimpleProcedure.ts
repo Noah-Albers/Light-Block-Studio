@@ -8,7 +8,7 @@ import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCo
 export type LEDProcedureOptions = {
     idx: number,
 
-    // HSV in range 0-1
+    // HSV in range 0-255
     h: number,
     s: number,
     v: number

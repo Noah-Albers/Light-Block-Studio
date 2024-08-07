@@ -32,7 +32,7 @@ export class VisualisationController implements IVisualisationController {
     }
     
     setLedHSV(idx: number, h: number, s: number, v: number): void {
-        this.ledCache[idx] = Object.values(HSV2RGB(h, s, v)) as [number,number,number];
+        this.ledCache[idx] = Object.values(HSV2RGB(h/255, s/255, v/255)) as [number,number,number];
     }
 
     pushUpdate(): void {

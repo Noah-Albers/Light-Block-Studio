@@ -1,5 +1,5 @@
 import { CppArgs, ICppFnCallGenerator, ICppFnHandle, IVariableSupplier } from "@cppgen/functionManager";
-import { CodeGenerationType, CodeResult, GenerationSettings, GetFnHandleByName, ICodeSupport, IExtendedCodeSupport } from "../definitions/CppGeneratorDefinitions";
+import { CodeGenerationType, CodeResult, GenerationSettings, GetFnHandleByName, ICodeSupport, IExtendedCodeSupport, VariableNumber } from "../definitions/CppGeneratorDefinitions";
 import { ProcedureWithOptions } from "src/procedure/definitions/Procedure";
 import * as CodeShifter from "@cppgen/functionManager/utils/CodeShifter";
 
@@ -21,17 +21,17 @@ export class CodeSupport implements ICodeSupport{
         return this.vSup.register(name);
     }
 
-    public sleep(ms: number | string){
-        return this.settings.hooks.sleep(ms);
+    sleep(ms: VariableNumber): string {
+        return this.settings.hooks.sleep(ms.toString());
     }
 
-    public setLedHSV(idx: string | number, h: string | number, s: string | number, v: string | number): string {
+    public setLedHSV(idx: VariableNumber, h: VariableNumber, s: VariableNumber, v: VariableNumber): string {
 
-        const iH = typeof h === "string" ? h : Math.round(h*255);
-        const iS = typeof s === "string" ? s : Math.round(s*255);
-        const iV = typeof v === "string" ? v : Math.round(v*255);
+        const iH = typeof h !== "number" ? h : h;
+        const iS = typeof s !== "number" ? s : s;
+        const iV = typeof v !== "number" ? v : v;
 
-        return this.settings.hooks.setHSV(idx,iH,iS,iV);
+        return this.settings.hooks.setHSV(idx.toString(),iH.toString(),iS.toString(),iV.toString());
     }
 
     public millis(): string {

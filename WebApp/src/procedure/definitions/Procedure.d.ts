@@ -28,6 +28,8 @@ export interface IProcedure<Options extends ProcedureOptions>{
      */
     readonly name: string
 
+    prepareConfig?(cfg: Options): void;
+
     /**
      * @returns all procedures that are executed during the execution of this one.
      * 

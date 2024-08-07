@@ -21,6 +21,11 @@ export type VariableColorType = [string | number, string | number, string | numb
 export type HSVColor = [number, number, number];
 
 /**
+ * Normalized values for Hue, Saturation and Value as integer from 0 to 255
+ */
+export type HSVBinaryColor = [number, number, number];
+
+/**
  * Cache of a color
  */
 export type CachedColor = {
@@ -98,7 +103,7 @@ const Defaults: Required<ColorDataConfig> = {
     displayTitle: undefined as any
 }
 
-export class ColorDataSource implements IDataSource<VariableColorType, HSVColor, CachedColor> {
+export class ColorDataSource implements IDataSource<VariableColorType, HSVBinaryColor, CachedColor> {
 
     private readonly config: Required<ColorDataConfig>;
     private readonly name: string;
@@ -118,7 +123,7 @@ export class ColorDataSource implements IDataSource<VariableColorType, HSVColor,
     }
 
     calculateCache(vars: { [key: string]: number; }, value: VariableColorType): CachedColor {
-        const hsv = this.resolve(value, vars);
+        const hsv = this.calculateColor(value, vars);
 
         const display = HSV2HEX(...hsv);
 
@@ -128,13 +133,17 @@ export class ColorDataSource implements IDataSource<VariableColorType, HSVColor,
         }
     }
 
-    resolve(value: VariableColorType, variables: { [name: string]: number; }): HSVColor {
+    private calculateColor(value: VariableColorType, variables: { [name: string]: number; }){
         return value.map(x=>{
             if(typeof x === "number")
                 return clamp(x);
-
+    
             return clamp(solveExpression(x, variables, 1));
         }) as HSVColor;
+    }
+
+    resolve(value: VariableColorType, variables: { [name: string]: number; }): HSVBinaryColor {
+        return this.calculateColor(value, variables).map(x=>Math.round(255 * x)) as HSVBinaryColor;
     }
 
     getKey(): string {

@@ -28,6 +28,6 @@ export default class VariableSupplier implements IVariableSupplier{
      * @param keywords the keywords to prevent from being used
      */
     public registerReservedKeywords(keywords: string[]){
-        this.knownVariables = keywords;
+        this.knownVariables = [...keywords];
     }
 }

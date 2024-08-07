@@ -82,7 +82,11 @@ export function buildProceduresOfBlock(block: Block | null, searchForSpecificBlo
     while(block !== null){
         // Creates the configs
         supplier.setBlock(block);
-        const cfg = supplier.model.createConfigWithProcedure(supplier);
+        const cfg = supplier.model.createConfigWithProcedure(supplier) as ProcedureWithOptions<any>;
+        // Prepares the config
+        if(cfg.procedure.prepareConfig !== undefined)
+            cfg.procedure.prepareConfig(cfg.options);
+
         configs.push(cfg);
 
         if(searchForSpecificBlock === block)
