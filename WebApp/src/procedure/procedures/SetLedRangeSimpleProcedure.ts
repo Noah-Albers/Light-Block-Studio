@@ -106,7 +106,7 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
 
         return [
             ...initializerCode,
-            `for(int ${i}=${idxStart};${i}${compareOperation}${idxEnd};${iterationOperation}){`,
+            `for(int ${i}=${idxStart}; ${i} ${compareOperation} ${idxEnd}; ${iterationOperation}){`,
             ...tab([
                 `${gen.setLedHSV(
                     i + (operationKnown ? "" : `+${vOffset}`)
