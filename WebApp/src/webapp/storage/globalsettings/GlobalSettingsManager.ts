@@ -19,8 +19,6 @@ const onGlobalSettingsChange = debounce(()=>{
     if(isLocalstorageSupported())
         localStorage.setItem(LS_NAME, JSON.stringify(exportGlobalSettings()));
 
-    console.debug("LocalStorage saved settings (If supported)");
-
 }, 1000);
 
 // Loads the global settings
