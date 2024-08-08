@@ -46,3 +46,11 @@ export function delayIf(delay: CppFnArgInformation<number>, gen: ICodeSupport, i
         `}`
     ]
 }
+
+// TODO: Comment
+export function finalPush(delays: CppFnArgInformation<number>[], gen: ICodeSupport) {
+
+    if(delays.every(d=>d.available && d.value <= 0))
+        return [gen.pushLeds()];
+    return "";
+}

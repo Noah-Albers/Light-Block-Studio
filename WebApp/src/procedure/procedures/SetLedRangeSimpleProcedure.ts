@@ -5,7 +5,7 @@ import { CodeResult, ICodeSupport, IExtendedCodeSupport } from "@cppgen/generato
 import { IVisualisationController } from "@visualizer/index";
 import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCodeConstructor";
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
-import { delayIf, tab } from "@cppgen/functionManager/utils/CodeFormatUtil";
+import { delayIf, finalPush, tab } from "@cppgen/functionManager/utils/CodeFormatUtil";
 
 export type LEDRangeProcedureOptions = {
     // Range to play
@@ -97,6 +97,7 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
                 ...delayIf(ledDelay,gen)
             ]),
             "}",
+            finalPush([ledDelay], gen),
         ].join("\n");
     }
     getDirtyStateAfterExecution({ledDelay}: LEDRangeProcedureOptions, previousState: boolean): boolean {

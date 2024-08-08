@@ -1,8 +1,9 @@
 
 import { SimpleProcedure } from "@procedure/implementations/SimpleProcedure"
+import { AbstractSetLedRangeProcDiagnostics, AbstractSetLEDRangeProcPreparer } from "@procedure/procedures/AbstractSetLedRangeProcedure"
 import { DelayProcCodeConstructor, DelayProcDiagnostics, DelayProcLEDNode } from "@procedure/procedures/DelayProcedure"
 import { LoopProcedure } from "@procedure/procedures/LoopProcedure/LoopProcedure"
-import { SetLedRangeSeriesProcCodeConstructor, SetLedRangeSeriesProcDiagnostics, SetLedRangeSeriesProcLEDNode, SetLedRangeSeriesProcPreparer } from "@procedure/procedures/SetLedRangeSeriesProcedure"
+import { SetLedRangeSeriesProcCodeConstructor, SetLedRangeSeriesProcLEDNode } from "@procedure/procedures/SetLedRangeSeriesProcedure"
 import { SetLedRangeSimpleProcCodeConstructor, SetLedRangeSimpleProcDiagnostics, SetLedRangeSimpleProcLEDNode, SetLedRangeSimpleProcPreparer } from "@procedure/procedures/SetLedRangeSimpleProcedure"
 import { SetLedSimpleProcCodeConstructor, SetLedSimpleProcDiagnostics, SetLedSimpleProcLEDNode } from "@procedure/procedures/SetLedSimpleProcedure"
 
@@ -13,6 +14,6 @@ export function registerProcedures() {
         delay: new SimpleProcedure("delay", new DelayProcCodeConstructor(), new DelayProcDiagnostics(), new DelayProcLEDNode(), { delay: 100 }),
         setLedSimple: new SimpleProcedure("setled_simple", new SetLedSimpleProcCodeConstructor(), new SetLedSimpleProcDiagnostics(), new SetLedSimpleProcLEDNode(), { idx: 0, h: 1, s: 1, v: 1}),
         setLedRangeSimple: new SimpleProcedure("setled_range_simple", new SetLedRangeSimpleProcCodeConstructor(), new SetLedRangeSimpleProcDiagnostics(), new SetLedRangeSimpleProcLEDNode(), { h: 1, s: 1, v: 1, idxEnd: 16, idxStart: 0,ledDelay: 100 }, SetLedRangeSimpleProcPreparer),
-        setLedRangeSeries: new SimpleProcedure("setled_range_series", new SetLedRangeSeriesProcCodeConstructor(), new SetLedRangeSeriesProcDiagnostics(), new SetLedRangeSeriesProcLEDNode(), { h: 1, s: 1, v: 1, idxStart: 1, ledDelay: 100, stepDelay: 500, ledsReversed: false, stepsReversed: false, steps: 5, stepSize: 3, stepSpace: 2 }, SetLedRangeSeriesProcPreparer),
+        setLedRangeSeries: new SimpleProcedure("setled_range_series", new SetLedRangeSeriesProcCodeConstructor(), new AbstractSetLedRangeProcDiagnostics(), new SetLedRangeSeriesProcLEDNode(), { h: 1, s: 1, v: 1, idxStart: 1, ledDelay: 100, stepDelay: 500, ledsReversed: false, stepsReversed: false, steps: 5, stepSize: 3, stepSpace: 2 }, AbstractSetLEDRangeProcPreparer),
     }
 }

@@ -67,6 +67,12 @@ export class DebugNodeModel implements INodeModel {
         info: ""
     })
 
+    private modeField = new OptionDataSource("mode", "parallel", {
+        values: { "parallel": "Parallel", "series": "Series" },
+        displayTitle: "Mode",
+        info: ""
+    })
+
     getModelName(): string {
         return "debug";
     }
@@ -77,13 +83,13 @@ export class DebugNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Idx: %1;Steps: %2;Space: %3;Size: %4;RevLed: %5; RevStep: %6; LedDel: %7; StepDel: %8;Color %9";
+        return "Idx: %1;Steps: %2;Space: %3;Size: %4;RevLed: %5; RevStep: %6; LedDel: %7; StepDel: %8;Color %9; Mode %10";
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [
             this.idxField, this.stepsField, this.spaceField,
             this.stepLengthField, this.reverseLedField, this.reverseStepField,
-            this.delayLedField, this.delayStepField, this.colorField
+            this.delayLedField, this.delayStepField, this.colorField, this.modeField
         ]
     }
     getSources(): IDataSource<any, any, any>[] {
@@ -105,6 +111,7 @@ export class DebugNodeModel implements INodeModel {
                 h: color[0],
                 s: color[1],
                 v: color[2],
+                isParallel: supplier.get(this.modeField) === "parallel"
             }
         }
     }
