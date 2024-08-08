@@ -5,7 +5,7 @@ import { CodeResult, ICodeSupport, IExtendedCodeSupport } from "@cppgen/generato
 import { IVisualisationController } from "@visualizer/index";
 import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCodeConstructor";
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
-import { tab } from "@cppgen/functionManager/utils/CodeShifter";
+import { delayIf, tab } from "@cppgen/functionManager/utils/CodeFormatUtil";
 
 export type LEDRangeProcedureOptions = {
     // Range to play
@@ -86,24 +86,6 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
             idxStart.value > idxEnd.value ? `${i}--` : `${i}++`
         ) : `${i}+=${vDir}`;
 
-
-        // If delay known: Set delay if required
-        // If delay unknown add code to check if delay is required to be set
-
-        const delayCode = ledDelay.available ? (
-            ledDelay.value === 0 ? [] : [
-                gen.pushLeds(),
-                gen.sleep(ledDelay)
-            ]
-        ) : [
-            `if(${ledDelay} > 0){`,
-            ...tab([
-                gen.pushLeds(),
-                gen.sleep(ledDelay),
-            ]),
-            `}`
-        ];
-
         return [
             ...initializerCode,
             `for(int ${i}=${idxStart}; ${i} ${compareOperation} ${idxEnd}; ${iterationOperation}){`,
@@ -112,7 +94,7 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
                     i + (operationKnown ? "" : `+${vOffset}`)
                     ,h,s,v)
                 }`,
-                ...delayCode
+                ...delayIf(ledDelay,gen)
             ]),
             "}",
         ].join("\n");

@@ -47,15 +47,3 @@ export function setSpaces(code: string, spaces: number){
         return append+ln.substring(spacesAtFront)
     }).join("\n");
 }
-
-/**
- * Takes in either a string or a string[] and tabs the strings all by a given amount of spaces
- * @returns the same string or string[]
- */
-export function tab<T extends string | string[]>(code: T, spaces: number = 4) : T{
-    const empty = new Array(spaces + 1).join(" ");
-    
-    if(!Array.isArray(code))
-        return empty + code as T;
-    return code.map(x=>empty+x) as T;
-}

@@ -1,4 +1,5 @@
 import { INodeModel } from "@nodes/definitions/Node";
+import { DebugNodeModel } from "@nodes/implementations/models/DebugNodeModel";
 import { DelayNodeModel } from "@nodes/implementations/models/DelayNodeModel";
 import { LoopNodeModel } from "@nodes/implementations/models/LoopNodeModel";
 import { SetLedNodeModel } from "@nodes/implementations/models/SetLedNodeModel";
@@ -9,6 +10,7 @@ export function registerNodeModels() : INodeModel[] {
         new DelayNodeModel(),
         new SetLedNodeModel(),
         new LoopNodeModel(),
-        new SetLedRangeNodeModel()
+        new SetLedRangeNodeModel(),
+        new DebugNodeModel()
     ]
 }
