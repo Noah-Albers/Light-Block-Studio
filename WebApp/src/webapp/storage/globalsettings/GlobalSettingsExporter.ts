@@ -19,7 +19,8 @@ function getPlainSettings() : ExportedGlobalPlainSettings{
         usbVendorsWhitelist: {
             enabled: store.whitelistUsbVendors.enabled,
             whitelist: store.whitelistUsbVendors.whitelist
-        }
+        },
+        defaultPreview: store.defaultPreview
     }
 }
 

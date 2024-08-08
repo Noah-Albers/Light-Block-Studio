@@ -18,7 +18,11 @@ export const MainViews = {
 export const DefaultVendors: [string, number][] = [
     ["Arduino", 0x2341],
     ["EspressIF", 0x303A]
-]
+];
+
+
+// List of all buildin previews (Filenames)
+export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg", "Matrix-8x8px.svg"];
 
 export const useSettingsStore = defineStore('settings', () => {
 
@@ -55,6 +59,8 @@ export const useSettingsStore = defineStore('settings', () => {
     const buildConfig = reactive({
         enablePreview: __set<boolean>()
     });
+
+    const defaultPreview = __setRef<string | number>();
 
     //#endregion
 
@@ -99,6 +105,7 @@ export const useSettingsStore = defineStore('settings', () => {
         whitelistUsbVendors.whitelist = DefaultVendors.map(itm => [itm[0], itm[1]]);
 
         buildConfig.enablePreview = false;
+        defaultPreview.value = BuildInPreviews[0];
     }
 
     //#endregion
@@ -108,6 +115,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
     return {
         mainView, serialPreview, whitelistUsbVendors, buildConfig, language, isDeveloper,
+        defaultPreview,
 
         restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist, restoreDefaults
     };

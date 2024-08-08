@@ -1,4 +1,5 @@
-import { BuildInPreviews, useProjectStore } from '@webapp/stores/ProjectStore';
+import { useProjectStore } from '@webapp/stores/ProjectStore';
+import { BuildInPreviews } from '@webapp/stores/SettingsStore';
 import { Ref, onMounted, ref, toRefs, watch } from 'vue'
 
 export type LEDs = {[key: number]: SVGElement[]};

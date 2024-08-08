@@ -2,9 +2,8 @@ import { Hooks } from '@template/definitions/Template';
 import { ExportedSettingsType } from '@webapp/storage/project/ProjectSchema'
 import { defineStore } from 'pinia'
 import { computed, Ref, ref } from 'vue';
+import { useSettingsStore } from './SettingsStore';
 
-// List of all buildin previews (Filenames)
-export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg"];
 
 // List of keywords that are used and/or reserved by the arduino ide / programming language
 // Note: This does not list all keywords but only the most common ones
@@ -58,7 +57,7 @@ void loop(){
         loop: "$$code$$"
     } as Hooks,
 
-    selectedPreview: BuildInPreviews[0],
+    selectedPreview: ()=>useSettingsStore().defaultPreview,
 
     loopPushLeds: true,
     trimEmptyLines: true
@@ -137,7 +136,7 @@ export const useProjectStore = defineStore('project', () => {
     //#region Utilities
     // Resets the preview to it's default
     function resetPreview() {
-        selectedPreview.value = BuildInPreviews[0];
+        selectedPreview.value = Defaults.selectedPreview();
     }
 
     // Restores the default values
@@ -150,7 +149,7 @@ export const useProjectStore = defineStore('project', () => {
         loopPushLeds.value = Defaults.loopPushLeds;
         trimEmptyLines.value = Defaults.trimEmptyLines;
         previews.value = [];
-        selectedPreview.value = Defaults.selectedPreview;
+        selectedPreview.value = Defaults.selectedPreview();
         customReservedKeywords.value = [];
         useArduinoReservedKeywords.value = true;
 

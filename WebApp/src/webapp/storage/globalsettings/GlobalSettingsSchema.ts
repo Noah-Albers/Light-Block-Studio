@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { int, min } from "../ZodUtil"
 import { SupportedLanguages } from "@localisation/Fluent";
-import { MainViews } from "@webapp/stores/SettingsStore";
+import { BuildInPreviews, MainViews } from "@webapp/stores/SettingsStore";
 
 //#region Schemas
 
@@ -23,7 +23,12 @@ const InternalSchemas = {
 
         buildConfig: z.object({
             enablePreview: z.boolean()
-        })
+        }),
+
+        defaultPreview: z.union([
+            z.number().transform(int()).transform(min(0)),
+            z.string()
+        ]).default(BuildInPreviews[0]),
     })
 }
 

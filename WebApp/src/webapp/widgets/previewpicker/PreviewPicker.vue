@@ -4,9 +4,7 @@
             <v-btn @click="$el.querySelector('.custom_upload_file').click()"
                 v-tooltip="$t('visualizer_previewselector_upload-tooltip')" prepend-icon="mdi-upload"
                 :text="$t('visualizer_previewselector_upload')" elevation="3" class="mr-2" />
-            <v-btn @click="onSaveClicked" v-tooltip="$t('visualizer_previewselector_save-tooltip')"
-                :disabled="selected === store.selectedPreview" :text="$t('visualizer_previewselector_save')"
-                prepend-icon="mdi-content-save-outline" class="mr-5" elevation="3" />
+           
 
             <!--Hidden file input-->
             <input accept="svg" multiple class="custom_upload_file" type="file" @change="onFileUpload" hidden>
@@ -14,25 +12,15 @@
         <v-container>
             <v-row>
                 <v-col v-for="preview in allPreviews" :key="preview.value" cols="12" md="4">
-                    <v-card class="preview-card" height="300" @click="selected = preview.key">
-                        <v-toolbar density="compact" :color="selected === preview.key ? 'warning' : 'primary'">
-                            <template v-slot:title v-if="preview.isBuildin">
-                                {{ preview.key }}
-                            </template>
-                            <template v-slot:title v-else>
-                                {{ $t('visualizer_previewselector_customPreview', { index: (preview.key as number) + 1 }) }}
-                            </template>
-                            <template v-if="preview.isBuildin">
-                                <v-icon class="mr-4" v-tooltip="$t('visualizer_previewselector_icon_buildin')" color="#ddd" icon="mdi-wrench" />
-                            </template>
-                            <template v-else>
-                                <v-icon class="mr-4" v-tooltip="$t('visualizer_previewselector_icon_delete')" color="#ddd" icon="mdi-delete"
-                                    @click="onTrashClicked(preview)" />
-                            </template>
-                        </v-toolbar>
-                        <img v-if="preview.isBuildin" :src="`previews/${preview.value}`" />
-                        <div class="__visualizer_menu_svg" v-else v-html="preview.value"></div>
-                    </v-card>
+                    <PreviewRenderer
+                        :deleteable-if-extern="true"
+                        :highlighted="vModel === preview.key"
+                        :preview="preview.key"
+                        @click="vModel = preview.key"
+                        @icon-clicked="onTrashClicked(preview)"
+                        customIcon="mdi-delete"
+                        :icon-tooltip="$t('visualizer_previewselector_icon_delete')"
+                        />
                 </v-col>
             </v-row>
         </v-container>
@@ -48,25 +36,14 @@
     }
 }
 </style>
-<style lang="scss" scoped>
-.preview-card {
-
-    img,
-    div {
-        width: 100%;
-        height: calc(100% - 48px);
-        padding: .5rem;
-        padding-bottom: 1.5rem;
-        padding-top: 1.5rem;
-    }
-}
-</style>
 
 <script lang="ts" setup>
-import { useProjectStore, BuildInPreviews } from "@webapp/stores/ProjectStore";
-import { computed } from "vue";
+import { useProjectStore } from "@webapp/stores/ProjectStore";
+import { computed, PropType } from "vue";
 import { ref } from 'vue';
 import { $t } from "@localisation/Fluent";
+import { BuildInPreviews } from "@webapp/stores/SettingsStore";
+import PreviewRenderer from "./PreviewRenderer.vue"
 
 type PreviewType = {
     value: string,
@@ -80,15 +57,13 @@ const allPreviews = computed(() => {
 
 const store = useProjectStore();
 
-// Which of the previews is selected (undefined if the custom one is selected)
-const selected = ref(store.selectedPreview);
+// Defines the model to use
+const vModel = defineModel({
+    required: true,
+    type: [String, Number] as PropType<String | Number>
+})
 
 // #region  Events
-
-// Event: When the save button is clicked
-function onSaveClicked() {
-    store.selectedPreview = selected.value;
-}
 
 // Event: When a custom preview file is uploaded
 function onFileUpload(evt: any) {
@@ -135,8 +110,8 @@ function onTrashClicked(elm: PreviewType) {
     // Deletes the preview
     store.previews = store.previews.filter((_, idx) => idx !== elm.key);
 
-    if (selected.value === elm.key)
-        selected.value = BuildInPreviews[0];
+    if (vModel.value === elm.key)
+        vModel.value = BuildInPreviews[0];
 }
 
 // #endregion

@@ -6,11 +6,11 @@
     <!-- Switch preview -->
     <v-overlay class="align-center justify-center">
         <template #activator="{ props }">
-            <v-btn v-bind="props" v-tooltip="$t('visualizer_button_switchPreview')" style="position: absolute; top: 1rem; right: 1rem"
-                icon="mdi-swap-horizontal" />
+            <v-btn v-bind="props" v-tooltip="$t('visualizer_button_switchPreview')"
+                style="position: absolute; top: 1rem; right: 1rem" icon="mdi-swap-horizontal" />
         </template>
 
-        <TheVisualizerMenu />
+        <PreviewPicker v-model="store.selectedPreview" />
     </v-overlay>
 </template>
 
@@ -51,10 +51,14 @@
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
     import { Visualizer } from '@visualizer/index';
     import { LEDArray } from '@visualizer/implementations/VisualisationController';
-    import TheVisualizerMenu from './TheVisualizerMenu.vue';
+    import PreviewPicker from "@webapp/widgets/previewpicker/PreviewPicker.vue";
+    import { useProjectStore } from '@webapp/stores/ProjectStore';
 
     // HTML-Ref
     const refWrapper = ref(null as any as Element);
+
+    // User store
+    const store = useProjectStore();
 
     const leds = useProjectImage(refWrapper, onPreviewElementChange);
     useSignal(Signals.BLOCKLY_PREVIEW_CREATE_CONFIG, onBlocklyPreviewChange);

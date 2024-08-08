@@ -1,6 +1,6 @@
 {
     "i18n-ally.localesPaths": [
-        "src/localisation/languages"
+        "WebApp/src/localisation/languages"
     ],
     "i18n-ally.keystyle": "nested"
 }

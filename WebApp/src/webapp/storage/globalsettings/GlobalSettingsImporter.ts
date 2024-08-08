@@ -17,6 +17,7 @@ function importPlainSettings(data: ExportedGlobalPlainSettings){
     store.serialPreview.pin = data.serialPreview.pin;
     store.whitelistUsbVendors.enabled = data.usbVendorsWhitelist.enabled;
     store.whitelistUsbVendors.whitelist = data.usbVendorsWhitelist.whitelist;
+    store.defaultPreview = data.defaultPreview;
 }
 
 // Imports the global settings
