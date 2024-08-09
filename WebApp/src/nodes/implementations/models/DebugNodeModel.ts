@@ -79,7 +79,7 @@ export class DebugNodeModel implements INodeModel {
     }
     getOnBlockSettings(): OnBlockSettings {
         return {
-            category: "control",
+            category: "debug",
             color: 240
         };
     }

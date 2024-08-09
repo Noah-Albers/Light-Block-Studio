@@ -17,14 +17,14 @@ type RegisteryType = {
 }
 
 // Called on the initial setup to initialize most stuff
-export function setupRegistery(){
+export function setupRegistery(isDeveloper: boolean){
 
     Registry = {
         // All procedures which
         procedures: registerProcedures(),
     
         // All node models
-        nodeModels: registerNodeModels(),
+        nodeModels: registerNodeModels(isDeveloper),
     
         // All registered templates
         templates: registerTemplates()

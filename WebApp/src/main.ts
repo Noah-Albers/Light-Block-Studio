@@ -51,11 +51,13 @@ function setupApplication(){
     // Loads the global settings AFTER pinia is registered
     setupGlobalSettingsManager();
     
+    const settings = useSettingsStore();
+
     // Continue with the fue application and adds fluent for language support
-    app = app.use(setupFluent(useSettingsStore().language));
+    app = app.use(setupFluent(settings.language));
 
     // Creates the registery
-    setupRegistery();
+    setupRegistery(settings.isDeveloper);
     
     // Setups the blockly workspace
     registerBlockly();

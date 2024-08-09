@@ -9,8 +9,6 @@ export function selectBestColorProcedure(cfg: LEDRangeComplexProcedureOptions) :
 
     const accessedLeds = [...diagnostics.findAllAccessedLeds(cfg)]
 
-    console.log("Accessed leds: ",diagnostics.findAllAccessedLeds(cfg),cfg);
-
     // Checks if no led is set
     if(accessedLeds.length <= 0)
         return {

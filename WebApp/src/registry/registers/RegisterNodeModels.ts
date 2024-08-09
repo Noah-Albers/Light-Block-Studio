@@ -1,16 +1,17 @@
 import { INodeModel } from "@nodes/definitions/Node";
 import { DebugNodeModel } from "@nodes/implementations/models/DebugNodeModel";
-import { DelayNodeModel } from "@nodes/implementations/models/DelayNodeModel";
-import { LoopNodeModel } from "@nodes/implementations/models/LoopNodeModel";
-import { SetLedNodeModel } from "@nodes/implementations/models/SetLedNodeModel";
-import { SetLedRangeNodeModel } from "@nodes/implementations/models/SetLedRangeNodeModel";
+import { DelayNodeModel } from "@nodes/implementations/models/control/DelayNodeModel";
+import { LoopNodeModel } from "@nodes/implementations/models/control/LoopNodeModel";
+import { SetLedNodeModel } from "@nodes/implementations/models/leds/SetLedNodeModel";
+import { SetLedRangeNodeModel } from "@nodes/implementations/models/leds/SetLedRangeNodeModel";
 
-export function registerNodeModels() : INodeModel[] {
+export function registerNodeModels(isDeveloper: boolean) : INodeModel[] {
     return [
         new DelayNodeModel(),
         new SetLedNodeModel(),
         new LoopNodeModel(),
         new SetLedRangeNodeModel(),
-        new DebugNodeModel()
+
+        ...(isDeveloper ? [new DebugNodeModel()]: [])
     ]
 }

@@ -1,7 +1,7 @@
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
-import { NumberDataSource } from "../datasources/NumberDataSource";
-import { ColorDataSource } from "../datasources/ColorDataSource";
+import { NumberDataSource } from "../../datasources/NumberDataSource";
+import { ColorDataSource } from "../../datasources/ColorDataSource";
 import { Registry } from "@registry/Registry";
 import { $t } from "@localisation/Fluent";
 import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";

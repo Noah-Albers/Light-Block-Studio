@@ -1,6 +1,6 @@
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
-import { NumberDataSource } from "../datasources/NumberDataSource";
+import { NumberDataSource } from "../../datasources/NumberDataSource";
 import { Registry } from "@registry/Registry";
 import { $t } from "@localisation/Fluent";
 

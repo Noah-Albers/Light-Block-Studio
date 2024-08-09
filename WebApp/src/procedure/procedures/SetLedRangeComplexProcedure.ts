@@ -101,8 +101,6 @@ export class SetLedRangeComplexProcDiagnostics implements IDiagnostics<LEDRangeC
             }
         }
 
-        console.log("Length ",leds);
-
         return leds;
     }
 }
