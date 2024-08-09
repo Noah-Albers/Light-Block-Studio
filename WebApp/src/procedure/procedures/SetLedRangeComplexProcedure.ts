@@ -89,10 +89,21 @@ export class SetLedRangeComplexProcDiagnostics implements IDiagnostics<LEDRangeC
     }
 
     findAllAccessedLeds({ idxStart, steps, stepSize, stepSpace }: LEDRangeComplexProcedureOptions): Set<number> {
-        // Length of the step
-        const length = (steps - 1) * (stepSize + stepSpace);
+        const leds = new Set<number>();
 
-        return new Set(Array(length).fill(0).map((_,idx)=>idx+idxStart));
+        for (let step = 0; step < steps; step++) {
+            for (let led = 0; led < stepSize; led++) {
+
+                const stripe = step * (stepSize + stepSpace);
+
+                const idx = idxStart + stripe + led;
+                leds.add(idx);
+            }
+        }
+
+        console.log("Length ",leds);
+
+        return leds;
     }
 }
 

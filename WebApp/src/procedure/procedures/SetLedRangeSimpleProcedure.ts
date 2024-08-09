@@ -30,10 +30,9 @@ export class SetLedRangeSimpleProcLEDNode implements ILEDNode<LEDRangeProcedureO
     async startNode({ h, idxEnd, idxStart, ledDelay, s, v }: LEDRangeProcedureOptions, ctrl: IVisualisationController): Promise<void> {
         
         const dir = idxStart > idxEnd ? -1 : 1;
-        const offset = idxStart > idxEnd ? -1 : 0;
 
-        for (let i = idxStart; i != idxEnd; i+=dir) {
-            ctrl.setLedHSV(i+offset, h, s, v);
+        for (let i = idxStart; i != idxEnd+dir; i+=dir) {
+            ctrl.setLedHSV(i, h, s, v);
             if(ledDelay > 0){
                 ctrl.pushUpdate();
                 await ctrl.sleep(ledDelay);
@@ -75,24 +74,25 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
         const operationKnown = idxStart.available && idxEnd.available;
 
         const vDir = operationKnown ? "" : gen.registerVariable("dir");
-        const vOffset = operationKnown ? "" : gen.registerVariable("offset");
 
         const initializerCode = operationKnown ? [] : [
             `byte ${vDir} = ${idxStart} > ${idxEnd} ? -1 : 1;`,
-            `byte ${vOffset} = ${idxStart} > ${idxEnd} ? -1 : 0;`,
         ];
 
         const iterationOperation = idxStart.available && idxEnd.available ? (
             idxStart.value > idxEnd.value ? `${i}--` : `${i}++`
         ) : `${i}+=${vDir}`;
 
+        const endStep = operationKnown ? (
+            `${idxEnd.value + (idxStart.value > idxEnd.value ? -1 : 1)}`
+        ) : `${idxEnd}+${vDir}`;
+
         return [
             ...initializerCode,
-            `for(int ${i}=${idxStart}; ${i} ${compareOperation} ${idxEnd}; ${iterationOperation}){`,
+            `for(int ${i}=${idxStart}; ${i} ${compareOperation} ${endStep}; ${iterationOperation}){`,
             ...tab([
                 `${gen.setLedHSV(
-                    i + (operationKnown ? "" : `+${vOffset}`)
-                    ,h,s,v)
+                    i ,h,s,v)
                 }`,
                 ...delayIf(ledDelay,gen)
             ]),

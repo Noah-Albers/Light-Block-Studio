@@ -4,6 +4,7 @@ import { NumberDataSource } from "../datasources/NumberDataSource";
 import { Registry } from "@registry/Registry";
 import { ColorDataSource } from "../datasources/ColorDataSource";
 import { OptionDataSource } from "../datasources/OptionDataSource";
+import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
 
 // TODO: Lang
 
@@ -97,23 +98,21 @@ export class DebugNodeModel implements INodeModel {
     }
     createConfigWithProcedure(supplier: IDataSourceSupplier) {
         const color = supplier.get(this.colorField);
-        return {
-            procedure: Registry.procedures.setLedRangeSeries,
-            options: {
-                idxStart: supplier.get(this.idxField),
-                steps: supplier.get(this.stepsField),
-                stepSpace: supplier.get(this.spaceField),
-                stepSize: supplier.get(this.stepLengthField),
-                stepsReversed: supplier.get(this.reverseStepField) === "yes",
-                ledsReversed: supplier.get(this.reverseLedField) === "yes",
-                ledDelay: supplier.get(this.delayLedField),
-                stepDelay: supplier.get(this.delayStepField),
-                h: color[0],
-                s: color[1],
-                v: color[2],
-                isParallel: supplier.get(this.modeField) === "parallel"
-            }
-        }
+
+        return selectBestColorProcedure({
+            idxStart: supplier.get(this.idxField),
+            steps: supplier.get(this.stepsField),
+            stepSpace: supplier.get(this.spaceField),
+            stepSize: supplier.get(this.stepLengthField),
+            stepsReversed: supplier.get(this.reverseStepField) === "yes",
+            ledsReversed: supplier.get(this.reverseLedField) === "yes",
+            ledDelay: supplier.get(this.delayLedField),
+            stepDelay: supplier.get(this.delayStepField),
+            h: color[0],
+            s: color[1],
+            v: color[2],
+            isParallel: supplier.get(this.modeField) === "parallel"
+        })
     }
 
     hasSubNodes(): boolean {

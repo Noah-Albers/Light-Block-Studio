@@ -28,7 +28,7 @@ export function setupRegistery(){
     
         // All registered templates
         templates: registerTemplates()
-    }
+    } as const
 }
 
 /**

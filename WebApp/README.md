@@ -11,4 +11,4 @@ TODO: Add steps on how to build the webapp and the electron app
 
 TODO: Fix bug that none-onblock field don't get copied (Can probably hook into event or smth.)
 
-TODO: Make a Possibility to use adafruit as the debugger 
+TODO: Add another layer below the hooks to switch between fastled and adafruit
