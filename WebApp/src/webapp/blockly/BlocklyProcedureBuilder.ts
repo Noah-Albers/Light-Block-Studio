@@ -58,6 +58,10 @@ class DataSourceSupplier implements IDataSourceSupplier {
     get<X>(source: IDataSource<any, X, any>): X {
         return source.resolve(this.dataObj![source.getKey()], useVariableStore().variable2ValueMap);
     }
+
+    getVariable(name: string, defaultValue: number = 0): number {
+        return useVariableStore().variable2ValueMap[name] || defaultValue;
+    }
 }
 
 

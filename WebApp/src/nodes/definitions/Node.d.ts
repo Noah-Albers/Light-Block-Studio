@@ -17,6 +17,13 @@ export interface IDataSourceSupplier {
      * @note the hasSubNodes Property must return true on the node-model for this to work
      */
     buildConfigOfSubnodes() : ProcedureWithOptions<any,any>[];
+
+    /**
+     * Return the value of a variable
+     * @param name the name of the requested variable
+     * @param defaultValue return value if the variable doesn't exist
+     */
+    getVariable(name: string, defaultValue: number = 0) : number;
 }
 
 /**
