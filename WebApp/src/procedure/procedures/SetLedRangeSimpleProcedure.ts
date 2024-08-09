@@ -76,7 +76,7 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
         const vDir = operationKnown ? "" : gen.registerVariable("dir");
 
         const initializerCode = operationKnown ? [] : [
-            `byte ${vDir} = ${idxStart} > ${idxEnd} ? -1 : 1;`,
+            `int8_t ${vDir} = ${idxStart} > ${idxEnd} ? -1 : 1;`,
         ];
 
         const iterationOperation = idxStart.available && idxEnd.available ? (
@@ -101,7 +101,7 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
         ].join("\n");
     }
     getDirtyStateAfterExecution({ledDelay}: LEDRangeProcedureOptions, previousState: boolean): boolean {
-        return ledDelay !== 0;
+        return ledDelay <= 0;
     }
     getFunctionName(): string {
         return "setLEDRangeSimple";

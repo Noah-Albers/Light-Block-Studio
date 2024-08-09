@@ -114,7 +114,7 @@ void loop(){
   };
 
   // Reads in the index to set
-  byte idx = Serial.read();
+  int idx = Serial.read();
 
   // If the index is 255, it is regarded as a push command
   if(idx == 255){
@@ -126,9 +126,9 @@ void loop(){
   if(idx >= LED_AMT) return;
 
   // Reads in the data
-  byte r = Serial.read();
-  byte g = Serial.read();
-  byte b = Serial.read();
+  int r = Serial.read();
+  int g = Serial.read();
+  int b = Serial.read();
 
   // Sets the color
   leds[idx] = CRGB(r,g,b);

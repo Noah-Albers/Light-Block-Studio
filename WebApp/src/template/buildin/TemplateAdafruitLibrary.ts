@@ -14,8 +14,8 @@ Adafruit_NeoPixel strip(LED_AMT, LED_PIN, NEO_GRB + NEO_KHZ800);
 $$globals$$
 
 // Function use to convert HSV color's to rgb and then set them on the strip
-void setColorHSV(unsigned int idx, byte hue, byte sat, byte val){
-    strip.setPixelColor(idx, strip.ColorHSV(hue * 257, sat, val));
+void setColorHSV(unsigned int idx, uint16_t hue, uint8_t sat, uint8_t val){
+    strip.setPixelColor(idx, strip.ColorHSV(hue * 256, sat, val));
 }
 
 void setup(){
