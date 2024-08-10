@@ -5,7 +5,7 @@ import { Registry } from "@registry/Registry";
 export function selectBestColorProcedure(cfg: LedStepsProcedureOptions) : ProcedureWithOptions<any> {
 
     // Diagnostics
-    const diagnostics = Registry.procedures.setLedRangeComplex.getDiagnostics();
+    const diagnostics = Registry.procedures.ledSteps.getDiagnostics();
 
     const accessedLeds = [...diagnostics.findAllAccessedLeds(cfg)]
 
@@ -22,7 +22,7 @@ export function selectBestColorProcedure(cfg: LedStepsProcedureOptions) : Proced
     if(accessedLeds.length === 1){
 
         const setLedProc = {
-            procedure: Registry.procedures.setLedSimple,
+            procedure: Registry.procedures.singleLed,
             options: { idx: accessedLeds[0], h, s, v }
         };
 
@@ -56,7 +56,7 @@ export function selectBestColorProcedure(cfg: LedStepsProcedureOptions) : Proced
 
         // Can be a simple led range
         return {
-            procedure: Registry.procedures.setLedRangeSimple,
+            procedure: Registry.procedures.multiLed,
             options: { h, s, v,
                 idxStart: isNoneReversed ? minIdx : maxIdx,
                 idxEndExclusive: isNoneReversed ? maxIdx : minIdx,
@@ -67,7 +67,7 @@ export function selectBestColorProcedure(cfg: LedStepsProcedureOptions) : Proced
 
     // Otherwise it must be a complex led set procedure
     return {
-        procedure: Registry.procedures.setLedRangeComplex,
+        procedure: Registry.procedures.ledSteps,
         options: cfg
     }
 }

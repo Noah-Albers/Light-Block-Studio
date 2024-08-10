@@ -45,7 +45,7 @@ export class SetLedNodeModel implements INodeModel {
         const clr = supplier.get(this.colorField);
 
         return {
-            procedure: Registry.procedures.setLedSimple,
+            procedure: Registry.procedures.singleLed,
             options: {
                 idx: supplier.get(this.idxField),
                 h: clr[0],
