@@ -124,7 +124,9 @@ export function useSerialHandler() {
 
     // Event: When the visualizer pushes an update for the leds
     function onVisualizerPushLeds(array: LEDArray) {
+        console.log("New data retreived");
         if (writer === undefined) return;
+        console.log("Writer:",writer);
 
         const data = [];
 
@@ -139,6 +141,8 @@ export function useSerialHandler() {
 
         // Appends the push command
         data.push(255);
+
+        console.log(data);
 
         // Generates the data to send
         writer.write(new Uint8Array(data));

@@ -12,8 +12,8 @@ const InternalSchemas = {
         mainView: z.enum(Object.keys(MainViews) as [string, ...string[]]),
 
         serialPreview: z.object({
-            pin: z.number().transform(int()).transform(min(0)),
-            ledAmount: z.number().transform(int()).transform(min(0)),
+            pin: z.any().transform(int()).transform(min(0)),
+            ledAmount: z.any().transform(int()).transform(min(0)),
         }),
 
         usbVendorsWhitelist: z.object({
@@ -26,8 +26,8 @@ const InternalSchemas = {
         }),
 
         defaultPreview: z.union([
-            z.number().transform(int()).transform(min(0)),
-            z.string()
+            z.string(),
+            z.any().transform(int()).transform(min(0)),
         ]).default(BuildInPreviews[0]),
     })
 }

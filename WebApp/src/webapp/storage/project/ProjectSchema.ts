@@ -58,14 +58,14 @@ const InternalSchemas = {
         }),
 
         selectedPreview: z.union([
-            z.number().transform(int()).transform(min(0)),
+            z.any().transform(int()).transform(min(0)),
             z.string()
-        ]).default(Defaults.selectedPreview),
+        ]),
 
         previews: z.array(z.string()),
 
-        pin: z.number().transform(int()).transform(min(0)),
-        amount: z.number().transform(int()).transform(min(0)),
+        pin: z.any().transform(int()).transform(min(0)),
+        amount: z.any().transform(int()).transform(min(0)),
 
         loopPushLeds: z.boolean().default(Defaults.loopPushLeds),
         trimEmptyLines: z.boolean().default(Defaults.trimEmptyLines),

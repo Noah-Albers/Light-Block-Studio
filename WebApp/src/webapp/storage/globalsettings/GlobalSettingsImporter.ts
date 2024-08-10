@@ -40,6 +40,8 @@ export function importGlobalsettings(raw: unknown) {
 
         // TODO: Implement some browser vs desktop check to close the app
         
+        console.log(res.error.issues,res.data, raw);
+
         // Informs the user of the error and informs him to leave if his settings are broken.
         alert("Failed to load the application settings.\nIf you proceed your old settings will be lost. If you dont want that to happen, close the webpage now.\n\nDo you want to proceed?");
 

@@ -31,10 +31,10 @@
                 <template v-else-if="serial.status.value === ConnectionType.DISCONNECTED">
                     <!-- Pick (Led pin) -->
                     <v-text-field :label="$t('serial_settings_ledpin')" prepend-inner-icon="mdi-led-on"
-                        v-model="settings.serialPreview.pin" />
+                        v-model.number="settings.serialPreview.pin" />
                     <!-- Pick LED Amount -->
                     <v-text-field :label="$t('serial_settings_ledamount')"
-                        prepend-inner-icon="mdi-arrow-top-left-bottom-right" v-model="settings.serialPreview.ledAmount" />
+                        prepend-inner-icon="mdi-arrow-top-left-bottom-right" v-model.number="settings.serialPreview.ledAmount" />
 
 
                     <div class="d-flex justify-center align-center flex-column">
