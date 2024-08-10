@@ -14,13 +14,13 @@ export type LEDProcedureOptions = {
     v: number
 }
 
-export class SetLedSimpleProcLEDNode implements ILEDNode<LEDProcedureOptions> {
+export class SingleLedProcLEDNode implements ILEDNode<LEDProcedureOptions> {
     async startNode({h, idx, s, v}: LEDProcedureOptions, ctrl: IVisualisationController): Promise<void> {
         ctrl.setLedHSV(idx,h,s,v);
     }
 }
 
-export class SetLedSimpleProcDiagnostics implements IDiagnostics<LEDProcedureOptions> {
+export class SingleLedProcDiagnostics implements IDiagnostics<LEDProcedureOptions> {
 
     evaluateRuntime(opts: LEDProcedureOptions): number | undefined {
         return 0;
@@ -31,7 +31,7 @@ export class SetLedSimpleProcDiagnostics implements IDiagnostics<LEDProcedureOpt
     }
 }
 
-export class SetLedSimpleProcCodeConstructor implements ICodeConstructor<LEDProcedureOptions> {
+export class SingleLedProcCodeConstructor implements ICodeConstructor<LEDProcedureOptions> {
 
     registerFunctions(cppFnManager: ICppFnManager<IExtendedCodeSupport>, calls: LEDProcedureOptions[]) {
         return [];

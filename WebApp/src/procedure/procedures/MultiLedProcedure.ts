@@ -7,7 +7,7 @@ import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCo
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
 import { delayIf, finalPush, tab } from "@cppgen/functionManager/utils/CodeFormatUtil";
 
-export type LEDRangeProcedureOptions = {
+export type MultiLedProcedureOptions = {
     // Range to play
     idxStart: number,
     idxEnd: number,
@@ -21,13 +21,13 @@ export type LEDRangeProcedureOptions = {
     v: number
 }
 
-export function SetLedRangeSimpleProcPreparer(cfg: LEDRangeProcedureOptions){
+export function MultiLedProcPreparer(cfg: MultiLedProcedureOptions){
     if(cfg.ledDelay < 0)
         cfg.ledDelay = 0;
 }
 
-export class SetLedRangeSimpleProcLEDNode implements ILEDNode<LEDRangeProcedureOptions> {
-    async startNode({ h, idxEnd, idxStart, ledDelay, s, v }: LEDRangeProcedureOptions, ctrl: IVisualisationController): Promise<void> {
+export class MultiLedProcLEDNode implements ILEDNode<MultiLedProcedureOptions> {
+    async startNode({ h, idxEnd, idxStart, ledDelay, s, v }: MultiLedProcedureOptions, ctrl: IVisualisationController): Promise<void> {
         
         const dir = idxStart > idxEnd ? -1 : 1;
 
@@ -41,20 +41,20 @@ export class SetLedRangeSimpleProcLEDNode implements ILEDNode<LEDRangeProcedureO
     }
 }
 
-export class SetLedRangeSimpleProcDiagnostics implements IDiagnostics<LEDRangeProcedureOptions> {
+export class MultiLedProcDiagnostics implements IDiagnostics<MultiLedProcedureOptions> {
 
-    evaluateRuntime(opts: LEDRangeProcedureOptions): number | undefined {
+    evaluateRuntime(opts: MultiLedProcedureOptions): number | undefined {
         return opts.ledDelay * Math.abs(opts.idxEnd - opts.idxStart);
     }
 
-    findAllAccessedLeds({ idxEnd, idxStart }: LEDRangeProcedureOptions): Set<number> {
+    findAllAccessedLeds({ idxEnd, idxStart }: MultiLedProcedureOptions): Set<number> {
         return new Set(Array(idxEnd - idxStart).fill(0).map((_, idx) => idx + idxStart));
     }
 }
 
-export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeConstructor<LEDRangeProcedureOptions> {
+export class MultiLedProcCodeConstructor extends SimpleFunctionCodeConstructor<MultiLedProcedureOptions> {
     
-    getTypeMapping(): { [x in keyof LEDRangeProcedureOptions]: CppType; } {
+    getTypeMapping(): { [x in keyof MultiLedProcedureOptions]: CppType; } {
         return {
             h: CppType.INT,
             s: CppType.INT,
@@ -64,7 +64,7 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
             idxEnd: CppType.INT,
         };
     }
-    generateFunctionCode({h, s, v, idxEnd, idxStart, ledDelay}: CppFnInformation<LEDRangeProcedureOptions>, gen: ICodeSupport): string {
+    generateFunctionCode({h, s, v, idxEnd, idxStart, ledDelay}: CppFnInformation<MultiLedProcedureOptions>, gen: ICodeSupport): string {
         const i = gen.registerVariable("i");
 
         const compareOperation = idxStart.available && idxEnd.available ? (
@@ -97,10 +97,9 @@ export class SetLedRangeSimpleProcCodeConstructor extends SimpleFunctionCodeCons
                 ...delayIf(ledDelay,gen)
             ]),
             "}",
-            finalPush([ledDelay], gen),
         ].join("\n");
     }
-    getDirtyStateAfterExecution({ledDelay}: LEDRangeProcedureOptions, previousState: boolean): boolean {
+    getDirtyStateAfterExecution({ledDelay}: MultiLedProcedureOptions, previousState: boolean): boolean {
         return ledDelay <= 0;
     }
     getFunctionName(): string {

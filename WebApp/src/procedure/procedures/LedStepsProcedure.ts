@@ -6,7 +6,7 @@ import { IVisualisationController } from "@visualizer/index";
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
 import { delayIf, finalPush, tab, trinaryEquasion } from "@cppgen/functionManager/utils/CodeFormatUtil";
 
-export type LEDRangeComplexProcedureOptions = {
+export type LedStepsProcedureOptions = {
     // Range to play
     idxStart: number,
 
@@ -36,7 +36,7 @@ export type LEDRangeComplexProcedureOptions = {
     v: number
 }
 
-export function SetLedRangeComplexProcPreparer(cfg: LEDRangeComplexProcedureOptions) {
+export function LedStepsProcPreparer(cfg: LedStepsProcedureOptions) {
     if (cfg.ledDelay < 0)
         cfg.ledDelay = 0;
     if (cfg.stepDelay < 0)
@@ -45,8 +45,8 @@ export function SetLedRangeComplexProcPreparer(cfg: LEDRangeComplexProcedureOpti
         cfg.steps *= -1;
 }
 
-export class SetLedRangeComplexProcLEDNode implements ILEDNode<LEDRangeComplexProcedureOptions> {
-    async startNode({ isParallel,  h, ledsReversed, stepsReversed, stepSize, stepDelay, stepSpace, steps, idxStart, ledDelay, s, v }: LEDRangeComplexProcedureOptions, ctrl: IVisualisationController): Promise<void> {
+export class LedStepsProcLEDNode implements ILEDNode<LedStepsProcedureOptions> {
+    async startNode({ isParallel,  h, ledsReversed, stepsReversed, stepSize, stepDelay, stepSpace, steps, idxStart, ledDelay, s, v }: LedStepsProcedureOptions, ctrl: IVisualisationController): Promise<void> {
 
         // Length of the accessed step
         const maxAccessedStep = (steps - 1) * (stepSize + stepSpace);
@@ -82,13 +82,13 @@ export class SetLedRangeComplexProcLEDNode implements ILEDNode<LEDRangeComplexPr
     }
 }
 
-export class SetLedRangeComplexProcDiagnostics implements IDiagnostics<LEDRangeComplexProcedureOptions> {
+export class LedStepsProcDiagnostics implements IDiagnostics<LedStepsProcedureOptions> {
 
-    evaluateRuntime({ steps, stepDelay, ledDelay, stepSize }: LEDRangeComplexProcedureOptions): number | undefined {
+    evaluateRuntime({ steps, stepDelay, ledDelay, stepSize }: LedStepsProcedureOptions): number | undefined {
         return steps * (stepDelay + ledDelay * stepSize);
     }
 
-    findAllAccessedLeds({ idxStart, steps, stepSize, stepSpace }: LEDRangeComplexProcedureOptions): Set<number> {
+    findAllAccessedLeds({ idxStart, steps, stepSize, stepSpace }: LedStepsProcedureOptions): Set<number> {
         const leds = new Set<number>();
 
         for (let step = 0; step < steps; step++) {
@@ -105,9 +105,9 @@ export class SetLedRangeComplexProcDiagnostics implements IDiagnostics<LEDRangeC
     }
 }
 
-export class SetLedRangeComplexProcCodeConstructor extends SimpleFunctionCodeConstructor<LEDRangeComplexProcedureOptions> {
+export class LedStepsProcCodeConstructor extends SimpleFunctionCodeConstructor<LedStepsProcedureOptions> {
 
-    getTypeMapping(): { [x in keyof LEDRangeComplexProcedureOptions]: CppType; } {
+    getTypeMapping(): { [x in keyof LedStepsProcedureOptions]: CppType; } {
         return {
             h: CppType.INT,
             s: CppType.INT,
@@ -123,7 +123,7 @@ export class SetLedRangeComplexProcCodeConstructor extends SimpleFunctionCodeCon
             isParallel: CppType.BOOLEAN
         };
     }
-    generateFunctionCode({ isParallel, h, s, v, idxStart, ledDelay, ledsReversed, stepDelay, stepSize, stepSpace, steps, stepsReversed }: CppFnInformation<LEDRangeComplexProcedureOptions>, gen: ICodeSupport): string {
+    generateFunctionCode({ isParallel, h, s, v, idxStart, ledDelay, ledsReversed, stepDelay, stepSize, stepSpace, steps, stepsReversed }: CppFnInformation<LedStepsProcedureOptions>, gen: ICodeSupport): string {
 
         const vStep = gen.registerVariable("step");
         const vLed = gen.registerVariable("led");
@@ -204,7 +204,7 @@ export class SetLedRangeComplexProcCodeConstructor extends SimpleFunctionCodeCon
             ...finalPush([ledDelay, stepDelay], gen),
         ].join("\n");
     }
-    getDirtyStateAfterExecution(_: LEDRangeComplexProcedureOptions, previousState: boolean): boolean {
+    getDirtyStateAfterExecution(_: LedStepsProcedureOptions, previousState: boolean): boolean {
         return false;
     }
     getFunctionName(): string {
