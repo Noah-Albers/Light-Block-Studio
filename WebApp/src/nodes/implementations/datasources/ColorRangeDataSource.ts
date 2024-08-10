@@ -1,4 +1,4 @@
-import { CachedColor, HSVColor, VariableColorType, areVariableColorsEqual, isVariableColor, validateAndFixColor } from "./ColorDataSource";
+import { CachedColor, HSVBinaryColor, HSVColor, VariableColorType, areVariableColorsEqual, isVariableColor, validateAndFixColor } from "./ColorDataSource";
 import { clamp } from "@utils/MathUtils";
 import { solveExpression } from "@mathSolver/index";
 import { IDataSource } from "@nodes/definitions/DataSource";
@@ -32,6 +32,10 @@ export type HSVColorRange = {
     first: HSVColor,
     second: HSVColor
 }
+export type HSVBinaryColorRange = {
+    first: HSVBinaryColor,
+    second: HSVBinaryColor,
+}
 
 const Defaults: Required<ColorDataConfig> = {
     info: undefined,
@@ -49,7 +53,7 @@ export type CachedRangeColor = {
     second: CachedColor
 };
 
-export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColorRange, CachedRangeColor> {
+export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVBinaryColorRange, CachedRangeColor> {
 
     private readonly config: Required<ColorDataConfig>;
     private readonly name: string;
@@ -72,35 +76,41 @@ export class ColorRangeDataSource implements IDataSource<ColorRangeType, HSVColo
     }
 
     calculateCache(vars: { [key: string]: number; }, value: ColorRangeType): CachedRangeColor {
-        const res = this.resolve(value, vars);
 
-        const dpFirst = HSV2HEX(...res.first);
-        const dpSecond = HSV2HEX(...res.second);
+        const first = this.calculateColor(value.first, vars);
+        const second = this.calculateColor(value.second, vars);
+
+        const dpFirst = HSV2HEX(...first);
+        const dpSecond = HSV2HEX(...second);
 
         return {
             first: {
                 display: dpFirst,
-                hsv: res.first
+                hsv: first
             },
             second: {
                 display: dpSecond,
-                hsv: res.second
+                hsv: second
             }
         }
     }
 
-    resolve(value: ColorRangeType, variables: { [name: string]: number; }): HSVColorRange {
-        const mapper = (val: VariableColorType)=>val.map(x=>{
+
+    private calculateColor(value: VariableColorType, variables: { [name: string]: number; }){
+        return value.map(x=>{
             if(typeof x === "number")
                 return clamp(x);
-
+    
             return clamp(solveExpression(x, variables, 1));
         }) as HSVColor;
+    }
 
+
+    resolve(value: ColorRangeType, variables: { [name: string]: number; }): HSVColorRange {
         return {
-            first: mapper(value.first),
-            second: mapper(value.second),
-        } as HSVColorRange
+            first: this.calculateColor(value.first, variables).map(x=>Math.round(255 * x)),
+            second: this.calculateColor(value.second, variables).map(x=>Math.round(255 * x)),
+        } as HSVBinaryColorRange
     }
     
     getKey(): string {

@@ -208,6 +208,6 @@ export class LedStepsProcCodeConstructor extends SimpleFunctionCodeConstructor<L
         return false;
     }
     getFunctionName(): string {
-        return "SetLEDRangeComplex";
+        return "ledSteps";
     }
 }

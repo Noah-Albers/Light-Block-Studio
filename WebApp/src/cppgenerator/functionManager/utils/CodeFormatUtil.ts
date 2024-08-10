@@ -1,12 +1,18 @@
 import { ICodeSupport } from "@cppgen/generator";
 import { CppFnArgInformation } from "../definitions/CppFnDefinitions";
 
+export type TrinaryResult = string | (()=>string);
+
 // TODO: Comment
-export function trinaryEquasion(value: CppFnArgInformation<boolean>, a: string, b: string){
+export function trinaryEquasion(value: CppFnArgInformation<boolean>, a: TrinaryResult, b: TrinaryResult){
+    
+    const getA = ()=>typeof a === "string" ? a : a();
+    const getB = ()=>typeof b === "string" ? b : b();
+
     return (
         value.available ? (
-            value.value ? a : b
-        ) : `${value} ? ${a} : ${b}`
+            value.value ? getA() : getB()
+        ) : `${value} ? ${getA()} : ${getB()}`
     )
 }
 

@@ -1,8 +1,8 @@
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
-import { LEDRangeComplexProcedureOptions } from "@procedure/procedures/SetLedRangeComplexProcedure";
+import { LedStepsProcedureOptions } from "@procedure/procedures/LedStepsProcedure";
 import { Registry } from "@registry/Registry";
 
-export function selectBestColorProcedure(cfg: LEDRangeComplexProcedureOptions) : ProcedureWithOptions<any> {
+export function selectBestColorProcedure(cfg: LedStepsProcedureOptions) : ProcedureWithOptions<any> {
 
     // Diagnostics
     const diagnostics = Registry.procedures.setLedRangeComplex.getDiagnostics();
@@ -59,7 +59,7 @@ export function selectBestColorProcedure(cfg: LEDRangeComplexProcedureOptions) :
             procedure: Registry.procedures.setLedRangeSimple,
             options: { h, s, v,
                 idxStart: isNoneReversed ? minIdx : maxIdx,
-                idxEnd: isNoneReversed ? maxIdx : minIdx,
+                idxEndExclusive: isNoneReversed ? maxIdx : minIdx,
                 ledDelay: cfg.ledDelay
             }
         }

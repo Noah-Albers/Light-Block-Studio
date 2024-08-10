@@ -10,7 +10,7 @@ import { delayIf, finalPush, tab } from "@cppgen/functionManager/utils/CodeForma
 export type MultiLedProcedureOptions = {
     // Range to play
     idxStart: number,
-    idxEnd: number,
+    idxEndExclusive: number,
 
     // A delay to set on each led
     ledDelay: number,
@@ -27,11 +27,11 @@ export function MultiLedProcPreparer(cfg: MultiLedProcedureOptions){
 }
 
 export class MultiLedProcLEDNode implements ILEDNode<MultiLedProcedureOptions> {
-    async startNode({ h, idxEnd, idxStart, ledDelay, s, v }: MultiLedProcedureOptions, ctrl: IVisualisationController): Promise<void> {
-        
-        const dir = idxStart > idxEnd ? -1 : 1;
+    async startNode({ h, idxEndExclusive, idxStart, ledDelay, s, v }: MultiLedProcedureOptions, ctrl: IVisualisationController): Promise<void> {
+        console.log(idxStart, idxEndExclusive)
+        const dir = idxStart > idxEndExclusive ? -1 : 1;
 
-        for (let i = idxStart; i != idxEnd+dir; i+=dir) {
+        for (let i = idxStart; i != idxEndExclusive+dir; i+=dir) {
             ctrl.setLedHSV(i, h, s, v);
             if(ledDelay > 0){
                 ctrl.pushUpdate();
@@ -44,11 +44,11 @@ export class MultiLedProcLEDNode implements ILEDNode<MultiLedProcedureOptions> {
 export class MultiLedProcDiagnostics implements IDiagnostics<MultiLedProcedureOptions> {
 
     evaluateRuntime(opts: MultiLedProcedureOptions): number | undefined {
-        return opts.ledDelay * Math.abs(opts.idxEnd - opts.idxStart);
+        return opts.ledDelay * Math.abs(opts.idxEndExclusive - opts.idxStart);
     }
 
-    findAllAccessedLeds({ idxEnd, idxStart }: MultiLedProcedureOptions): Set<number> {
-        return new Set(Array(idxEnd - idxStart).fill(0).map((_, idx) => idx + idxStart));
+    findAllAccessedLeds({ idxEndExclusive, idxStart }: MultiLedProcedureOptions): Set<number> {
+        return new Set(Array(idxEndExclusive - idxStart).fill(0).map((_, idx) => idx + idxStart));
     }
 }
 
@@ -61,31 +61,31 @@ export class MultiLedProcCodeConstructor extends SimpleFunctionCodeConstructor<M
             v: CppType.INT,
             ledDelay: CppType.INT,
             idxStart: CppType.INT,
-            idxEnd: CppType.INT,
+            idxEndExclusive: CppType.INT,
         };
     }
-    generateFunctionCode({h, s, v, idxEnd, idxStart, ledDelay}: CppFnInformation<MultiLedProcedureOptions>, gen: ICodeSupport): string {
+    generateFunctionCode({h, s, v, idxEndExclusive, idxStart, ledDelay}: CppFnInformation<MultiLedProcedureOptions>, gen: ICodeSupport): string {
         const i = gen.registerVariable("i");
 
-        const compareOperation = idxStart.available && idxEnd.available ? (
-            idxStart.value > idxEnd.value ? `>=` : `<`
+        const compareOperation = idxStart.available && idxEndExclusive.available ? (
+            idxStart.value > idxEndExclusive.value ? `>=` : `<`
         ) : "!=";
 
-        const operationKnown = idxStart.available && idxEnd.available;
+        const operationKnown = idxStart.available && idxEndExclusive.available;
 
         const vDir = operationKnown ? "" : gen.registerVariable("dir");
 
         const initializerCode = operationKnown ? [] : [
-            `int8_t ${vDir} = ${idxStart} > ${idxEnd} ? -1 : 1;`,
+            `int8_t ${vDir} = ${idxStart} > ${idxEndExclusive} ? -1 : 1;`,
         ];
 
-        const iterationOperation = idxStart.available && idxEnd.available ? (
-            idxStart.value > idxEnd.value ? `${i}--` : `${i}++`
+        const iterationOperation = idxStart.available && idxEndExclusive.available ? (
+            idxStart.value > idxEndExclusive.value ? `${i}--` : `${i}++`
         ) : `${i}+=${vDir}`;
 
         const endStep = operationKnown ? (
-            `${idxEnd.value + (idxStart.value > idxEnd.value ? -1 : 1)}`
-        ) : `${idxEnd}+${vDir}`;
+            `${idxEndExclusive.value + (idxStart.value > idxEndExclusive.value ? -1 : 1)}`
+        ) : `${idxEndExclusive}+${vDir}`;
 
         return [
             ...initializerCode,
@@ -103,6 +103,6 @@ export class MultiLedProcCodeConstructor extends SimpleFunctionCodeConstructor<M
         return ledDelay <= 0;
     }
     getFunctionName(): string {
-        return "setLEDRangeSimple";
+        return "multiLed";
     }
 }

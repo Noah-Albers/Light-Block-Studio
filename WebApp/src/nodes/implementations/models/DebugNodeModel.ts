@@ -5,74 +5,42 @@ import { Registry } from "@registry/Registry";
 import { ColorDataSource } from "../datasources/ColorDataSource";
 import { OptionDataSource } from "../datasources/OptionDataSource";
 import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
+import { ColorRangeDataSource } from "../datasources/ColorRangeDataSource";
 
 // TODO: Lang
 
 export class DebugNodeModel implements INodeModel {
 
-    private delayStepField = new NumberDataSource("delayStep", "500", {
-        displayTitle: "Delay (Step)",
-        info: "",
-        type: "int",
-        min: 0
-    });
-    private delayLedField = new NumberDataSource("delayLed", "100", {
-        displayTitle: "Delay (Step)",
-        info: "",
-        type: "int",
-        min: 0
-    });
-    private stepsField = new NumberDataSource("steps", "4", {
-        displayTitle: "Steps",
-        info: "",
+    // Index of the field
+    private idxStartField = new NumberDataSource("idxStart", "0", {
+        displayTitle: "Start-Index",
+        info: "Starting index for the range.",
         type: "int",
         min: 0
     });
 
-    private spaceField = new NumberDataSource("space", "2", {
-        displayTitle: "Space",
-        info: "",
-        type: "int",
-        min: 0
-    });
-
-    private idxField = new NumberDataSource("idx", "5", {
-        displayTitle: "Start Index",
-        info: "",
-        type: "int",
-        min: 0
-    });
-
-    private stepLengthField = new NumberDataSource("stepLength", "3", {
-        displayTitle: "Led Amount",
-        info: "",
+    // Index of the field
+    private idxEndField = new NumberDataSource("idxEnd", "amt", {
+        displayTitle: "End-Index",
+        info: "The index where the range shall stop",
         type: "int",
         min: 0
     });
 
 
+    // Delay field
+    private delayField = new NumberDataSource("ledFelay", "0", {
+        displayTitle: "Delay",
+        info: "How many milliseconds to wait between the leds.",
+        type: "int",
+        min: 0
+    });
 
-    private colorField = new ColorDataSource("clr", [1, 1, 1], {
+    // Field to select the color
+    private colorField = new ColorRangeDataSource("clr", [1,1,1], [.5,.5,.5], {
         displayTitle: "Color",
-        info: ""
+        info: "what color should be set"
     });
-
-    private reverseLedField = new OptionDataSource("reverseLed", "yes", {
-        values: { "yes": "yes", "no": "No" },
-        displayTitle: "Reverse Led",
-        info: ""
-    })
-    private reverseStepField = new OptionDataSource("reverseStep", "yes", {
-        values: { "yes": "yes", "no": "No" },
-        displayTitle: "Reverse Step",
-        info: ""
-    })
-
-    private modeField = new OptionDataSource("mode", "parallel", {
-        values: { "parallel": "Parallel", "series": "Series" },
-        displayTitle: "Mode",
-        info: ""
-    })
 
     getModelName(): string {
         return "debug";
@@ -84,13 +52,14 @@ export class DebugNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Idx: %1;Steps: %2;Space: %3;Size: %4;RevLed: %5; RevStep: %6; LedDel: %7; StepDel: %8;Color %9; Mode %10";
+        return "From %1 to %2 Color in %3 (Delay %4)";
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [
-            this.idxField, this.stepsField, this.spaceField,
-            this.stepLengthField, this.reverseLedField, this.reverseStepField,
-            this.delayLedField, this.delayStepField, this.colorField, this.modeField
+            this.idxStartField,
+            this.idxEndField,
+            this.colorField,
+            this.delayField,
         ]
     }
     getSources(): IDataSource<any, any, any>[] {
@@ -99,20 +68,20 @@ export class DebugNodeModel implements INodeModel {
     createConfigWithProcedure(supplier: IDataSourceSupplier) {
         const color = supplier.get(this.colorField);
 
-        return selectBestColorProcedure({
-            idxStart: supplier.get(this.idxField),
-            steps: supplier.get(this.stepsField),
-            stepSpace: supplier.get(this.spaceField),
-            stepSize: supplier.get(this.stepLengthField),
-            stepsReversed: supplier.get(this.reverseStepField) === "yes",
-            ledsReversed: supplier.get(this.reverseLedField) === "yes",
-            ledDelay: supplier.get(this.delayLedField),
-            stepDelay: supplier.get(this.delayStepField),
-            h: color[0],
-            s: color[1],
-            v: color[2],
-            isParallel: supplier.get(this.modeField) === "parallel"
-        })
+        return {
+            procedure: Registry.procedures.ledGradiant,
+            options: {
+                idxStart: supplier.get(this.idxStartField),
+                idxEnd: supplier.get(this.idxEndField),
+                hFrom: color.first[0],
+                sFrom: color.first[1],
+                vFrom: color.first[2],
+                hTo: color.second[0],
+                sTo: color.second[1],
+                vTo: color.second[2],
+                ledDelay: supplier.get(this.delayField)
+            }
+        }
     }
 
     hasSubNodes(): boolean {
