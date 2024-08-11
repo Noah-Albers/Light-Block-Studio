@@ -26,37 +26,37 @@ export type LedGradiantProcedureOptions = {
     vTo: number,
 }
 
-export function LedGradiantProcPreparer(cfg: LedGradiantProcedureOptions){
-    if(cfg.ledDelay < 0)
+export function LedGradiantProcPreparer(cfg: LedGradiantProcedureOptions) {
+    if (cfg.ledDelay < 0)
         cfg.ledDelay = 0;
 }
 
 export class LedGradiantProcLEDNode implements ILEDNode<LedGradiantProcedureOptions> {
     async startNode({ sTo, vTo, hTo, hFrom, idxEnd, idxStart, ledDelay, sFrom, vFrom }: LedGradiantProcedureOptions, ctrl: IVisualisationController): Promise<void> {
-        
+
         const dir = idxStart > idxEnd ? -1 : 1;
         const offset = idxStart > idxEnd ? 1 : 0;
 
         // Calculates the length
         let len = idxStart - idxEnd;
-        if(len <= 0)
+        if (len <= 0)
             len = -len;
 
-        for (let i = idxStart; i != idxEnd; i+=dir) {
-            
-            // Percentage
-            let perc = i/len;
+        for (let i = idxStart; i != idxEnd; i += dir) {
 
-            const linearInterpolation = (from: number, to: number, percentage: number) => perc * (to-from) + from;
-            
+            // Percentage
+            let perc = i / len;
+
+            const linearInterpolation = (from: number, to: number, percentage: number) => perc * (to - from) + from;
+
             // Work in both directions
             const h = linearInterpolation(hFrom, hTo, perc)
             const s = linearInterpolation(sFrom, sTo, perc);
             const v = linearInterpolation(vFrom, vTo, perc);
-            
-            ctrl.setLedHSV(i-offset, h, s, v);
 
-            if(ledDelay > 0){
+            ctrl.setLedHSV(i - offset, h, s, v);
+
+            if (ledDelay > 0) {
                 ctrl.pushUpdate();
                 await ctrl.sleep(ledDelay);
             }
@@ -76,7 +76,7 @@ export class LedGradiantProcDiagnostics implements IDiagnostics<LedGradiantProce
 }
 
 export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructor<LedGradiantProcedureOptions> {
-    
+
     getTypeMapping(): { [x in keyof LedGradiantProcedureOptions]: CppType; } {
         return {
             hFrom: CppType.INT,
@@ -90,41 +90,11 @@ export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructo
             idxEnd: CppType.INT,
         };
     }
-    
-    generateFunctionCode({idxEnd, idxStart, hFrom, hTo, sTo, sFrom, vFrom, vTo, ledDelay}: CppFnInformation<LedGradiantProcedureOptions>, gen: ICodeSupport): string {
-        
-        /**
-        const dir = idxStart > idxEnd ? -1 : 1;
-        const offset = idxStart > idxEnd ? 1 : 0;
 
-        // Calculates the length
-        let len = idxStart - idxEnd;
-        if(len <= 0)
-            len = -len;
+    generateFunctionCode({ idxEnd, idxStart, hFrom, hTo, sTo, sFrom, vFrom, vTo, ledDelay }: CppFnInformation<LedGradiantProcedureOptions>, gen: ICodeSupport): string {
 
-        for (let i = idxStart; i != idxEnd; i+=dir) {
-            
-            // Percentage
-            let perc = i/len;
-
-            const linearInterpolation = (from: number, to: number, percentage: number) => perc * (to-from) + from;
-            
-            // Work in both directions
-            const h = linearInterpolation(hFrom, hTo, perc)
-            const s = linearInterpolation(sFrom, sTo, perc);
-            const v = linearInterpolation(vFrom, vTo, perc);
-            
-            ctrl.setLedHSV(i-offset, h, s, v);
-
-            if(ledDelay > 0){
-                ctrl.pushUpdate();
-                await ctrl.sleep(ledDelay);
-            }
-        }
-         */
-
-        function getLinearInterpolationEquasion(from: CppFnArgInformation<number>, to: CppFnArgInformation<number>, perc: string){            
-            if(from.available && to.available)
+        function getLinearInterpolationEquasion(from: CppFnArgInformation<number>, to: CppFnArgInformation<number>, perc: string) {
+            if (from.available && to.available)
                 return `${perc} * ${to.value - from.value} + ${from.value}`;
 
             return `${perc} * (${to} - ${from}) + ${from}`;
@@ -134,7 +104,7 @@ export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructo
 
         const vDir = knowsDirection ? "" : gen.registerVariable("dir");
         const vOffset = knowsDirection ? "" : gen.registerVariable("offset");
-        
+
         const vLength = gen.registerVariable("length");
         const vI = gen.registerVariable("i");
 
@@ -150,8 +120,8 @@ export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructo
 
             (knowsDirection ?
                 idxStart.value < idxEnd.value ?
-                `for (int ${vI} = ${idxStart}; ${vI} < ${idxEnd}; ${vI}++) {` :
-                `for (int ${vI} = ${idxStart}; ${vI} >= ${idxEnd}; ${vI}--) {` :
+                    `for (int ${vI} = ${idxStart}; ${vI} < ${idxEnd}; ${vI}++) {` :
+                    `for (int ${vI} = ${idxStart}; ${vI} >= ${idxEnd}; ${vI}--) {` :
                 `for (int ${vI} = ${idxStart}; ${vI} != ${idxEnd}; ${vI}+=${vDir}) {`
             ),
             ...tab([
@@ -161,8 +131,8 @@ export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructo
                     getLinearInterpolationEquasion(hFrom, hTo, vPerc),
                     getLinearInterpolationEquasion(sFrom, sTo, vPerc),
                     getLinearInterpolationEquasion(vFrom, vTo, vPerc),
-                ),0).split("\n"),
-                ...delayIf(ledDelay,gen),
+                ), 0).split("\n"),
+                ...delayIf(ledDelay, gen),
             ]),
             "}"
 

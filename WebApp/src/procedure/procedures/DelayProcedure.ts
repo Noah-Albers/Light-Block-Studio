@@ -5,6 +5,8 @@ import { CodeResult, IExtendedCodeSupport } from "@cppgen/generator";
 import { IVisualisationController } from "@visualizer/index";
 import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCodeConstructor";
 
+// TODO: FOR ALL PROCEDURES IMPROVE PRECONFIG-HANDLING
+
 export type DelayProcedureOptions = {
     delay: number
 }

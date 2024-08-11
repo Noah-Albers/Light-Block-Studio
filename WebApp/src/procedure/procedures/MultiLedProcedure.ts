@@ -27,11 +27,11 @@ export function MultiLedProcPreparer(cfg: MultiLedProcedureOptions){
 }
 
 export class MultiLedProcLEDNode implements ILEDNode<MultiLedProcedureOptions> {
-    async startNode({ h, idxEndExclusive, idxStart, ledDelay, s, v }: MultiLedProcedureOptions, ctrl: IVisualisationController): Promise<void> {
-        console.log(idxStart, idxEndExclusive)
-        const dir = idxStart > idxEndExclusive ? -1 : 1;
+    async startNode({ h, idxEndExclusive: idxEnd, idxStart, ledDelay, s, v }: MultiLedProcedureOptions, ctrl: IVisualisationController): Promise<void> {
+        console.log(idxStart, idxEnd)
+        const dir = idxStart > idxEnd ? -1 : 1;
 
-        for (let i = idxStart; i != idxEndExclusive+dir; i+=dir) {
+        for (let i = idxStart; i != idxEnd+dir; i+=dir) {
             ctrl.setLedHSV(i, h, s, v);
             if(ledDelay > 0){
                 ctrl.pushUpdate();
@@ -99,8 +99,8 @@ export class MultiLedProcCodeConstructor extends SimpleFunctionCodeConstructor<M
             "}",
         ].join("\n");
     }
-    getDirtyStateAfterExecution({ledDelay}: MultiLedProcedureOptions, previousState: boolean): boolean {
-        return ledDelay <= 0;
+    getDirtyStateAfterExecution(opts: MultiLedProcedureOptions, previousState: boolean): boolean {
+        return opts.ledDelay <= 0;
     }
     getFunctionName(): string {
         return "multiLed";

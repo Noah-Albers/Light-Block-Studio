@@ -29,17 +29,38 @@ export class DebugNodeModel implements INodeModel {
 
 
     // Delay field
-    private delayField = new NumberDataSource("ledFelay", "0", {
-        displayTitle: "Delay",
+    private updateRate = new NumberDataSource("updateRate", "50", {
+        displayTitle: "UpdateRate",
         info: "How many milliseconds to wait between the leds.",
         type: "int",
         min: 0
     });
 
-    // Field to select the color
-    private colorField = new ColorRangeDataSource("clr", [1,1,1], [.5,.5,.5], {
-        displayTitle: "Color",
-        info: "what color should be set"
+    private offsetField = new NumberDataSource("offset", "20", {
+        displayTitle: "Offset (Per Led)",
+        info: "How many milliseconds to wait between the leds.",
+        type: "int",
+    });
+
+    private lengthField = new NumberDataSource("length", "1000", {
+        displayTitle: "Playlength",
+        info: "How many milliseconds to wait between the leds.",
+        type: "int",
+        min: 0
+    });
+
+    private cycleLengthField = new NumberDataSource("cycle", "500", {
+        displayTitle: "Cycle Length",
+        info: "How many milliseconds to wait between the leds.",
+        type: "int",
+        min: 0
+    });
+
+    private vField = new NumberDataSource("v", "255", {
+        displayTitle: "V",
+        info: "How many milliseconds to wait between the leds.",
+        type: "int",
+        min: 0
     });
 
     getModelName(): string {
@@ -52,34 +73,37 @@ export class DebugNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "From %1 to %2 Color in %3 (Delay %4)";
+        return "From %1 to %2 play %4ms; Cycle %3ms; Offset: %5; V: %6; UpdRate: %7";
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [
             this.idxStartField,
             this.idxEndField,
-            this.colorField,
-            this.delayField,
+            this.cycleLengthField,
+            this.lengthField,
+            this.offsetField,
+            this.vField,
+            this.updateRate
         ]
     }
     getSources(): IDataSource<any, any, any>[] {
         return this.getOnBlockSources();
     }
     createConfigWithProcedure(supplier: IDataSourceSupplier) {
-        const color = supplier.get(this.colorField);
+        
+        const offset = supplier.get(this.offsetField);
+        console.log("Offset: ",offset);
 
         return {
-            procedure: Registry.procedures.ledGradiant,
+            procedure: Registry.procedures.rainbow,
             options: {
+                cycleMs: supplier.get(this.cycleLengthField),
                 idxStart: supplier.get(this.idxStartField),
                 idxEnd: supplier.get(this.idxEndField),
-                hFrom: color.first[0],
-                sFrom: color.first[1],
-                vFrom: color.first[2],
-                hTo: color.second[0],
-                sTo: color.second[1],
-                vTo: color.second[2],
-                ledDelay: supplier.get(this.delayField)
+                ledOffsetMs: offset,
+                updateRateMs: supplier.get(this.updateRate),
+                playLength: supplier.get(this.lengthField),
+                v: supplier.get(this.vField),
             }
         }
     }

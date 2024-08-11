@@ -6,6 +6,7 @@ import { LedStepsProcCodeConstructor, LedStepsProcDiagnostics, LedStepsProcLEDNo
 import { LoopProcedure } from "@procedure/procedures/LoopProcedure/LoopProcedure"
 import { MultiLedProcCodeConstructor, MultiLedProcDiagnostics, MultiLedProcLEDNode, MultiLedProcPreparer } from "@procedure/procedures/MultiLedProcedure"
 import { PlaceholderProcedure } from "@procedure/procedures/PlaceholderProcedure"
+import { RainbowProcCodeConstructor, RainbowProcDiagnostics, RainbowProcLEDNode, RainbowProcPreparer } from "@procedure/procedures/RainbowProcedure"
 import { SingleLedProcCodeConstructor, SingleLedProcDiagnostics, SingleLedProcLEDNode } from "@procedure/procedures/SingleLedProcedure"
 
 // Used to register all procedures
@@ -17,6 +18,7 @@ export function registerProcedures() {
         multiLed: new SimpleProcedure("multi_led", new MultiLedProcCodeConstructor(), new MultiLedProcDiagnostics(), new MultiLedProcLEDNode(), { h: 1, s: 1, v: 1, idxEndExclusive: 16, idxStart: 0,ledDelay: 100 }, MultiLedProcPreparer),
         ledSteps: new SimpleProcedure("led_steps", new LedStepsProcCodeConstructor(), new LedStepsProcDiagnostics(), new LedStepsProcLEDNode(), { h: 1, s: 1, v: 1, idxStart: 1, ledDelay: 100, stepDelay: 500, ledsReversed: false, stepsReversed: false, steps: 5, stepSize: 3, stepSpace: 2, isParallel: false }, LedStepsProcPreparer),
         placeholder: new PlaceholderProcedure(),
-        ledGradiant: new SimpleProcedure("ledGradiant", new LedGradiantProcCodeConstructor(), new LedGradiantProcDiagnostics(), new LedGradiantProcLEDNode(), { hFrom: 1, sFrom: 1, vFrom: 1, hTo: .5, sTo: .5, vTo: .5, idxEnd: 16, idxStart: 0,ledDelay: 100 }, LedGradiantProcPreparer)
+        ledGradiant: new SimpleProcedure("ledGradiant", new LedGradiantProcCodeConstructor(), new LedGradiantProcDiagnostics(), new LedGradiantProcLEDNode(), { hFrom: 1, sFrom: 1, vFrom: 1, hTo: .5, sTo: .5, vTo: .5, idxEnd: 16, idxStart: 0,ledDelay: 100 }, LedGradiantProcPreparer),
+        rainbow: new SimpleProcedure("rainbow", new RainbowProcCodeConstructor(), new RainbowProcDiagnostics(), new RainbowProcLEDNode(), { cycleMs: 1000, idxEnd: 5, idxStart: 0, ledOffsetMs: 20, updateRateMs: 50, playLength: 3000, v: 1 }, RainbowProcPreparer),
     } as const
 }
