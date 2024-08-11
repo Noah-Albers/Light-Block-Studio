@@ -64,10 +64,13 @@ export class RainbowProcLEDNode implements ILEDNode<RainbowProcedureOptions> {
             // Updates every led      
             for(let led = idxStart; led < idxEnd; led++){
                 // Generates the current percentage
-                const perc = ((ctrl.millis()+ledOffsetMs*led)%cycleMs)/cycleMs;
+                let hue = Math.round(((ctrl.millis()+ledOffsetMs*led)%cycleMs)/cycleMs * 255);
+                if(hue < 0)
+                    hue+=255;
+
 
                 // Updates the color
-                ctrl.setLedHSV(led,Math.round(perc*255),255,v);
+                ctrl.setLedHSV(led,hue,255,v);
             }
 
             // Sends the update
@@ -109,6 +112,8 @@ export class RainbowProcCodeConstructor extends SimpleFunctionCodeConstructor<Ra
         const vLed = gen.registerVariable("led");
         const vHue = gen.registerVariable("hue");
 
+        // Note: vHue may very well become negative here. Tho the fastled AND Adafruit Neopixel Librarys are equiped to handle this
+        // therefor extra adjustment code wont be added.
         const hueCalc = `int ${vHue} = 255 * (float)( (${gen.millis()}${
             ledOffsetMs.available && ledOffsetMs.value === 0 ? `` :
             ` + ${ledOffsetMs} * ${vLed}`
