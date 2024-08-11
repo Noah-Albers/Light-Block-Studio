@@ -143,7 +143,7 @@ export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructo
         return [
             ...(knowsDirection ? [] : [
                 `int ${vDir} = ${idxStart} > ${idxEnd} ? -1 : 1;`,
-                `int ${vOffset} = ${idxStart} > ${idxEnd} ? 1 : 0`
+                `int ${vOffset} = ${idxStart} > ${idxEnd} ? 1 : 0;`
             ]),
             `int ${vLength} = ${idxStart} - ${idxEnd};`,
             `if(${vLength} < 0) ${vLength} = -${vLength};`,
@@ -152,7 +152,7 @@ export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructo
                 idxStart.value < idxEnd.value ?
                 `for (int ${vI} = ${idxStart}; ${vI} < ${idxEnd}; ${vI}++) {` :
                 `for (int ${vI} = ${idxStart}; ${vI} >= ${idxEnd}; ${vI}--) {` :
-                `for (int i = ${idxStart}; i != ${idxEnd}; i+=dir) {`
+                `for (int ${vI} = ${idxStart}; ${vI} != ${idxEnd}; ${vI}+=${vDir}) {`
             ),
             ...tab([
                 `float ${vPerc} = (float)${vI}/(float)${vLength};`,

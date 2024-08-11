@@ -76,7 +76,7 @@ export function useSerialHandler() {
 
             // Open the port
             await possiblePort.open({
-                baudRate: 9600
+                baudRate: 115200
             });
 
             // Updates the status
@@ -139,6 +139,8 @@ export function useSerialHandler() {
             data.push(rgb[2]);
         }
 
+        // TODO: Implement system where the push only runs if dirty data has been send
+        
         // Appends the push command
         data.push(255);
 

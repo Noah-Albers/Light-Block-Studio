@@ -98,20 +98,14 @@ void setup(){
     FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, LED_AMT);
 
     // Starts serial communication
-    Serial.begin(9600);
+    Serial.begin(115200);
 }
 
 void loop(){
   // Interprets the command as the index to set the color at
   
   // Waits for the color
-  long start = millis();
-  while(Serial.available() < 4) {
-      if(millis() - start > 1000){
-        while(Serial.available())Serial.read();
-        return;
-      }
-  };
+  while(!Serial.available());
 
   // Reads in the index to set
   int idx = Serial.read();
