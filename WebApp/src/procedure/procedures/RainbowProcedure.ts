@@ -7,6 +7,7 @@ import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCo
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
 import { delayIf, finalPush, tab } from "@cppgen/functionManager/utils/CodeFormatUtil";
 import { clamp } from "@utils/MathUtils";
+import { ensureNonNaNs } from "@procedure/utils/ProcedurePrepareUtils";
 
 export type RainbowProcedureOptions = {
     // Range to play
@@ -30,9 +31,8 @@ export type RainbowProcedureOptions = {
 }
 
 export function RainbowProcPreparer(cfg: RainbowProcedureOptions){
-    for(let key of Object.keys(cfg))
-        if(isNaN(cfg[key as keyof typeof cfg]))
-            cfg[key as keyof typeof cfg] = 0;
+    ensureNonNaNs(cfg);
+    
     if(cfg.idxStart < 0)
         cfg.idxStart = 0;
     if(cfg.idxEnd < 0)

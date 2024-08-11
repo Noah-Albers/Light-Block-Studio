@@ -1,6 +1,6 @@
 
 import { SimpleProcedure } from "@procedure/implementations/SimpleProcedure"
-import { DelayProcCodeConstructor, DelayProcDiagnostics, DelayProcLEDNode } from "@procedure/procedures/DelayProcedure"
+import { DelayProcCodeConstructor, DelayProcDiagnostics, DelayProcLEDNode, DelayProcPreparer } from "@procedure/procedures/DelayProcedure"
 import { FadeProcCodeConstructor, FadeProcDiagnostics, FadeProcLEDNode, FadeProcPreparer } from "@procedure/procedures/FadeProcedure"
 import { LedGradiantProcCodeConstructor, LedGradiantProcDiagnostics, LedGradiantProcLEDNode, LedGradiantProcPreparer } from "@procedure/procedures/LedGradiantProcedure"
 import { LedStepsProcCodeConstructor, LedStepsProcDiagnostics, LedStepsProcLEDNode, LedStepsProcPreparer } from "@procedure/procedures/LedStepsProcedure"
@@ -14,7 +14,7 @@ import { SingleLedProcCodeConstructor, SingleLedProcDiagnostics, SingleLedProcLE
 export function registerProcedures() {
     return {
         loop: new LoopProcedure(),
-        delay: new SimpleProcedure("delay", new DelayProcCodeConstructor(), new DelayProcDiagnostics(), new DelayProcLEDNode(), { delay: 100 }),
+        delay: new SimpleProcedure("delay", new DelayProcCodeConstructor(), new DelayProcDiagnostics(), new DelayProcLEDNode(), { delay: 100 }, DelayProcPreparer),
         singleLed: new SimpleProcedure("single_led", new SingleLedProcCodeConstructor(), new SingleLedProcDiagnostics(), new SingleLedProcLEDNode(), { idx: 0, h: 255, s: 255, v: 255}),
         multiLed: new SimpleProcedure("multi_led", new MultiLedProcCodeConstructor(), new MultiLedProcDiagnostics(), new MultiLedProcLEDNode(), { h: 255, s: 255, v: 255, idxEndExclusive: 16, idxStart: 0,ledDelay: 100 }, MultiLedProcPreparer),
         ledSteps: new SimpleProcedure("led_steps", new LedStepsProcCodeConstructor(), new LedStepsProcDiagnostics(), new LedStepsProcLEDNode(), { h: 255, s: 255, v: 255, idxStart: 1, ledDelay: 100, stepDelay: 500, ledsReversed: false, stepsReversed: false, steps: 5, stepSize: 3, stepSpace: 2, isParallel: false }, LedStepsProcPreparer),

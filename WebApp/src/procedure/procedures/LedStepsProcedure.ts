@@ -5,6 +5,8 @@ import { ICodeSupport } from "@cppgen/generator";
 import { IVisualisationController } from "@visualizer/index";
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
 import { delayIf, finalPush, tab, trinaryEquasion } from "@cppgen/functionManager/utils/CodeFormatUtil";
+import { clamp } from "@utils/MathUtils";
+import { ensureNonNaNs } from "@procedure/utils/ProcedurePrepareUtils";
 
 export type LedStepsProcedureOptions = {
     // Range to play
@@ -37,12 +39,21 @@ export type LedStepsProcedureOptions = {
 }
 
 export function LedStepsProcPreparer(cfg: LedStepsProcedureOptions) {
+    ensureNonNaNs(cfg);
+
+    if(cfg.idxStart < 0)
+        cfg.idxStart = 0;
+
     if (cfg.ledDelay < 0)
         cfg.ledDelay = 0;
     if (cfg.stepDelay < 0)
         cfg.stepDelay = 0;
     if (cfg.steps < 0)
         cfg.steps *= -1;
+
+    cfg.h = clamp(cfg.h, 0, 255);
+    cfg.s = clamp(cfg.s, 0, 255);
+    cfg.v = clamp(cfg.v, 0, 255);
 }
 
 export class LedStepsProcLEDNode implements ILEDNode<LedStepsProcedureOptions> {

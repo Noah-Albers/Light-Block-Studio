@@ -6,6 +6,8 @@ import { IVisualisationController } from "@visualizer/index";
 import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCodeConstructor";
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
 import { delayIf, finalPush, tab } from "@cppgen/functionManager/utils/CodeFormatUtil";
+import { ensureNonNaNs } from "@procedure/utils/ProcedurePrepareUtils";
+import { clamp } from "@utils/MathUtils";
 
 export type MultiLedProcedureOptions = {
     // Range to play
@@ -22,8 +24,20 @@ export type MultiLedProcedureOptions = {
 }
 
 export function MultiLedProcPreparer(cfg: MultiLedProcedureOptions){
+    ensureNonNaNs(cfg);
+
+
+    if(cfg.idxStart < 0)
+        cfg.idxStart = 0;
+    if(cfg.idxEndExclusive < 0)
+        cfg.idxEndExclusive = 0;
+
     if(cfg.ledDelay < 0)
         cfg.ledDelay = 0;
+
+    cfg.h = clamp(cfg.h, 0, 255);
+    cfg.s = clamp(cfg.s, 0, 255);
+    cfg.v = clamp(cfg.v, 0, 255);
 }
 
 export class MultiLedProcLEDNode implements ILEDNode<MultiLedProcedureOptions> {

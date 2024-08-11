@@ -4,6 +4,14 @@ import { CppFnArgInformation } from "../definitions/CppFnDefinitions";
 export type TrinaryResult = string | (()=>string);
 
 // TODO: Comment
+/**
+ * Takes in a value that may or may not be known at precompile time
+ * and creates a trinary-operator lookup.
+ * 
+ * Meaning if it's known at precompile time, the return will be the direct value.
+ * 
+ * If it's not known, it will generate the same lookup to be put into the c-code.
+ */
 export function trinaryEquasion(value: CppFnArgInformation<boolean>, a: TrinaryResult, b: TrinaryResult){
     
     const getA = ()=>typeof a === "string" ? a : a();
@@ -28,7 +36,21 @@ export function tab<T extends string | string[]>(code: T, spaces: number = 4) : 
     return code.map(x=>empty+x) as T;
 }
 
-// TODO: Comment
+/**
+ * Creates delay code only if the delay is not 0
+ * 
+ * This means that
+ * If the delay is known at precompile time:
+ * - it will print the delay (If it's > 0)
+ * - it will remove the delay (If it's = 0)
+ * 
+ * If not known, it will generate this check for runtime.
+ *
+ * Usually before a delay, an led push is also added to not keep the display dirty.
+ * 
+ * but if ignorePush is true, it prevents an led push before the delay.
+ * @returns 
+ */
 export function delayIf(delay: CppFnArgInformation<number>, gen: ICodeSupport, ignorePush: boolean = false) {
     
     if(delay.available){
@@ -53,8 +75,12 @@ export function delayIf(delay: CppFnArgInformation<number>, gen: ICodeSupport, i
     ]
 }
 
-// TODO: Comment
+/**
+ * Takes in multiple possible delays and only adds an led push if every led is available and greater than 0
+ */
 export function finalPush(delays: CppFnArgInformation<number>[], gen: ICodeSupport) {
+
+    // TODO: Probably change to a incode if(...){LEDPush} too
 
     if(delays.every(d=>d.available && d.value <= 0))
         return [gen.pushLeds()];

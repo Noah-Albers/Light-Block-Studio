@@ -4,11 +4,17 @@ import { ICppFnManager } from "@cppgen/functionManager";
 import { CodeResult, IExtendedCodeSupport } from "@cppgen/generator";
 import { IVisualisationController } from "@visualizer/index";
 import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCodeConstructor";
-
-// TODO: FOR ALL PROCEDURES IMPROVE PRECONFIG-HANDLING
+import { ensureNonNaNs } from "@procedure/utils/ProcedurePrepareUtils";
 
 export type DelayProcedureOptions = {
     delay: number
+}
+
+export function DelayProcPreparer(cfg: DelayProcedureOptions) {
+    ensureNonNaNs(cfg);
+
+    if(cfg.delay < 0)
+        cfg.delay = 0;
 }
 
 export class DelayProcLEDNode implements ILEDNode<DelayProcedureOptions> {

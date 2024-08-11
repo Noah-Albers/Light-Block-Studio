@@ -8,6 +8,8 @@ import { IProcedure, ProcedureWithOptions } from "@procedure/definitions/Procedu
 
 export type PlaceholderProcedureOptions = {
     sub: ProcedureWithOptions<any>[];
+
+    // If the sub-elements shall be enclosed in brackets {}. Defaults to false
     encloseInBrackets?: boolean
 }
 

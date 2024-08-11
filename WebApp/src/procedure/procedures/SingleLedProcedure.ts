@@ -4,6 +4,8 @@ import { ICppFnManager } from "@cppgen/functionManager";
 import { CodeResult, IExtendedCodeSupport } from "@cppgen/generator";
 import { IVisualisationController } from "@visualizer/index";
 import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCodeConstructor";
+import { ensureNonNaNs } from "@procedure/utils/ProcedurePrepareUtils";
+import { clamp } from "@utils/MathUtils";
 
 export type LEDProcedureOptions = {
     idx: number,
@@ -12,6 +14,18 @@ export type LEDProcedureOptions = {
     h: number,
     s: number,
     v: number
+}
+
+export function SingleLedProcPrepare(cfg: LEDProcedureOptions){
+    ensureNonNaNs(cfg);
+
+    if(cfg.idx < 0)
+        cfg.idx = 0;
+
+    cfg.h = clamp(cfg.h, 0, 255);
+    cfg.s = clamp(cfg.s, 0, 255);
+    cfg.v = clamp(cfg.v, 0, 255);
+
 }
 
 export class SingleLedProcLEDNode implements ILEDNode<LEDProcedureOptions> {

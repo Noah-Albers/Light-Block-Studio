@@ -7,6 +7,8 @@ import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCo
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
 import { delayIf, finalPush, tab, trinaryEquasion } from "@cppgen/functionManager/utils/CodeFormatUtil";
 import { MultiLedProcedureOptions } from "./MultiLedProcedure";
+import { clamp } from "@utils/MathUtils";
+import { ensureNonNaNs } from "@procedure/utils/ProcedurePrepareUtils";
 
 export type LedGradiantProcedureOptions = {
     // Range to play
@@ -27,8 +29,22 @@ export type LedGradiantProcedureOptions = {
 }
 
 export function LedGradiantProcPreparer(cfg: LedGradiantProcedureOptions) {
+    ensureNonNaNs(cfg);
+
     if (cfg.ledDelay < 0)
         cfg.ledDelay = 0;
+
+    if(cfg.idxStart < 0)
+        cfg.idxStart = 0;
+    if(cfg.idxEnd < 0)
+        cfg.idxEnd = 0;
+    
+    cfg.hFrom = clamp(cfg.hFrom, 0, 255);
+    cfg.sFrom = clamp(cfg.sFrom, 0, 255);
+    cfg.vFrom = clamp(cfg.vFrom, 0, 255);
+    cfg.hTo = clamp(cfg.hTo, 0, 255);
+    cfg.sTo = clamp(cfg.sTo, 0, 255);
+    cfg.vTo = clamp(cfg.vTo, 0, 255);
 }
 
 export class LedGradiantProcLEDNode implements ILEDNode<LedGradiantProcedureOptions> {
