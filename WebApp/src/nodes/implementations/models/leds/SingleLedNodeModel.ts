@@ -6,7 +6,7 @@ import { ColorRangeDataSource } from "../../datasources/ColorRangeDataSource";
 import { Registry } from "@registry/Registry";
 import { $t } from "@localisation/Fluent";
 
-export class SetLedNodeModel implements INodeModel {
+export class SingleLedNodeModel implements INodeModel {
 
     // Index of the field
     private idxField = new NumberDataSource("idx", "0", {
@@ -23,7 +23,7 @@ export class SetLedNodeModel implements INodeModel {
     });
 
     getModelName(): string {
-        return "setled_simple";
+        return "single_led";
     }
     getOnBlockSettings(): OnBlockSettings {
         return {

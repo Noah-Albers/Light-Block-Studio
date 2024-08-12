@@ -8,7 +8,7 @@ import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorPro
 
 // TODO: lang
 
-export class SetLedRangeNodeModel implements INodeModel {
+export class MultiLedNodeModel implements INodeModel {
 
     // Index of the field
     private idxStartField = new NumberDataSource("idxStart", "0", {
@@ -42,7 +42,7 @@ export class SetLedRangeNodeModel implements INodeModel {
     });
 
     getModelName(): string {
-        return "setledrange_simple";
+        return "multi_led";
     }
 
     getOnBlockSettings(): OnBlockSettings {

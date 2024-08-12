@@ -18,3 +18,7 @@ TODO: Idea: Select some nodes and set all color range settings of h s v to a spe
 TODO: Idea: Make sure the interface is not as dark as the cpp code (Maybe have to look into logorithmic functions for that).
 TODO: Make sure templates can retreive updates
 TODO: Make sure templates can be selected without references (So they wont retreive updates)
+
+TODO: Test Steps, MultiLed procedures
+TODO: Improve serial debugger
+TODO: Create nodes for all modules

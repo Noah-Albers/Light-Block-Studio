@@ -10,6 +10,8 @@ import { MultiLedProcedureOptions } from "./MultiLedProcedure";
 import { clamp } from "@utils/MathUtils";
 import { ensureNonNaNs } from "@procedure/utils/ProcedurePrepareUtils";
 
+// TODO: Test code generation
+
 export type LedGradiantProcedureOptions = {
     // Range to play
     idxStart: number,
@@ -54,14 +56,12 @@ export class LedGradiantProcLEDNode implements ILEDNode<LedGradiantProcedureOpti
         const offset = idxStart > idxEnd ? 1 : 0;
 
         // Calculates the length
-        let len = idxStart - idxEnd;
-        if (len <= 0)
-            len = -len;
+        let len = idxEnd - idxStart;
 
         for (let i = idxStart; i != idxEnd; i += dir) {
 
             // Percentage
-            let perc = i / len;
+            let perc = (i-idxStart+dir*.5) / len;
 
             const linearInterpolation = (from: number, to: number, percentage: number) => perc * (to - from) + from;
 
@@ -118,7 +118,7 @@ export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructo
 
         const knowsDirection = idxEnd.available && idxStart.available;
 
-        const vDir = knowsDirection ? "" : gen.registerVariable("dir");
+        const vDir = knowsDirection ? (idxEnd.value >= idxStart.value ? 1 : -1) : gen.registerVariable("dir");
         const vOffset = knowsDirection ? "" : gen.registerVariable("offset");
 
         const vLength = gen.registerVariable("length");
@@ -131,17 +131,21 @@ export class LedGradiantProcCodeConstructor extends SimpleFunctionCodeConstructo
                 `int ${vDir} = ${idxStart} > ${idxEnd} ? -1 : 1;`,
                 `int ${vOffset} = ${idxStart} > ${idxEnd} ? 1 : 0;`
             ]),
-            `int ${vLength} = ${idxStart} - ${idxEnd};`,
-            `if(${vLength} < 0) ${vLength} = -${vLength};`,
+            `int ${vLength} = ${idxEnd} - ${idxStart};`,
 
             (knowsDirection ?
                 idxStart.value < idxEnd.value ?
-                    `for (int ${vI} = ${idxStart}; ${vI} < ${idxEnd}; ${vI}++) {` :
-                    `for (int ${vI} = ${idxStart}; ${vI} >= ${idxEnd}; ${vI}--) {` :
+                `for (int ${vI} = ${idxStart}; ${vI} < ${idxEnd}; ${vI}++) {` :
+                `for (int ${vI} = ${idxStart}; ${vI} >= ${idxEnd}; ${vI}--) {` :
                 `for (int ${vI} = ${idxStart}; ${vI} != ${idxEnd}; ${vI}+=${vDir}) {`
             ),
             ...tab([
-                `float ${vPerc} = (float)${vI}/(float)${vLength};`,
+                `float ${vPerc} = ((float)(${vI} - ${idxStart}) + ${
+                    knowsDirection ? ((vDir as number)*.5) : (
+                        `.5*${vDir}`
+                    )
+                })/(float)${vLength};`,
+
                 ...gen.setTabs(gen.setLedHSV(
                     knowsDirection ? vI : `${vI}-${vOffset}`,
                     getLinearInterpolationEquasion(hFrom, hTo, vPerc),
