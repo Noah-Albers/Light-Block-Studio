@@ -8,6 +8,8 @@ import { ClearAllLedsNodeModel } from "@nodes/implementations/models/leds/ClearA
 import { SingleLedNodeModel } from "@nodes/implementations/models/leds/SingleLedNodeModel";
 import { MultiLedNodeModel } from "@nodes/implementations/models/leds/MultiLedNodeModel";
 import { MultiLedGradiantNodeModel } from "@nodes/implementations/models/leds/MultiLedGradiantNodeModel";
+import { RainbowLedNodeModel } from "@nodes/implementations/models/animations/RainbowLedNodeModel";
+import { FadeLedNodeModel } from "@nodes/implementations/models/animations/FadeLedNodeModel copy";
 
 export function registerNodeModels(isDeveloper: boolean) : INodeModel[] {
     return [
@@ -20,6 +22,10 @@ export function registerNodeModels(isDeveloper: boolean) : INodeModel[] {
         new MultiLedNodeModel(),
         new MultiLedGradiantNodeModel(),
         new ClearAllLedsNodeModel(),
+
+        // Animations
+        new RainbowLedNodeModel(),
+        new FadeLedNodeModel(),
 
         // Debug section
         ...(isDeveloper ? [
