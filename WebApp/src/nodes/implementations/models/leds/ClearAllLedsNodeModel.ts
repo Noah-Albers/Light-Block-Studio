@@ -1,13 +1,8 @@
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
-import { NumberDataSource } from "../../datasources/NumberDataSource";
-import { ColorDataSource } from "../../datasources/ColorDataSource";
-import { Registry } from "@registry/Registry";
 import { $t } from "@localisation/Fluent";
 import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
 
-
-// TODO: Language
 export class ClearAllLedsNodeModel implements INodeModel {
 
     getModelName(): string {
@@ -20,7 +15,7 @@ export class ClearAllLedsNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Turn all leds off";
+        return $t('models_ledClear_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return []

@@ -148,6 +148,54 @@ models_loop_field_repeats_title = Wiederholungen
 developer_runtests_info_error =
     { $errors ->
         [one] Ein Test ist
-        *[other] { $errors } Tests sind
+       *[other] { $errors } Tests sind
     } fehlgeschlagen. Bitte überprüfe die Browserkonsole.
 developer_runtests_info_success = Alle Tests wurden erfolgreich durchgeführt.
+blockly_category_animations = Animationen
+globalsettings_general_defaultPreview = Standardvorschau für neue Projekte
+models_fade_block = Farbdurchlauf von %1 für %2 ms
+globalsettings_general_defaultPreview-tooltip = Ändere die Standardvorschau
+models_fade_field_color_info = Zwischen welchen Farben die Animation laufen soll
+models_fade_field_color_title = Farbe
+models_fade_field_cycle_title = Animationslänge in ms
+models_fade_field_cycle_info = Wie lange (in ms) ein Farbzyklus dauert.
+models_fade_field_idxEnd_info = Der Index, an dem der Bereich enden soll. (Start von 0)
+models_fade_field_idxEnd_title = End-Index
+models_fade_field_idxStart_info = Startindex für den Bereich.
+models_fade_field_idxStart_title = Start-Index
+models_fade_field_offset_info = Ein Versatz für jede LED. Benutze dies um einen Farbverlauf durch den Streifen zu erzeugen.
+models_fade_field_runtime_info = Wie lange (in ms) der Zyklus abspielen soll. Z.b.: Laufzeit: 1000ms und Zykluslänge 500ms hieße  eine Sekunde mit 2 Zyklen.
+models_multiLedGradiant_block = Farbe von %1 bis %2 in %3
+models_multiLedGradiant_field_color_title = Farbe
+models_ledClear_block = Schalte alle LEDs aus
+models_fade_field_runtime_title = Laufzeit in ms
+models_fade_field_offset_title = LED-Versatz
+models_multiLedGradiant_field_color_info = Welche Farbe eingestellt werden soll.
+models_multiLedGradiant_field_delay_info = Wie viele Millisekunden zwischen den LEDs gewartet werden sollen.
+models_multiLedGradiant_field_idxEnd_title = Endindex
+models_multiLedGradiant_field_idxEnd_info = Der Index, an dem der Bereich enden soll.
+models_multiLedGradiant_field_idxStart_info = Startindex für den Bereich.
+models_multiLedGradiant_field_idxStart_title = Start-Index
+models_multiLedGradiant_field_delay_title = Verzögerung
+models_multiLed_block = Farbe von %1 bis %2 in %3
+models_multiLed_field_color_info = Welche Farbe eingestellt werden soll.
+models_multiLed_field_color_title = Farbe
+models_multiLed_field_delay_info = Wie viele Millisekunden zwischen den LEDs gewartet werden sollen.
+models_multiLed_field_delay_title = Verzögerung
+models_multiLed_field_idxEnd_title = End-Index
+models_multiLed_field_idxEnd_info = Der Index, an dem der Bereich enden soll.
+models_multiLed_field_idxStart_info = Startindex für den Bereich.
+models_multiLed_field_idxStart_title = Start-Index
+models_rainbow_block = Regenbogen für %1 ms
+models_rainbow_field_cycle_info = Wie lange (in ms) ein Regenbogenzyklus dauert.
+models_rainbow_field_cycle_title = Zykluslänge in ms
+models_rainbow_field_idxEnd_info = Der Index, an dem der Bereich enden soll.
+models_rainbow_field_idxEnd_title = End-Index
+models_rainbow_field_idxStart_info = Startindex für den Bereich.
+models_rainbow_field_idxStart_title = Start-Index
+models_rainbow_field_offset_title = LED-Offset
+models_rainbow_field_offset_info = Ein Versatz für jede LED. Benutze dies um einen Farbverlauf durch den Streifen zu erzeugen.
+models_rainbow_field_runtime_info = Wie lange (in ms) der Regenbogen spielen soll. Z.b.: Laufzeit: 1000ms und Zykluslänge 500ms hieße  eine Sekunde mit 2 Regenbogenzyklen.
+models_rainbow_field_runtime_title = Laufzeit in ms
+models_rainbow_field_value_info = Helligkeit des Regenbogens.
+models_rainbow_field_value_title = Helligkeit (0-255)

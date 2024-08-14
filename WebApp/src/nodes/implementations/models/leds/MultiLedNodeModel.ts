@@ -2,26 +2,23 @@ import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
 import { NumberDataSource } from "../../datasources/NumberDataSource";
 import { ColorDataSource } from "../../datasources/ColorDataSource";
-import { Registry } from "@registry/Registry";
 import { $t } from "@localisation/Fluent";
 import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
-
-// TODO: lang
 
 export class MultiLedNodeModel implements INodeModel {
 
     // Index of the field
     private idxStartField = new NumberDataSource("idxStart", "0", {
-        displayTitle: "Start-Index",
-        info: "Starting index for the range.",
+        displayTitle: $t('models_multiLed_field_idxStart_title'),
+        info: $t('models_multiLed_field_idxStart_info'),
         type: "int",
         min: 0
     });
 
     // Index of the field
     private idxEndField = new NumberDataSource("idxEnd", "amt", {
-        displayTitle: "End-Index",
-        info: "The index where the range shall stop",
+        displayTitle: $t('models_multiLed_field_idxEnd_title'),
+        info: $t('models_multiLed_field_idxEnd_info'),
         type: "int",
         min: 0
     });
@@ -29,16 +26,16 @@ export class MultiLedNodeModel implements INodeModel {
 
     // Delay field
     private delayField = new NumberDataSource("ledFelay", "0", {
-        displayTitle: "Delay",
-        info: "How many milliseconds to wait between the leds.",
+        displayTitle: $t('models_multiLed_field_delay_title'),
+        info: $t('models_multiLed_field_delay_info'),
         type: "int",
         min: 0
     });
 
     // Field to select the color
     private colorField = new ColorDataSource("clr", [1,1,1], {
-        displayTitle: "Color",
-        info: "what color should be set"
+        displayTitle: $t('models_multiLed_field_color_title'),
+        info: $t('models_multiLed_field_color_info')
     });
 
     getModelName(): string {
@@ -52,7 +49,7 @@ export class MultiLedNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Color from %1 to %2 in %3";
+        return $t('models_multiLed_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.idxStartField, this.idxEndField, this.colorField]

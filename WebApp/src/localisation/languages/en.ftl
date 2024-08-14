@@ -148,5 +148,53 @@ developer_runtests_info_success = All tests have finished successfully.
 developer_runtests_info_error =
     { $errors ->
         [one] One test has
-        *[other] { $errors } tests have
+       *[other] { $errors } tests have
     } failed, please check the Browser console.
+blockly_category_animations = Animations
+models_fade_field_idxStart_title = Start-Index
+models_fade_field_idxStart_info = Starting index for the range.
+models_fade_field_idxEnd_title = End-Index
+models_fade_field_idxEnd_info = The index where the range shall stop
+models_fade_field_offset_title = LED-Offset
+models_fade_field_offset_info = An offset for each led. Use it to create a flow throughout the stripe.
+models_fade_field_cycle_title = Cycle Length in ms
+models_fade_field_cycle_info = How long (in ms) one color-cycle takes to complete.
+models_fade_field_runtime_title = Runtime in ms
+models_fade_field_runtime_info = How long (in ms) the cycle shall play. Eg. Runtime: 1000ms and cycle length 500ms would be 1s with 2 color-cycles.
+models_fade_field_color_title = Color
+models_fade_field_color_info = What color should be faded
+models_fade_block = Color-Cycle of %1 for %2 ms
+models_rainbow_field_idxStart_title = Start-Index
+models_rainbow_field_idxStart_info = Starting index for the range.
+models_rainbow_field_idxEnd_title = End-Index
+models_rainbow_field_idxEnd_info = The index where the range shall stop.
+models_rainbow_field_offset_title = LED-Offset
+models_rainbow_field_offset_info = An offset for each led. Use it to create a flow throughout the stripe.
+models_rainbow_field_cycle_title = Cycle Length in ms
+models_rainbow_field_cycle_info = How long (in ms) one rainbow-cycle takes to complete.
+models_rainbow_field_runtime_title = Runtime in ms
+models_rainbow_field_runtime_info = How long (in ms) the rainbow shall play. Eg. Runtime: 1000ms and cycle length 500ms would be 1s with 2 rainbow cycles.
+models_rainbow_field_value_title = Brightness (0-255)
+models_rainbow_field_value_info = Brightness of the Rainbow.
+models_rainbow_block = Rainbow for %1 ms
+models_ledClear_block = Turn all leds off
+models_multiLedGradiant_field_idxStart_title = Start-Index
+models_multiLedGradiant_field_idxStart_info = Starting index for the range.
+models_multiLedGradiant_field_idxEnd_title = End-Index
+models_multiLedGradiant_field_idxEnd_info = The index where the range shall stop
+models_multiLedGradiant_field_delay_title = Delay
+models_multiLedGradiant_field_delay_info = How many milliseconds to wait between the leds.
+models_multiLedGradiant_field_color_title = Color
+models_multiLedGradiant_field_color_info = What color should be set.
+models_multiLedGradiant_block = Color from %1 to %2 in %3
+models_multiLed_field_idxStart_title = Start-Index
+models_multiLed_field_idxStart_info = Starting index for the range.
+models_multiLed_field_idxEnd_title = End-Index
+models_multiLed_field_idxEnd_info = The index where the range shall stop.
+models_multiLed_field_delay_title = Delay
+models_multiLed_field_delay_info = How many milliseconds to wait between the leds.
+models_multiLed_field_color_title = Color
+models_multiLed_field_color_info = What color should be set.
+models_multiLed_block = Color from %1 to %2 in %3
+globalsettings_general_defaultPreview = Default Preview for new Projects
+globalsettings_general_defaultPreview-tooltip = Change default Preview

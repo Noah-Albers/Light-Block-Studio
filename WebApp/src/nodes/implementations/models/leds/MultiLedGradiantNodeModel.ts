@@ -3,23 +3,22 @@ import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definit
 import { NumberDataSource } from "../../datasources/NumberDataSource";
 import { Registry } from "@registry/Registry";
 import { ColorRangeDataSource } from "@nodes/implementations/datasources/ColorRangeDataSource";
-
-// TODO: lang
+import { $t } from "@localisation/Fluent";
 
 export class MultiLedGradiantNodeModel implements INodeModel {
 
     // Index of the field
     private idxStartField = new NumberDataSource("idxStart", "0", {
-        displayTitle: "Start-Index",
-        info: "Starting index for the range.",
+        displayTitle: $t('models_multiLedGradiant_field_idxStart_title'),
+        info: $t('models_multiLedGradiant_field_idxStart_info'),
         type: "int",
         min: 0
     });
 
     // Index of the field
     private idxEndField = new NumberDataSource("idxEnd", "amt", {
-        displayTitle: "End-Index",
-        info: "The index where the range shall stop",
+        displayTitle: $t('models_multiLedGradiant_field_idxEnd_title'),
+        info: $t('models_multiLedGradiant_field_idxEnd_info'),
         type: "int",
         min: 0
     });
@@ -27,16 +26,16 @@ export class MultiLedGradiantNodeModel implements INodeModel {
 
     // Delay field
     private delayField = new NumberDataSource("ledFelay", "0", {
-        displayTitle: "Delay",
-        info: "How many milliseconds to wait between the leds.",
+        displayTitle: $t('models_multiLedGradiant_field_delay_title'),
+        info: $t('models_multiLedGradiant_field_delay_info'),
         type: "int",
         min: 0
     });
 
     // Field to select the color
     private colorField = new ColorRangeDataSource("clr", [1,1,1], [.5,1,1], {
-        displayTitle: "Color",
-        info: "what color should be set"
+        displayTitle: $t('models_multiLedGradiant_field_color_title'),
+        info: $t('models_multiLedGradiant_field_color_info')
     });
 
     getModelName(): string {
@@ -50,7 +49,7 @@ export class MultiLedGradiantNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Color from %1 to %2 in %3";
+        return $t('models_multiLedGradiant_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.idxStartField, this.idxEndField, this.colorField]

@@ -7,8 +7,6 @@ import { OptionDataSource } from "../../datasources/OptionDataSource";
 import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
 import { ColorRangeDataSource } from "../../datasources/ColorRangeDataSource";
 
-// TODO: Lang
-
 export class DebugNodeModel implements INodeModel {
 
     // Index of the field

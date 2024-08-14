@@ -1,27 +1,23 @@
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
 import { NumberDataSource } from "../../datasources/NumberDataSource";
-import { ColorDataSource } from "../../datasources/ColorDataSource";
 import { Registry } from "@registry/Registry";
 import { $t } from "@localisation/Fluent";
-import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
-
-// TODO: lang
 
 export class RainbowLedNodeModel implements INodeModel {
 
     // Index of the field
     private idxStartField = new NumberDataSource("idxStart", "0", {
-        displayTitle: "Start-Index",
-        info: "Starting index for the range.",
+        displayTitle: $t('models_rainbow_field_idxStart_title'),
+        info: $t('models_rainbow_field_idxStart_info'),
         type: "int",
         min: 0
     });
 
     // Index of the field
     private idxEndField = new NumberDataSource("idxEnd", "amt", {
-        displayTitle: "End-Index",
-        info: "The index where the range shall stop",
+        displayTitle: $t('models_rainbow_field_idxEnd_title'),
+        info: $t('models_rainbow_field_idxEnd_info'),
         type: "int",
         min: 0
     });
@@ -29,31 +25,31 @@ export class RainbowLedNodeModel implements INodeModel {
 
     // Field to offset each led color
     private offsetField = new NumberDataSource("offset", "20", {
-        displayTitle: "LED-Offset",
-        info: "An offset for each led. Use it to create a flow throughout the stripe.",
+        displayTitle: $t('models_rainbow_field_offset_title'),
+        info: $t('models_rainbow_field_offset_info'),
         type: "int"
     });
 
     // Field: Defines how many fast and how many cycles will be done
     private cycleField = new NumberDataSource("cycle", "5000", {
-        displayTitle: "Cycle Length in ms",
-        info: "How long (in ms) one rainbow-cycle takes to complete.",
+        displayTitle: $t('models_rainbow_field_cycle_title'),
+        info: $t('models_rainbow_field_cycle_info'),
         type: "int",
         min: 0
     });
 
     // Field: Defines how long the animation plays
     private lengthField = new NumberDataSource("length", "5000", {
-        displayTitle: "Runtime in ms",
-        info: "How long (in ms) the rainbow shall play. Eg. Runtime: 1000ms and cycle length 500ms would be 1s with 2 rainbow cycles.",
+        displayTitle: $t('models_rainbow_field_runtime_title'),
+        info: $t('models_rainbow_field_runtime_info'),
         type: "int",
         min: 0
     });
 
     // Field: Defines the brightness (value) of the rainbow
     private vField = new NumberDataSource("v", "255", {
-        displayTitle: "Brightness (0-255)",
-        info: "Brightness of the Rainbow.",
+        displayTitle: $t('models_rainbow_field_value_title'),
+        info: $t('models_rainbow_field_value_info'),
         type: "int",
         min: 0,
         max: 255
@@ -70,7 +66,7 @@ export class RainbowLedNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Rainbow for %1 ms";
+        return $t('models_rainbow_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.lengthField]
