@@ -24,6 +24,9 @@ export interface IDataSourceSupplier {
      * @param defaultValue return value if the variable doesn't exist
      */
     getVariable(name: string, defaultValue: number = 0) : number;
+
+    // TODO: Comment
+    solveExpression(exp: string, defaultValue: number = 0) : number;
 }
 
 /**

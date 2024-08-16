@@ -5,6 +5,7 @@ import { IDataSourceSupplier, INodeModel } from "@nodes/definitions/Node";
 import { IDataSource } from "@nodes/definitions/DataSource";
 import { BlockData, getBlockDataObject, getBlockModel } from "./OnBlockUtils";
 import { useVariableStore } from "@webapp/stores/VariableStore";
+import { solveExpression } from "@mathSolver/index";
 
 
 class DataSourceSupplier implements IDataSourceSupplier {
@@ -61,6 +62,11 @@ class DataSourceSupplier implements IDataSourceSupplier {
 
     getVariable(name: string, defaultValue: number = 0): number {
         return useVariableStore().variable2ValueMap[name] || defaultValue;
+    }
+
+    // TODO: Comment
+    solveExpression(exp: string, defaultValue: number = 0){
+        return solveExpression(exp, useVariableStore().variable2ValueMap, defaultValue);
     }
 }
 

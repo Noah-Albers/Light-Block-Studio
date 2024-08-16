@@ -22,3 +22,5 @@ TODO: Make sure templates can be selected without references (So they wont retre
 TODO: Test Steps, MultiLed procedures
 TODO: Improve serial debugger
 TODO: Create nodes for all modules
+
+TODO: For Googles, define a direction (Side). Such that turn off right goggle actually does the right and not the left one
