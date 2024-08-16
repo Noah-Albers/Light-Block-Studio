@@ -15,6 +15,8 @@ CRGB leds[LED_AMT];
 
 // Counter to select the animation
 static long counter = 0;
+// To signal that one animation shall stop
+static bool fullBreak = false;
 
 $$globals$$
 
@@ -37,13 +39,15 @@ bool isButtonPressed(){
 
 
 bool myDelay(long del){
+    if(fullBreak)
+      return true;
     long end = millis() + del;
 
     while(millis() < end){
         delay(10);
 
         if(isButtonPressed()){
-            ++counter;
+            fullBreak = true;
             return true;
         }
     }
@@ -65,6 +69,11 @@ void setup(){
 }
 
 void loop(){
+    if(fullBreak){
+      ++counter;
+      fullBreak = false;
+    }
+      
     switch(counter){
         $$loop$$
 
