@@ -1,5 +1,5 @@
 <template>
-  <v-app theme="dark">
+  <v-app style="height:100%" theme="dark">
     <!--The application bar on top-->
     <v-app-bar :elevation="1" height="20">
       <TheTaskbar/>

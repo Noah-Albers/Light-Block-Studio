@@ -20,7 +20,9 @@ TODO: Make sure templates can retreive updates
 TODO: Make sure templates can be selected without references (So they wont retreive updates)
 
 TODO: Test Steps, MultiLed procedures
-TODO: Improve serial debugger
+TODO: Improve serial debugger (Use duplicated send protocol to ensure no or less glitches)
 TODO: Create nodes for all modules
 
 TODO: For Googles, define a direction (Side). Such that turn off right goggle actually does the right and not the left one
+
+TODO: Add switch to disable code optimisations for the cpp compiler (Can be used to get readable code that can be build up on)
