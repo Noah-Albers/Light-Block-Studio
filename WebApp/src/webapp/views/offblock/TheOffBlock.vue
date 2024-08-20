@@ -15,10 +15,13 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue';
+import { PropType, watch, onUnmounted } from 'vue';
 import { INodeModel } from '@nodes/definitions/Node';
 import { BlockData, Cache } from '@webapp/blockly/OnBlockUtils';
 import { getOffBlockView } from '@webapp/blockly/RegisterBlockly';
+import { debounce } from "@utils/Debounse";
+import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
+import { Signals } from '@webapp/utils/signals/Signals';
 
 const props = defineProps({
     model: {
@@ -33,6 +36,12 @@ const props = defineProps({
         type: Object as PropType<Cache>,
         required: true
     }
-})
+});
+
+// Event: Handles on-block changes to directly update the build config
+let onStopWatcher = watch(props.blockData, debounce(()=>{
+    SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD);
+}, 500));
+onUnmounted(onStopWatcher);
 
 </script>
