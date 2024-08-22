@@ -136,8 +136,8 @@ export const useProjectStore = defineStore('project', () => {
         codeBlueprint.value = temp.blueprint || "";
 
         // Loads the hooks
-        if (hooks !== undefined)
-            for (let name in hooks)
+        if (temp.hooks !== undefined)
+            for (let name in temp.hooks)
                 hooks.value[name as keyof Hooks] = (temp.hooks as any)[name as keyof Hooks]!;
 
     }
@@ -157,6 +157,8 @@ export const useProjectStore = defineStore('project', () => {
 
         applyLEDAPIPreset(LEDAPIFastLedPreset);
         applyTemplate(TemplateDefault);
+
+        console.log("Restore", JSON.stringify(hooks.value))
     }
 
     //#endregion
