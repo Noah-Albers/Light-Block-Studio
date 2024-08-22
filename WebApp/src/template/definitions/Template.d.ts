@@ -25,7 +25,9 @@ export type Template = {
 export type Hooks = {
     
     /**
-     * Is used to send the internally set led array out to the hardware (LED-Stripe)
+     * Used to add "wrapping" code around the led push code.
+     * 
+     * Available variables: $$code$$ (Actual functionto call)
      */
     pushleds: string,
 
@@ -40,9 +42,7 @@ export type Hooks = {
      * Used to set the led at a given index to a specific HSV (Hue Saturation Value) color
      * The h,s,v values are integers between 0 and 255 (Inclusive)
      * 
-     * Available variables:
-     *  - $$idx$$ (Index of the led, starting from 0 for the first)
-     *  - $$hue$$, $$saturation$$, $$value$$
+     * Available variables: $$code$$ (Actual functionto call)
      */
     sethsv: string,
 

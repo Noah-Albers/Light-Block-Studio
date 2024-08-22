@@ -57,6 +57,15 @@ const InternalSchemas = {
             loop: z.string().optional(),
         }),
 
+        ledApiHooks: z.object({
+            globalCode: z.string().optional(),
+            includeCode: z.string().optional(),
+            pushleds: z.string().optional(),
+            sethsv: z.string().optional(),
+            reservedVariables: z.string().optional(),
+            setupCode: z.string().optional(),
+        }),
+
         selectedPreview: z.union([
             z.any().transform(int()).transform(min(0)),
             z.string()

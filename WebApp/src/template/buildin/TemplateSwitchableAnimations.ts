@@ -5,13 +5,12 @@ export const TemplateSwitchableAnimations: Template = {
     author: "Noah Albers",
 
     blueprint: `
-#include <FastLED.h>
+$$ledInclude$$
 #define LED_PIN $$pin$$
 #define LED_AMT $$amt$$
 #define BUTTON_PIN $$button_pin$$
 
-// Fast-led api
-CRGB leds[LED_AMT];
+$$ledGlobal$$
 
 // Counter to select the animation
 static long counter = 0;
@@ -56,8 +55,8 @@ bool myDelay(long del){
 }
 
 void setup(){
-    // Setups fastled-library
-    FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, LED_AMT);
+    
+    $$ledSetup$$
     
     // Note: You may want to change INPUT_PULLUP to a different value
     // if your button is connected differently

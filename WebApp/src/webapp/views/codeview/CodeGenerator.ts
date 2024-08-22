@@ -1,5 +1,6 @@
 import { CodeHooks, CppGenerator, ICppGenerator } from "@cppgen/generator";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
+import { replaceVariables } from "@utils/StringUtils";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { useVariableStore } from "@webapp/stores/VariableStore";
 
@@ -20,27 +21,30 @@ function getVariables() {
     obj["pin"] = (store.pin || 0).toString()
     obj["amt"] = (store.amount || 0).toString()
 
+    // TODO: Document that these are used to replace
+    obj["ledInclude"] = store.ledSystemHooks.includeCode;
+    obj["ledGlobal"] = store.ledSystemHooks.globalCode;
+    obj["ledSetup"] = store.ledSystemHooks.setupCode;
+
     return obj;
 }
 
 function prepareCodeHooks() {
     const projStore = useProjectStore();
 
-    // Simple function that replaces variables inside a string with their values
-    function RP(base: string, replacements: { [key: string]: number | string }) {
-        for (let rep in replacements)
-            base = base.replaceAll(`$$${rep}$$`, replacements[rep].toString());
-
-        return base;
-    }
-
     const hooks: CodeHooks = {
-        loop: (code: string, count: number) => RP(projStore.hooks.loop, { code, count }),
-        setup: (code: string, count: number) => RP(projStore.hooks.setup, { code, count }),
+        loop: (code: string, count: number) => replaceVariables(projStore.hooks.loop, { code, count }),
+        setup: (code: string, count: number) => replaceVariables(projStore.hooks.setup, { code, count }),
         millis: () => projStore.hooks.millis,
-        pushLeds: () => projStore.hooks.pushleds,
-        setHSV: (idx: number | string, hue: number | string, saturation: number | string, value: number | string) => RP(projStore.hooks.sethsv, { idx, hue, saturation, value }),
-        sleep: (time: number | string) => RP(projStore.hooks.sleep, { time })
+        pushLeds: () => replaceVariables(projStore.hooks.pushleds, { code: projStore.ledSystemHooks.pushleds }),
+        setHSV: (idx: number | string, hue: number | string, saturation: number | string, value: number | string) => {
+            // Gets the raw code from the led system
+            const rawFromSys = replaceVariables(projStore.ledSystemHooks.sethsv, { idx, hue, saturation, value });
+
+            // Inserts it into the raw code
+            return replaceVariables(projStore.hooks.sethsv, { code: rawFromSys });
+        },
+        sleep: (time: number | string) => replaceVariables(projStore.hooks.sleep, { time })
     }
 
     return hooks;

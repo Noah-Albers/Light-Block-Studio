@@ -1,8 +1,11 @@
-import { Hooks } from '@template/definitions/Template';
+import { Hooks, Template } from '@template/definitions/Template';
 import { ExportedSettingsType } from '@webapp/storage/project/ProjectSchema'
 import { defineStore } from 'pinia'
 import { computed, Ref, ref } from 'vue';
 import { useSettingsStore } from './SettingsStore';
+import { LEDAPIHooks } from '@template/definitions/LEDAPI';
+import { LEDAPIFastLedPreset } from '@template/ledapi/LEDAPIFastLED';
+import { TemplateDefault } from '@template/buildin/TemplateDefault';
 
 
 // List of keywords that are used and/or reserved by the arduino ide / programming language
@@ -25,39 +28,7 @@ const arduinoReservedKeywords = [
 
 // Holds most default values
 export const Defaults = {
-    codeBlueprint: `#include <FastLED.h>
-#define LED_PIN $$pin$$
-#define LED_AMT $$amt$$
-
-// Fast-led api
-CRGB leds[LED_AMT];
-
-$$globals$$
-
-void setup(){
-    // Setups fastled-library
-    FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, LED_AMT);
-    
-    // Start of setup-code
-    $$setup$$
-
-}
-
-void loop(){
-    $$loop$$
-}`,
-
-    hooks: {
-        pushleds: "FastLED.show();",
-        sleep: "delay($$time$$);",
-        sethsv: "leds[$$idx$$] = CHSV($$hue$$,$$saturation$$,$$value$$);",
-        millis: "millis()",
-
-        setup: "$$code$$",
-        loop: "$$code$$"
-    } as Hooks,
-
-    selectedPreview: ()=>useSettingsStore().defaultPreview,
+    selectedPreview: () => useSettingsStore().defaultPreview,
 
     loopPushLeds: true,
     trimEmptyLines: true
@@ -93,6 +64,17 @@ export const useProjectStore = defineStore('project', () => {
     // If set, multiple empty lines will be trimmed down to a single one, improving code readability
     const trimEmptyLines = __set<boolean>();
 
+
+    // System to use for adressing the leds
+    const ledApiHooks: Ref<LEDAPIHooks> = ref({
+        globalCode: __hook(),
+        includeCode: __hook(),
+        pushleds: __hook(),
+        sethsv: __hook(),
+        reservedVariables: __hook(),
+        setupCode: __hook(),
+    });
+
     // Strings which are used when generating code as placeholders
     const hooks: Ref<Hooks> = ref({
         // When the internal led stripe is pushed to the hardware
@@ -126,9 +108,10 @@ export const useProjectStore = defineStore('project', () => {
 
     //#region Computed getters
 
-    const usedReservedKeywords = computed(()=>[
+    const usedReservedKeywords = computed(() => [
         ...(useArduinoReservedKeywords.value ? arduinoReservedKeywords : []),
-        ...customReservedKeywords.value
+        ...customReservedKeywords.value,
+        ...(ledApiHooks.value.reservedVariables.split(",").map(x => x.trim())).filter(x => x.length > 0)
     ]);
 
     //#endregion
@@ -139,11 +122,30 @@ export const useProjectStore = defineStore('project', () => {
         selectedPreview.value = Defaults.selectedPreview();
     }
 
+    // Used to change the preset led system
+    function applyLEDAPIPreset(preset: LEDAPIHooks) {
+        for (let rawKey in preset) {
+            let key = rawKey as keyof typeof preset;
+            ledApiHooks.value[key] = preset[key]!;
+        }
+    }
+
+    // Applys everything except the variables from the template because those are a different store
+    function applyTemplate(temp: Template) {
+
+        codeBlueprint.value = temp.blueprint || "";
+
+        // Loads the hooks
+        if (hooks !== undefined)
+            for (let name in hooks)
+                hooks.value[name as keyof Hooks] = (temp.hooks as any)[name as keyof Hooks]!;
+
+    }
+
     // Restores the default values
     function restoreDefaults() {
         projectName.value = "Untitled led Project";
 
-        codeBlueprint.value = Defaults.codeBlueprint;
         pin.value = 3;
         amount.value = 32;
         loopPushLeds.value = Defaults.loopPushLeds;
@@ -153,10 +155,8 @@ export const useProjectStore = defineStore('project', () => {
         customReservedKeywords.value = [];
         useArduinoReservedKeywords.value = true;
 
-        for (let rawKey in Defaults.hooks) {
-            let key = rawKey as keyof typeof Defaults.hooks;
-            hooks.value[key] = Defaults.hooks[key];
-        }
+        applyLEDAPIPreset(LEDAPIFastLedPreset);
+        applyTemplate(TemplateDefault);
     }
 
     //#endregion
@@ -170,12 +170,15 @@ export const useProjectStore = defineStore('project', () => {
         // a lot of duplicated data if only the default values have been used
         if (data.codeBlueprint) codeBlueprint.value = data.codeBlueprint;
 
-        for (let rawKey in data.hooks) {
-            let key = rawKey as keyof typeof data.hooks;
-            let value = data.hooks[key];
-            if (value === undefined) continue;
-            hooks.value[key] = value;
-        }
+        applyTemplate({
+            ...TemplateDefault,
+            ...data.hooks
+        });
+
+        applyLEDAPIPreset({
+            ...LEDAPIFastLedPreset,
+            ...data.ledApiHooks
+        });
 
         amount.value = data.amount;
         loopPushLeds.value = data.loopPushLeds;
@@ -193,14 +196,22 @@ export const useProjectStore = defineStore('project', () => {
         };
 
         return {
-            codeBlueprint: _(Defaults.codeBlueprint, codeBlueprint.value),
+            codeBlueprint: _(TemplateDefault.blueprint, codeBlueprint.value),
             hooks: {
-                pushleds: _(Defaults.hooks.pushleds, hooks.value.pushleds),
-                sleep: _(Defaults.hooks.sleep, hooks.value.sleep),
-                sethsv: _(Defaults.hooks.sethsv, hooks.value.sethsv),
-                millis: _(Defaults.hooks.millis, hooks.value.millis),
-                setup: _(Defaults.hooks.setup, hooks.value.setup),
-                loop: _(Defaults.hooks.loop, hooks.value.loop),
+                pushleds: _(TemplateDefault.hooks!.pushleds, hooks.value.pushleds),
+                sleep: _(TemplateDefault.hooks!.sleep, hooks.value.sleep),
+                sethsv: _(TemplateDefault.hooks!.sethsv, hooks.value.sethsv),
+                millis: _(TemplateDefault.hooks!.millis, hooks.value.millis),
+                setup: _(TemplateDefault.hooks!.setup, hooks.value.setup),
+                loop: _(TemplateDefault.hooks!.loop, hooks.value.loop),
+            },
+            ledApiHooks: {
+                globalCode: _(LEDAPIFastLedPreset.globalCode, ledApiHooks.value.globalCode),
+                includeCode: _(LEDAPIFastLedPreset.includeCode, ledApiHooks.value.includeCode),
+                reservedVariables: _(LEDAPIFastLedPreset.reservedVariables, ledApiHooks.value.reservedVariables),
+                pushleds: _(LEDAPIFastLedPreset.pushleds, ledApiHooks.value.pushleds),
+                setupCode: _(LEDAPIFastLedPreset.setupCode, ledApiHooks.value.setupCode),
+                sethsv: _(LEDAPIFastLedPreset.sethsv, ledApiHooks.value.sethsv),
             },
             previews: previews.value,
             selectedPreview: selectedPreview.value,
@@ -219,9 +230,9 @@ export const useProjectStore = defineStore('project', () => {
     restoreDefaults();
 
     return {
-        codeBlueprint, pin, amount, loopPushLeds, trimEmptyLines, hooks, previews, selectedPreview, projectName,
+        codeBlueprint, pin, amount, loopPushLeds, trimEmptyLines, ledSystemHooks: ledApiHooks, hooks, previews, selectedPreview, projectName,
         customReservedKeywords, useArduinoReservedKeywords, usedReservedKeywords,
-
+        applyLEDSystemPreset: applyLEDAPIPreset, applyTemplate,
         importData, exportData, resetPreview, restoreDefaults
     };
 });

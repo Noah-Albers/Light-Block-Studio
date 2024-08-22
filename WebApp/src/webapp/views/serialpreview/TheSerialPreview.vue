@@ -84,6 +84,9 @@
         }
     }
 
+    // TODO: Include selected led library when RGB colors have been formatted to hsv inside the serial sender.
+    // Meaning currently only fastled is supported
+
     // Creates the serial script to copy
     const serialScript = () => (`
 #include <FastLED.h>

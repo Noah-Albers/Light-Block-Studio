@@ -3,33 +3,32 @@ import { Registry } from "@registry/Registry";
 import { Hooks, Template } from "@template/definitions/Template";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { useVariableStore } from "@webapp/stores/VariableStore";
+import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
+import { Signals } from "@webapp/utils/signals/Signals";
 import { Button, Menu } from "@webapp/utils/taskbar/TaskBar";
 
 // Event: When the hook is clicked
-function onClickOnTemplate({ blueprint, hooks, variables }: Template){
+function onClickOnTemplate(tmp: Template){
     // Askes the user if he really wants to load the template
     if(!confirm($t('templates_prompt_load'))) return;
 
     const projStore = useProjectStore();
     const varStore = useVariableStore();
 
-    // Loads the blueprint
-    if(blueprint !== undefined)
-        projStore.codeBlueprint = blueprint;
-
     // Loads the variables
-    if(variables !== undefined)
-        for(let name in variables){
+    if(tmp.variables !== undefined)
+        for(let name in tmp.variables){
             
             // Checks if there are already variables with that name
             if(varStore.variables.some(v=>v.name === name)) continue;
 
-            varStore.addNewVariable(name, variables[name]);
+            varStore.addNewVariable(name, tmp.variables[name]);
         }
-    // Loads the hooks
-    if(hooks !== undefined)
-        for(let name in hooks)
-            projStore.hooks[name as keyof Hooks] = hooks[name as keyof Hooks]!;
+
+    projStore.applyTemplate(tmp)
+
+    // Sends the signal to rebuild the config
+    SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD);
 }
 
 // Takes in a template and creates its tab

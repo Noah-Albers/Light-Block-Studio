@@ -4,7 +4,7 @@
         v-model="store.buildConfig.enablePreview"></v-checkbox>
 
     <v-select
-        :lable="$t('globalsettings_general_language')"
+        :label="$t('globalsettings_general_language')"
         v-tooltip="$t('globalsettings_general_language-tooltip')"
         chips
         v-model="store.language"

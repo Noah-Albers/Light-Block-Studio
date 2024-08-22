@@ -10,11 +10,12 @@
         name="Millis" />
 
     <HookPreview v-model="store.hooks.pushleds"
-        name="PushLEDs" />
+        name="PushLEDs"
+        :preview-options="{ code: 'FastLED.show();' }"/>
 
     <HookPreview v-model="store.hooks.sethsv"
         name="SetLedHSV"
-        :preview-options="{ idx: 0, hue: 255, saturation: 50, value: 200 }" />
+        :preview-options="{ code: 'leds[0] = CHSV(100, 255, 40);' }" />
 
     <HookPreview v-model="store.hooks.setup"
         name="Setup"

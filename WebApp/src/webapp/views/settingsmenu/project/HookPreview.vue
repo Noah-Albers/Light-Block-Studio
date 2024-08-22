@@ -40,6 +40,7 @@
     import { PropType, computed } from 'vue';
     import hljs from 'highlight.js';
     import { Splitpanes, Pane } from 'splitpanes'
+    import { replaceVariables } from "@utils/StringUtils";
 
     const model = defineModel("modelValue", {
         required: true,
@@ -54,16 +55,9 @@
     })
 
     const formatted = computed(() => {
-        // Raw code
-        let code = model.value;
-
-        // Inserts preview data
-        for (let opt in props.previewOptions)
-            code = (code as any).replaceAll(`$$${opt}$$`, props.previewOptions[opt].toString());
-
         // Highlights the code
         return hljs.highlight(
-            code,
+            replaceVariables(model.value, props.previewOptions),
             { language: 'arduino' }
         ).value
     })
