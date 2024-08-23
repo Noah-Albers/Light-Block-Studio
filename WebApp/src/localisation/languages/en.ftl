@@ -204,5 +204,5 @@ ledhook_preset_ledapi = Select Preset
 ledhook_reservedVariables = Reserved Variables (Seperated by comma)
 projectsettings_category_ledapi = LED-API
 file_tab_ledapi = LED-API
-file_tab_ledapi_fastled = FastLED
+file_tab_ledapi_fastled = FastLED (Default)
 file_tab_ledapi_adafruit = Adafruit Neopixel

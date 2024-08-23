@@ -3,20 +3,13 @@ import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definit
 import { $t } from "@localisation/Fluent";
 import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
 import { OptionDataSource } from "@nodes/implementations/datasources/OptionDataSource";
+import { createGoggleSelection, getGoggleSelection } from "./GoggleNodeUtils";
 
 // TODO: Lang
 
 export class TurnXGoggleOffNodeModel implements INodeModel {
 
-    private fldGoogle = new OptionDataSource("goggle", "right", {
-        displayTitle: "Which goggle to turn off",
-        info: "Select the goggle which shall be turned of by this node.",
-        values: {
-            "right": "the right",
-            "left": "the left",
-            "both": "both"
-        } as const
-    })
+    private fldGoogle = createGoggleSelection();
 
     getModelName(): string {
         return "turn_x_goggle_off";
@@ -38,15 +31,7 @@ export class TurnXGoggleOffNodeModel implements INodeModel {
     }
     createConfigWithProcedure(supplier: IDataSourceSupplier) {
 
-        // Gets the indexes
-
-        const val = supplier.get(this.fldGoogle);
-
-        const half = supplier.solveExpression("amt/2");
-
-        let idxStart = val === "left" ? half : 0;
-
-        let size = val === "both" ? supplier.getVariable("amt") : half;
+        const { size, idxStart } = getGoggleSelection(supplier, this.fldGoogle);
 
         return selectBestColorProcedure({
             h: 0,

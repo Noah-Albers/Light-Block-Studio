@@ -66,6 +66,8 @@ export function useSerialHandler() {
     async function startSerial() {
         try {
             // Ensures no prior serial port is open
+
+            // TODO: Stop visualizer when the connection closes
             await stopSerial();
             await visualizer.abortVisualizer();
 

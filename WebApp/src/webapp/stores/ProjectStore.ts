@@ -158,7 +158,6 @@ export const useProjectStore = defineStore('project', () => {
         applyLEDAPIPreset(LEDAPIFastLedPreset);
         applyTemplate(TemplateDefault);
 
-        console.log("Restore", JSON.stringify(hooks.value))
     }
 
     //#endregion
