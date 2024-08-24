@@ -43,7 +43,7 @@
 
 <script lang="ts"
     setup>
-    import { onMounted, ref } from 'vue';
+    import { onMounted, ref, onUnmounted } from 'vue';
     import { useProjectImage } from "./VisualisationProjectImageLoader"
     import { useSignal } from '@webapp/utils/vue/VueSignalListener';
     import { Signals } from '@webapp/utils/signals/Signals';
@@ -113,4 +113,6 @@
 
     // Requests the config to be recreated
     onMounted(() => SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD));
+    onUnmounted(()=> visualizer.abortVisualizer());
+    
     </script>

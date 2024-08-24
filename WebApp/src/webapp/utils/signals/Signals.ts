@@ -46,7 +46,13 @@ export const Signals = Object.freeze({
      * Event: When the user click into the blockly workspace
      * Used to ensure vuetify registers blockly click events
      */
-    BLOCKLY_CLICK_IN_WORKSAPCE: 11
+    BLOCKLY_CLICK_IN_WORKSAPCE: 11,
+
+    /**
+     * Event: Used to set a flag that disabled the application from retreiving and using blockly-events
+     * Used to prevent a self dos when loading big project-files
+     */
+    BLOCKLY_SET_DISABLE_BLOCKLY_EVENTS_FLAG: 12
 
     //#endregion
 })

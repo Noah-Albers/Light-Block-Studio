@@ -12,6 +12,7 @@ export function getWorkspace() : Promise<WorkspaceSvg> {
  */
 export function resetWorkspace(ws: WorkspaceSvg){
 
+    // Prevents a self dos attack by rebuilding the config everytime a block is cleared
     ws.clear();
 
     const setup = ws.newBlock("led_root_setup");

@@ -7,6 +7,8 @@ import { useVariableStore } from "@webapp/stores/VariableStore";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { BLOCKLY_SUBBLOCKY_NAME } from "@webapp/blockly/RegisterBlockly";
 import { $t } from "@localisation/Fluent";
+import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
+import { Signals } from "@webapp/utils/signals/Signals";
 
 // Imports the project settings
 function importProjectSettings(filename: string, data: ExportedSettingsType){
@@ -97,7 +99,12 @@ async function importWorkspace(data: ExportedWorkspaceType, variables: {[name: s
 
         // Moves the head into position
         head.moveTo(new BlocklyUtils.Coordinate(main.x, main.y));
+
+        return head;
     }
+
+    // Disables event-interpretation for blockly events
+    SignalDispatcher.emit(Signals.BLOCKLY_SET_DISABLE_BLOCKLY_EVENTS_FLAG,true);
 
     const ws = await getWorkspace();
 
@@ -108,6 +115,13 @@ async function importWorkspace(data: ExportedWorkspaceType, variables: {[name: s
     importTopBlock(data.setup, setup);
     importTopBlock(data.loop, loop);
     data.other.forEach(blg=>importTopBlock(blg));
+
+    // TODO: Add some sort of signal that waits until the workspace has finished being build
+    setTimeout(()=>{
+        // Enabled event-interpretation for blockly events
+        SignalDispatcher.emit(Signals.BLOCKLY_SET_DISABLE_BLOCKLY_EVENTS_FLAG,false);
+    },1000);
+
 }
 
 // Function to check if any nodes of the given workspace are not found

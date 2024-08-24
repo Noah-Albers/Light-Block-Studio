@@ -42,7 +42,6 @@ export function MultiLedProcPreparer(cfg: MultiLedProcedureOptions){
 
 export class MultiLedProcLEDNode implements ILEDNode<MultiLedProcedureOptions> {
     async startNode({ h, idxEndExclusive: idxEnd, idxStart, ledDelay, s, v }: MultiLedProcedureOptions, ctrl: IVisualisationController): Promise<void> {
-        console.log(idxStart, idxEnd)
         const dir = idxStart > idxEnd ? -1 : 1;
 
         for (let i = idxStart; i != idxEnd+dir; i+=dir) {

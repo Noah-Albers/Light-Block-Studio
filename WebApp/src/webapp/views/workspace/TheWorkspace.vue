@@ -53,8 +53,32 @@ const blocklyDiv = ref(null);
 // Workspace reference (Injected)
 let workspace: Blockly.WorkspaceSvg;
 
+// Used to disable blockly events
+let eventsDisabledFlag: boolean = false;
+
 useSignal([Signals.REQUEST_CONFIG_BUILD, Signals.VAR_CHANGE], ()=>buildWorkspaceAndSendEvents(workspace, true));
 useSignal(Signals.BLOCKLY_REQUEST_WORKSPACE,res=>res(workspace));
+useSignal(Signals.BLOCKLY_SET_DISABLE_BLOCKLY_EVENTS_FLAG, x=>eventsDisabledFlag=x);
+
+// Event: Blockly fired an event
+function onWorkspaceChangeEvent(evt: Blockly.Events.Abstract){
+    if(eventsDisabledFlag) return;
+
+    switch(evt.type){
+        // Waits for a block change (Select / deselect)
+        case Blockly.Events.SELECTED:
+            SignalDispatcher.emit(Signals.BLOCKLY_BLOCK_SELECTION_CHANGE, workspace.getBlockById((evt as any).newElementId)!);
+        case Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE: case Blockly.Events.CREATE: case Blockly.Events.MOVE: case Blockly.Events.CHANGE:
+            // Runs the blockly change event
+            buildWorkspaceAndSendEvents(workspace);
+            return;
+        case Blockly.Events.CLICK:
+            // Dispatches an event to signal that the workspace has been clicked
+            // Used to help vuetify close some menu's which otherwise wont register the click
+            SignalDispatcher.emit(Signals.BLOCKLY_CLICK_IN_WORKSAPCE);
+            break;
+    }
+}
 
 onMounted(() => {
 
@@ -75,23 +99,7 @@ onMounted(() => {
     resetWorkspace(workspace);
 
     // Listens for blockly-events
-    workspace.addChangeListener(evt=>{
-        switch(evt.type){
-            // Waits for a block change (Select / deselect)
-            case Blockly.Events.SELECTED:
-                SignalDispatcher.emit(Signals.BLOCKLY_BLOCK_SELECTION_CHANGE, workspace.getBlockById((evt as any).newElementId)!);
-            case Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE: case Blockly.Events.CREATE: case Blockly.Events.MOVE: case Blockly.Events.CHANGE:
-                // Runs the blockly change event
-                buildWorkspaceAndSendEvents(workspace);
-                return;
-            case Blockly.Events.CLICK:
-                // Dispatches an event to signal that the workspace has been clicked
-                // Used to help vuetify close some menu's which otherwise wont register the click
-                SignalDispatcher.emit(Signals.BLOCKLY_CLICK_IN_WORKSAPCE);
-                break;
-        }
-    });
-
+    workspace.addChangeListener(onWorkspaceChangeEvent);
 });
 
 </script>

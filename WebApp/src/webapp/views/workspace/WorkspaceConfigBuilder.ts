@@ -14,7 +14,6 @@ let cmpElements: {
     loop: ProcedureWithOptions<any>[] | undefined
 } = {} as any;
 
-
 /**
  * Event whenever the blockly workspace changes.
  * Note: This may be called multiple times, so a debounce function is required
