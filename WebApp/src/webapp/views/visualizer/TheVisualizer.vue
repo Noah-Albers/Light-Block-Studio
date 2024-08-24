@@ -53,7 +53,7 @@
     import { LEDMap } from '@visualizer/implementations/VisualisationController';
     import PreviewPicker from "@webapp/widgets/previewpicker/PreviewPicker.vue";
     import { useProjectStore } from '@webapp/stores/ProjectStore';
-    import { RGB2Single } from "@webapp/utils/color/ColorConverter";
+    import { HSV2RGB, RGB2Single } from "@webapp/utils/color/ColorConverter";
 
     // HTML-Ref
     const refWrapper = ref(null as any as Element);
@@ -80,7 +80,10 @@
 
             if (elements === undefined) continue;
 
-            const fill = `fill: rgb(${ledVal.join(",")});`;
+            // Converts the HSV-8-Bit color into RGB
+            const asRgb = HSV2RGB(ledVal[0]/255, ledVal[1]/255, ledVal[2]/255);
+
+            const fill = `fill: rgb(${asRgb.r},${asRgb.g},${asRgb.b});`;
 
             for (let elm of elements)
                 elm.setAttribute("style", fill);

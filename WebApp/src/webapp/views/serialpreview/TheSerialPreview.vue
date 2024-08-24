@@ -135,13 +135,13 @@ void loop(){
     int idx = readRealByte();
     if(idx == -1)return;
 
-    // Reads in the r,g,b values
-    int r = readRealByte();
-    if(r == -1) return;
-    int g = readRealByte();
-    if(g == -1) return;
-    int b = readRealByte();
-    if(b == -1) return;
+    // Reads in the hsv values
+    int h = readRealByte();
+    if(h == -1) return;
+    int s = readRealByte();
+    if(s == -1) return;
+    int v = readRealByte();
+    if(v == -1) return;
 
     // If the index is 254, it is regarded as a push command
     if(idx == 254){
@@ -153,7 +153,7 @@ void loop(){
     if(idx >= LED_AMT) return;
 
     // Sets the color
-    leds[idx] = CRGB(r,g,b);
+    leds[idx] = CHSV(h,s,v);
 
 }`
         .replaceAll("$$pin$$", settings.serialPreview.pin.toString())
