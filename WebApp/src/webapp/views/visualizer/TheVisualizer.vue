@@ -50,9 +50,10 @@
     import { SignalDispatcher } from '@webapp/utils/signals/SignalDispatcher';
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
     import { Visualizer } from '@visualizer/index';
-    import { LEDArray } from '@visualizer/implementations/VisualisationController';
+    import { LEDMap } from '@visualizer/implementations/VisualisationController';
     import PreviewPicker from "@webapp/widgets/previewpicker/PreviewPicker.vue";
     import { useProjectStore } from '@webapp/stores/ProjectStore';
+    import { RGB2Single } from "@webapp/utils/color/ColorConverter";
 
     // HTML-Ref
     const refWrapper = ref(null as any as Element);
@@ -66,13 +67,14 @@
     const visualizer = new Visualizer(onVisualizerPushLeds);
 
     // Event: When the visualizer pushes an update for the leds
-    function onVisualizerPushLeds(array: LEDArray) {
+    function onVisualizerPushLeds(array: LEDMap) {
         // Ensures the html preview exists
         if (leds.value === undefined) return;
 
         // Iterates over all changed leds
-        for (let idx in array) {
-            let ledVal = array[idx];
+        for (let itm of array) {
+            const ledVal = itm[1];
+            const idx = itm[0];
 
             let elements = leds.value[idx];
 

@@ -93,6 +93,8 @@
 #define LED_PIN $$pin$$
 #define LED_AMT $$amt$$
 
+#define MAGIC_NUMBER 255
+
 // Fast-led api
 CRGB leds[LED_AMT];
 
@@ -104,31 +106,55 @@ void setup(){
     Serial.begin(115200);
 }
 
+int readRealByte(){
+    int a = Serial.read();
+    int b = Serial.read();
+    int c = Serial.read();
+
+    if(a == b && b == c)
+        return a;
+
+    if(a == c)
+        return a;
+    if(a == b)
+        return b;
+    if(c == b)
+        return c;
+
+    // Invalid byte read
+    return -1;
+}
+
 void loop(){
   // Interprets the command as the index to set the color at
-  
-  // Waits for the color
-  while(!Serial.available());
 
-  // Reads in the index to set
-  int idx = Serial.read();
+    // Reads until a new packet starts
+    while(Serial.read() != MAGIC_NUMBER);
 
-  // If the index is 255, it is regarded as a push command
-  if(idx == 255){
-    FastLED.show();
-    return;
-  }
+    // Reads in the index
+    int idx = readRealByte();
+    if(idx == -1)return;
 
-  // Ensures index is within range
-  if(idx >= LED_AMT) return;
+    // Reads in the r,g,b values
+    int r = readRealByte();
+    if(r == -1) return;
+    int g = readRealByte();
+    if(g == -1) return;
+    int b = readRealByte();
+    if(b == -1) return;
 
-  // Reads in the data
-  int r = Serial.read();
-  int g = Serial.read();
-  int b = Serial.read();
+    // If the index is 254, it is regarded as a push command
+    if(idx == 254){
+        // Pushes the data
+        FastLED.show();
+    }
 
-  // Sets the color
-  leds[idx] = CRGB(r,g,b);
+    // Ensures index is within range
+    if(idx >= LED_AMT) return;
+
+    // Sets the color
+    leds[idx] = CRGB(r,g,b);
+
 }`
         .replaceAll("$$pin$$", settings.serialPreview.pin.toString())
         .replaceAll("$$amt$$", settings.serialPreview.ledAmount.toString())

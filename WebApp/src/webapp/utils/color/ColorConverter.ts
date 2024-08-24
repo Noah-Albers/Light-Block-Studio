@@ -8,6 +8,13 @@ function isHexColor(color: string){
 }
 
 /**
+ * Combines three 8-bit rgb values into a single 24bit value
+ */
+export function RGB2Single(r: number, g: number, b: number){
+    return (r << 16) | (g << 8) | b;
+}
+
+/**
  * Converts a given hex color string as validated by isHexColor
  * to it's normalized Hue saturation value (0-1) value
  * 

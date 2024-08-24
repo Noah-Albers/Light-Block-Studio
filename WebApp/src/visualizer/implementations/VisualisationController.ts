@@ -5,8 +5,10 @@ import { HSV2RGB } from "@webapp/utils/color/ColorConverter";
 /**
  * For (possibly) every led index this holds the led colors in an array of RGB with a range of 0 - 255
  */
-export type LEDArray = {[ledIndex: number]: [number,number,number]};
-export type LEDPushCallback = (leds: LEDArray)=>void;
+
+// LED-Map that holds an index and its corresponding RGB-Color (0-255)
+export type LEDMap = Map<number,[number,number,number]>;
+export type LEDPushCallback = (leds: LEDMap)=>void;
 
 export class VisualisationController implements IVisualisationController {
 
@@ -18,7 +20,7 @@ export class VisualisationController implements IVisualisationController {
      * 
      * the three numbers are the RGB values as RED, GREEN, BLUE
      */
-    private ledCache: LEDArray = {};
+    private ledCache: LEDMap = new Map<number,[number,number,number]>();
 
     // Callback for leds that are pushed
     private onPushLeds: LEDPushCallback;
@@ -32,7 +34,12 @@ export class VisualisationController implements IVisualisationController {
     }
     
     setLedHSV(idx: number, h: number, s: number, v: number): void {
-        this.ledCache[idx] = Object.values(HSV2RGB(h/255, s/255, v/255)) as [number,number,number];
+        // Converts to rgb values
+        const asRgb = HSV2RGB(h/255, s/255, v/255);
+
+        // TODO: Improve protocol to use HSV instead of rgb
+
+        this.ledCache.set(idx, Object.values(asRgb) as [number,number,number]);
     }
 
     pushUpdate(): void {
@@ -41,6 +48,7 @@ export class VisualisationController implements IVisualisationController {
             return;
 
         this.onPushLeds(this.ledCache);
+        this.ledCache.clear();
     }
 
     sleep(ms: number): Promise<void> {
