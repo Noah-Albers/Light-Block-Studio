@@ -66,13 +66,14 @@
     import { useSettingsStore } from "@webapp/stores/SettingsStore";
     import { useSerialHandler, ConnectionType } from "./SerialHandler";
     import { $t } from "@localisation/Fluent";
+    import { createSerialPreviewCode } from "./SerialPreviewCode";
 
     const settings = useSettingsStore();
     const serial = useSerialHandler();
 
     // Event: When the user clicks to copy the script
     async function onCopyScriptClicked() {
-        const script = serialScript();
+        const script = createSerialPreviewCode();
 
         try {
             await navigator.clipboard.writeText(script);
@@ -83,81 +84,5 @@
             alert($t('serial_codecopyerror', { script }));
         }
     }
-
-    // TODO: Include selected led library when RGB colors have been formatted to hsv inside the serial sender.
-    // Meaning currently only fastled is supported
-
-    // Creates the serial script to copy
-    const serialScript = () => (`
-#include <FastLED.h>
-#define LED_PIN $$pin$$
-#define LED_AMT $$amt$$
-
-#define MAGIC_NUMBER 255
-
-// Fast-led api
-CRGB leds[LED_AMT];
-
-void setup(){
-    // Setups fastled-library
-    FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, LED_AMT);
-
-    // Starts serial communication
-    Serial.begin(115200);
-}
-
-int readRealByte(){
-    int a = Serial.read();
-    int b = Serial.read();
-    int c = Serial.read();
-
-    if(a == b && b == c)
-        return a;
-
-    if(a == c)
-        return a;
-    if(a == b)
-        return b;
-    if(c == b)
-        return c;
-
-    // Invalid byte read
-    return -1;
-}
-
-void loop(){
-  // Interprets the command as the index to set the color at
-
-    // Reads until a new packet starts
-    while(Serial.read() != MAGIC_NUMBER);
-
-    // Reads in the index
-    int idx = readRealByte();
-    if(idx == -1)return;
-
-    // Reads in the hsv values
-    int h = readRealByte();
-    if(h == -1) return;
-    int s = readRealByte();
-    if(s == -1) return;
-    int v = readRealByte();
-    if(v == -1) return;
-
-    // If the index is 254, it is regarded as a push command
-    if(idx == 254){
-        // Pushes the data
-        FastLED.show();
-    }
-
-    // Ensures index is within range
-    if(idx >= LED_AMT) return;
-
-    // Sets the color
-    leds[idx] = CHSV(h,s,v);
-
-}`
-        .replaceAll("$$pin$$", settings.serialPreview.pin.toString())
-        .replaceAll("$$amt$$", settings.serialPreview.ledAmount.toString())
-    );
 
 </script>
