@@ -87,7 +87,7 @@ export class LedStepsProcLEDNode implements ILEDNode<LedStepsProcedureOptions> {
             }
             if (stepDelay > 0) {
                 ctrl.pushUpdate();
-                await ctrl.sleep(ledDelay);
+                await ctrl.sleep(stepDelay);
             }
         }
     }

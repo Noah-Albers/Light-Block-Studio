@@ -12,6 +12,7 @@ import { RainbowLedNodeModel } from "@nodes/implementations/models/animations/Ra
 import { FadeLedNodeModel } from "@nodes/implementations/models/animations/FadeLedNodeModel copy";
 import { TurnXGoggleOffNodeModel } from "@nodes/implementations/models/goggles/TurnXGoggleOffNodeModel";
 import { ColorGoggleNodeModel } from "@nodes/implementations/models/goggles/ColorGoggleNodeModel";
+import { FullLedNodeModel } from "@nodes/implementations/models/leds/FullLedNodeModel";
 
 export function registerNodeModels(isDeveloper: boolean) : INodeModel[] {
     return [
@@ -24,6 +25,7 @@ export function registerNodeModels(isDeveloper: boolean) : INodeModel[] {
         new MultiLedNodeModel(),
         new MultiLedGradiantNodeModel(),
         new ClearAllLedsNodeModel(),
+        new FullLedNodeModel(),
 
         // Animations
         new RainbowLedNodeModel(),

@@ -1,10 +1,10 @@
 import { IDataSource } from "@nodes/definitions/DataSource";
 
-export type OptionType = {[key: string]: string}
+export type OptionType<Values extends string> = {[key in Values]: string}
 
-export type OptionDataConfig = {
+export type OptionDataConfig<Values extends string> = {
     // Key: Language String (Name)
-    values: OptionType,
+    values: OptionType<Values>,
 
     info: string | undefined,
 
@@ -12,7 +12,7 @@ export type OptionDataConfig = {
 }
 
 // Default configuration values
-const Defaults : Required<OptionDataConfig> = {
+const Defaults : Required<OptionDataConfig<any>> = {
     info: undefined,
 
     values: undefined as any,
@@ -20,15 +20,15 @@ const Defaults : Required<OptionDataConfig> = {
     displayTitle: undefined as any
 }
 
-export class OptionDataSource implements IDataSource<string, string, undefined> {
+export class OptionDataSource<Values extends string> implements IDataSource<string, Values, undefined> {
 
-    private readonly config: Required<OptionDataConfig>;
+    private readonly config: Required<OptionDataConfig<Values>>;
     private readonly name: string;
     private readonly defaultValue: string;
 
     public static SOURCE_NAME: string = "options";
 
-    constructor(name: string, defaultValue: string, config: OptionDataConfig){
+    constructor(name: string, defaultValue: string, config: OptionDataConfig<Values>){
         // Merge provided config with defaults
         this.config = {...Defaults, ...config};
         this.name = name;
@@ -56,13 +56,13 @@ export class OptionDataSource implements IDataSource<string, string, undefined> 
     }
 
     private validateValue(value: string): string{
-        if(this.config.values[value] === undefined)
+        if((this.config.values as any)[value] === undefined)
             return Object.keys(this.config.values)[0];
         return value;
     }
 
-    resolve(value: string, variables: { [name: string]: number; }): string {
-        return this.validateValue(value);
+    resolve(value: string, variables: { [name: string]: number; }): Values {
+        return this.validateValue(value) as Values;
     }
 
     export(value: string): string | number | boolean | object {

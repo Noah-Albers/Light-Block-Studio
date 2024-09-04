@@ -14,7 +14,7 @@ export function createGoggleSelection(){
     });
 }
 
-export function getGoggleSelection(supplier: IDataSourceSupplier, fld: OptionDataSource){
+export function getGoggleSelection(supplier: IDataSourceSupplier, fld: OptionDataSource<"left" | "both" | "right">){
     const val = supplier.get(fld);
 
     const half = supplier.solveExpression("amt/2");
