@@ -7,11 +7,11 @@ And because at the time of writing this WebKit doesn't support Webserial, we wou
 
 Maybe at some later point this project will start to use Tauri if they ever add an option to use chromium on all devices or if WebKit at some point starts to support Web-Serial.
 
+# TODO-List
+
 TODO: Add steps on how to build the webapp and the electron app
 
 TODO: Fix bug that none-onblock field don't get copied (Can probably hook into event or smth.)
-
-TODO: Add another layer below the hooks to switch between fastled and adafruit
 
 TODO: Idea: Default values for Color-Range HSV-Color picker (Would ease any variable useage)
 TODO: Idea: Select some nodes and set all color range settings of h s v to a specific value
@@ -20,9 +20,8 @@ TODO: Make sure templates can retreive updates
 TODO: Make sure templates can be selected without references (So they wont retreive updates)
 
 TODO: Test Steps, MultiLed procedures
-TODO: Improve serial debugger (Use duplicated send protocol to ensure no or less glitches)
 TODO: Create nodes for all modules
 
-TODO: For Googles, define a direction (Side). Such that turn off right goggle actually does the right and not the left one
+TODO: For Goggles, define a direction (Side). Such that turn off right goggle actually does the right and not the left one
 
 TODO: Add switch to disable code optimisations for the cpp compiler (Can be used to get readable code that can be build up on)

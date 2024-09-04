@@ -124,6 +124,20 @@ function registerNodeModel(model: INodeModel) {
 
             if (model.hasSubNodes())
                 this.appendStatementInput(BLOCKLY_SUBBLOCKY_NAME);
+
+        },
+
+
+        // Save/Load extra state is used to ensure copy/paste functionality is maintained
+        saveExtraState: function() {
+            return JSON.parse(JSON.stringify(this[DATA_OBJECT_NAME]));
+        },
+        loadExtraState:function (res: any){
+            if(typeof res !== "object") return;
+            if(typeof this[DATA_OBJECT_NAME] !== "object") return;
+
+            for(let k of Object.keys(res))
+                this[DATA_OBJECT_NAME][k] = res[k];
         }
     };
 }
