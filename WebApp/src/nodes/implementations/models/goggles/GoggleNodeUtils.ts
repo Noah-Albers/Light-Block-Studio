@@ -1,15 +1,16 @@
+import { $t } from "@localisation/Fluent";
 import { IDataSourceSupplier } from "@nodes/definitions/Node";
 import { OptionDataSource } from "@nodes/implementations/datasources/OptionDataSource";
 
 
 export function createGoggleSelection(){
     return new OptionDataSource("goggle", "right", {
-        displayTitle: "Which goggle to color",
-        info: "Select the goggle which shall be colored.",
+        displayTitle: $t('models_goggle_util_field_goggle_title'),
+        info: $t('models_goggle_util_field_goggle_info'),
         values: {
-            "right": "the right",
-            "left": "the left",
-            "both": "both"
+            "right": $t('models_goggle_util_field_goggle_opt_right'),
+            "left": $t('models_goggle_util_field_goggle_opt_left'),
+            "both": $t('models_goggle_util_field_goggle_opt_both')
         } as const
     });
 }

@@ -56,15 +56,22 @@ class DataSourceSupplier implements IDataSourceSupplier {
         return cfg.all;
     }
     
+    // Gets the stored value from a datasource
     get<X>(source: IDataSource<any, X, any>): X {
         return source.resolve(this.dataObj![source.getKey()], useVariableStore().variable2ValueMap);
     }
 
+    // Returns the value of a variable or the defaultValue if the variables doesn't exist
     getVariable(name: string, defaultValue: number = 0): number {
         return useVariableStore().variable2ValueMap[name] || defaultValue;
     }
 
-    // TODO: Comment
+    /**
+     * Takes in a mathmatical expression (With some known variables) and tries to resolve it to a single number
+     * @param exp the expression
+     * @param defaultValue a default value to return if the expression results in an error
+     * @returns 
+     */
     solveExpression(exp: string, defaultValue: number = 0){
         return solveExpression(exp, useVariableStore().variable2ValueMap, defaultValue);
     }

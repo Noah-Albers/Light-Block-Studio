@@ -1,16 +1,12 @@
 import { IDiagnostics } from "@procedure/definitions/ProcDiagnostics";
 import { ILEDNode } from "@procedure/definitions/ProcLEDNode";
-import { CppFnArgInformation, CppFnInformation, CppType, ICppFnManager } from "@cppgen/functionManager";
-import { CodeResult, ICodeSupport, IExtendedCodeSupport } from "@cppgen/generator";
+import { CppFnArgInformation, CppFnInformation, CppType } from "@cppgen/functionManager";
+import { ICodeSupport } from "@cppgen/generator";
 import { IVisualisationController } from "@visualizer/index";
-import { CC_CppFnHandles, ICodeConstructor } from "@procedure/definitions/ProcCodeConstructor";
 import { SimpleFunctionCodeConstructor } from "@procedure/implementations/SimpleFunctionCodeConstructor";
-import { delayIf, finalPush, tab, trinaryEquasion } from "@cppgen/functionManager/utils/CodeFormatUtil";
-import { MultiLedProcedureOptions } from "./MultiLedProcedure";
+import { delayIf, tab } from "@cppgen/functionManager/utils/CodeFormatUtil";
 import { clamp } from "@utils/MathUtils";
 import { ensureNonNaNs } from "@procedure/utils/ProcedurePrepareUtils";
-
-// TODO: Test code generation
 
 export type LedGradiantProcedureOptions = {
     // Range to play

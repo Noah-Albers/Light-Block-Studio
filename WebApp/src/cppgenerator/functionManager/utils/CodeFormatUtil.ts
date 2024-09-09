@@ -3,7 +3,6 @@ import { CppFnArgInformation } from "../definitions/CppFnDefinitions";
 
 export type TrinaryResult = string | (()=>string);
 
-// TODO: Comment
 /**
  * Takes in a value that may or may not be known at precompile time
  * and creates a trinary-operator lookup.

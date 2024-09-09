@@ -1,8 +1,6 @@
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 import { IDataSource } from "./DataSource";
 
-// TODO: Add support for custom blockly mutators later on
-
 export interface IDataSourceSupplier {
 
     /**
@@ -25,7 +23,12 @@ export interface IDataSourceSupplier {
      */
     getVariable(name: string, defaultValue: number = 0) : number;
 
-    // TODO: Comment
+    /**
+     * Takes in a math-expression with known variables and uses the solver to get the resulting value
+     * 
+     * @param exp the math expression
+     * @param defaultValue a default value to return if the expression results in an error
+     */
     solveExpression(exp: string, defaultValue: number = 0) : number;
 }
 

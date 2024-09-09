@@ -2,95 +2,84 @@ import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
 import { NumberDataSource } from "../../datasources/NumberDataSource";
 import { ColorDataSource } from "../../datasources/ColorDataSource";
-import { $t } from "@localisation/Fluent";
 import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
 import { OptionDataSource } from "@nodes/implementations/datasources/OptionDataSource";
-
-// TODO: Language
+import { $t } from "@localisation/Fluent";
 
 export class FullLedNodeModel implements INodeModel {
 
-   /*
-    ledsReversed: reversed,
-    stepsReversed: reversed,
-
-    h: clr[0],
-    s: clr[1],
-    v: clr[2],
-    */
-
     private ledsReversedField = new OptionDataSource("ledsReverse", "false", {
-        displayTitle: "Are the leds reversed?",
-        info: "If the leds should be reversed when animating",
+        displayTitle: $t('models_fullled_field_ledreverse_title'),
+        info: $t('models_fullled_field_ledreverse_info'),
         values: {
-            false: "No",
-            true: "Yes"
+            false: $t('models_fullled_field_ledreverse_opt_no'),
+            true: $t('models_fullled_field_ledreverse_opt_yes')
         }
     })
 
     private stepsReversedField = new OptionDataSource("stepsReverse", "false", {
-        displayTitle: "Are the steps reversed?",
-        info: "If the step should be reversed when animating",
+        displayTitle: $t('models_fullled_field_stepsreverse_title'),
+        info: $t('models_fullled_field_stepsreverse_info'),
         values: {
-            false: "No",
-            true: "Yes"
+            false: $t('models_fullled_field_stepsreverse_opt_no'),
+            true: $t('models_fullled_field_stepsreverse_opt_yes')
         }
     })
 
     private parallelField = new OptionDataSource("seriesType", "serial", {
-        displayTitle: "Type",
-        info: "If the animation is parallel or serial",
+        displayTitle: $t('models_fullled_field_parallel_title'),
+        info: $t('models_fullled_field_parallel_info'),
         values: {
-            "parallel": "Parallel",
-            "serial": "Serial"
+            "parallel": $t('models_fullled_field_parallel_opt_parallel'),
+            "serial": $t('models_fullled_field_parallel_opt_serial')
         }
     })
 
     private ledDelayField = new NumberDataSource("ledDelay", "0", {
-        displayTitle: "Delay (Per Led)",
-        info: "Milliseconds to wait between leds",
+        displayTitle: $t('models_fullled_field_delayled_title'),
+        info: $t('models_fullled_field_delayled_info'),
         type: "int",
         min: 0
     });
 
     private stepDelayField = new NumberDataSource("stepDelay", "0", {
-        displayTitle: "Delay (Per Step)",
-        info: "Milliseconds to wait between steps",
+        displayTitle: $t('models_fullled_field_delaystep_title'),
+        info: $t('models_fullled_field_delaystep_info'),
         type: "int",
         min: 0
     });
 
     private stepsField = new NumberDataSource("steps", "4", {
-        displayTitle: "Steps",
-        info: "How many steps there are",
+        displayTitle: $t('models_fullled_field_steps_title'),
+        info: $t('models_fullled_field_steps_info'),
         type: "int",
         min: 1
     });
 
     private stepSpaceField = new NumberDataSource("stepSpace", "1", {
-        displayTitle: "Space between Steps",
-        info: "Amount of leds to be empty between steps",
+        displayTitle: $t('models_fullled_field_space_title'),
+        info: $t('models_fullled_field_space_info'),
         type: "int",
         min: 0
     });
 
     private idxStartField = new NumberDataSource("idxStart", "0", {
-        displayTitle: "Start-Index",
-        info: "Index-Offset to start the animation from",
+        displayTitle: $t('models_fullled_field_idxStart_title'),
+        info: $t('models_fullled_field_idxStart_info'),
         type: "int",
         min: 0
     });
 
     private stepSizeField = new NumberDataSource("stepSize", "3", {
-        displayTitle: "Step Size",
-        info: "How long each step is in size.",
+        displayTitle: $t('models_fullled_field_stepsize_title'),
+        info: $t('models_fullled_field_stepsize_info'),
         type: "int",
         min: 1
     });
 
     private colorField = new ColorDataSource("clr", [1,1,1], {
-        displayTitle: "Color",
-        info: "What color should be set."
+        displayTitle: $t('models_fullled_field_color_title'),
+        info: $t('models_fullled_field_color_info')
     });
 
     getModelName(): string {
@@ -104,7 +93,7 @@ export class FullLedNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Color %1 steps in %2 with %3 space";
+        return $t('models_fullled_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.stepsField, this.colorField, this.stepSpaceField]

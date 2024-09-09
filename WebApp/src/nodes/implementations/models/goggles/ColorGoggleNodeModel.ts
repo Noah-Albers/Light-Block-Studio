@@ -7,29 +7,27 @@ import { ColorDataSource } from "@nodes/implementations/datasources/ColorDataSou
 import { NumberDataSource } from "@nodes/implementations/datasources/NumberDataSource";
 import { createGoggleSelection, getGoggleSelection } from "./GoggleNodeUtils";
 
-// TODO: Lang
-
 export class ColorGoggleNodeModel implements INodeModel {
 
     private fldGoogle = createGoggleSelection();
 
     private fldColor = new ColorDataSource("clr", [1,1,1], {
-        displayTitle: "Color",
-        info: "In which color the goggle shall be colored"
+        displayTitle: $t('models_goggle_color_field_color_title'),
+        info: $t('models_goggle_color_field_color_info')
     });
 
     private fldDirection = new OptionDataSource("direction", "forward", {
-        displayTitle: "Direction",
-        info: "Direction that the animation shall play",
+        displayTitle: $t('models_goggle_color_field_direction_title'),
+        info: $t('models_goggle_color_field_direction_info'),
         values: {
-            "forward": "forward",
-            "backward": "backward"
+            "forward": $t('models_goggle_color_field_direction_opt_forward'),
+            "backward": $t('models_goggle_color_field_direction_opt_backward')
         }
     })
 
     private fldDelay = new NumberDataSource("delay", "0", {
-        displayTitle: "Delay",
-        info: "How many milliseconds to wait between each led",
+        displayTitle: $t('models_goggle_color_field_delay_title'),
+        info: $t('models_goggle_color_field_delay_info'),
         min: 0,
         type: "int"
     })
@@ -44,7 +42,7 @@ export class ColorGoggleNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Color %1 google(s) in %2";
+        return $t('models_goggle_color_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.fldGoogle, this.fldColor]

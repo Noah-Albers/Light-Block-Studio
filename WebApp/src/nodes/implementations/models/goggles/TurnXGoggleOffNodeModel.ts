@@ -2,10 +2,7 @@ import { IDataSource } from "@nodes/definitions/DataSource";
 import { IDataSourceSupplier, INodeModel, OnBlockSettings } from "@nodes/definitions/Node";
 import { $t } from "@localisation/Fluent";
 import { selectBestColorProcedure } from "@webapp/utils/color/SelectBestColorProcedure";
-import { OptionDataSource } from "@nodes/implementations/datasources/OptionDataSource";
 import { createGoggleSelection, getGoggleSelection } from "./GoggleNodeUtils";
-
-// TODO: Lang
 
 export class TurnXGoggleOffNodeModel implements INodeModel {
 
@@ -21,7 +18,7 @@ export class TurnXGoggleOffNodeModel implements INodeModel {
         };
     }
     getBlockMessage(): string {
-        return "Turn %1 goggle(s) off";
+        return $t('models_goggle_turnoff_block');
     }
     getOnBlockSources(): IDataSource<any, any, any>[] {
         return [this.fldGoogle]
