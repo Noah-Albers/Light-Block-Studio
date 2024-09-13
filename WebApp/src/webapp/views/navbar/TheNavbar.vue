@@ -53,7 +53,7 @@
 
             await navigator.clipboard.writeText(code);
 
-            SignalDispatcher.emit(Signals.DISPLAY_POPUP, { text: $t('popup_codecopied') })
+            SignalDispatcher.emit(Signals.DISPLAY_SNACKBAR, { text: $t('popup_codecopied') })
         } catch (err) {
             console.error("Failed to copy / create code", err);
         }

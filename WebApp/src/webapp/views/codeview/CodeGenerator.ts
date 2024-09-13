@@ -21,7 +21,6 @@ function getVariables() {
     obj["pin"] = (store.pin || 0).toString()
     obj["amt"] = (store.amount || 0).toString()
 
-    // TODO: Document that these are used to replace
     obj["ledInclude"] = store.ledSystemHooks.includeCode;
     obj["ledGlobal"] = store.ledSystemHooks.globalCode;
     obj["ledSetup"] = store.ledSystemHooks.setupCode;

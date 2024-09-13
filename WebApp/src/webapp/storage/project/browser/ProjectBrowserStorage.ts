@@ -6,6 +6,8 @@ import { exportProject } from "../ProjectExporter";
 import { importProject } from "../ProjectImporter";
 import { isLocalstorageSupported } from "@utils/Localstorage";
 import { makeValidFilename } from "@utils/FileUtils";
+import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
+import { Signals } from "@webapp/utils/signals/Signals";
 
 /**
  * Creates the menu items to use the browser for storing projects and settings
@@ -213,9 +215,14 @@ async function saveLocalstorageProject(askName: boolean) {
 async function onProjectLoad(filename: string, rawProj: string) {
     const res = await importProject(filename, rawProj, (msg, btnTrue, btnFalse) => {
 
-        // TODO: Translate after replacing confirm with a web-based call to action
-
-        return Promise.resolve(confirm(`${msg}:\n\nOk: ${btnTrue}\nCancle: ${btnFalse};`))
+        return new Promise((res) => {
+            SignalDispatcher.emit(Signals.DISPLAY_POPUP, {
+                message: msg,
+                no: btnFalse,
+                yes: btnTrue,
+                onResolve: (a) => res(a == "yes")
+            });
+        });
     });
 
     if (res.success)

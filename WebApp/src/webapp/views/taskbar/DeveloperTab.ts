@@ -10,7 +10,7 @@ function onRuntestsClicked(){
     const errorAmount = runAllTests();
 
     // Shows a popup as an info
-    SignalDispatcher.emit(Signals.DISPLAY_POPUP, {
+    SignalDispatcher.emit(Signals.DISPLAY_SNACKBAR, {
         text: errorAmount <= 0 ? $t('developer_runtests_info_success') : $t('developer_runtests_info_error', { errors: errorAmount }),
         timeout: 5000,
         type: errorAmount <= 0 ? "success" : "warning"

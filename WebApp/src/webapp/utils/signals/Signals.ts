@@ -1,3 +1,4 @@
+import { EventArgsPopup } from "./SignalArgumentTypes";
 
 export const Signals = Object.freeze({
     /**
@@ -18,9 +19,15 @@ export const Signals = Object.freeze({
 
     /**
      * Requests the application to show a snackbar with the given information
-     * @argument {EventArgsPopup} the data to display inside the snackbar
+     * @argument {EventArgsSnackbar} the data to display inside the snackbar
      */
-    DISPLAY_POPUP: 7,
+    DISPLAY_SNACKBAR: 7,
+
+    /**
+     * Requests the application to show a popup with the given message and a yes/no button with custom messages
+     * @argument {EventArgsPopup} the data to display to the snackbar
+     */
+    DISPLAY_POPUP: 13,
 
     //#region Blockly-Events
 

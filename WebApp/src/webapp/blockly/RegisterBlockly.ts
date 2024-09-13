@@ -16,10 +16,8 @@ export const DATA_OBJECT_NAME = "dataObj";
 export const MODEL_OBJECT_NAME = "model";
 export const CACHE_OBJECT_NAME = "cache";
 
-// TODO: Ensure no other element has this name
 // Name used for the element that contains substatements
 export const BLOCKLY_SUBBLOCKY_NAME = "subblocks";
-
 
 // TODO: test this function
 
@@ -121,6 +119,10 @@ function registerNodeModel(model: INodeModel) {
 
             // Builds the block
             this.jsonInit(buildJSONObjectFor(model));
+
+            // Ensures no source has the submodle-reserved name
+            if(model.getOnBlockSources().some(x=>x.getKey()===BLOCKLY_SUBBLOCKY_NAME))
+                throw new Error(`A blockly-datasource used the reserved name ${BLOCKLY_SUBBLOCKY_NAME}.`);
 
             if (model.hasSubNodes())
                 this.appendStatementInput(BLOCKLY_SUBBLOCKY_NAME);

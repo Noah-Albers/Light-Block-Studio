@@ -30,3 +30,9 @@ TODO: Add switch to disable code optimisations for the cpp compiler (Can be used
 ## Features
 
 TODO: Added support for blockly mutators
+
+# Requirements before actual release 0.1
+TODO: Implement desktop vs web based saving
+TODO: Fix most critical todos
+TODO: Add Tutorial on how to use the application
+TODO: Add Help menu with a report-issues button

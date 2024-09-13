@@ -21,6 +21,18 @@ export type EventVue2HTMLRequest<T> = {
 }
 
 export type EventArgsPopup = {
+    // Message to ask the user
+    message: string,
+
+    // Messages for yes and no buttons
+    yes: string,
+    no: string,
+
+    // Function to use when the user has resolved the popup
+    onResolve: (res: "yes" | "no")=>void;
+}
+
+export type EventArgsSnackbar = {
     // How long to display the popup
     timeout?: number,
     // Text to display inside the popup

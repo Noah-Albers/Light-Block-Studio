@@ -1,7 +1,7 @@
 import mitt from "mitt";
 import { Signals } from "./Signals";
 import { Block, WorkspaceSvg } from "blockly";
-import { EventArgsBlocklyClrReqAttach, EventArgsPopup, EventVue2HTMLRequest } from "./SignalArgumentTypes";
+import { EventArgsBlocklyClrReqAttach, EventArgsPopup, EventArgsSnackbar, EventVue2HTMLRequest } from "./SignalArgumentTypes";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 
 export type Events = {
@@ -13,6 +13,7 @@ export type Events = {
         loop: ProcedureWithOptions<any>[]
     },
     [Signals.REQUEST_CONFIG_BUILD]: void,
+    [Signals.DISPLAY_SNACKBAR]: EventArgsSnackbar,
     [Signals.DISPLAY_POPUP]: EventArgsPopup,
     [Signals.BLOCKLY_REQUEST_WORKSPACE]: (ws: WorkspaceSvg)=>void,
     [Signals.BLOCKLY_REQUEST_VUE_HTML_INJECT]: EventVue2HTMLRequest<any>,

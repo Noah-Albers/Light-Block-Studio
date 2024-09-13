@@ -6,13 +6,16 @@
     </v-app-bar>
 
     <!-- Snackbar to display information-->
-    <v-snackbar :color="popupOptions.type || 'info'" :timeout="popupOptions!.timeout || 800" v-model="popupOpen">
-      {{ popupOptions?.text }}
+    <v-snackbar :color="snackbarOptions.type || 'info'" :timeout="snackbarOptions!.timeout || 800" v-model="snackbarOpen">
+      {{ snackbarOptions?.text }}
     </v-snackbar>
 
     <v-overlay v-model="menuOpen" class="align-center justify-center">
       <TheSettingsMenus />
     </v-overlay>
+
+    <!--Popup for user requests that shall popup to ask-->
+    <TheRequestPopup/>
 
     <!-- Workspace and sidebar -->
     <v-main>
@@ -66,15 +69,16 @@
   import TheNavbar from "./views/navbar/TheNavbar.vue";
   import { useSignal } from './utils/vue/VueSignalListener';
   import { Signals } from './utils/signals/Signals';
-  import { EventArgsPopup } from './utils/signals/SignalArgumentTypes';
+  import { EventArgsSnackbar } from './utils/signals/SignalArgumentTypes';
   import { Ref } from 'vue';
+  import TheRequestPopup from "./views/popup/TheRequestPopup.vue";
 
-  const popupOpen = ref(false);
-  const popupOptions: Ref<EventArgsPopup> = ref({});
+  const snackbarOpen = ref(false);
+  const snackbarOptions: Ref<EventArgsSnackbar> = ref({});
 
-  useSignal(Signals.DISPLAY_POPUP, opts => {
-    popupOptions.value = opts;
-    popupOpen.value = true;
+  useSignal(Signals.DISPLAY_SNACKBAR, opts => {
+    snackbarOptions.value = opts;
+    snackbarOpen.value = true;
   });
 
   const menuOpen = ref(false);
