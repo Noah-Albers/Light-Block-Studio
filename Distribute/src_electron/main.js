@@ -1,9 +1,10 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('node:path')
+const ElectronAPI = require("./backend/ElectronApiRegister");
 
 const createWindow = () => {
     // Create the browser window.
-    const mainWindow = new BrowserWindow({
+    global.win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -12,13 +13,17 @@ const createWindow = () => {
     })
 
     if (process.env.IS_DEVELOPMENT)
-        mainWindow.loadURL("http://localhost:3000");
+        global.win.loadURL("http://localhost:3000");
     else
-        mainWindow.loadFile('webapp/index.html')
+        global.win.loadFile('webapp/index.html')
 }
 
 // initialization and is ready to create browser windows.
 app.whenReady().then(() => {
+
+    // Registers the api-endpoints
+    ElectronAPI.init();
+    
     createWindow()
 
     app.on('activate', () => {
