@@ -1,6 +1,6 @@
 {
   "name": "led-project-distibution",
-  "main": "src_electron/main.js",
+  "main": "./src_electron/main.js",
   "version": "1.0.0",
   "description": "this npm folder is for the finalized and packaged versions of the webapp to be distributed through electron",
   "scripts": {

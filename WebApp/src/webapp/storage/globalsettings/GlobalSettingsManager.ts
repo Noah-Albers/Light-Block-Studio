@@ -3,6 +3,7 @@ import { useSettingsStore } from "@webapp/stores/SettingsStore";
 import { importGlobalsettings } from "./GlobalSettingsImporter";
 import { isLocalstorageSupported } from "@utils/Localstorage";
 import { exportGlobalSettings } from "./GlobalSettingsExporter";
+import DesktopApi from "@webapp/desktopapi/DesktopApi";
 
 // Name for the localstorage item for the global settings
 const LS_NAME = "globalsettings";
@@ -13,31 +14,39 @@ const LS_NAME = "globalsettings";
  */
 const onGlobalSettingsChange = debounce(()=>{
     
-    // TODO: Browser vs Desktop api to save the settings file
+    const content = JSON.stringify(exportGlobalSettings());
 
-    // TODO: Following is for browser only
-    if(isLocalstorageSupported())
-        localStorage.setItem(LS_NAME, JSON.stringify(exportGlobalSettings()));
+    console.log("Write settings to "+(DesktopApi.isDesktop() ? "Desktop" : "Browser"))
+    if(DesktopApi.isDesktop()){
+        DesktopApi.writeSettingsFile(content)
+    }else{
+        // TODO: Following is for browser only
+        if(isLocalstorageSupported())
+            localStorage.setItem(LS_NAME, content);
+    }
 
 }, 1000);
 
 // Loads the global settings
 function loadGlobalSettings(){
 
-    // TODO: Browser vs desktop api to load the global settings file
+    var rawLoaded: string|null|undefined;
 
-    // TODO: Following is for browser only
-    if(!isLocalstorageSupported())
-        return;
-
-    const settings = localStorage.getItem(LS_NAME)
-
+    if(DesktopApi.isDesktop()){
+        rawLoaded = DesktopApi.readSettingsFile();
+    }else{
+        if(!isLocalstorageSupported())
+            return;
+    
+        rawLoaded = localStorage.getItem(LS_NAME);
+    }
+    
     // Ensures the user had their settings saved at some point
-    if(settings === null)
+    if(typeof rawLoaded !== "string")
         return;
 
     // Imports the settings
-    importGlobalsettings(settings);
+    importGlobalsettings(rawLoaded);
 }
 
 export function setupGlobalSettingsManager(){

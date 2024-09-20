@@ -1,9 +1,9 @@
 import { $t, SupportedLanguagesType } from "@localisation/Fluent";
 import { ExportedGlobalPlainSettings, GlobalSettingsSchema } from "./GlobalSettingsSchema";
 import { useSettingsStore, View } from "@webapp/stores/SettingsStore";
+import DesktopApi from "@webapp/desktopapi/DesktopApi";
 
 // TODO: Add language lookups
-// TODO: Implement browser vs desktop check to automatically safe the global settings
 
 function importPlainSettings(data: ExportedGlobalPlainSettings){
 
@@ -36,14 +36,29 @@ export function importGlobalsettings(raw: unknown) {
     // Tries to import the project
     var res = GlobalSettingsSchema.safeParse(raw);
     if(!res.success){
-        // Note: This should never really happen except something really went wrong.
+        // Note: This should never really happen, except if something went really wrong.
 
-        // TODO: Implement some browser vs desktop check to close the app
-        
-        console.log(res.error.issues,res.data, raw);
+        // Error logs
+        console.error(res.error.issues,res.data, raw);
 
-        // Informs the user of the error and informs him to leave if his settings are broken.
-        alert("Failed to load the application settings.\nIf you proceed your old settings will be lost. If you dont want that to happen, close the webpage now.\n\nDo you want to proceed?");
+        // TODO: Translate and change alert/confirm to web-based interface
+        const baseString = (
+            `Failed to load the application settings.\n`+
+            `If you proceed, your old settings will be lost.\n`
+        );
+
+        if(DesktopApi.isDesktop()){
+            if(!confirm(baseString + `Do you want to proceed?`)){
+                DesktopApi.closeWindow();
+                return;
+            }
+        }else
+            alert(
+                baseString+
+                `If you dont want that to happen, close the webpage now.\n\n`+
+                `Do you want to proceed?"`
+            )
+
 
         store.restoreDefaults();
         return;

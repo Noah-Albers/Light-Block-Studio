@@ -3,7 +3,45 @@ const { ipcMain: IPC, dialog, shell } = require('electron');
 const fs = require("fs");
 const path = require("path");
 
+// Path to the settings
+const PATH_SETTINGS_FILE = "settings.json";
+
 //#region API-Endpoints
+
+/**
+ * Requests the global settings file
+ * @returns {string|undefined} the file contents and undefined if an error ocurred
+ */
+function requestReadSettingsFile(evt) {
+    try{
+        // Reads in the file using utf-8
+        evt.returnValue = fs.readFileSync(PATH_SETTINGS_FILE, {encoding:'utf8', flag:'r'});
+    }catch(e){
+        evt.returnValue = undefined;
+    }
+}
+
+/**
+ * Writes data to the global settings file
+ * @param {string} data
+ * @returns true if the write operation worked and undefined if an error occured
+ */
+function requestWriteSettingsFile(evt, data){
+    try{
+        var base = path.dirname(PATH_SETTINGS_FILE);
+    
+        // Ensures the parent directory exists
+        fs.mkdirSync(base,{
+            recursive: true
+        });
+
+        fs.writeFileSync(PATH_SETTINGS_FILE, data);
+        evt.returnValue = true;
+    }catch(e){
+        console.error(e);
+        evt.returnValue = undefined;
+    }
+}
 
 /**
  * Shows the native file save dialog
@@ -164,6 +202,9 @@ function init(){
     
     IPC.on("read-file", requestReadFile);
     IPC.on("write-file", requestWriteFile);
+
+    IPC.on("read-settings", requestReadSettingsFile);
+    IPC.on("write-settings", requestWriteSettingsFile);
 }
 
 module.exports = { init }

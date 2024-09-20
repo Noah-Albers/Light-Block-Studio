@@ -1,6 +1,6 @@
 <template>
     <v-browser v-if="!isLocalstorageSupported()">
-        <!--TODO: Lang once the desktop stuff has been added as well-->
+        <!--TODO: Lang once the desktop stuff has been added as well -->
         <v-alert density="compact" variant="tonal" class="ma-3" type="warning" text="Your browser doesn't support localstorage. Please be aware that your Settings wont be saved."></v-alert>
     </v-browser>
     <div class="d-flex flex-row">
@@ -19,7 +19,6 @@
                 <TheSerialSettings />
             </v-window-item>
         </v-window>
-        <!--TODO: Show info if browser storage is not supported that settings will not be saved-->
     </div>
 </template>
 

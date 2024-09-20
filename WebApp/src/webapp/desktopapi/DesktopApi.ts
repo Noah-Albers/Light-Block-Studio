@@ -59,6 +59,17 @@ const openDevTools: ()=>void = desktopApi.openDevTools;
  */
 const closeWindow: ()=>void = desktopApi.closeWindow;
 
+/**
+ * Reads in the settings file and returns its content
+ * @returns the content of the settings file or undefined on error
+ */
+const readSettingsFile: ()=>string|undefined = desktopApi.readSettingsFile;
+/**
+ * Writes data to the settings file
+ * @returns true if the write was successful and undefined otherwise
+ */
+const writeSettingsFile: (data: string)=>true|undefined = desktopApi.writeSettingsFile;
+
 export default {
     readFile,
     writeFile,
@@ -69,6 +80,9 @@ export default {
     openURL,
     openDevTools,
     closeWindow,
+
+    readSettingsFile,
+    writeSettingsFile,
 
     isDesktop
 }
