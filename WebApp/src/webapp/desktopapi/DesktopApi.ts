@@ -2,10 +2,14 @@
 // or web-browser (Depending on which platform the code is run)
 
 // Api to access
-const desktopApi = (window as any).desktopAPI;
+const desktopApi = (()=>{
+    let api = (window as any).desktopAPI;
+
+    return api === undefined ? {isBrowser: true} : api;
+})();
 
 // Returns if this application is run on the desktop
-const isDesktop = ()=>desktopApi !== undefined; 
+const isDesktop = ()=>desktopApi.isBrowser === undefined;
 
 /**
  * Reads in a file from the file-system.
