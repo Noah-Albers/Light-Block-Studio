@@ -21,6 +21,7 @@ const writeSettingsFile = (data)=>IPC.sendSync("write-settings", data);
 
 const pathBasename = (path)=>IPC.sendSync("path-basename",path);
 
+const openNewWindow = ()=>IPC.send("open-new-window");
 
 // Exposes all these functions using an electronAPI-Global object
 CB.exposeInMainWorld("desktopAPI", {
@@ -34,4 +35,5 @@ CB.exposeInMainWorld("desktopAPI", {
     writeSettingsFile,
     readSettingsFile,
     pathBasename,
+    openNewWindow
 });

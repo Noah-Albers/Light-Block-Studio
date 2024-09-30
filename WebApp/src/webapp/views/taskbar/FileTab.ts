@@ -1,4 +1,4 @@
-import { Menu } from "@webapp/utils/taskbar/TaskBar";
+import { Menu, MenuItem } from "@webapp/utils/taskbar/TaskBar";
 import { $t } from "@localisation/Fluent";
 import { createTemplateSubTab } from "./filetab/TemplatesSubtab";
 import { createLEDApiSubTab } from "./filetab/LEDAPISubtab";
@@ -17,10 +17,22 @@ export const createFileTab : ()=>Menu = ()=>{
         create: [],
         save: []
     };
+
+    const newItem = {
+        text: $t("tab_file_new"),
+        action() {
+            if(DesktopApi.isDesktop())
+                DesktopApi.openNewWindow();
+            else
+                window.open(window.location.toString(), '_blank');
+        },
+        icon: "mdi-plus"
+    } as MenuItem;
     
     return {
         text: $t('tab_file'),
         items: ()=>[
+            newItem,
             ...browserItems.create,
             ...desktopItems.create,
             "seperator",

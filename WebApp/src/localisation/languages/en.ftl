@@ -266,3 +266,5 @@ taskbar_storage-desktop_save = Save
 taskbar_storage-desktop_save_title = Save the project as a file
 taskbar_storage-desktop_saveas = Save as...
 taskbar_storage-desktop_saveas_title = Save the project into a file you select
+tab_file_new = New
+tab_developer_open_devtools = Open Developer-Tools

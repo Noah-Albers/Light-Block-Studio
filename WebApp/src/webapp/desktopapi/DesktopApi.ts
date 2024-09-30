@@ -79,6 +79,9 @@ const writeSettingsFile: (data: string)=>true|undefined = desktopApi.writeSettin
  */
 const pathBasename: (path: string)=>string = desktopApi.pathBasename;
 
+// Requests electron to open a new window
+const openNewWindow: ()=>void = desktopApi.openNewWindow;
+
 export default {
     readFile,
     writeFile,
@@ -89,6 +92,7 @@ export default {
     openURL,
     openDevTools,
     closeWindow,
+    openNewWindow,
 
     readSettingsFile,
     writeSettingsFile,

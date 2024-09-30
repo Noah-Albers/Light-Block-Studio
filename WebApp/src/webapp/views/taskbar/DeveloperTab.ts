@@ -1,8 +1,9 @@
 import { $t } from "@localisation/Fluent";
 import { runAllTests } from "@test/AllTests.test";
+import DesktopApi from "@webapp/desktopapi/DesktopApi";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
-import { Menu } from "@webapp/utils/taskbar/TaskBar";
+import { Menu, MenuItem } from "@webapp/utils/taskbar/TaskBar";
 
 // Event: When the run tests button is clicked
 function onRuntestsClicked(){
@@ -24,6 +25,13 @@ export const createDeveloperTab: ()=>Menu = ()=>({
             text: $t('tab_developer_runTests'),
             action: onRuntestsClicked,
             icon: "mdi-test-tube"
-        }
+        },
+        ...(DesktopApi.isDesktop() ? [{
+            // TODO
+            text: $t('tab_developer_open_devtools'),
+            action: DesktopApi.openDevTools,
+            icon: "mdi-test-tube"
+        }] as MenuItem[] : [])
+        
     ]
 })

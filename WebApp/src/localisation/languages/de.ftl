@@ -267,3 +267,5 @@ taskbar_storage-desktop_save = Speichern
 taskbar_storage-desktop_save_title = Speicher das Projekt als Datei
 taskbar_storage-desktop_saveas = Speichern unter...
 taskbar_storage-desktop_saveas_title = Speichere das Projekt in einer ausgewählten Datei
+tab_file_new = Neu
+tab_developer_open_devtools = Entwicklerwerkzeuge öffnen

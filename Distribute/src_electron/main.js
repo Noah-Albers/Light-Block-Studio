@@ -1,10 +1,10 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, webContents } = require('electron')
 const path = require('node:path')
 const ElectronAPI = require("./backend/ElectronApiRegister");
 
-const createWindow = () => {
+global.createWindow = () => {
     // Create the browser window.
-    global.win = new BrowserWindow({
+    const win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -12,12 +12,12 @@ const createWindow = () => {
         },
         backgroundColor: "#000000"
     })
-    global.win.removeMenu();
+    win.removeMenu();
 
     if (process.env.IS_DEVELOPMENT)
-        global.win.loadURL("http://localhost:3000");
+        win.loadURL("http://localhost:3000");
     else
-        global.win.loadFile('webapp/index.html')
+        win.loadFile('webapp/index.html')
 }
 
 // initialization and is ready to create browser windows.
@@ -26,12 +26,12 @@ app.whenReady().then(() => {
     // Registers the api-endpoints
     ElectronAPI.init();
     
-    createWindow()
+    global.createWindow()
 
     app.on('activate', () => {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+        if (BrowserWindow.getAllWindows().length === 0) global.createWindow()
     })
 })
 

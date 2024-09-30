@@ -1,10 +1,12 @@
 
-const { ipcMain: IPC, dialog, shell } = require('electron');
+const { ipcMain: IPC, dialog, shell, BrowserWindow } = require('electron');
 const fs = require("fs");
 const path = require("path");
 
 // Path to the settings
 const PATH_SETTINGS_FILE = "settings.json";
+
+const currentWindow = (evt)=> BrowserWindow.fromWebContents(evt.sender);
 
 //#region API-Endpoints
 
@@ -57,7 +59,7 @@ function requestSaveFileDialog(evt, title, defaultPath){
     if(typeof defaultPath !== "string" && typeof defaultPath !== "undefined")
         return evt.returnValue = undefined;
 
-    evt.returnValue = dialog.showSaveDialogSync(global.win, {
+    evt.returnValue = dialog.showSaveDialogSync(currentWindow(evt), {
         title,
         filters: [{
             // TODO: Update
@@ -82,7 +84,7 @@ function requestOpenFileDialog(evt, title){
     }
 
     // Opens the dialog
-    var res = dialog.showOpenDialogSync(global.win, {
+    var res = dialog.showOpenDialogSync(currentWindow(evt), {
         properties: ['openFile'],
         title,
         filters: [{
@@ -119,12 +121,12 @@ function requestOpenURL(evt, url) {
 
 // Opens the devtools on the window
 function requestOpenDevTools(evt){
-    global.win.openDevTools();
+    currentWindow(evt).openDevTools();
 }
 
 // Closes the electron-window and therefor exits the application
 function requestCloseWindow(evt){
-    global.win.close();
+    currentWindow(evt).close();
 }
 
 /**
@@ -194,6 +196,11 @@ function requestPathBasename(evt, reqPath){
     evt.returnValue = path.basename(reqPath);
 }
 
+// Event: When a new window shall open
+function openNewWindow(evt){
+    global.createWindow();
+}
+
 //#endregion
 
 // Registers all nodejs/electron-api-endpoints
@@ -212,6 +219,7 @@ function init(){
     IPC.on("write-settings", requestWriteSettingsFile);
 
     IPC.on("path-basename", requestPathBasename);
+    IPC.on("open-new-window", openNewWindow);
 }
 
 module.exports = { init }
