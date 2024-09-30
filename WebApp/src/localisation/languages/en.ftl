@@ -268,3 +268,38 @@ taskbar_storage-desktop_saveas = Save as...
 taskbar_storage-desktop_saveas_title = Save the project into a file you select
 tab_file_new = New
 tab_developer_open_devtools = Open Developer-Tools
+global_settings_import_error_unknown = Failed to load the application settings.\nIf you proceed, your old settings will be lost.\n
+global_settings_import_error_unknown_question-desktop = Do you want to proceed?
+global_settings_import_error_unknown_question-browser = If you dont want that to happen, close the webpage now.\n\nDo you want to proceed?
+projectsettings_qa_what-is-blueprint-title = What is the blueprint?
+projectsettings_qa_what-is-blueprint-html =
+    <p>The blueprint is the basic code surrounding the final generated code.</p>
+    <p>You can write custom logic here and extend or change it.</p>
+    <p>Using variables you can specify where the genrated code shall be put.</p>
+projectsettings_qa_what-are-variables-title = How do i use variables?
+projectsettings_qa_what-are-variables-html =
+    <p>
+        You can simple insert the text $$VariableName$$ into any part of the code and that part will<br>
+        be replaced with the corresponding variable you specified.
+    </p>
+    <p>But be careful. Reserved variable names will always be overwritten with generated code.</p>
+projectsettings_qa_reserved-variables-title = Which reserved variables exist?
+projectsettings_qa_reserved-variables-html =
+    <p><span>$$ledInclude$$</span> is replaced with the #include Statement used by the led-library you selected.</p>
+    <br>
+    
+    <p>If you for example selected Fast-LED, this might be something like: #include &lt;FastLED.h&gt;</p>
+    <br>
+    <p><span>$$pin$$</span> is replaced with the led pin you specified in the project settings.</p>
+    <br>
+    <p><span>$$amt$$</span> is replaced with the led amount you specified in the project settings.</p>
+    <br>
+    <p><span>$$ledGlobal$$</span> is replaced with any global-scoped code that the led-library might need.</p>
+    <br>
+    <p><span>$$globals$$</span> is replaced with any global-scoped code that the generated application code might need.</p>
+    <br>
+    <p><span>$$ledSetup$$</span> is replaced with any setup code that the led-library might need.</p>
+    <br>
+    <p><span>$$setup$$</span> is replaced with any generated setup code that the application generated.<br></p>
+    <br>
+    <p><span>$$loop$$</span> is replaced with any generated loop code that the application generated.</p>

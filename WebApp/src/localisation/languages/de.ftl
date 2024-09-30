@@ -269,3 +269,40 @@ taskbar_storage-desktop_saveas = Speichern unter...
 taskbar_storage-desktop_saveas_title = Speichere das Projekt in einer ausgewählten Datei
 tab_file_new = Neu
 tab_developer_open_devtools = Entwicklerwerkzeuge öffnen
+global_settings_import_error_unknown = Die Anwendungseinstellungen konnten nicht geladen werden.\nWenn du fortfährst, gehen die alten Einstellungen verloren.\n
+global_settings_import_error_unknown_question-browser = Wenn du das nicht möchtest, schließen die Webseite bitte.\n\nMöchtest du fortfahren?
+global_settings_import_error_unknown_question-desktop = Möchtest du fortfahren?
+projectsettings_qa_reserved-variables-html =
+    <p><span>$$ledInclude$$</span> wird durch die #include-Anweisung ersetzt, die von der von Ihnen ausgewählten led-Bibliothek verwendet wird.</p>
+    <br>
+    
+    <p>Wenn Sie z. B. Fast-LED ausgewählt haben, könnte dies etwa so aussehen: #include &lt;FastLED.h&gt</p>
+    <br>
+    <p><span>$$pin$$</span> wird durch den von dir, in den Projekteinstellungen angegebenen, Led-Pin ersetzt.</p>
+    <br>
+    <p><span>$$amt$$</span> wird durch die von dir, in den Projekteinstellungen angegebenen, Led-Anzahl ersetzt.</p>
+    <br>
+    <p><span>$$ledGlobal$$</span> wird durch Code im globalem Scope ersetzt, den die led-Bibliothek benötigen könnte.</p>
+    <br>
+    <p><span>$$globals$$</span> wird durch Code im global Scope ersetzt, den der generierte Anwendungscode benötigen könnte.</p>
+    <br>
+    <p><span>$$ledSetup$$</span> wird durch Setup-Code ersetzt, den die led-library benötigen könnte.</p>
+    <br>
+    <p><span>$$setup$$</span> wird durch den von der Anwendung generierten Setup-Code ersetzt.<br></p>
+    <br></p>
+    <br>
+    <p><span>$$loop$$</span> wird durch den von der Anwendung generierten Loop-code ersetzt.</p>
+projectsettings_qa_reserved-variables-title = Welche reservierten Variablen gibt es?
+projectsettings_qa_what-are-variables-html =
+projectsettings_qa_what-are-variables-html =
+    <p>
+        Sie können einfach den Text $$Variablenname$$ in einen beliebigen Teil des Codes einfügen und dieser Teil wird<br>
+        wird durch die entsprechende Variable ersetzt, die Sie angegeben haben.
+    </p>
+    <p>Aber Vorsicht. Reservierte Variablennamen werden immer mit generiertem Code überschrieben.</p>
+projectsettings_qa_what-are-variables-title = Wie verwende ich Variablen?
+projectsettings_qa_what-is-blueprint-html =
+    <p>Der Blueprint ist der grundlegende Code, der den endgültigen Code umgibt.</p>
+    <p>Du kannst hier eigene Logik schreiben und diese erweitern oder ändern.</p>
+    <p>Mit Hilfe von Variablen kannst du angeben, wo der generierte Code abgelegt werden soll.</p>
+projectsettings_qa_what-is-blueprint-title = Was ist die Blaupause?

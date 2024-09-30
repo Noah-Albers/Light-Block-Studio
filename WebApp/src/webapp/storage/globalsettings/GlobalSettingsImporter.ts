@@ -3,8 +3,6 @@ import { ExportedGlobalPlainSettings, GlobalSettingsSchema } from "./GlobalSetti
 import { useSettingsStore, View } from "@webapp/stores/SettingsStore";
 import DesktopApi from "@webapp/desktopapi/DesktopApi";
 
-// TODO: Add language lookups
-
 function importPlainSettings(data: ExportedGlobalPlainSettings){
 
     const store = useSettingsStore();
@@ -42,22 +40,18 @@ export function importGlobalsettings(raw: unknown) {
         // Error logs
         console.error(res.error.issues,res.data, raw);
 
-        // TODO: Translate and change alert/confirm to web-based interface
-        const baseString = (
-            `Failed to load the application settings.\n`+
-            `If you proceed, your old settings will be lost.\n`
-        );
+        // TODO: Change alert/confirm to web-based interface
+        const baseString = $t('global_settings_import_error_unknown');
 
         if(DesktopApi.isDesktop()){
-            if(!confirm(baseString + `Do you want to proceed?`)){
+            if(!confirm(baseString + $t('global_settings_import_error_unknown_question-desktop'))){
                 DesktopApi.closeWindow();
                 return;
             }
         }else
             alert(
                 baseString+
-                `If you dont want that to happen, close the webpage now.\n\n`+
-                `Do you want to proceed?"`
+                $t('global_settings_import_error_unknown_question-browser')
             )
 
 
