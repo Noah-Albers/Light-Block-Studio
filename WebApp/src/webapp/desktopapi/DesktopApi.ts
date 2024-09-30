@@ -47,7 +47,7 @@ const openDialog: (title: string)=>string|undefined = desktopApi.openDialog;
  * @param path the default path to point the user to
  * @return the path of the requested file or undefined if the dialog was aborted 
  */
-const saveDialog: (title: string, path: string)=>string|undefined = desktopApi.saveDialog;
+const saveDialog: (title: string, path: string|undefined)=>string|undefined = desktopApi.saveDialog;
 
 /**
  * Opens a given url using the systems default web-browser
@@ -74,6 +74,11 @@ const readSettingsFile: ()=>string|undefined = desktopApi.readSettingsFile;
  */
 const writeSettingsFile: (data: string)=>true|undefined = desktopApi.writeSettingsFile;
 
+/**
+ * Requests electron/the os to get the basename of a given path (Basically just the filename)
+ */
+const pathBasename: (path: string)=>string = desktopApi.pathBasename;
+
 export default {
     readFile,
     writeFile,
@@ -87,6 +92,7 @@ export default {
 
     readSettingsFile,
     writeSettingsFile,
+    pathBasename,
 
     isDesktop
 }

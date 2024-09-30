@@ -2,8 +2,8 @@ import { C } from "@webapp/utils/html/HTMLBuilder";
 import { Button, Menu, MenuItem } from "@webapp/utils/taskbar/TaskBar";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { $t } from "@localisation/Fluent";
-import { exportProject } from "../ProjectExporter";
-import { importProject } from "../ProjectImporter";
+import { exportProject } from "../../../storage/project/ProjectExporter";
+import { importProject } from "../../../storage/project/ProjectImporter";
 import { isLocalstorageSupported } from "@utils/Localstorage";
 import { makeValidFilename } from "@utils/FileUtils";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
@@ -12,7 +12,7 @@ import { Signals } from "@webapp/utils/signals/Signals";
 /**
  * Creates the menu items to use the browser for storing projects and settings
  */
-export function createBrowserStorageMenuItems(): MenuItem[] {
+export function createBrowserStorageMenuItems() {
 
     function createLocalstorageButton(text: string, type: "action" | "items", value: () => any, icon?: string): Button | Menu {
         if (isLocalstorageSupported())
@@ -93,23 +93,20 @@ export function createBrowserStorageMenuItems(): MenuItem[] {
         "mdi-content-save-all-outline"
     ) as Menu;
 
-
-
-
-    return [
-        // New
-        buttonUploadFile,
-        menuOpenFromBrowser,
-        // Open recent menu (Desktop only)
-
-        "seperator",
-        buttonDownloadFile,
-        buttonSaveInBrowser,
-        buttonSaveAsInBrowser,
-
-        "seperator",
-        menuDeleteFromBrowser
-    ];
+    return {
+        create: [
+            buttonUploadFile,
+            menuOpenFromBrowser,
+        ],
+        save: [
+            buttonDownloadFile,
+            buttonSaveInBrowser,
+            buttonSaveAsInBrowser,
+        ],
+        delete: [
+            menuDeleteFromBrowser
+        ]
+    }
 }
 
 function getProjectSaveAsName() {
@@ -223,13 +220,17 @@ async function onProjectLoad(filename: string, rawProj: string) {
                 onResolve: (a) => res(a == "yes")
             });
         });
-    });
+    }, undefined);
 
     if (res.success)
         return;
 
     if (res.message !== undefined)
-        alert($t('storage_error_failedtoload'));
+        SignalDispatcher.emit(Signals.DISPLAY_SNACKBAR, {
+            type: "error",
+            timeout: 5000,
+            text: $t('storage_error_failedtoload')
+        });
 
     console.warn("Failed to load Project", res.message);
 }

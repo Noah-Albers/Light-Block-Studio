@@ -4,7 +4,7 @@ export type MenuItem = Menu | Button | Seperator;
 export type Menu = {
     items: (()=>MenuItem[]) | MenuItem[],
     text: string,
-    disabled?: true,
+    disabled?: boolean,
     title?: string,
     icon?: string
 };

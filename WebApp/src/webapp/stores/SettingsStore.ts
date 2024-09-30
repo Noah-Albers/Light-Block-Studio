@@ -1,6 +1,6 @@
 import { $t, SupportedLanguagesType } from '@localisation/Fluent';
 import { defineStore } from 'pinia'
-import { reactive, ref } from 'vue';
+import { reactive, Ref, ref } from 'vue';
 
 // Note: The function to the translation key is so that it isn't initialized until needed (Prevents wrong and invalid translations)
 export type View = keyof typeof MainViews
@@ -31,6 +31,9 @@ export const useSettingsStore = defineStore('settings', () => {
     const __set = <T>() => undefined as T;
 
     //#region Settings
+
+    // List of recently opened project paths
+    const recentProjectPaths: Ref<string[]> = ref([]);
 
     // Which language is selected
     const language = __setRef<SupportedLanguagesType>();
@@ -90,6 +93,13 @@ export const useSettingsStore = defineStore('settings', () => {
 
     //#region Utilities
 
+    // Adds a recently opened project to the list
+    function addRecentProject(proj: string){
+        recentProjectPaths.value = recentProjectPaths.value.filter(x=>x !== proj);
+
+        recentProjectPaths.value.push(proj);
+    }
+
     // Restores the default values
     function restoreDefaults(){
         language.value = "en";
@@ -115,8 +125,9 @@ export const useSettingsStore = defineStore('settings', () => {
 
     return {
         mainView, serialPreview, whitelistUsbVendors, buildConfig, language, isDeveloper,
-        defaultPreview,
+        defaultPreview, recentProjectPaths,
 
-        restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist, restoreDefaults
+        restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist, restoreDefaults,
+        addRecentProject
     };
 });

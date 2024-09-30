@@ -103,7 +103,7 @@ function requestOpenFileDialog(evt, title){
         evt.returnValue = undefined;
         return;
     }
-    
+
     // Sets the return value
     evt.returnValue = res[0];
 }
@@ -136,15 +136,15 @@ function requestCloseWindow(evt){
  * @param {string} data the data to write into the file
  * @returns {true|undefined} true if the file was successfully written and undefined if an error ocurred
  */
-function requestWriteFile(evt, path, data){
-    if(typeof path !== "string")
+function requestWriteFile(evt, selectedPath, data){
+    if(typeof selectedPath !== "string")
         return evt.returnValue = undefined;
     if(typeof data !== "string")
         return evt.returnValue = undefined;
     
     // TODO: Change
     // Ensure only project-files are opened
-    if(!path.endsWith(".json"))
+    if(!selectedPath.endsWith(".json"))
         return evt.returnValue = undefined;
 
     try{
@@ -189,6 +189,11 @@ function requestReadFile(evt, path){
     }
 }
 
+// Requests the base path of a given string (Path)
+function requestPathBasename(evt, reqPath){
+    evt.returnValue = path.basename(reqPath);
+}
+
 //#endregion
 
 // Registers all nodejs/electron-api-endpoints
@@ -205,6 +210,8 @@ function init(){
 
     IPC.on("read-settings", requestReadSettingsFile);
     IPC.on("write-settings", requestWriteSettingsFile);
+
+    IPC.on("path-basename", requestPathBasename);
 }
 
 module.exports = { init }

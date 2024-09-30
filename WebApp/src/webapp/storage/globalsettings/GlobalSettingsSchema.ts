@@ -7,6 +7,7 @@ import { BuildInPreviews, MainViews } from "@webapp/stores/SettingsStore";
 
 const InternalSchemas = {
     PlainSettings: z.object({
+        recentProjectPaths: z.array(z.string()).default([]),
         language: z.enum(SupportedLanguages.map(x=>x.key) as [string, ...string[]]),
         isDeveloper: z.boolean(),
         mainView: z.enum(Object.keys(MainViews) as [string, ...string[]]),

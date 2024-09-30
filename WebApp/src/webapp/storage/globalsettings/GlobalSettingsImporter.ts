@@ -18,6 +18,7 @@ function importPlainSettings(data: ExportedGlobalPlainSettings){
     store.whitelistUsbVendors.enabled = data.usbVendorsWhitelist.enabled;
     store.whitelistUsbVendors.whitelist = data.usbVendorsWhitelist.whitelist;
     store.defaultPreview = data.defaultPreview;
+    store.recentProjectPaths = data.recentProjectPaths
 }
 
 // Imports the global settings

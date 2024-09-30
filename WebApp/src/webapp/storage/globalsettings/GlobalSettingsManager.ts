@@ -16,7 +16,6 @@ const onGlobalSettingsChange = debounce(()=>{
     
     const content = JSON.stringify(exportGlobalSettings());
 
-    console.log("Write settings to "+(DesktopApi.isDesktop() ? "Desktop" : "Browser"))
     if(DesktopApi.isDesktop()){
         DesktopApi.writeSettingsFile(content)
     }else{

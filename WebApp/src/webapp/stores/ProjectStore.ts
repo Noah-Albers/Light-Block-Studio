@@ -44,6 +44,8 @@ export const useProjectStore = defineStore('project', () => {
 
     // Name of the project (Is/Will be the filename)
     const projectName = __set<string>();
+    // Filepath (If saved on desktop) used to store the project at
+    const filePath = __set<string|undefined>();
 
     //#region Quicksettings
     // Quick settings accessible from the quick access menu
@@ -145,6 +147,7 @@ export const useProjectStore = defineStore('project', () => {
     // Restores the default values
     function restoreDefaults() {
         projectName.value = "Untitled led Project";
+        filePath.value = undefined;
 
         pin.value = 3;
         amount.value = 32;
@@ -164,8 +167,9 @@ export const useProjectStore = defineStore('project', () => {
     //#region Import/Export
 
     // Takes in an already validated exported type to re-import the store
-    function importData(name: string, data: ExportedSettingsType) {
+    function importData(name: string, data: ExportedSettingsType, path: string|undefined) {
         projectName.value = name;
+        filePath.value = path;
 
         // The code blueprint and hooks may not be set in every settings export to prevent
         // a lot of duplicated data if only the default values have been used
@@ -232,7 +236,7 @@ export const useProjectStore = defineStore('project', () => {
 
     return {
         codeBlueprint, pin, amount, loopPushLeds, trimEmptyLines, ledSystemHooks: ledApiHooks, hooks, previews, selectedPreview, projectName,
-        customReservedKeywords, useArduinoReservedKeywords, usedReservedKeywords,
+        customReservedKeywords, useArduinoReservedKeywords, usedReservedKeywords, filePath,
         applyLEDSystemPreset: applyLEDAPIPreset, applyTemplate,
         importData, exportData, resetPreview, restoreDefaults
     };

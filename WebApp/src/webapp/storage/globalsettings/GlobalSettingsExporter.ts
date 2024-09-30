@@ -20,6 +20,7 @@ function getPlainSettings() : ExportedGlobalPlainSettings{
             enabled: store.whitelistUsbVendors.enabled,
             whitelist: store.whitelistUsbVendors.whitelist
         },
+        recentProjectPaths: store.recentProjectPaths,
         defaultPreview: store.defaultPreview
     }
 }

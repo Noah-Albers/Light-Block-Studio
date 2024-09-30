@@ -19,6 +19,8 @@ const closeWindow = ()=> IPC.send("close-window");
 const readSettingsFile = ()=>IPC.sendSync("read-settings");
 const writeSettingsFile = (data)=>IPC.sendSync("write-settings", data);
 
+const pathBasename = (path)=>IPC.sendSync("path-basename",path);
+
 
 // Exposes all these functions using an electronAPI-Global object
 CB.exposeInMainWorld("desktopAPI", {
@@ -30,5 +32,6 @@ CB.exposeInMainWorld("desktopAPI", {
     openDevTools,
     closeWindow,
     writeSettingsFile,
-    readSettingsFile
+    readSettingsFile,
+    pathBasename,
 });

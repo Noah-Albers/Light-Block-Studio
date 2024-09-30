@@ -11,8 +11,8 @@ import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 
 // Imports the project settings
-function importProjectSettings(filename: string, data: ExportedSettingsType){
-    useProjectStore().importData(filename, data);
+function importProjectSettings(filename: string, data: ExportedSettingsType, path: string|undefined){
+    useProjectStore().importData(filename, data, path);
 }
 
 // Imports the variables and returns the new map which can be used to import the nodes
@@ -155,7 +155,7 @@ type ImportResult = {
     message?: string
 }
 
-export async function importProject(filename: string, raw: unknown, doAskUser: (msg: string, btnTrue: string, btnFalse: string)=>Promise<boolean>) : Promise<ImportResult>{
+export async function importProject(filename: string, raw: unknown, doAskUser: (msg: string, btnTrue: string, btnFalse: string)=>Promise<boolean>, path: string|undefined) : Promise<ImportResult>{
 
     // Askes if the user really wants to import the project as his previous work would be gone
     if(!await doAskUser($t('import_prompt_reallywant'), $t('import_prompt_reallywant_yes'), $t('import_prompt_reallywant_no')))
@@ -205,10 +205,13 @@ export async function importProject(filename: string, raw: unknown, doAskUser: (
     const vars = importVariables(res.data.variables);
     
     // 2. Import project settings
-    importProjectSettings(filename,res.data.settings);
+    importProjectSettings(filename,res.data.settings, path);
     
     // 3. Import blocks
-    importWorkspace(res.data.workspace, vars);
+    await importWorkspace(res.data.workspace, vars);
+
+    // Sends the signal to reconfigure the workspace
+    SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD);
 
     return {
         success: true
