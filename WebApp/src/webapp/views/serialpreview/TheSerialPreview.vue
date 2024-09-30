@@ -2,7 +2,7 @@
     <div class="d-flex position-relative justify-center align-center h-100 px-10">
 
         <!-- Tutorial show button -->
-        <!--TODO: Translate-->
+        <!--TODO: Lang-->
         <v-btn v-tooltip="'Tutorial'" style="position: absolute; top: 1rem; right: 1rem" icon="mdi-help"
             @click="console.log('TODO Provide a link for a tutorial on the serial preview.')" />
 

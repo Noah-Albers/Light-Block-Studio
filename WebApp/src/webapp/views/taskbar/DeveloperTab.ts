@@ -27,7 +27,6 @@ export const createDeveloperTab: ()=>Menu = ()=>({
             icon: "mdi-test-tube"
         },
         ...(DesktopApi.isDesktop() ? [{
-            // TODO
             text: $t('tab_developer_open_devtools'),
             action: DesktopApi.openDevTools,
             icon: "mdi-test-tube"

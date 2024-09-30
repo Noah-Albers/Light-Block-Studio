@@ -19,7 +19,6 @@ const onGlobalSettingsChange = debounce(()=>{
     if(DesktopApi.isDesktop()){
         DesktopApi.writeSettingsFile(content)
     }else{
-        // TODO: Following is for browser only
         if(isLocalstorageSupported())
             localStorage.setItem(LS_NAME, content);
     }
