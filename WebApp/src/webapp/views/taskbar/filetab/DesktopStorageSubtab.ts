@@ -1,6 +1,3 @@
-
-// TODO: Lang
-
 import { $t } from "@localisation/Fluent";
 import DesktopApi from "@webapp/desktopapi/DesktopApi";
 import { exportProject } from "@webapp/storage/project/ProjectExporter";
@@ -19,7 +16,7 @@ async function onSaveProject(action: "save" | "saveas"){
     const requirePath = action === "saveas" || proj.filePath === undefined;
 
     // Gets the path
-    const path = requirePath ? DesktopApi.saveDialog("Save Project", proj.filePath) : proj.filePath;
+    const path = requirePath ? DesktopApi.saveDialog($t('storage-desktop_save_title'), proj.filePath) : proj.filePath;
 
     // Checks if the action was aborted
     if(path === undefined) return;
@@ -30,9 +27,9 @@ async function onSaveProject(action: "save" | "saveas"){
     // Checks for errors
     if(res !== true){
         SignalDispatcher.emit(Signals.DISPLAY_POPUP,{
-            message: "Failed to save the project. Did your file-extension end in .json? This is required as a security measure. Do you want to retry?",
-            no: "No",
-            yes: "Yes",
+            message: $t('storage-desktop_save_error'),
+            no: $t('storage-desktop_save_error_no'),
+            yes: $t('storage-desktop_save_error_yes'),
             onResolve(yesOrNo) {
                 if(yesOrNo === "yes")
                     onSaveProject(action)
@@ -55,7 +52,7 @@ async function onProjectChoosen(path: string) {
         SignalDispatcher.emit(Signals.DISPLAY_SNACKBAR, {
             type: "error",
             timeout: 5000,
-            text: "Failed to read project file. Please make sure it exists and that is's name ends with '.json'"
+            text: $t('storage-desktop_load_error')
         });
         return;
     }
@@ -93,7 +90,7 @@ async function onProjectChoosen(path: string) {
 
 // Event: When the open project button is clicked
 function onOpenClicked() {
-    const openResult = DesktopApi.openDialog("Open Project");
+    const openResult = DesktopApi.openDialog($t('storage-desktop_load_title'));
 
     if (openResult === undefined) return;
 
@@ -109,8 +106,8 @@ export function createDesktopStorageMenuItems() {
 
     // Open (Upload File)
     const buttonOpenFile: Button = {
-        text: "Open", action: onOpenClicked,
-        title: "Open a project-file", icon: "mdi-file-document-edit-outline",
+        text: $t('taskbar_storage-desktop_open'), action: onOpenClicked,
+        title: $t('taskbar_storage-desktop_open_title'), icon: "mdi-file-document-edit-outline",
     };
 
     // Open recent projects
@@ -118,24 +115,24 @@ export function createDesktopStorageMenuItems() {
         items: () => settings.recentProjectPaths.map(x => ({
             text: x,
             action: ()=>onProjectChoosen(x),
-            title: "Load this project"
+            title: $t('taskbar_storage-desktop_recent_item_title')
         }) as Button),
-        text: "Open recent",
+        text: $t('taskbar_storage-desktop_recent'),
         disabled: useSettingsStore().recentProjectPaths.length <= 0,
         icon: "mdi-history",
-        title: "Open a recently saved project file"
+        title: $t('taskbar_storage-desktop_recent_title')
     }
 
     // Save project
     const saveButton: Button = {
-        text: "Save", action: () => onSaveProject("save"),
-        title: "Save the project as a file", icon: "mdi-content-save-outline"
+        text: $t('taskbar_storage-desktop_save'), action: () => onSaveProject("save"),
+        title: $t('taskbar_storage-desktop_save_title'), icon: "mdi-content-save-outline"
     };
 
     // Save project as
     const saveAsButton: Button = {
-        text: "Save as...", action: () => onSaveProject("saveas"),
-        title: "Save the project into a file you select", icon: "mdi-content-save-all-outline"
+        text: $t('taskbar_storage-desktop_saveas'), action: () => onSaveProject("saveas"),
+        title: $t('taskbar_storage-desktop_saveas_title'), icon: "mdi-content-save-all-outline"
     };
 
     return {

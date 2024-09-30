@@ -9,8 +9,10 @@ const createWindow = () => {
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
-        }
+        },
+        backgroundColor: "#000000"
     })
+    global.win.removeMenu();
 
     if (process.env.IS_DEVELOPMENT)
         global.win.loadURL("http://localhost:3000");
