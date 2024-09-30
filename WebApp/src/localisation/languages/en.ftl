@@ -303,3 +303,5 @@ projectsettings_qa_reserved-variables-html =
     <p><span>$$setup$$</span> is replaced with any generated setup code that the application generated.<br></p>
     <br>
     <p><span>$$loop$$</span> is replaced with any generated loop code that the application generated.</p>
+tab_help = Help
+tab_help_report_bug = Report a bug

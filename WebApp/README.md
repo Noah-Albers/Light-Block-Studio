@@ -31,7 +31,7 @@ TODO: Add auto-save feature
 TODO: Added support for blockly mutators
 
 # Requirements before actual release 0.1
-TODO: Fix most critical todos
 TODO: Add Tutorial on how to use the application
 TODO: Add Help menu with a report-issues button
 TODO: Make github representable with issues and such
+TODO: Finalize application name and logo

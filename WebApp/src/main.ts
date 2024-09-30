@@ -21,9 +21,13 @@ import arduino from 'highlight.js/lib/languages/arduino';
 
 import "highlight.js/scss/atom-one-dark.scss"
 import { setupGlobalSettingsManager } from '@webapp/storage/globalsettings/GlobalSettingsManager'
+import Branding from './Branding'
 
 function setupApplication(){
   
+  // Updates the branding
+  document.querySelector("title")!.textContent = Branding.APPLICATION_NAME;
+
   // Registers arduino to highlight js for displaying the generated code
   hljs.registerLanguage('arduino', arduino);
 
