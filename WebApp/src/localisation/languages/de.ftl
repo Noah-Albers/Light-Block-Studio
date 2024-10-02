@@ -306,3 +306,5 @@ projectsettings_qa_what-is-blueprint-html =
     <p>Du kannst hier eigene Logik schreiben und diese erweitern oder ändern.</p>
     <p>Mit Hilfe von Variablen kannst du angeben, wo der generierte Code abgelegt werden soll.</p>
 projectsettings_qa_what-is-blueprint-title = Was ist die Blaupause?
+tab_help = Hilfe
+tab_help_report_bug = Einen Fehler melden
