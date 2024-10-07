@@ -1,18 +1,17 @@
 <template>
-<!--TODO: Lang-->
 <!--Advertisement to install the app as a PWA-->
 <v-app-bar v-if="!isDismissed" color="info" :elevation="1" height="35">
     <v-spacer/>
     <p class="mr-3 text-subtitle-1">
-        I can be installed as a Progressive Web App
+        {{ $t('pwa_notice') }}
     </p>
 
-    <v-btn icon="mdi-help-circle-outline" color="#eeee00" density="comfortable" v-tooltip="`A Progressive Web App (PWA) is effortlessly installed directly through your browser, providing a simple and secure way to add the app to your device. This allows you to access the app even when you're offline, ensuring a seamless experience anytime, anywhere.`"></v-btn>
-    <v-btn @click="prompt" icon="mdi-download-circle-outline" color="#00ee00" density="comfortable" v-tooltip="'Install!'"></v-btn>
-    <v-btn @click="dismissBanner(true)" icon="mdi-close-circle-outline" density="comfortable" v-tooltip="'Close, dont reming me again!'"></v-btn>
+    <v-btn icon="mdi-help-circle-outline" color="#eeee00" density="comfortable" v-tooltip="$t('pwa_information')"></v-btn>
+    <v-btn @click="prompt" icon="mdi-download-circle-outline" color="#00ee00" density="comfortable" v-tooltip="$t('pwa_install')"></v-btn>
+    <v-btn @click="dismissBanner(true)" icon="mdi-close-circle-outline" density="comfortable" v-tooltip="$t('pwa_close_temp')"></v-btn>
     <v-spacer/>
 
-    <v-btn @click="dismissBanner()" icon="mdi-close" density="comfortable" color="#ee0000" v-tooltip="'Reming me again later!'"></v-btn>
+    <v-btn @click="dismissBanner()" icon="mdi-close" density="comfortable" color="#ee0000" v-tooltip="$t('pwa_close_final')"></v-btn>
 </v-app-bar>
 </template>
 

@@ -302,3 +302,8 @@ projectsettings_qa_reserved-variables-html =
     <p><span>$$loop$$</span> is replaced with any generated loop code that the application generated.</p>
 tab_help = Help
 tab_help_report_bug = Report a bug
+pwa_notice = I can be installed as a Progressive Web App
+pwa_information = A Progressive Web App (PWA) is effortlessly installed directly through your browser, providing a simple and secure way to add the app to your device. This allows you to access the app even when you're offline, ensuring a seamless experience anytime, anywhere.
+pwa_install = Install!
+pwa_close_temp = Close, dont reming me again!
+pwa_close_final = Reming me again later!
