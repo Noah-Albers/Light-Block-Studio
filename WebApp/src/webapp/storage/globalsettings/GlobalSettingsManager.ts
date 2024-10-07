@@ -47,11 +47,17 @@ function loadGlobalSettings(){
     importGlobalsettings(rawLoaded);
 }
 
-export function setupGlobalSettingsManager(){
+function setup(){
     const store = useSettingsStore();
 
     loadGlobalSettings();
 
     // Creates a debounced version of the function
     store.$subscribe(onGlobalSettingsChange);
+}
+
+export default {
+    setup,
+
+    requestSave: onGlobalSettingsChange
 }

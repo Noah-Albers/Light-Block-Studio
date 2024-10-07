@@ -269,9 +269,6 @@ taskbar_storage-desktop_saveas = Speichern unter...
 taskbar_storage-desktop_saveas_title = Speichere das Projekt in einer ausgewählten Datei
 tab_file_new = Neu
 tab_developer_open_devtools = Entwicklerwerkzeuge öffnen
-global_settings_import_error_unknown = Die Anwendungseinstellungen konnten nicht geladen werden.\nWenn du fortfährst, gehen die alten Einstellungen verloren.\n
-global_settings_import_error_unknown_question-browser = Wenn du das nicht möchtest, schließen die Webseite bitte.\n\nMöchtest du fortfahren?
-global_settings_import_error_unknown_question-desktop = Möchtest du fortfahren?
 projectsettings_qa_reserved-variables-html =
     <p><span>$$ledInclude$$</span> wird durch die #include-Anweisung ersetzt, die von der von Ihnen ausgewählten led-Bibliothek verwendet wird.</p>
     <br>

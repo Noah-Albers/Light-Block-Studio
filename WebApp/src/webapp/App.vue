@@ -1,9 +1,14 @@
 <template>
   <v-app style="height:100%" theme="dark">
+
+    <!--Handles the PWA-Integration and install process-->
+    <ThePWAIntegration/>
+
     <!--The application bar on top-->
     <v-app-bar :elevation="1" height="20">
       <TheTaskbar/>
     </v-app-bar>
+
 
     <!-- Snackbar to display information-->
     <v-snackbar :color="snackbarOptions.type || 'info'" :timeout="snackbarOptions!.timeout || 800" v-model="snackbarOpen">
@@ -72,6 +77,7 @@
   import { EventArgsSnackbar } from './utils/signals/SignalArgumentTypes';
   import { Ref } from 'vue';
   import TheRequestPopup from "./views/popup/TheRequestPopup.vue";
+import ThePWAIntegration from './views/pwa/ThePWAIntegration.vue';
 
   const snackbarOpen = ref(false);
   const snackbarOptions: Ref<EventArgsSnackbar> = ref({});

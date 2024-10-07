@@ -67,6 +67,12 @@ export const useSettingsStore = defineStore('settings', () => {
 
     //#endregion
 
+    //#region PWA-Settings
+
+    const preventPWAInstallAd = __setRef<boolean>();
+
+    //#endregion
+
     //#region USB-Actions
 
     // Restore the default vendor list
@@ -104,6 +110,7 @@ export const useSettingsStore = defineStore('settings', () => {
     function restoreDefaults(){
         language.value = "en";
 
+        preventPWAInstallAd.value = false;
         isDeveloper.value = window.location.hostname === "localhost";
 
         mainView.value = ViewVisualizer;
@@ -125,7 +132,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
     return {
         mainView, serialPreview, whitelistUsbVendors, buildConfig, language, isDeveloper,
-        defaultPreview, recentProjectPaths,
+        defaultPreview, recentProjectPaths, preventPWAInstallAd,
 
         restoreVendorDefaults, addVendor, removeVendor, doesVendorIDExist, restoreDefaults,
         addRecentProject

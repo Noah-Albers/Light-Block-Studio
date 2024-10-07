@@ -30,6 +30,8 @@ const InternalSchemas = {
             z.string(),
             z.any().transform(int()).transform(min(0)),
         ]).default(BuildInPreviews[0]),
+
+        preventPWAInstallAd: z.boolean().default(false),
     })
 }
 

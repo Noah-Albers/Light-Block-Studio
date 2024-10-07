@@ -268,9 +268,6 @@ taskbar_storage-desktop_saveas = Save as...
 taskbar_storage-desktop_saveas_title = Save the project into a file you select
 tab_file_new = New
 tab_developer_open_devtools = Open Developer-Tools
-global_settings_import_error_unknown = Failed to load the application settings.\nIf you proceed, your old settings will be lost.\n
-global_settings_import_error_unknown_question-desktop = Do you want to proceed?
-global_settings_import_error_unknown_question-browser = If you dont want that to happen, close the webpage now.\n\nDo you want to proceed?
 projectsettings_qa_what-is-blueprint-title = What is the blueprint?
 projectsettings_qa_what-is-blueprint-html =
     <p>The blueprint is the basic code surrounding the final generated code.</p>

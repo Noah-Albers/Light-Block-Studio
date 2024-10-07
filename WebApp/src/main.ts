@@ -20,8 +20,8 @@ import hljs from 'highlight.js/lib/core';
 import arduino from 'highlight.js/lib/languages/arduino';
 
 import "highlight.js/scss/atom-one-dark.scss"
-import { setupGlobalSettingsManager } from '@webapp/storage/globalsettings/GlobalSettingsManager'
 import Branding from './Branding'
+import GlobalSettingsManager from '@webapp/storage/globalsettings/GlobalSettingsManager'
 
 function setupApplication(){
   
@@ -53,7 +53,7 @@ function setupApplication(){
     )
 
     // Loads the global settings AFTER pinia is registered
-    setupGlobalSettingsManager();
+    GlobalSettingsManager.setup();
     
     const settings = useSettingsStore();
 
@@ -71,8 +71,3 @@ function setupApplication(){
 }
 
 setupApplication();
-
-
-window.addEventListener("beforeinstallprompt", evt=>{
-  console.log(evt);
-});

@@ -2,6 +2,7 @@ import { $t, SupportedLanguagesType } from "@localisation/Fluent";
 import { ExportedGlobalPlainSettings, GlobalSettingsSchema } from "./GlobalSettingsSchema";
 import { useSettingsStore, View } from "@webapp/stores/SettingsStore";
 import DesktopApi from "@webapp/desktopapi/DesktopApi";
+import GlobalSettingsManager from "./GlobalSettingsManager";
 
 function importPlainSettings(data: ExportedGlobalPlainSettings){
 
@@ -17,6 +18,7 @@ function importPlainSettings(data: ExportedGlobalPlainSettings){
     store.whitelistUsbVendors.whitelist = data.usbVendorsWhitelist.whitelist;
     store.defaultPreview = data.defaultPreview;
     store.recentProjectPaths = data.recentProjectPaths
+    store.preventPWAInstallAd = data.preventPWAInstallAd;
 }
 
 // Imports the global settings
@@ -29,8 +31,10 @@ export function importGlobalsettings(raw: unknown) {
             raw = JSON.parse(raw);
         }catch(err){
             console.error("Failed to load global settings:",err);
+            raw = {};
         }
-    }
+    }else
+        raw = {};
 
     // Tries to import the project
     var res = GlobalSettingsSchema.safeParse(raw);
@@ -38,24 +42,26 @@ export function importGlobalsettings(raw: unknown) {
         // Note: This should never really happen, except if something went really wrong.
 
         // Error logs
-        console.error(res.error.issues,res.data, raw);
+        console.error("Error-Log",res.error.issues,res.data, raw);
 
-        // TODO: Change alert/confirm to web-based interface
-        const baseString = $t('global_settings_import_error_unknown');
+        // !Note!: At this point in time fluent has not been registered. Therefor we can only show english errors here.
+
+        const baseString = 'Failed to load the application settings.\nIf you proceed, your old settings will be lost.\n';
 
         if(DesktopApi.isDesktop()){
-            if(!confirm(baseString + $t('global_settings_import_error_unknown_question-desktop'))){
+            if(!confirm(baseString + "Do you want to proceed?")){
                 DesktopApi.closeWindow();
                 return;
             }
         }else
             alert(
                 baseString+
-                $t('global_settings_import_error_unknown_question-browser')
+                "If you dont want that to happen, close the webpage now.\n\nDo you want to proceed?"
             )
 
-
         store.restoreDefaults();
+
+        GlobalSettingsManager.requestSave();
         return;
     }
 

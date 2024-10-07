@@ -21,7 +21,8 @@ function getPlainSettings() : ExportedGlobalPlainSettings{
             whitelist: store.whitelistUsbVendors.whitelist
         },
         recentProjectPaths: store.recentProjectPaths,
-        defaultPreview: store.defaultPreview
+        defaultPreview: store.defaultPreview,
+        preventPWAInstallAd: store.preventPWAInstallAd,
     }
 }
 
