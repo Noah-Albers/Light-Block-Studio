@@ -5,7 +5,7 @@
                 {{ props.preview }}
             </template>
             <template v-slot:title v-else>
-                {{ $t('visualizer_previewselector_customPreview', { index: preview + 1 }) }}
+                {{ $t('visualizer_previewselector_customPreview', { index: typeof preview === "string" ? preview : (preview + 1) }) }}
             </template>
             <slot></slot>
             <template v-if="properties.isBuildin">

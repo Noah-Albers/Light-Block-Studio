@@ -70,5 +70,9 @@ function setupApplication(){
     app.mount("#app");
 }
 
-
 setupApplication();
+
+
+window.addEventListener("beforeinstallprompt", evt=>{
+  console.log(evt);
+});

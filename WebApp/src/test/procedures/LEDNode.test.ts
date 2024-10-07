@@ -1,7 +1,7 @@
 import { IProcedure } from "@procedure/definitions/Procedure";
 import { isObject } from "@test/TestUtils";
 import { VisualizerAbortError } from "@visualizer/definitions/VisualizerAbortError";
-import { VisualisationController } from "@visualizer/implementations/VisualisationController";
+import { LEDMap, VisualisationController } from "@visualizer/implementations/VisualisationController";
 
 /**
  * Asserts that the startNode method of a procedure behaves as expected.
@@ -14,23 +14,22 @@ async function assertStartNode(procedure: IProcedure<any>) {
     const aborter = new AbortController();
     const ctrl = new VisualisationController(aborter.signal, onLedPushback);
 
-    function onLedPushback(leds: {[ledIndex: number]: [number, number, number]}){
+    function onLedPushback(leds: LEDMap){
 
         // Validates the leds
         if(!Array.isArray(leds))
             onError(`pushLeds() didn't send an array, instead '${leds}'`);
 
         // Checks every led
-        for(let rawIdx in leds){
-            let index = parseInt(rawIdx);
+        for(let itm of leds){
+            const index = itm[0];
+            const value = itm[1];
 
             if(!Number.isInteger(index))
-                onError(`pushLeds() send a non-integer index: '${rawIdx}'`);
+                onError(`pushLeds() send a non-integer index: '${index}'`);
 
             if(index < 0)
-                onError(`pushLeds() send a negative index: '${rawIdx}'`);
-
-            let value = leds[rawIdx];
+                onError(`pushLeds() send a negative index: '${index}'`);
 
             if(!Array.isArray(value))
                 onError(`pushLeds() send a value which was not an led-array [number, number, number], which was: '${value}'`);

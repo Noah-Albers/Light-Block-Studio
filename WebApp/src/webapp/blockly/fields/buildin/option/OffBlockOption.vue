@@ -26,7 +26,7 @@ const items = computed(() => {
 
 const props = defineProps({
     source: {
-        type: Object as PropType<OptionDataSource>,
+        type: Object as PropType<OptionDataSource<any>>,
         required: true
     },
     blockData: {

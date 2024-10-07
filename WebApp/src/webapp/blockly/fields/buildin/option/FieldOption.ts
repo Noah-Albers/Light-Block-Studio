@@ -38,7 +38,7 @@ export class OptionField extends FieldDropdown {
 
         // Gets the data reference
         const dataRef = getBlockDataObject(this.sourceBlock_);
-        const mdl = getBlockModel(this.sourceBlock_)!.getSources().find(x=>x.getKey() === this.name!) as OptionDataSource;
+        const mdl = getBlockModel(this.sourceBlock_)!.getSources().find(x=>x.getKey() === this.name!) as OptionDataSource<any>;
 
         // Creates a watcher to listen for external value changes
         this.watcher = watch(dataRef, this.onValueChange.bind(this));
@@ -75,7 +75,7 @@ export class OptionField extends FieldDropdown {
 
     // Returns if a given value is valid as the field option
     private isValueValid(value: unknown) {
-        const mdl = getBlockModel(this.sourceBlock_!)!.getSources().find(x=>x.getKey() === this.name!) as OptionDataSource;
+        const mdl = getBlockModel(this.sourceBlock_!)!.getSources().find(x=>x.getKey() === this.name!) as OptionDataSource<any>;
 
         return Object.keys(mdl.getOptions()).includes(String(value))
     }

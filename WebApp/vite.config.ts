@@ -2,14 +2,29 @@
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
+import { VitePWA } from 'vite-plugin-pwa';
+
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
+
+import manifest from "./public/manifest.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "./",
   plugins: [
+    
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest,
+      workbox: {
+        // Workbox options
+        globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,svg}'],
+        // TODO: Import dynamic imports to prevent asset/file sizes larger than 500KB
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
+      },
+    }),
     vue({ 
       template: { transformAssetUrls }
     }),
