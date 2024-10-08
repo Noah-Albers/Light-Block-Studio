@@ -7,7 +7,7 @@ import { useSettingsStore } from "@webapp/stores/SettingsStore";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 import { Button, Menu } from "@webapp/utils/taskbar/TaskBar";
-import Branding from "src/Branding";
+import Branding from "../../../../Branding";
 
 // Event: When the user clicks on save or save-as
 async function onSaveProject(action: "save" | "saveas"){

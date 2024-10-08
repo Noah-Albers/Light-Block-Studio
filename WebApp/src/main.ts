@@ -22,6 +22,7 @@ import arduino from 'highlight.js/lib/languages/arduino';
 import "highlight.js/scss/atom-one-dark.scss"
 import Branding from './Branding'
 import GlobalSettingsManager from '@webapp/storage/globalsettings/GlobalSettingsManager'
+import PWAApi from '@webapp/PWAApi'
 
 function setupApplication(){
   
@@ -62,6 +63,9 @@ function setupApplication(){
 
     // Creates the registery
     setupRegistery(settings.isDeveloper);
+
+    // Setups pwa
+    PWAApi.setup();
     
     // Setups the blockly workspace
     registerBlockly();

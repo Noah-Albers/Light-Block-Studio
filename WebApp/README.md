@@ -29,9 +29,8 @@ TODO: Add auto-save feature
 ## Features
 
 TODO: Added support for blockly mutators
+TODO: Add file-api support for PWA's
 
 # Requirements before actual release 0.1
 TODO: Add Tutorial on how to use the application
-TODO: Add Help menu with a report-issues button
-TODO: Make github representable with issues and such
 TODO: Finalize application name and logo

@@ -8,7 +8,7 @@ import { isLocalstorageSupported } from "@utils/Localstorage";
 import { makeValidFilename } from "@utils/FileUtils";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
-import Branding from "src/Branding";
+import Branding from "../../../../Branding";
 
 /**
  * Creates the menu items to use the browser for storing projects and settings

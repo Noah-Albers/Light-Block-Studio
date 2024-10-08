@@ -1,8 +1,8 @@
 <template>
   <v-app style="height:100%" theme="dark">
 
-    <!--Handles the PWA-Integration and install process-->
-    <ThePWAIntegration/>
+    <!--Banner ad to install the app as a pwa-->
+    <ThePWABanner/>
 
     <!--The application bar on top-->
     <v-app-bar :elevation="1" height="20">
@@ -77,7 +77,7 @@
   import { EventArgsSnackbar } from './utils/signals/SignalArgumentTypes';
   import { Ref } from 'vue';
   import TheRequestPopup from "./views/popup/TheRequestPopup.vue";
-import ThePWAIntegration from './views/pwa/ThePWAIntegration.vue';
+import ThePWABanner from './views/pwa/ThePWABanner.vue';
 
   const snackbarOpen = ref(false);
   const snackbarOptions: Ref<EventArgsSnackbar> = ref({});

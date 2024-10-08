@@ -1,32 +1,14 @@
-<template>
-<!--Advertisement to install the app as a PWA-->
-<v-app-bar v-if="!isDismissed" color="info" :elevation="1" height="35">
-    <v-spacer/>
-    <p class="mr-3 text-subtitle-1">
-        {{ $t('pwa_notice') }}
-    </p>
+import { ref } from "vue";
+import { useSettingsStore } from "./stores/SettingsStore";
 
-    <v-btn icon="mdi-help-circle-outline" color="#eeee00" density="comfortable" v-tooltip="$t('pwa_information')"></v-btn>
-    <v-btn @click="prompt" icon="mdi-download-circle-outline" color="#00ee00" density="comfortable" v-tooltip="$t('pwa_install')"></v-btn>
-    <v-btn @click="dismissBanner(true)" icon="mdi-close-circle-outline" density="comfortable" v-tooltip="$t('pwa_close_temp')"></v-btn>
-    <v-spacer/>
-
-    <v-btn @click="dismissBanner()" icon="mdi-close" density="comfortable" color="#ee0000" v-tooltip="$t('pwa_close_final')"></v-btn>
-</v-app-bar>
-</template>
-
-
-<script setup lang="ts">
-
-import { useSettingsStore } from "@webapp/stores/SettingsStore";
-import { onMounted, ref } from "vue"
 
 type PromptType = ()=>Promise<{ outcome: "dismissed"|"accepted" }>;
 
-const settings = useSettingsStore();
-
 // If the popup with the install-pwa-add is dismissed and shall not show
 const isDismissed = ref(true);
+
+// If the app is installable as a pwa
+const isInstallable = ref(false);
 
 //#region API-Communication
 // Holds the action to prompt the user with the install window
@@ -34,12 +16,12 @@ const isDismissed = ref(true);
 let promptHandler: {prompt: PromptType}|undefined;
 function onEvent(evt: { prompt: PromptType }){
     promptHandler = evt;
+    isInstallable.value = true;
 
-    if(!settings.preventPWAInstallAd)
+    if(!useSettingsStore().preventPWAInstallAd)
         isDismissed.value = false;
 }
 //#endregion
-
 
 // Prompts the user to install the app (If installable)
 function prompt(){
@@ -52,6 +34,7 @@ function prompt(){
     const req = promptHandler.prompt();
     // Reset
     isDismissed.value = true;
+    isInstallable.value = false;
     promptHandler = undefined;
 
     return req;
@@ -63,11 +46,18 @@ function dismissBanner(dontShowAgain: boolean = false){
     isDismissed.value = true;
 
     if(dontShowAgain)
-        settings.preventPWAInstallAd = true;
+        useSettingsStore().preventPWAInstallAd = true;
 }
 
-onMounted(()=>{
+// Called when the app starts up
+function setup(){
     window.addEventListener("beforeinstallprompt", onEvent as any);
-});
+}
 
-</script>
+export default {
+    isDismissed,
+    isInstallable,
+    setup,
+    prompt,
+    dismissBanner
+}
