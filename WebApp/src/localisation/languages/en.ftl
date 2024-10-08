@@ -307,3 +307,5 @@ pwa_information = A Progressive Web App (PWA) is effortlessly installed directly
 pwa_install = Install!
 pwa_close_temp = Close, dont reming me again!
 pwa_close_final = Reming me again later!
+tab_help_install_pwa = Install as PWA!
+tab_help_install_pwa_not_supported = Not supported in your browser

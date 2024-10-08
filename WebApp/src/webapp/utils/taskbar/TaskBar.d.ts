@@ -12,7 +12,7 @@ export type Button = {
     action: ()=>void,
     icon?: string,
     text: string,
-    disabled?: true,
+    disabled?: boolean,
     title?: string
 }
 export type Seperator = "seperator";

@@ -23,12 +23,13 @@ export const createHelpTab: ()=>Menu = ()=>({
             text: $t('tab_help_report_bug'),
             action: onBugReportClicked,
             icon: "mdi-bug"
-        },
-        ...(PWAApi.isInstallable.value ? [{
-            text: "Install as PWA!", //TODO: Lang
+        }, {
+            text: $t('tab_help_install_pwa'),
             action: PWAApi.prompt,
-            icon: "mdi-download-outline"
-        }] : []),
+            icon: "mdi-download-outline",
+            disabled: !PWAApi.isInstallable.value,
+            title: PWAApi.isInstallable.value ? undefined : $t('tab_help_install_pwa_not_supported')
+        }
         // TODO: Add tutorial and FAQ and readme links
     ]
 })

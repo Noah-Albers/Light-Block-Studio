@@ -310,3 +310,5 @@ pwa_close_temp = Schließen, erinner mich nicht nochmal!
 pwa_install = Installieren!
 pwa_notice = Ich kann als "Progressive Webanwendung" installiert werden
 pwa_information = Eine Progressive Web App (PWA) wird mühelos direkt über Ihren Browser installiert und bietet eine einfache und sichere Möglichkeit, die App zu Ihrem Gerät hinzuzufügen. So können Sie auf die App auch dann zugreifen, wenn Sie offline sind, und haben jederzeit und überall ein nahtloses Erlebnis.
+tab_help_install_pwa = Als PWA installieren!
+tab_help_install_pwa_not_supported = Wird von diesem Browser nicht unterstützt

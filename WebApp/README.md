@@ -30,6 +30,15 @@ TODO: Add auto-save feature
 
 TODO: Added support for blockly mutators
 TODO: Add file-api support for PWA's
+TODO: In general overhaul the way files are accessed by the application.
+    - Theoretically there are three ways:
+        - Browser-Internal (Localstorage)
+        - File (FileAccessApi) (No recent file support) (Not implemented)
+        - File Up/Download (No recent file support)
+        - File (Electron) (Requires custom logic)
+    - Add a way to select a primary way (For shortcuts) and sort them better in the file tab
+    - Maybe enable/disable them in the settings
+    - Then also maybe disable
 
 # Requirements before actual release 0.1
 TODO: Add Tutorial on how to use the application
