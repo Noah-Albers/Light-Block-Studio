@@ -63,7 +63,7 @@ function requestSaveFileDialog(evt, title, defaultPath){
         title,
         filters: [{
             // TODO: Update
-            extensions: [".json"],
+            extensions: [".leddesign"],
             name: "Project-File"
         }],
         properties: ["showOverwriteConfirmation"],
@@ -89,7 +89,7 @@ function requestOpenFileDialog(evt, title){
         title,
         filters: [{
             // TODO: Update
-            extensions: [".json"],
+            extensions: [".leddesign"],
             name: "Project-File"
         }],
     });
@@ -133,7 +133,7 @@ function requestCloseWindow(evt){
  * Writes data to a file from the file system.
  * 
  * TODO: Change
- * Also ensures that the file has a ".json" ending to prevent writing to various files
+ * Also ensures that the file has a ".leddesign" ending to prevent writing to various files
  * @param {string} path the path of the file 
  * @param {string} data the data to write into the file
  * @returns {true|undefined} true if the file was successfully written and undefined if an error ocurred
@@ -146,7 +146,7 @@ function requestWriteFile(evt, selectedPath, data){
     
     // TODO: Change
     // Ensure only project-files are opened
-    if(!selectedPath.endsWith(".json"))
+    if(!selectedPath.endsWith(".leddesign"))
         return evt.returnValue = undefined;
 
     try{
@@ -169,7 +169,7 @@ function requestWriteFile(evt, selectedPath, data){
  * Reads in a file from the file system.
  * 
  * TODO: Change
- * Also ensures that the file has a ".json" ending to prevent reading in various files
+ * Also ensures that the file has a ".leddesign" ending to prevent reading in various files
  * @param {string} path the path of the file 
  * @returns {string | undefined} the data read from the file
  */
@@ -180,7 +180,7 @@ function requestReadFile(evt, path){
 
     // TODO: Change
     // Ensure only project-files are opened
-    if(!path.endsWith(".json"))
+    if(!path.endsWith(".leddesign"))
         return evt.returnValue = undefined;
 
     try{

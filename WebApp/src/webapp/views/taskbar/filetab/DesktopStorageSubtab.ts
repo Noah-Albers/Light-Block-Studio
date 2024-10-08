@@ -7,6 +7,7 @@ import { useSettingsStore } from "@webapp/stores/SettingsStore";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 import { Button, Menu } from "@webapp/utils/taskbar/TaskBar";
+import Branding from "src/Branding";
 
 // Event: When the user clicks on save or save-as
 async function onSaveProject(action: "save" | "saveas"){
@@ -27,7 +28,7 @@ async function onSaveProject(action: "save" | "saveas"){
     // Checks for errors
     if(res !== true){
         SignalDispatcher.emit(Signals.DISPLAY_POPUP,{
-            message: $t('storage-desktop_save_error'),
+            message: $t('storage-desktop_save_error', { EXT: Branding.FILE_EXTENSION }),
             no: $t('storage-desktop_save_error_no'),
             yes: $t('storage-desktop_save_error_yes'),
             onResolve(yesOrNo) {
@@ -52,7 +53,7 @@ async function onProjectChoosen(path: string) {
         SignalDispatcher.emit(Signals.DISPLAY_SNACKBAR, {
             type: "error",
             timeout: 5000,
-            text: $t('storage-desktop_load_error')
+            text: $t('storage-desktop_load_error', { EXT: Branding.FILE_EXTENSION })
         });
         return;
     }
