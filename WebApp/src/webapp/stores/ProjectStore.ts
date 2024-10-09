@@ -46,6 +46,8 @@ export const useProjectStore = defineStore('project', () => {
     const projectName = __set<string>();
     // Filepath (If saved on desktop) used to store the project at
     const filePath = __set<string|undefined>();
+    // File-handler to use (If opened using file-save api)
+    const filePointer = __set<FileSystemFileHandle|undefined>();
 
     //#region Quicksettings
     // Quick settings accessible from the quick access menu
@@ -236,7 +238,7 @@ export const useProjectStore = defineStore('project', () => {
 
     return {
         codeBlueprint, pin, amount, loopPushLeds, trimEmptyLines, ledSystemHooks: ledApiHooks, hooks, previews, selectedPreview, projectName,
-        customReservedKeywords, useArduinoReservedKeywords, usedReservedKeywords, filePath,
+        customReservedKeywords, useArduinoReservedKeywords, usedReservedKeywords, filePath, filePointer,
         applyLEDSystemPreset: applyLEDAPIPreset, applyTemplate,
         importData, exportData, resetPreview, restoreDefaults
     };

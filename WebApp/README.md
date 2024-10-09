@@ -39,6 +39,7 @@ TODO: In general overhaul the way files are accessed by the application.
     - Add a way to select a primary way (For shortcuts) and sort them better in the file tab
     - Maybe enable/disable them in the settings
     - Then also maybe disable
+TODO: Add keyboard shortcuts for open/save/relaod and such
 
 # Requirements before actual release 0.1
 TODO: Add Tutorial on how to use the application
