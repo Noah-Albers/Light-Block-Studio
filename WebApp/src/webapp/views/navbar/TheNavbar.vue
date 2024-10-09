@@ -35,10 +35,6 @@
 
     const store = useSettingsStore();
 
-    const emit = defineEmits<{
-        (e: "settingsIconClicked"): void
-    }>();
-
     /**
      * When the copy-code button is clicked
      */
@@ -64,7 +60,7 @@
         {
             title: $t('navbar_settings'),
             icon: "mdi-cog",
-            action: () => emit("settingsIconClicked")
+            action: () => SignalDispatcher.emit(Signals.OPEN_SETTINGS)
         },
         {
             title: $t('navbar_copycode'),

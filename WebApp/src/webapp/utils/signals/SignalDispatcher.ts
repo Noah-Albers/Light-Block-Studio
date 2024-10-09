@@ -19,7 +19,8 @@ export type Events = {
     [Signals.BLOCKLY_REQUEST_VUE_HTML_INJECT]: EventVue2HTMLRequest<any>,
     [Signals.BLOCKLY_REQUEST_VUE_HTML_DETACH]: Element,
     [Signals.BLOCKLY_CLICK_IN_WORKSAPCE]: void,
-    [Signals.BLOCKLY_SET_DISABLE_BLOCKLY_EVENTS_FLAG]: boolean
+    [Signals.BLOCKLY_SET_DISABLE_BLOCKLY_EVENTS_FLAG]: boolean,
+    [Signals.OPEN_SETTINGS]: void
 }
 
 export const SignalDispatcher = mitt<Events>();

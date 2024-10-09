@@ -29,6 +29,11 @@ export const Signals = Object.freeze({
      */
     DISPLAY_POPUP: 13,
 
+    /**
+     * Requests the settings tab to open
+     */
+    OPEN_SETTINGS: 14,
+
     //#region Blockly-Events
 
     /**

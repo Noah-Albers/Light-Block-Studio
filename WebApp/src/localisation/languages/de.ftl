@@ -319,3 +319,4 @@ taskbar_storage_fileapi_save_as_title = Speicherne das Projekt in einer Datei
 taskbar_storage_fileapi_save_as_txt = Speichern unter ...
 taskbar_storage_fileapi_save_title = Speicherne das Projekt in einer Datei
 taskbar_storage_fileapi_save_txt = Speichern
+tab_file_settings = Einstellungen

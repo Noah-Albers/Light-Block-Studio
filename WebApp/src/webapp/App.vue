@@ -15,11 +15,10 @@
       {{ snackbarOptions?.text }}
     </v-snackbar>
 
-    <v-overlay v-model="menuOpen" class="align-center justify-center">
-      <TheSettingsMenus />
-    </v-overlay>
+    <!-- Holds the settings menu -->
+    <TheSettingsMenus />
 
-    <!--Popup for user requests that shall popup to ask-->
+    <!-- Popup for user requests that shall popup to ask -->
     <TheRequestPopup/>
 
     <!-- Workspace and sidebar -->
@@ -35,7 +34,7 @@
     </v-main>
 
     <!-- Navigation bar -->
-    <TheNavbar @settings-icon-clicked="menuOpen = true" />
+    <TheNavbar />
   </v-app>
 </template>
 
@@ -77,7 +76,7 @@
   import { EventArgsSnackbar } from './utils/signals/SignalArgumentTypes';
   import { Ref } from 'vue';
   import TheRequestPopup from "./views/popup/TheRequestPopup.vue";
-import ThePWABanner from './views/pwa/ThePWABanner.vue';
+  import ThePWABanner from './views/pwa/ThePWABanner.vue';
 
   const snackbarOpen = ref(false);
   const snackbarOptions: Ref<EventArgsSnackbar> = ref({});
@@ -86,6 +85,4 @@ import ThePWABanner from './views/pwa/ThePWABanner.vue';
     snackbarOptions.value = opts;
     snackbarOpen.value = true;
   });
-
-  const menuOpen = ref(false);
-  </script>
+</script>
