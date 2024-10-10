@@ -371,7 +371,6 @@ async function saveFile() {
 
 async function saveFileAs() {
     try {
-        if(true) throw new Error("");
         // Gets the new location
         const fp = await window.showSaveFilePicker({
             types: [{
