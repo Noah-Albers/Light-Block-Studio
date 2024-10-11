@@ -1,6 +1,5 @@
 <template>
   <v-overlay v-model="isOpen" class="align-center justify-center">
-      <TheSettingsMenus />
       <v-card>
         <v-tabs v-model="tab"
         bg-color="primary">

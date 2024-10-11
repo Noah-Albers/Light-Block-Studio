@@ -32,28 +32,9 @@
     import { ProcedureWithOptions } from '@procedure/definitions/Procedure';
     import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
     import { $t } from "@localisation/Fluent";
+import UiActions from "@webapp/globalactions/UiActions";
 
     const store = useSettingsStore();
-
-    /**
-     * When the copy-code button is clicked
-     */
-    async function onCopyCodeClicked() {
-
-        try {
-            // Gets the config
-            const { setup, loop } = await sendSignalAwaitResponse(Signals.REQUEST_CONFIG_BUILD, undefined, Signals.BLOCKLY_ALL_CREATE_CONFIG) as { setup: ProcedureWithOptions<any>[], loop: ProcedureWithOptions<any>[] };
-
-            // Build the code
-            const code = generateCode(setup, loop);
-
-            await navigator.clipboard.writeText(code);
-
-            SignalDispatcher.emit(Signals.DISPLAY_SNACKBAR, { text: $t('popup_codecopied') })
-        } catch (err) {
-            console.error("Failed to copy / create code", err);
-        }
-    }
 
     // Menu items on the bottom
     const bottomItems = [
@@ -65,7 +46,7 @@
         {
             title: $t('navbar_copycode'),
             icon: "mdi-code-tags",
-            action: onCopyCodeClicked
+            action: UiActions.copyCode
         }
     ]
 

@@ -2,23 +2,14 @@ import { Menu, MenuItem } from "@webapp/utils/taskbar/TaskBar";
 import { $t } from "@localisation/Fluent";
 import { createTemplateSubTab } from "./filetab/TemplatesSubtab";
 import { createLEDApiSubTab } from "./filetab/LEDAPISubtab";
-import { createBrowserStorageMenuItems } from "./filetab/BrowserStorageSubtab";
-import { createDesktopStorageMenuItems } from "./filetab/DesktopStorageSubtab";
+import { createStorageMenuItems } from "./filetab/StorageSubtab";
 import DesktopApi from "@webapp/desktopapi/DesktopApi";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 
 export const createFileTab : ()=>Menu = ()=>{
     
-    const browserItems = !DesktopApi.isDesktop() ? createBrowserStorageMenuItems() : {
-        create: [],
-        save: [],
-        delete: []
-    };
-    const desktopItems = DesktopApi.isDesktop() ? createDesktopStorageMenuItems() : {
-        create: [],
-        save: []
-    };
+    const storageItems = createStorageMenuItems();
 
     const newItem = {
         text: $t("tab_file_new"),
@@ -42,14 +33,12 @@ export const createFileTab : ()=>Menu = ()=>{
         items: ()=>[
             newItem,
             "seperator",
-            ...browserItems.create,
-            ...desktopItems.create,
+            ...storageItems.create,
             "seperator",
-            ...browserItems.save,
-            ...desktopItems.save,
+            ...storageItems.save,
             "seperator",
-            ...browserItems.delete,
-            ...(browserItems.delete.length > 0 ? [
+            ...storageItems.delete,
+            ...(storageItems.delete.length > 0 ? [
                 "seperator" as const
             ] : []),
             openSettings,

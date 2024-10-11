@@ -23,6 +23,7 @@ import "highlight.js/scss/atom-one-dark.scss"
 import Branding from './Branding'
 import GlobalSettingsManager from '@webapp/storage/globalsettings/GlobalSettingsManager'
 import PWAApi from '@webapp/PWAApi'
+import { setupKeybinds } from '@webapp/keybinds/Keybinds'
 
 function setupApplication(){
   
@@ -69,6 +70,9 @@ function setupApplication(){
     
     // Setups the blockly workspace
     registerBlockly();
+
+    // Registers keyboard-shortcuts
+    setupKeybinds();
 
     // Mounts the application
     app.mount("#app");

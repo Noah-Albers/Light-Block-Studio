@@ -12,6 +12,7 @@
     "deep-equal": "^2.2.3",
     "fluent-vue": "^3.6.0",
     "highlight.js": "^11.9.0",
+    "hotkeys-js": "^3.13.7",
     "mitt": "^3.0.1",
     "pinia": "^2.0.23",
     "register-service-worker": "^1.7.2",

@@ -40,6 +40,7 @@ TODO: In general overhaul the way files are accessed by the application.
     - Maybe enable/disable them in the settings
     - Then also maybe disable
 TODO: Add keyboard shortcuts for open/save/relaod and such
+TODO: Add Info-tab or pannel to view keyboard shortcuts
 
 # Requirements before actual release 0.1
 TODO: Add Tutorial on how to use the application

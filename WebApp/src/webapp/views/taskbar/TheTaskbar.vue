@@ -11,6 +11,7 @@ import { createViewTab } from "./ViewTab";
 import { createDeveloperTab } from "./DeveloperTab";
 import { useSettingsStore } from "@webapp/stores/SettingsStore";
 import { createHelpTab } from "./HelpTab";
+import { createEditTab } from "./EditTab";
 
 const settings = useSettingsStore();
 
@@ -18,6 +19,7 @@ const settings = useSettingsStore();
 const TheTaskbar = computed(()=>[
     createFileTab(),
     createViewTab(),
+    createEditTab(),
     settings.isDeveloper ? createDeveloperTab() : undefined,
     createHelpTab()
 ].filter(x=>x!==undefined) as Menu[])
