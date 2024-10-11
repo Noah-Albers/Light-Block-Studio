@@ -24,6 +24,13 @@ export const Signals = Object.freeze({
     DISPLAY_SNACKBAR: 7,
 
     /**
+     * Request the application to show a mini information display to the user.
+     * This is unobstructive
+     * @argument {EventArgsMiniInfo} the data to display
+     */
+    DISPLAY_MINI_INFO: 15,
+
+    /**
      * Requests the application to show a popup with the given message and a yes/no button with custom messages
      * @argument {EventArgsPopup} the data to display to the snackbar
      */

@@ -7,8 +7,11 @@
     <!--The application bar on top-->
     <v-app-bar :elevation="1" height="20">
       <TheTaskbar/>
+      <div v-if="miniInfo !== undefined" class="ml-2">
+        <v-icon size="x-small" :class="`text-${miniInfo.type || 'info'}`"v-if="miniInfo.icon !== undefined" :icon="miniInfo.icon"/>
+        <span :class="`text-subtitle-2 text-${miniInfo.type || 'info'}`" v-if="miniInfo.text !== undefined">{{ miniInfo.text }}</span>
+      </div>
     </v-app-bar>
-
 
     <!-- Snackbar to display information-->
     <v-snackbar :color="snackbarOptions.type || 'info'" :timeout="snackbarOptions!.timeout || 800" v-model="snackbarOpen">
@@ -73,7 +76,7 @@
   import TheNavbar from "./views/navbar/TheNavbar.vue";
   import { useSignal } from './utils/vue/VueSignalListener';
   import { Signals } from './utils/signals/Signals';
-  import { EventArgsSnackbar } from './utils/signals/SignalArgumentTypes';
+  import { EventArgsMiniInfo, EventArgsSnackbar } from './utils/signals/SignalArgumentTypes';
   import { Ref } from 'vue';
   import TheRequestPopup from "./views/popup/TheRequestPopup.vue";
   import ThePWABanner from './views/pwa/ThePWABanner.vue';
@@ -85,4 +88,22 @@
     snackbarOptions.value = opts;
     snackbarOpen.value = true;
   });
+
+
+  // Event: When the timer to clear the mini-info is hit
+  function onClearMiniInfoFire(){
+    lastInfoTimeout.value = undefined;
+    miniInfo.value=undefined;
+  }
+
+  // Handler to stop and previous timeout
+  const miniInfo: Ref<EventArgsMiniInfo|undefined> = ref();
+  const lastInfoTimeout: Ref<undefined|NodeJS.Timeout> = ref();
+  useSignal(Signals.DISPLAY_MINI_INFO, opts=>{
+    if(lastInfoTimeout.value !== undefined)
+      clearTimeout(lastInfoTimeout.value);
+
+    miniInfo.value = opts;
+    lastInfoTimeout.value = setTimeout(onClearMiniInfoFire, miniInfo.value?.timeout || 2000);
+  })
 </script>

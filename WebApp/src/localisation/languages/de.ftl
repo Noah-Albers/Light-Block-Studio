@@ -325,3 +325,4 @@ tab_edit_config_title = Baut die Konfiguration neu, die zum Anzeigen der Animati
 tab_edit_config = Konfiguration neubauen
 tab_edit_copycode = Code kopieren
 tab_edit_copycode_title = Generiert und kopieren den Quellcode des aktuellen Programms
+miniinfo_saved_project = Projekt gespeichert

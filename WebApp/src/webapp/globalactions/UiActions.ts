@@ -1,14 +1,35 @@
 import { $t } from "@localisation/Fluent";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
+import ImportExportUi from "@webapp/storage/ImportExportUi";
 import { sendSignalAwaitResponse } from "@webapp/utils/signals/SignalAwaiter";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 import { generateCode } from "@webapp/views/codeview/CodeGenerator";
 
- /**
- * When the user wants to copy the generated code
- */
- async function copyCode() {
+// Shows the save project file dialog
+async function save(type: "save" | "saveas") {
+    if(type === "save")
+        await ImportExportUi.default.save();
+    else
+        await ImportExportUi.default.saveAs();
+    SignalDispatcher.emit(Signals.DISPLAY_MINI_INFO, {
+        icon: "mdi-content-save-outline", text: $t('miniinfo_saved_project')
+    });
+}
+
+// Shows the open project file dialog
+function open(){
+    ImportExportUi.default.open();
+}
+
+
+
+
+
+/**
+* When the user wants to copy the generated code
+*/
+async function copyCode() {
 
     try {
         // Gets the config
@@ -26,5 +47,7 @@ import { generateCode } from "@webapp/views/codeview/CodeGenerator";
 }
 
 export default {
-    copyCode
+    copyCode,
+    save,
+    open
 }

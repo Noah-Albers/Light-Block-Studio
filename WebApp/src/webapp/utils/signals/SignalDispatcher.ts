@@ -1,7 +1,7 @@
 import mitt from "mitt";
 import { Signals } from "./Signals";
 import { Block, WorkspaceSvg } from "blockly";
-import { EventArgsBlocklyClrReqAttach, EventArgsPopup, EventArgsSnackbar, EventVue2HTMLRequest } from "./SignalArgumentTypes";
+import { EventArgsMiniInfo, EventArgsPopup, EventArgsSnackbar, EventVue2HTMLRequest } from "./SignalArgumentTypes";
 import { ProcedureWithOptions } from "@procedure/definitions/Procedure";
 
 export type Events = {
@@ -20,7 +20,8 @@ export type Events = {
     [Signals.BLOCKLY_REQUEST_VUE_HTML_DETACH]: Element,
     [Signals.BLOCKLY_CLICK_IN_WORKSAPCE]: void,
     [Signals.BLOCKLY_SET_DISABLE_BLOCKLY_EVENTS_FLAG]: boolean,
-    [Signals.OPEN_SETTINGS]: void
+    [Signals.OPEN_SETTINGS]: void,
+    [Signals.DISPLAY_MINI_INFO]: EventArgsMiniInfo
 }
 
 export const SignalDispatcher = mitt<Events>();

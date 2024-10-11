@@ -322,3 +322,4 @@ tab_edit_copycode_title = Generate and copy the source code of the current progr
 tab_edit_config = Rebuild Config
 tab_edit_config_title = Rebuild the config used to show the animation and generated code.
 tab_edit = Edit
+miniinfo_saved_project = Saved Project

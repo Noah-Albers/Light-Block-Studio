@@ -1,6 +1,4 @@
-import DesktopApi from "@webapp/desktopapi/DesktopApi"
 import UiActions from "@webapp/globalactions/UiActions";
-import ImportExportUi from "@webapp/storage/ImportExportUi"
 import { useSettingsStore } from "@webapp/stores/SettingsStore";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
@@ -12,15 +10,15 @@ export function setupKeybinds(){
     hotkeys("ctrl+shift+s, command+shift+s, ctrl+s, command+s", (evt, handler)=>{
         evt.preventDefault();
         if(handler.key.indexOf("shift") === -1)
-            ImportExportUi.default.save();
+            UiActions.save("save");
         else
-            ImportExportUi.default.saveAs();
+            UiActions.save("saveas")
     });
 
     // Open hotkey
     hotkeys("ctrl+o, command+o", evt=>{
         evt.preventDefault();
-        ImportExportUi.default.open();
+        UiActions.open();
     });
 
     // Reload config hotkey

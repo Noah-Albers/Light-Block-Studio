@@ -32,6 +32,17 @@ export type EventArgsPopup = {
     onResolve: (res: "yes" | "no")=>void;
 }
 
+export type EventArgsMiniInfo = {
+    // Text to display inside the popup
+    text?: string,
+    // The icon to display
+    icon?: string,
+    // Which type for notification shall be shown
+    type?: "info" | "warning" | "error" | "success",
+    // How long to display the info
+    timeout?: number
+}
+
 export type EventArgsSnackbar = {
     // How long to display the popup
     timeout?: number,
