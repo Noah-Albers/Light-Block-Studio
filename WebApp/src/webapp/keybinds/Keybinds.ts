@@ -1,6 +1,7 @@
 import DesktopApi from "@webapp/desktopapi/DesktopApi"
 import UiActions from "@webapp/globalactions/UiActions";
 import ImportExportUi from "@webapp/storage/ImportExportUi"
+import { useSettingsStore } from "@webapp/stores/SettingsStore";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 import hotkeys from "hotkeys-js"
@@ -33,4 +34,17 @@ export function setupKeybinds(){
         evt.preventDefault();
         UiActions.copyCode();
     });
+
+    // Cycle through the view
+    hotkeys("ctrl+shift+v,command+shift+v", evt=>{
+        evt.preventDefault();
+        const store = useSettingsStore();
+        store.mainView = (()=>{
+            switch(store.mainView){
+                default: case "code": return "visualizer";
+                case "visualizer": return "serial";
+                case "serial": return "code";
+            };
+        })();
+    })
 }
