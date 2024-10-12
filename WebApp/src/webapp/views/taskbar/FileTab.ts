@@ -6,6 +6,7 @@ import { createStorageMenuItems } from "./filetab/StorageSubtab";
 import DesktopApi from "@webapp/desktopapi/DesktopApi";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
+import PlatformUtils from "@webapp/utils/PlatformUtils";
 
 export const createFileTab : ()=>Menu = ()=>{
     
@@ -13,12 +14,7 @@ export const createFileTab : ()=>Menu = ()=>{
 
     const newItem = {
         text: $t("tab_file_new"),
-        action() {
-            if(DesktopApi.isDesktop())
-                DesktopApi.openNewWindow();
-            else
-                window.open(window.location.toString(), '_blank');
-        },
+        action: ()=> PlatformUtils.openNewWindow(),
         icon: "mdi-plus"
     } as MenuItem;
 

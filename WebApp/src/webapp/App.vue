@@ -21,6 +21,9 @@
     <!-- Holds the settings menu -->
     <TheSettingsMenus />
 
+    <!-- Info-menu to inform the user about key-codes -->
+     <TheKeyshortcutsInfoPopup/>
+
     <!-- Popup for user requests that shall popup to ask -->
     <TheRequestPopup/>
 
@@ -80,6 +83,7 @@
   import { Ref } from 'vue';
   import TheRequestPopup from "./views/popup/TheRequestPopup.vue";
   import ThePWABanner from './views/pwa/ThePWABanner.vue';
+import TheKeyshortcutsInfoPopup from './views/help/TheKeyshortcutsInfoPopup.vue';
 
   const snackbarOpen = ref(false);
   const snackbarOptions: Ref<EventArgsSnackbar> = ref({});

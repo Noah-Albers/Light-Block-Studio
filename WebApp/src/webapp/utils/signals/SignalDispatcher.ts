@@ -21,7 +21,8 @@ export type Events = {
     [Signals.BLOCKLY_CLICK_IN_WORKSAPCE]: void,
     [Signals.BLOCKLY_SET_DISABLE_BLOCKLY_EVENTS_FLAG]: boolean,
     [Signals.OPEN_SETTINGS]: void,
-    [Signals.DISPLAY_MINI_INFO]: EventArgsMiniInfo
+    [Signals.DISPLAY_MINI_INFO]: EventArgsMiniInfo,
+    [Signals.OPEN_KEYBOARD_INFO]: void,
 }
 
 export const SignalDispatcher = mitt<Events>();

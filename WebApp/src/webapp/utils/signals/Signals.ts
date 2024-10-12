@@ -41,6 +41,9 @@ export const Signals = Object.freeze({
      */
     OPEN_SETTINGS: 14,
 
+    /** Requests the keyboard-info popup to show */
+    OPEN_KEYBOARD_INFO: 16,
+
     //#region Blockly-Events
 
     /**
