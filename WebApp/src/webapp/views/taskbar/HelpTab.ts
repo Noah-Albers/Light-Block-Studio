@@ -22,16 +22,14 @@ export const createHelpTab: ()=>Menu = ()=>({
             disabled: !PWAApi.isInstallable.value,
             title: PWAApi.isInstallable.value ? undefined : $t('tab_help_install_pwa_not_supported')
         }, {
-            text: 'About',
+            text: $t('tab_help_about'),
             action: ()=>PlatformUtils.openURL(Branding.ABOUT_URL),
             icon: "mdi-information-outline"
         }, {
-            text: "View Shortcuts",
+            text: $t('tab_help_shortcuts'),
             action: ()=>SignalDispatcher.emit(Signals.OPEN_KEYBOARD_INFO),
             icon: "mdi-keyboard-variant"
         }
-
-        // TODO: Lang
 
         // TODO: Add tutorial and FAQ and readme links
     ]
