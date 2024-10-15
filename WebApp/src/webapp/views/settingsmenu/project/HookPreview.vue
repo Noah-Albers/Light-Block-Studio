@@ -3,7 +3,35 @@
         style="margin-right: 4rem;"
         hover>
         <v-card-item>
-            <v-card-title> {{ $t('hooks_title', {hook: $props.name}) }}</v-card-title>
+            <v-card-title>
+                <p class="d-flex space-between">
+                    {{ $t('hooks_title', {hook: $props.name}) }}
+                    
+                    <v-menu :close-delay="0" open-on-hover :open-delay="0" transition="none">
+                        
+                        <template v-slot:activator="{ props: p }">
+                            <v-icon size=small class="mt-1 ml-2" icon="mdi-information-outline" v-bind="p"/>
+                        </template>
+
+                        <!--TODO: Lang-->
+                        <!--TODO: Add descriptions to hook previews-->
+                        <v-sheet class="pa-4">
+                            <p>Use can use this field to edit how specific parts of the code are generated.</p>
+                           
+                            <template v-if="Object.keys($props.previewOptions ?? {}).length > 0">
+                                <p>Using their names in between $$-signs you can insert specific variables into your code.</p>
+                                <br>
+                                <p>You can use these variables in this segment:</p>
+
+                                <ul class="ml-10">
+                                    <li v-for="val,name in $props.previewOptions">$${{ name }}$$ (For example {{ val }})</li>
+                                </ul>
+                            </template>
+                        </v-sheet>
+                    </v-menu>
+
+                </p>
+            </v-card-title>
         </v-card-item>
 
         <v-card-text>
