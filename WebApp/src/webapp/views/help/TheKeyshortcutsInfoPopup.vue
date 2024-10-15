@@ -1,7 +1,7 @@
 <template>
 
 <v-overlay v-model="isOpen" class="align-center justify-center">
-    <v-card class="text-h5 pa-4">
+    <v-card style="max-height: 95vh; overflow:auto" class="text-h5 pa-4">
         <v-card-text class="pa-0" >
             <v-table class="text-h6">
                 <thead>
@@ -61,6 +61,7 @@ import { ref } from 'vue';
     const ctrl = $t('keyinfo_key_ctrl');
     const shift = $t('keyinfo_key_shift');
     
+    // TODO: Lang
     return [
         {keys: [ctrl,shift,"S"], title: $t('keyinfo_info_saveas_title'), desc: $t('keyinfo_info_saveas_desc')},
         {keys: [ctrl,"S"], title: $t('keyinfo_info_save_title'), desc: $t('keyinfo_info_save_desc')},
@@ -68,6 +69,7 @@ import { ref } from 'vue';
         {keys: [ctrl,"R"], title: $t('keyinfo_info_rlconfig_title'), desc: $t('keyinfo_info_rlconfig_desc')},
         {keys: [ctrl,shift, "C"], title: $t('keyinfo_info_cpcode_title'), desc: $t('keyinfo_info_cpcode_desc')},
         {keys: [ctrl,shift, "V"], title: $t('keyinfo_info_cycleview_title'), desc: $t('keyinfo_info_cycleview_desc')},
+        {keys: [ctrl, "."], title: "Open Settings", desc: "Opens the project or global settings and cycles through them when pressing multiple times."},
     ]
     })();
 

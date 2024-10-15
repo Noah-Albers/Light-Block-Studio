@@ -45,4 +45,10 @@ export function setupKeybinds(){
             };
         })();
     })
+
+    // Open Settings hotkey
+    hotkeys("ctrl+.,command+.", evt=>{
+        evt.preventDefault();
+        SignalDispatcher.emit(Signals.OPEN_SETTINGS);
+    })
 }

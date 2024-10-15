@@ -44,7 +44,12 @@ import { useSignal } from '@webapp/utils/vue/VueSignalListener';
 
   const isOpen = ref(false);
 
-  useSignal(Signals.OPEN_SETTINGS, ()=>isOpen.value = true);
+  useSignal(Signals.OPEN_SETTINGS, ()=>{
+    if(isOpen.value)
+      tab.value = tab.value === "one" ? "two" : "one"
+    else
+      isOpen.value = true;
+  });
 
   onUnmounted(() => SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD));
 
