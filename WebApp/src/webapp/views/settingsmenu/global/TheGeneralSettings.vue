@@ -34,7 +34,7 @@
             </PreviewRenderer>
         </template>
 
-        <PreviewPicker v-model="store.defaultPreview" />
+        <PreviewPicker buildin-only v-model="store.defaultPreview" />
     </v-overlay>
 </template>
     

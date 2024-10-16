@@ -1,5 +1,6 @@
 import { useProjectStore } from '@webapp/stores/ProjectStore';
 import { BuildInPreviews } from '@webapp/stores/SettingsStore';
+import PreviewGridSVGGenerator from '@webapp/utils/PreviewGridSVGGenerator';
 import { Ref, onMounted, ref, toRefs, watch } from 'vue'
 
 export type LEDs = {[key: number]: SVGElement[]};
@@ -53,8 +54,20 @@ export function useProjectImage(refWrapper: Ref<Element>, imgChangeCallback: ()=
                 return;
             }
 
+            // Gets the data
+            let data = store.previews[store.selectedPreview];
+
+            // Checks for a generation config
+            if(typeof data === "object")
+                data = PreviewGridSVGGenerator.generate({
+                    ...data,
+                    spaceBetweenX: 2, spaceBetweenY: 2,
+                    rectSizeX: 7, rectSizeY: 7,
+                    stripePadding: 2,
+                });
+
             // Loads the custom svg
-            setLoadedImage(store.previews[store.selectedPreview]);
+            setLoadedImage(data);
             return;
         }
 

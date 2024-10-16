@@ -6,6 +6,8 @@ import { useSettingsStore } from './SettingsStore';
 import { LEDAPIHooks } from '@template/definitions/LEDAPI';
 import { LEDAPIFastLedPreset } from '@template/ledapi/LEDAPIFastLED';
 import { TemplateDefault } from '@template/buildin/TemplateDefault';
+import { GridSettings } from '@webapp/utils/PreviewGridSVGGenerator';
+import { ExportedPreviewSchemaType } from '@webapp/storage/project/previews/PreviewSchema';
 
 
 // List of keywords that are used and/or reserved by the arduino ide / programming language
@@ -103,7 +105,9 @@ export const useProjectStore = defineStore('project', () => {
     //#endregion
 
     // List of previews stored inside the projects (SVG-Files)
-    const previews = __set<string[]>();
+    // Either SVG-Files (String) or
+    // settings to generate a given svg file
+    const previews = __set<(string | ExportedPreviewSchemaType)[]>();
 
     // Which preview is selected (String if it's a build-in one, number if it's the index of one of the custom loaded ones)
     const selectedPreview = __set<number | string>();
@@ -186,6 +190,8 @@ export const useProjectStore = defineStore('project', () => {
             ...LEDAPIFastLedPreset,
             ...data.ledApiHooks
         });
+
+        // Updates the settings
 
         amount.value = data.amount;
         loopPushLeds.value = data.loopPushLeds;

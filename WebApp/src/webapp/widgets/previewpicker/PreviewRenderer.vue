@@ -17,7 +17,7 @@
                 @click="emit('iconClicked')" />
             </template>
         </v-toolbar>
-        <img v-if="properties.isBuildin" :src="properties.path" />
+        <img v-if="properties.isBuildin" :src="(properties.path as string)" />
         <div class="__visualizer_menu_svg" v-else v-html="properties.path"></div>
     </v-card>
 </template>
@@ -40,6 +40,7 @@
 <script lang="ts" setup>
 import { PropType, computed } from "vue";
 import { useProjectStore } from "@webapp/stores/ProjectStore"
+import PreviewGridSVGGenerator from "@webapp/utils/PreviewGridSVGGenerator";
 
 const emit = defineEmits<{
     (e: "click"): void,
@@ -50,7 +51,19 @@ const store = useProjectStore();
 
 const properties = computed(()=>{
     const isBuildin = typeof props.preview === "string";
-    const path = isBuildin ? `previews/${props.preview}` : store.previews[props.preview];
+
+    if(isBuildin) return {
+        isBuildin,
+        path: `previews/${props.preview}`
+    }
+
+    const raw = store.previews[props.preview];
+    const path = typeof raw === "string" ? raw : PreviewGridSVGGenerator.generate({
+        ...raw,
+        rectSizeX: 7, rectSizeY: 7,
+        spaceBetweenX: 2, spaceBetweenY: 2,
+        stripePadding: 2
+    })
 
     return {
         isBuildin,

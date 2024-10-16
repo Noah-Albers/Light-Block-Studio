@@ -26,6 +26,8 @@ TODO: Add switch to disable code optimisations for the cpp compiler (Can be used
 
 TODO: Add auto-save feature
 
+TODO: Add interface to generate grid previews
+
 ## Features
 
 TODO: Added support for blockly mutators

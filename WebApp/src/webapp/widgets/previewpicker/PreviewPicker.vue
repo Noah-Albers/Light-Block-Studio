@@ -52,7 +52,20 @@ type PreviewType = {
 }
 
 const allPreviews = computed(() => {
-    return [...BuildInPreviews.map(prev => ({ isBuildin: true, value: prev, key: prev })), ...store.previews.map((prev, idx) => ({ isBuildin: false, value: prev, key: idx }))] as PreviewType[];
+    const BuildIn = BuildInPreviews.map(prev => ({ isBuildin: true, value: prev, key: prev }));
+    const Custom = store.previews.map((prev, idx) => ({ isBuildin: false, value: prev, key: idx }));
+
+    return (props.buildinOnly ? BuildIn : [
+        ...BuildIn,
+        ...Custom
+    ]) as PreviewType[]
+})
+
+const props = defineProps({
+    buildinOnly: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const store = useProjectStore();

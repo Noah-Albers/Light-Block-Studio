@@ -1,6 +1,7 @@
 import { Defaults } from "@webapp/stores/ProjectStore";
 import { z } from "zod";
 import { int, min } from "../ZodUtil"
+import { BasePreviewSchema } from "./previews/PreviewSchema";
 
 // #region Workspace and node schema
 
@@ -71,7 +72,7 @@ const InternalSchemas = {
             z.string()
         ]),
 
-        previews: z.array(z.string()),
+        previews: z.array(BasePreviewSchema),
 
         pin: z.any().transform(int()).transform(min(0)),
         amount: z.any().transform(int()).transform(min(0)),

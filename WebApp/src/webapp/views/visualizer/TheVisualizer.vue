@@ -53,7 +53,7 @@
     import { LEDMap } from '@visualizer/implementations/VisualisationController';
     import PreviewPicker from "@webapp/widgets/previewpicker/PreviewPicker.vue";
     import { useProjectStore } from '@webapp/stores/ProjectStore';
-    import { HSV2RGB, RGB2Single } from "@webapp/utils/color/ColorConverter";
+    import { HSV2RGB } from "@webapp/utils/color/ColorConverter";
 
     // HTML-Ref
     const refWrapper = ref(null as any as Element);
@@ -108,7 +108,7 @@
     }
 
     function onPreviewElementChange() {
-        // Nothing to do, the visualizer will notice automagially
+        // Nothing to do, the visualizer will notice automagically
     }
 
     // Requests the config to be recreated
