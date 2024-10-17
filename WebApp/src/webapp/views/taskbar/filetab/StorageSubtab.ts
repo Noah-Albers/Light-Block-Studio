@@ -5,7 +5,6 @@ import { $t } from "@localisation/Fluent";
 import { exportProject } from "../../../storage/project/ProjectExporter";
 import { importProject } from "../../../storage/project/ProjectImporter";
 import { isLocalstorageSupported } from "@utils/Localstorage";
-import { makeValidFilename } from "@utils/FileUtils";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 import Branding from "../../../../Branding";

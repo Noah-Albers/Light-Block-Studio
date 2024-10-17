@@ -5,8 +5,11 @@
                 {{ props.preview }}
             </template>
             <template v-slot:title v-else>
-                {{ $t('visualizer_previewselector_customPreview', { index: typeof preview === "string" ? preview : (preview + 1) }) }}
+                {{ displayName }}
             </template>
+
+            <!--TODO: Lang-->
+            <v-icon v-if="downloadable" @click="onDownloadClicked" class="mr-4" v-tooltip="'Download'" icon="mdi-download"/>
             <slot></slot>
             <template v-if="properties.isBuildin">
                 <v-icon class="mr-4" v-tooltip="$t('visualizer_previewselector_icon_buildin')" color="#ddd"
@@ -41,6 +44,10 @@
 import { PropType, computed } from "vue";
 import { useProjectStore } from "@webapp/stores/ProjectStore"
 import PreviewGridSVGGenerator from "@webapp/utils/PreviewGridSVGGenerator";
+import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
+import { Signals } from "@webapp/utils/signals/Signals";
+import FileUtils from "@utils/FileUtils";
+import { $t } from "@localisation/Fluent";
 
 const emit = defineEmits<{
     (e: "click"): void,
@@ -48,6 +55,8 @@ const emit = defineEmits<{
 }>();
 
 const store = useProjectStore();
+
+const displayName = computed(()=>$t('visualizer_previewselector_customPreview', { index: typeof props.preview === "string" ? props.preview : (props.preview + 1) }));
 
 const properties = computed(()=>{
     const isBuildin = typeof props.preview === "string";
@@ -81,7 +90,34 @@ const props = defineProps({
     highlighted: {
         type: Boolean,
         default: false
+    },
+    downloadable: {
+        type: Boolean,
+        default: true
     }
 });
+
+// Event: When the download icon is clicked
+async function onDownloadClicked(){
+    try {
+        // Gets the raw svg data
+        const data = properties.value.isBuildin ? await (await fetch(properties.value.path)).text() : properties.value.path;
+
+        const name = displayName.value + (displayName.value.endsWith(".svg") ? "" : ".svg");
+
+        // Prompts the user to download the file
+        FileUtils.promptDownload(data, "image/svg+xml", name);
+    }catch(err){
+        console.error("Failed to retreive build in preview",err);
+
+        // TODO: Lang
+        // Displays the error to the user
+        SignalDispatcher.emit(Signals.DISPLAY_SNACKBAR, {
+            text: "Failed to load data, are you online?",
+            timeout: 5000,
+            type: "error"
+        });
+    }
+}
 
 </script>

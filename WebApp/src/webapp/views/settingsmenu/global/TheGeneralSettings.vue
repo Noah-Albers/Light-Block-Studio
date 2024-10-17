@@ -28,7 +28,7 @@
     <v-overlay class="align-center justify-center">
         <template #activator="{ props }">
             
-            <PreviewRenderer style="display: inline-block" :preview="store.defaultPreview">
+            <PreviewRenderer style="display: inline-block" :downloadable="false" :preview="store.defaultPreview">
                 <v-icon class="mr-4" icon="mdi-open-in-new" v-bind="props"
                     v-tooltip="$t('globalsettings_general_defaultPreview-tooltip')"/>
             </PreviewRenderer>

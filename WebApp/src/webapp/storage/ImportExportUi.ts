@@ -1,16 +1,14 @@
 import { C } from "@webapp/utils/html/HTMLBuilder";
-import { Button, Menu, MenuItem } from "@webapp/utils/taskbar/TaskBar";
 import { useProjectStore } from "@webapp/stores/ProjectStore";
 import { $t } from "@localisation/Fluent";
 import { exportProject } from "../storage/project/ProjectExporter";
 import { importProject } from "../storage/project/ProjectImporter";
-import { isLocalstorageSupported } from "@utils/Localstorage";
-import { makeValidFilename } from "@utils/FileUtils";
 import { SignalDispatcher } from "@webapp/utils/signals/SignalDispatcher";
 import { Signals } from "@webapp/utils/signals/Signals";
 import Branding from "../../Branding";
 import DesktopApi from "@webapp/desktopapi/DesktopApi";
 import { useSettingsStore } from "@webapp/stores/SettingsStore";
+import FileUtils from "@utils/FileUtils";
 
 
 // Event: When a project got loaded and shall be imported
@@ -168,25 +166,8 @@ async function saveLagacyDownload() {
     // Project name
     const name = useProjectStore().projectName;
 
-    // Creates the file
-    var file = new Blob([JSON.stringify(rawJson)], {
-        endings: "native",
-        type: "text/json"
-    });
-
-    // Creates an element to download the element
-    var a = document.createElement("a");
-    var url = a.href = URL.createObjectURL(file);
-
-    // Sets the filename
-    a.download = makeValidFilename(name + "." + Branding.FILE_EXTENSION)
-
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-    }, 0);
+    // Prompts the user to download the file
+    FileUtils.promptDownload(JSON.stringify(rawJson), "text/json", `${name}.${Branding.FILE_EXTENSION}`);
 }
 
 //#endregion
