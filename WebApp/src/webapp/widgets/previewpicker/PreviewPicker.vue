@@ -1,9 +1,23 @@
 <template>
     <v-card class="ma-10" style="height: 80vh; min-width: 80vw; overflow: auto">
         <v-toolbar :elevation="4" :title="$t('visualizer_previewselector_open')" color="primary">
-            <v-btn @click="$el.querySelector('.custom_upload_file').click()"
-                v-tooltip="$t('visualizer_previewselector_upload-tooltip')" prepend-icon="mdi-upload"
-                :text="$t('visualizer_previewselector_upload')" elevation="3" class="mr-2" />
+            
+            <template v-if="!buildinOnly">
+
+                <!-- TODO: Lang -->
+                <v-btn elevation="3" class="mr-2">
+                    Generate
+
+                    <v-menu activator="parent" :close-on-content-click="false" v-model="generatorMenuOpen">
+                        <TheGridGeneratorPreview @finished="generatorMenuOpen = false"/>
+                    </v-menu>
+                </v-btn>
+
+                <v-btn @click="$el.querySelector('.custom_upload_file').click()"
+                    v-tooltip="$t('visualizer_previewselector_upload-tooltip')" prepend-icon="mdi-upload"
+                    :text="$t('visualizer_previewselector_upload')" elevation="3" class="mr-2" />
+
+            </template>
            
 
             <!--Hidden file input-->
@@ -44,12 +58,16 @@ import { ref } from 'vue';
 import { $t } from "@localisation/Fluent";
 import { BuildInPreviews } from "@webapp/stores/SettingsStore";
 import PreviewRenderer from "./PreviewRenderer.vue"
+import TheGridGeneratorPreview from "./TheGridGeneratorPreview.vue";
 
 type PreviewType = {
     value: string,
     isBuildin: true,
     key: string | number
 }
+
+// Holds the state of if the generator menu is open
+const generatorMenuOpen = ref(false);
 
 const allPreviews = computed(() => {
     const BuildIn = BuildInPreviews.map(prev => ({ isBuildin: true, value: prev, key: prev }));

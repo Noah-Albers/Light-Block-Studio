@@ -22,7 +22,7 @@ export const DefaultVendors: [string, number][] = [
 
 
 // List of all buildin previews (Filenames)
-export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg", "Matrix-8x8px-Alternating.svg", "Matrix-8x8px-Direct.svg"];
+export const BuildInPreviews = ["Goggles.svg", "Ring-16px.svg"];
 
 export const useSettingsStore = defineStore('settings', () => {
 

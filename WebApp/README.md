@@ -28,6 +28,10 @@ TODO: Add auto-save feature
 
 TODO: Add interface to generate grid previews
 
+TODO: Add shortcut and way to automatically set the led amount to the current preview amount
+
+TODO: Add generator for circular led rings as previews (Maybe then also for led goggles afterwards)
+
 ## Features
 
 TODO: Added support for blockly mutators

@@ -38,6 +38,13 @@ function generate({
     type, stripePadding, startId, rotation, idLength
 }: GridSettings) {
 
+    // Adds milde constrains
+    if(width < 1) width = 1;
+    if(width > 999) width = 999;
+    if(height < 1) height = 1;
+    if(height > 999) height = 999;
+
+
     // Most comments below assume a rotation of 0
 
     // Outline size
@@ -70,7 +77,7 @@ function generate({
             for (let x = 0; x < width; x++) {
                 // Generates the led index (Checks for alternating mode)
                 const idx = Math.floor(
-                    (width * y + (mode === "alternating" && y == 1 ? width - x - 1 : x) + startId) / idLength
+                    (width * y + (mode === "alternating" && y%2 == 1 ? width - x - 1 : x) + startId) / idLength
                 );
 
                 rects.push(
