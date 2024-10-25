@@ -25,11 +25,20 @@ export const createEditTab: () => Menu = () => {
         icon: "mdi-hammer"
     }
 
+    // TODO: Lang
+    const setAmtFromPreview = {
+        text: "Sync Preview with led amount",
+        title: "Copies the amount from the preview to the led-amount field of the project.",
+        icon: "mdi-arrow-u-down-right",
+        action: ()=>SignalDispatcher.emit(Signals.REQUEST_COPY_PREVIEW_AMT_TO_LED_AMT)
+    }
+
     return {
         text: $t('tab_edit'),
         items: [
             copyCode,
-            reloadItem
+            reloadItem,
+            setAmtFromPreview
         ]
     }
 }

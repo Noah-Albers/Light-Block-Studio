@@ -23,6 +23,7 @@ export type Events = {
     [Signals.OPEN_SETTINGS]: void,
     [Signals.DISPLAY_MINI_INFO]: EventArgsMiniInfo,
     [Signals.OPEN_KEYBOARD_INFO]: void,
+    [Signals.REQUEST_COPY_PREVIEW_AMT_TO_LED_AMT]: void
 }
 
 export const SignalDispatcher = mitt<Events>();

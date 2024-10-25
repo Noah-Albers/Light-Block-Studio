@@ -51,4 +51,10 @@ export function setupKeybinds(){
         evt.preventDefault();
         SignalDispatcher.emit(Signals.OPEN_SETTINGS);
     })
+
+    // Copy the preview led amount to the projects led amount
+    hotkeys("ctrl+m,command+m", evt=>{
+        evt.preventDefault();
+        SignalDispatcher.emit(Signals.REQUEST_COPY_PREVIEW_AMT_TO_LED_AMT);
+    })
 }

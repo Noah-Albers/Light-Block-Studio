@@ -44,6 +44,9 @@ export const Signals = Object.freeze({
     /** Requests the keyboard-info popup to show */
     OPEN_KEYBOARD_INFO: 16,
 
+    /** Requests the visualizer to copy the loaded led amount to the projects used amount. That only if its loaded */
+    REQUEST_COPY_PREVIEW_AMT_TO_LED_AMT: 17,
+
     //#region Blockly-Events
 
     /**

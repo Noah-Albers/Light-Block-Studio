@@ -111,8 +111,24 @@
         // Nothing to do, the visualizer will notice automagically
     }
 
+    // Event: When a requests is retreived to copy the preview amount to the led amount
+    function onRequestCopyPreviewAmountToLedAmount(){
+        // Edge case: Preview failed to load or something went wrong
+        if(leds.value === undefined) return;
+
+        const array = Object.keys(leds.value);
+
+        if(array.length <= 0) return;
+
+        store.amount = array.map(x=>parseInt(x)).reduce((max, current) => current > max ? current : max)+1;
+        SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD);
+    }
+
     // Requests the config to be recreated
     onMounted(() => SignalDispatcher.emit(Signals.REQUEST_CONFIG_BUILD));
     onUnmounted(()=> visualizer.abortVisualizer());
+
+    // Handles the reuqest signal to copy the led amounts
+    useSignal(Signals.REQUEST_COPY_PREVIEW_AMT_TO_LED_AMT, onRequestCopyPreviewAmountToLedAmount);
     
     </script>

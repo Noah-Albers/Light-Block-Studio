@@ -70,6 +70,7 @@ import { ref } from 'vue';
         {keys: [ctrl,shift, "C"], title: $t('keyinfo_info_cpcode_title'), desc: $t('keyinfo_info_cpcode_desc')},
         {keys: [ctrl,shift, "V"], title: $t('keyinfo_info_cycleview_title'), desc: $t('keyinfo_info_cycleview_desc')},
         {keys: [ctrl, "."], title: "Open Settings", desc: "Opens the project or global settings and cycles through them when pressing multiple times."},
+        {keys: [ctrl, "m"], title: "Sync Preview with led amount", desc: "Copies the amount of leds on the preview to the project settings."},
     ]
     })();
 
