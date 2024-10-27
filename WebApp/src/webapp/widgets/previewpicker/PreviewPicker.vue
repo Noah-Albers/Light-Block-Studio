@@ -5,7 +5,7 @@
             <template v-if="!buildinOnly">
 
                 <!-- TODO: Lang -->
-                <v-btn elevation="3" class="mr-2">
+                <v-btn elevation="3" variant="flat" class="mr-2 bg-green">
                     Generate
 
                     <v-menu activator="parent" :close-on-content-click="false" v-model="generatorMenuOpen">
@@ -14,8 +14,9 @@
                 </v-btn>
 
                 <v-btn @click="$el.querySelector('.custom_upload_file').click()"
+                    variant="flat"
                     v-tooltip="$t('visualizer_previewselector_upload-tooltip')" prepend-icon="mdi-upload"
-                    :text="$t('visualizer_previewselector_upload')" elevation="3" class="mr-2" />
+                    :text="$t('visualizer_previewselector_upload')" elevation="3" class="mr-2 bg-blue-darken-4" />
 
             </template>
            
