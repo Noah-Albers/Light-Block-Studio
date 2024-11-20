@@ -49,8 +49,7 @@ serial_not_supported_text =
     which we use to communicate with the external hardware.
     <br />
     If you still want to view your animations on real hardware, please use a <a target="_blank"
-        href="https://caniuse.com/web-serial">browser</a> that supports the serial api
-    or use the <a href="TODO" target="_blank">desktop version</a> of this application.
+        href="https://caniuse.com/web-serial">browser</a> that supports the serial api.
 serial_supported = .title = Serial Preview
     .title = Serial Preview
     .subtitle = View your animation on real hardware
@@ -341,3 +340,29 @@ keyinfo_info_cycleview_title = Cycle View
 keyinfo_info_cycleview_desc = Cycles through the views on the sidebar.
 tab_help_about = About
 tab_help_shortcuts = View Shortcuts
+keyinfo_info_opensettings_title = Open Settings
+keyinfo_info_opensettings_desc = Opens the project or global settings and cycles through them when pressing multiple times.
+keyinfo_info_syncpreview_title = Sync Preview with led amount
+keyinfo_info_syncpreview_desc = Copies the amount of leds on the preview to the project settings.
+hooks_info_always = Use can use this field to edit how specific parts of the code are generated.
+hooks_info_restricted =
+    <p>Using their names in between $$-signs you can insert specific variables into your code.</p>
+    <br>
+    <p>You can use these variables in this segment:</p>
+hooks_info_variable = $${ $name }$$ (For example { $val })
+tab_edit_sync = Sync Preview with led amount
+tab_edit_sync_title = Copies the amount from the preview to the led-amount field of the project.
+visualizer_previewselector_button-generate = Generate
+visualizer_previewselector_icon_download = Download
+visualizer_previewselector_error_loading = Failed to load data, are you online?
+gridgenerator_title = Create a grid-preview of varriging size
+gridgenerator_field_width = Width
+gridgenerator_field_height = Height
+gridgenerator_field_id-length = ID-Length
+gridgenerator_field_id-length_tooltip = How many leds shall have the same id
+gridgenerator_field_id-start = Start-ID
+gridgenerator_field_id-start_tooltip = ID to start from (0 is the default)
+gridgenerator_field_rotation = Rotation
+gridgenerator_field_variant = Variant
+gridgenerator_field_mode = Mode
+gridgenerator_button_finalize = Add to project

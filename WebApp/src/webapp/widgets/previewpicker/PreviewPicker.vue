@@ -4,9 +4,8 @@
             
             <template v-if="!buildinOnly">
 
-                <!-- TODO: Lang -->
                 <v-btn elevation="3" variant="flat" class="mr-2 bg-green">
-                    Generate
+                    {{ $t('visualizer_previewselector_button-generate') }}
 
                     <v-menu activator="parent" :close-on-content-click="false" v-model="generatorMenuOpen">
                         <TheGridGeneratorPreview @finished="generatorMenuOpen = false"/>

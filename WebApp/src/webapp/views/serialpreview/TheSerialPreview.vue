@@ -80,7 +80,6 @@
         } catch (err) {
             console.error("Failed to copy script code ", err);
 
-            alert("Failed to copy the script code, please copy it manually:\n\n" + script);
             alert($t('serial_codecopyerror', { script }));
         }
     }

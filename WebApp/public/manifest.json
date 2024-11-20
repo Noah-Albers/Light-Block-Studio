@@ -1,7 +1,7 @@
 {
-    "name": "TODO: Appname",
-    "short_name": "App",
-    "description": "Your app description",
+    "name": "Light Block Studio",
+    "short_name": "LBS",
+    "description": "Create Stunning LED-Animations for Microcontrollers.",
     "theme_color": "#4DBA87",
     "start_url": "/",
     "icons": [

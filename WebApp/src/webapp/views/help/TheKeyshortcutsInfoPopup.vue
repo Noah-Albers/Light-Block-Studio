@@ -61,7 +61,6 @@ import { ref } from 'vue';
     const ctrl = $t('keyinfo_key_ctrl');
     const shift = $t('keyinfo_key_shift');
     
-    // TODO: Lang
     return [
         {keys: [ctrl,shift,"S"], title: $t('keyinfo_info_saveas_title'), desc: $t('keyinfo_info_saveas_desc')},
         {keys: [ctrl,"S"], title: $t('keyinfo_info_save_title'), desc: $t('keyinfo_info_save_desc')},
@@ -69,8 +68,8 @@ import { ref } from 'vue';
         {keys: [ctrl,"R"], title: $t('keyinfo_info_rlconfig_title'), desc: $t('keyinfo_info_rlconfig_desc')},
         {keys: [ctrl,shift, "C"], title: $t('keyinfo_info_cpcode_title'), desc: $t('keyinfo_info_cpcode_desc')},
         {keys: [ctrl,shift, "V"], title: $t('keyinfo_info_cycleview_title'), desc: $t('keyinfo_info_cycleview_desc')},
-        {keys: [ctrl, "."], title: "Open Settings", desc: "Opens the project or global settings and cycles through them when pressing multiple times."},
-        {keys: [ctrl, "m"], title: "Sync Preview with led amount", desc: "Copies the amount of leds on the preview to the project settings."},
+        {keys: [ctrl, "."], title: $t('keyinfo_info_opensettings_title'), desc: $t('keyinfo_info_opensettings_desc')},
+        {keys: [ctrl, "m"], title: $t('keyinfo_info_syncpreview_title'), desc: $t('keyinfo_info_syncpreview_desc')},
     ]
     })();
 

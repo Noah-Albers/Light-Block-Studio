@@ -12,19 +12,17 @@
                         <template v-slot:activator="{ props: p }">
                             <v-icon size=small class="mt-1 ml-2" icon="mdi-information-outline" v-bind="p"/>
                         </template>
-
-                        <!--TODO: Lang-->
-                        <!--TODO: Add descriptions to hook previews-->
+                        
                         <v-sheet class="pa-4">
-                            <p>Use can use this field to edit how specific parts of the code are generated.</p>
+                            <p>{{ $t('hooks_info_always') }}</p>
                            
                             <template v-if="Object.keys($props.previewOptions ?? {}).length > 0">
-                                <p>Using their names in between $$-signs you can insert specific variables into your code.</p>
-                                <br>
-                                <p>You can use these variables in this segment:</p>
+                                <div v-html="$t('hooks_info_restricted')" />
 
                                 <ul class="ml-10">
-                                    <li v-for="val,name in $props.previewOptions">$${{ name }}$$ (For example {{ val }})</li>
+                                    <li v-for="val,name in $props.previewOptions">
+                                        {{ $t('hooks_info_variable', {name, val:val.toString()}) }}
+                                    </li>
                                 </ul>
                             </template>
                         </v-sheet>

@@ -8,8 +8,7 @@
                 {{ displayName }}
             </template>
 
-            <!--TODO: Lang-->
-            <v-icon v-if="downloadable" @click="onDownloadClicked" class="mr-4" v-tooltip="'Download'" icon="mdi-download"/>
+            <v-icon v-if="downloadable" @click="onDownloadClicked" class="mr-4" v-tooltip="$t('visualizer_previewselector_icon_download')" icon="mdi-download"/>
             <slot></slot>
             <template v-if="properties.isBuildin">
                 <v-icon class="mr-4" v-tooltip="$t('visualizer_previewselector_icon_buildin')" color="#ddd"
@@ -110,10 +109,9 @@ async function onDownloadClicked(){
     }catch(err){
         console.error("Failed to retreive build in preview",err);
 
-        // TODO: Lang
         // Displays the error to the user
         SignalDispatcher.emit(Signals.DISPLAY_SNACKBAR, {
-            text: "Failed to load data, are you online?",
+            text: $t('visualizer_previewselector_error_loading'),
             timeout: 5000,
             type: "error"
         });

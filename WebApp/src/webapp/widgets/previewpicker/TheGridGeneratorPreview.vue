@@ -1,8 +1,7 @@
 <template>
-<!--TODO: Lang-->
 
 <v-card class="shell">
-    <v-toolbar :elevation="4" :title="'Create a grid-preview of varriging size'" color="green">
+    <v-toolbar :elevation="4" :title="$t('gridgenerator_title')" color="green">
     </v-toolbar>
 
     <div class="d-flex">
@@ -16,14 +15,14 @@
             <div class="d-flex pb-8 mx-5 mt-5">
                 <v-text-field
                     :model-value="generationSettings.width" @update:model-value="e=>onChangeSettings(e,'width')" hide-details
-                    :label="'Width'"
+                    :label="$t('gridgenerator_field_width')"
                     density="compact"
                     class="pr-4"
                     />
             
                 <v-text-field
                     :model-value="generationSettings.height" @update:model-value="e=>onChangeSettings(e,'height')" hide-details
-                    :label="'Height'"
+                    :label="$t('gridgenerator_field_height')"
                     density="compact"
                     />
             </div>
@@ -31,19 +30,19 @@
             <div class="d-flex pb-4 mx-5">
                 <v-text-field
                     :model-value="generationSettings.idLength" @update:model-value="e=>onChangeSettings(e,'idLength')" hide-details
-                    :label="'ID-Length'"
-                    v-tooltip="'How many leds shall have the same id'"
+                    :label="$t('gridgenerator_field_id-length')"
+                    v-tooltip="$t('gridgenerator_field_id-length_tooltip')"
                     density="compact" class="pr-4"
                     />
                 <v-text-field
                     :model-value="generationSettings.startId" @update:model-value="e=>onChangeSettings(e,'startId')" hide-details
-                    :label="'Start-ID'"
-                    v-tooltip="'ID to start from (0 is the default)'"
+                    :label="$t('gridgenerator_field_id-start')"
+                    v-tooltip="$t('gridgenerator_field_id-start_tooltip')"
                     density="compact"
                     />
             </div>
             
-            <div class="text-subtitle-1 text-center mb-1 mx-5">Rotation</div>
+            <div class="text-subtitle-1 text-center mb-1 mx-5">{{ $t('gridgenerator_field_rotation') }}</div>
             <div class="d-flex justify-center mb-6 mx-5">
                 <v-btn-toggle v-model="generationSettings.rotation" mandatory shaped>
                     <v-btn text="0°" :value="0"/>
@@ -53,7 +52,7 @@
                 </v-btn-toggle>
             </div>
         
-            <div class="text-subtitle-1 text-center mb-1 mx-5">Variant</div>
+            <div class="text-subtitle-1 text-center mb-1 mx-5">{{ $t('gridgenerator_field_variant') }}</div>
             <div class="d-flex justify-center mb-6 mx-5">
                 <v-btn-toggle v-model="generationSettings.type" mandatory shaped>
                       <v-btn prepend-icon="mdi-led-strip" text="Stripe" value="stripe"/>
@@ -62,7 +61,7 @@
             </div>
         
         
-            <div class="text-subtitle-1 text-center mb-1 mx-5">Mode</div>
+            <div class="text-subtitle-1 text-center mb-1 mx-5">{{ $t('gridgenerator_field_mode') }}</div>
             <div class="d-flex justify-center mx-5 mb-5">
                 <v-btn-toggle v-model="generationSettings.mode" mandatory shaped>
                       <v-btn prepend-icon="mdi-current-dc" text="Single direction" value="normal"/>
@@ -74,7 +73,7 @@
 
   <v-card-actions>
     <v-spacer/>
-    <v-btn @click=onProjectAddClicked variant="outlined" prepend-icon="mdi-plus" color="green" class="my-5">Add to project</v-btn>
+    <v-btn @click=onProjectAddClicked variant="outlined" prepend-icon="mdi-plus" color="green" class="my-5">{{ $t('gridgenerator_button_finalize') }}</v-btn>
     <v-spacer/>
   </v-card-actions>
 
@@ -108,7 +107,6 @@ import { Visualizer } from '@visualizer/index';
 import { useProjectStore } from '@webapp/stores/ProjectStore';
 import { HSV2RGB } from '@webapp/utils/color/ColorConverter';
 import PreviewGridSVGGenerator from '@webapp/utils/PreviewGridSVGGenerator';
-import { useProjectImage } from '@webapp/views/visualizer/VisualisationProjectImageLoader';
 import { onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 
 // HTML-Ref

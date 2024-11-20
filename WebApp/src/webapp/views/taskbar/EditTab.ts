@@ -25,10 +25,10 @@ export const createEditTab: () => Menu = () => {
         icon: "mdi-hammer"
     }
 
-    // TODO: Lang
+    // Icon to set the led amount variable to the amount of leds present in the current preview
     const setAmtFromPreview = {
-        text: "Sync Preview with led amount",
-        title: "Copies the amount from the preview to the led-amount field of the project.",
+        text: $t('tab_edit_sync'),
+        title: $t('tab_edit_sync_title'),
         icon: "mdi-arrow-u-down-right",
         action: ()=>SignalDispatcher.emit(Signals.REQUEST_COPY_PREVIEW_AMT_TO_LED_AMT)
     }

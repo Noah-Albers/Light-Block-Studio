@@ -44,6 +44,14 @@ TODO: In general overhaul the way files are accessed by the application.
 TODO: Add keyboard shortcuts for open/save/relaod and such
 TODO: Add Info-tab or pannel to view keyboard shortcuts
 
+## Idears for future:
+
+Add second blockly-workspace for "on-block" editing on the right bottom.
+
+This way variables and such would be accessible and it would leverage the full might of blockys systems
+
+But that is far away. For now im happy having version 1 at some point xD
+
 # Requirements before actual release 0.1
 TODO: Add Tutorial on how to use the application
 TODO: Finalize application name and logo

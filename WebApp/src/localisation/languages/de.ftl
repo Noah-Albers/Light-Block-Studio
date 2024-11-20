@@ -70,8 +70,7 @@ serial_not_supported_text =
     uns genutzt wird um mit externer Hardware zu sprechen, nicht.
     <br />
     Wenn du jedoch deine Animationen trotzdem auf echter Hardware anschauen möchtest, nutze bitte einen <a target="_blank"
-    href="https://caniuse.com/web-serial">Browser</a> der die serielle API unterstützt oder benutzte die
-    <a href="TODO" target="_blank">Desktop Version</a> dieser Anwendung.
+    href="https://caniuse.com/web-serial">Browser</a> der die serielle API unterstützt.
 serial_settings_ledamount = LED-Anzahl
 serial_settings_ledpin = LED-Daten-Pin
 serial_status_closed = Schließen
@@ -344,3 +343,29 @@ keyinfo_title_action = Aktion
 keyinfo_title_shortcut = Abkürzung
 tab_help_about = Über
 tab_help_shortcuts = Tastenverknüpfungen anzeigen
+gridgenerator_button_finalize = Zum Projekt hinzufügen
+gridgenerator_field_height = Höhe
+gridgenerator_field_id-length = ID-Länge
+gridgenerator_field_id-length_tooltip = Wie viele LEDs sollen die gleiche ID haben?
+gridgenerator_field_id-start = Start-ID
+gridgenerator_field_id-start_tooltip = ID, mit der begonnen werden soll (0 ist der Standard)
+gridgenerator_field_mode = Modus
+gridgenerator_field_rotation = Drehung
+gridgenerator_field_variant = Variante
+gridgenerator_field_width = Breite
+gridgenerator_title = Erstelle ein Grid unterschiedlicher Größe
+hooks_info_always = Mit diesem Feld können Sie bearbeiten, wie bestimmte Teile des Codes generiert werden.
+hooks_info_restricted =
+    <p>Durch Variablennamen zwischen $$-Zeichen kannst du diese in deinen Code einfügen.</p>
+    <br>
+    <p>Folgende Variablen können hier verwendet werden:</p>
+hooks_info_variable = $${ $name }$$ (Zum Beispiel { $val })
+keyinfo_info_opensettings_desc = Öffnet die Projekt- oder globalen Einstellungen und wechselt bei mehrmaligem Drücken durch diese.
+keyinfo_info_opensettings_title = Öffne Einstellungen
+keyinfo_info_syncpreview_desc = Kopiert die Anzahl der LEDs in der Vorschau in die Projekteinstellungen.
+keyinfo_info_syncpreview_title = Vorschau mit LED-Menge synchronisieren
+tab_edit_sync = Vorschau mit LED-Amount synchronisieren
+tab_edit_sync_title = Kopiert die Anzahl an Leds aus der Vorschau in das LED-Amount-Feld des Projekts.
+visualizer_previewselector_button-generate = Generieren
+visualizer_previewselector_error_loading = Daten konnten nicht geladen werden. Bist du online?
+visualizer_previewselector_icon_download = Herunterladen
