@@ -1,1 +1,0 @@
-export class VisualizerAbortError extends Error {}
