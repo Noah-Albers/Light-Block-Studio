@@ -83,5 +83,8 @@ export function finalPush(delays: CppFnArgInformation<number>[], gen: ICodeSuppo
 
     if(delays.every(d=>d.available && d.value <= 0))
         return [gen.pushLeds()];
-    return "";
+    return[
+`if(${delays.map(x=>`${x} <= 0`).join(" && ")})
+    ${gen.pushLeds()}
+`];
 }

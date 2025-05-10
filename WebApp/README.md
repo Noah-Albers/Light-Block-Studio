@@ -55,3 +55,4 @@ But that is far away. For now im happy having version 1 at some point xD
 # Requirements before actual release 0.1
 TODO: Add Tutorial on how to use the application
 TODO: Finalize application name and logo
+TODO: Fix problem with accessing leds over or under the range crashing mc's
