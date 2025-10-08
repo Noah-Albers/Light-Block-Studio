@@ -3,7 +3,7 @@
     "short_name": "LBS",
     "description": "Create Stunning LED-Animations for Microcontrollers.",
     "theme_color": "#4DBA87",
-    "start_url": "/Light-Block-Studio/",
+    "start_url": "/",
     "icons": [
         {
             "src": "img/icons/windows11/SmallTile.scale-100.png",
