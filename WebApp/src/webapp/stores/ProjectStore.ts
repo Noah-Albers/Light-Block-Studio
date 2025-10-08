@@ -183,7 +183,12 @@ export const useProjectStore = defineStore('project', () => {
 
         applyTemplate({
             ...TemplateDefault,
-            ...data.hooks
+            ...data,
+            blueprint: data.codeBlueprint || TemplateDefault.blueprint,
+            hooks: {
+                ...TemplateDefault.hooks,
+                ...data.hooks
+            }
         });
 
         applyLEDAPIPreset({
